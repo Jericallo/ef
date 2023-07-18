@@ -1,0 +1,18 @@
+<div class="background">
+    <div class="container">
+        <h2 class="title">Restablece tu contraseña</h2>
+        <form [formGroup]="passForm">
+            <mat-form-field class="email-input">
+                <input matInput placeholder="Inserta tu nueva contraseña"  formControlName="password" name="password" required="" #passwordInput>
+            </mat-form-field>
+            <mat-form-field class="email-input">
+                <input matInput placeholder="Confirma tu contraseña" formControlName="passwordCheck" name="confirmPassword"required="" #confirmPasswordInput>
+            </mat-form-field>
+        </form>
+        <div class="button-container">
+            <button mat-raised-button color="primary" type="button" (click)="checkPasswordsMatch()">Enviar</button>
+            <mat-error *ngIf="!passwordsMatch" class="error-message">Las contraseñas no coinciden.</mat-error>
+        </div>
+    </div>
+</div>
+  

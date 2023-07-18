@@ -1,0 +1,17 @@
+.background{
+    display: flex;
+    height: 100vh;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 300px;
+    height: fit-content;
+    width: fit-content;
+    color:black;
+    padding: 30px;
+    border-radius: 5px;
+    background: rgb(189, 189, 189);
+}

@@ -1,0 +1,138 @@
+<mat-card>
+    <mat-card-content>
+        <div class="d-flex align-items-center">
+            <h3 class="m-t-0">Obligaciones</h3>
+            <div class="ml-auto">
+                <button mat-raised-button color="primary" (click)="addEvent()">Agregar Obligación</button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card> 
+  
+<mat-card>
+    <mat-card-content>
+      <mat-toolbar color="primary" class="no-shadow">
+        <mat-toolbar-row>
+            <span fxFlex fxShow="false" fxShow.gt-xs>
+                {{ viewDate | calendarDate: view + 'ViewTitle':'en'}}
+            </span>
+            <!-- ============================================================== -->
+            <!-- Event View -->
+            <!-- ============================================================== -->
+            <div fxShow="false" fxShow.gt-xs>
+                <button mat-button (click)="view = 'month'" [class.active]="view === 'month'">Mes</button>
+                <button mat-button (click)="view = 'week'" [class.active]="view === 'week'">Semana</button>
+                <button mat-button (click)="view = 'day'" [class.active]="view === 'day'">Dia</button>
+            </div>
+            <!-- ============================================================== -->
+            <!-- Event month, week, day -->
+            <!-- ============================================================== -->
+            <div fxHide="false" fxHide.gt-xs>
+                <button mat-icon-button (click)="view = 'month'" [class.active]="view === 'month'">
+                    <mat-icon>view_module</mat-icon>
+                </button>
+                <button mat-icon-button (click)="view = 'week'" [class.active]="view === 'week'">
+                    <mat-icon>view_week</mat-icon>
+                </button>
+                <button mat-icon-button (click)="view = 'day'" [class.active]="view === 'day'">
+                    <mat-icon>view_day</mat-icon>
+                </button>
+            </div>
+  
+            <span fxFlex fxHide="false" fxHide.gt-xs></span>
+            <!-- ============================================================== -->
+            <!-- Event next prev -->
+            <!-- ============================================================== -->
+            <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button mat-icon-button mwlCalendarToday [(viewDate)]="viewDate">
+                <mat-icon>today</mat-icon>
+            </button>
+            <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <!-- ============================================================== -->
+        <!-- Event Calendar -->
+        <!-- ============================================================== -->
+        <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate"
+                [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen"
+                (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-month-view>
+
+            <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events"
+                [refresh]="refresh" (eventClicked)="handleEvent('', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-week-view>
+
+            <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate"
+                [events]="events" [refresh]="refresh" (eventClicked)="handleEvent('', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-day-view>
+        </div>
+          
+    </mat-card-content>
+</mat-card>
+  
+<mat-card>
+    <mat-card-content>
+        <div class="d-flex align-items-center">
+            <h3 class="m-t-0">Obligaciones</h3>
+            <div class="ml-auto">
+                <!--<button mat-raised-button color="primary" (click)="addEvent()">Add Event</button>-->
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Color primario</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha de fin</th>
+                        <th>Borrar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let event of events">
+                        <td class="p-r-10">
+                            <mat-form-field>
+                                <input matInput placeholder="Editar Título" name="title" [(ngModel)]="event.title" />
+                            </mat-form-field>
+                        </td>
+                        <td class="p-r-10">
+                            <mat-form-field>
+                                <input matInput placeholder="Cambiar color" name="color" type="color"
+                                    [(ngModel)]="event.color.primary"/>
+                            </mat-form-field>
+                        </td>
+                        <td class="p-r-10">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="startDateDP" placeholder="Fecha de inicio"
+                                    name="startDate" [(ngModel)]="event.start"/>
+                                <mat-datepicker-toggle matSuffix [for]="startDateDP"></mat-datepicker-toggle>
+                                <mat-datepicker #startDateDP></mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                        <td class="p-r-10">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="endDateDP" placeholder="Fecha de fin"
+                                    name="endDate" [(ngModel)]="event.end" />
+                                <mat-datepicker-toggle matSuffix [for]="endDateDP"></mat-datepicker-toggle>
+                                <mat-datepicker #endDateDP></mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <button mat-raised-button color="warn" (click)="deleteEvent(event)">Borrar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>
+  

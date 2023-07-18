@@ -1,0 +1,67 @@
+.obligations-full-width {
+    width: 47vw;
+    margin-right: 10px;
+}
+
+.description-full-width {
+    width: 47vw;
+    margin-right: 10px;
+}
+
+.type-full-width {
+    width: 47vw;
+    margin-right: 10px;
+}
+
+.period-full-width {
+    width: 47vw;
+    margin-right: 10px;
+}
+
+.date-full-width {
+    width: 18vw;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-container-date {
+    display: flex;
+    align-items: baseline;
+}
+
+.buttons-container {
+    display: flex;
+}
+
+.toggle-section {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-margin {
+    margin-bottom: 15px;
+}
+
+:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled)
+
+.mat-slide-toggle-bar { 
+    background-color: #1ac514; 
+}
+
+:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled)
+
+.mat-slide-toggle-thumb { 
+    background-color: #1ac514;
+}
+
+.toggle-section-documentations {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.toggle-margin-documentations {
+    margin-bottom: 13px;
+}

@@ -1,0 +1,18 @@
+<div class="container">
+  <h1 class="title">Búsqueda</h1>
+  <div class="search-box">
+    <div class="ng-autocomplete">
+      <ng-autocomplete (keyup.enter)="response()" [(ngModel)]="input" [data]="data" [searchKeyword]="keyword"
+        placeholder="Buscar en Escudo Fiscal" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+      </ng-autocomplete>
+
+      <ng-template #itemTemplate let-item>
+      <a [innerHTML]="item.nombre"></a>
+      </ng-template>
+
+      <ng-template #notFoundTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+  </div>
+</div>

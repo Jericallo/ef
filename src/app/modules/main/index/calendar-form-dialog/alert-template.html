@@ -1,0 +1,137 @@
+<div class="mainCard">
+        <p style="margin-left: 25px;">Alertas previas al cumplimiento de la obligación</p>
+        <div class="message-container">
+            <!-- Toggle Alerta 1 -->
+            <mat-card-content>
+                <section class="toggle-section">
+                    <h3 style="margin-right: 30px;">Alerta 1</h3>
+                    <p>Activado</p>
+                    <div dir="rtl">
+                        <mat-slide-toggle class="toggle-margin"
+                            [color]="color"
+                            [checked]="checked"
+                            [disabled]="isAlertsDisabled()"
+                            (change)="onToggleChanged($event, 1)">
+                        </mat-slide-toggle>
+                    </div>
+                    &nbsp;&nbsp;<p>Desactivado</p>
+                </section>
+            </mat-card-content>
+
+            <!-- Fecha Alerta 1 -->
+            <mat-card-content class="flex-container-date">
+                <mat-form-field class="date-full-width" appearance="fill">
+                    <mat-label>Fecha Alerta 1:</mat-label>
+                    <input matInput [matDatepicker]="picker" 
+                        [(ngModel)]="dateAlert1"
+                        [disabled]="!checked"
+                        [min]="getMinDate()"
+                        [max]="getMaxDate()"
+                        required>
+                    <mat-hint>Mes/Dia/Año</mat-hint>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            </mat-card-content>
+
+            <!-- Mensaje Alerta 1 -->
+            <form>
+                <mat-form-field class="message-full-width" appearance="fill">
+                    <mat-label>Mensaje</mat-label>
+                    <input type="text" matInput [formControl]="myControlMessage" (dateChange)="alert1Change()" (change)="alert1Change()"
+                    [(ngModel)]="message"  required>
+                </mat-form-field>
+            </form>
+        </div>
+        <div class="message-container">
+             <!-- Toggle Alerta 2 -->
+             <mat-card-content>
+                <section class="toggle-section">
+                    <h3 style="margin-right: 30px;">Alerta 2</h3>
+                    <p>Activado</p>
+                    <div dir="rtl">
+                        <mat-slide-toggle class="toggle-margin"
+                            [color]="color"
+                            [checked]="checked2"
+                            [disabled]="isAlertsDisabled()"
+                            (change)="onToggleChanged($event, 2)">
+                        </mat-slide-toggle>
+                    </div>
+                    &nbsp;&nbsp;<p>Desactivado</p>
+                </section>
+            </mat-card-content>
+
+            <!-- Fecha Alerta 2 -->
+            <mat-card-content class="flex-container-date">
+                <mat-form-field class="date-full-width" appearance="fill">
+                    <mat-label>Fecha Alerta 2:</mat-label>
+                    <input matInput [matDatepicker]="picker2" 
+                        [(ngModel)]="dateAlert2"
+                        [disabled]="!checked2" 
+                        [min]="getMinDate()"
+                        [max]="getMaxDate()"
+                        [disabled]="isAlertsDisabled()"
+                        (dateChange)="alert2Change()"
+                        required>
+                    <mat-hint>Mes/Dia/Año</mat-hint>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+                <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            </mat-card-content>
+
+            <!-- Mensaje Alerta 2 -->
+            <form>
+                <mat-form-field class="message-full-width" appearance="fill">
+                    <mat-label>Mensaje</mat-label>
+                    <input type="text" matInput [formControl]="myControlMessage2" [(ngModel)]="message2" (change)="alert2Change()"nrequired>
+                </mat-form-field>
+            </form>
+
+        </div>
+        <div class="message-container">
+            <!-- Toggle Alerta 3 -->
+            <mat-card-content>
+               <section class="toggle-section">
+                   <h3 style="margin-right: 30px;">Alerta 3</h3>
+                   <p>Activado</p>
+                   <div dir="rtl">
+                       <mat-slide-toggle class="toggle-margin"
+                           [color]="color"
+                           [checked]="checked3"
+                           [disabled]="isAlertsDisabled()"
+                           (change)="onToggleChanged($event, 3)">
+                       </mat-slide-toggle>
+                   </div>
+                   &nbsp;&nbsp;<p>Desactivado</p>
+               </section>
+           </mat-card-content>
+
+           <!-- Fecha Alerta 3 -->
+           <mat-card-content class="flex-container-date">
+               <mat-form-field class="date-full-width" appearance="fill">
+                   <mat-label>Fecha Alerta 3:</mat-label>
+                   <input matInput [matDatepicker]="picker3" 
+                        [(ngModel)]="dateAlert3"
+                        [disabled]="!checked3"
+                        [min]="getMinDate()"
+                        [max]="getMaxDate()"
+                        (dateChange)="alert3Change()"
+                        required>
+                   <mat-hint>Mes/Dia/Año</mat-hint>
+                   <mat-datepicker #picker3></mat-datepicker>
+               </mat-form-field>
+               <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+           </mat-card-content>
+
+           <!-- Mensaje Alerta 3 -->
+           <form>
+               <mat-form-field class="message-full-width" appearance="fill">
+                   <mat-label>Mensaje</mat-label>
+                   <input type="text" matInput [formControl]="myControlMessage3" [(ngModel)]="message3" (change)="alert3Change()" required="">
+               </mat-form-field>
+           </form>
+       </div>
+    </div>
+<div class="spinner" *ngIf="showSpinner">
+    <mat-spinner></mat-spinner>
+</div>

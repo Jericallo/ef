@@ -1,0 +1,121 @@
+
+<div class="scroll-container">
+  <h4 class="m-t-0 p-l-5">Agregar Obligación</h4>
+
+  <div class="mainDiv" *ngIf="showMain">
+    <mat-card class="mainCard">
+      <!--<form name="eventForm" [formGroup]="eventForm" class="event-form" fxFlex>-->
+          <mat-card-content>
+          <div class="form-container">
+            <form>
+              <mat-form-field class="obligations-full-width" appearance="fill">
+                <mat-label>Nombre de obligación</mat-label>
+                <input type="text" maxlength="50" matInput [formControl]="myControlObligations" [(ngModel)]="obligations" name="obligations" required>
+              </mat-form-field>
+            </form>
+            <form>
+              <mat-form-field class="description-full-width" appearance="fill">
+                <mat-label>Descripción de la obligación</mat-label>
+                <input type="text" matInput [formControl]="myControlDescription" [(ngModel)]="description" name="description">
+              </mat-form-field>
+            </form>
+          </div>
+  
+          <div class="form-container">
+            <form>
+              <mat-form-field class="type-full-width" appearance="fill">
+                <mat-label>Prioridad</mat-label>
+                <input type="text" matInput [formControl]="myControlPriority" [matAutocomplete]="auto" name="prioridad">
+                <mat-autocomplete #auto="matAutocomplete" name="autoPriority" [displayWith]="displayPriority" (optionSelected)="selectedPriority($event)">
+                    <mat-option *ngFor="let option of filteredPriorityOptions | async" [value]="option">
+                      {{option.type}}
+                    </mat-option>
+                  </mat-autocomplete>
+            </mat-form-field>
+              </form>
+              <form>
+                <mat-form-field class="type-full-width" appearance="fill">
+                  <mat-label>Indicador de riesgo</mat-label>
+                  <input type="text" matInput [formControl]="myControlRisk" [matAutocomplete]="autoRisk" name="indicador_riesgo">
+                  <mat-autocomplete #autoRisk="matAutocomplete" name="autoRisk" [displayWith]="displayRisk" (optionSelected)="selectedRisk($event)">
+                      <mat-option *ngFor="let option of filteredRiskOptions | async" [value]="option">
+                        {{option.type}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+              </form>
+          </div>
+  
+          <div class="form-container">
+            <form>
+            <mat-form-field class="period-full-width" appearance="fill">
+              <mat-label>Periodo</mat-label>
+              <input type="text" matInput [formControl]="myControlPeriod" name="periodo"[matAutocomplete]="autob" required (change)="handleEmptyPeriod($event)">
+              <mat-autocomplete #autob="matAutocomplete" name="autoPeriod" [displayWith]="displayPeriod" (optionSelected)="selectedPeriod($event)">
+                  <mat-option *ngFor="let option of filteredPeriodOptions | async" [value]="option">
+                    {{option.nombre}}
+                  </mat-option>
+                </mat-autocomplete>
+             </mat-form-field>
+            </form>
+            <form>
+            <mat-form-field class="date-full-width" appearance="fill">
+                <mat-label>Fecha máxima de cumplimiento:</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="dateS" name="fecha_cumplimiento" (dateChange)="selectedDate()" required>
+                <mat-hint>Mes/Dia/Año</mat-hint>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            </form>
+          </div>
+        </mat-card-content>
+  
+        
+        <alert-template></alert-template>
+
+  
+        <mat-card-content>
+          <section class="toggle-section">
+              <p>Con documentación</p>
+              <div dir="rtl">
+                  <mat-slide-toggle class="toggle-margin"
+                      [color]="color"
+                      [checked]="checked"
+                      [disabled]="disabled"
+                      (change)="onToggleChanged($event)">
+                  </mat-slide-toggle>
+              </div>
+              &nbsp;&nbsp;<p>Sin documentación</p>
+          </section>
+      </mat-card-content>
+  
+      <mat-card-content *ngIf="showDocumentText">
+        <mat-list role="list" *ngFor="let item of listOfDocumentations; let i = index">
+            <div class="form-container">
+                <section class="toggle-section-documentations">
+                    <p>Activado</p>
+                    <div dir="rtl">
+                        <mat-slide-toggle class="toggle-margin-documentations"
+                            [color]="color"
+                            [checked]="false"
+                            (change)="onToggleChangedDocumentations($event, item)">
+                        </mat-slide-toggle>
+                    </div>
+                    &nbsp;&nbsp;<p>Desactivado</p>
+                </section>
+                <h3 style="margin-left: 50px;">
+                    {{ item.nombre }}
+                </h3>
+            </div>
+        </mat-list>
+    </mat-card-content>
+  
+    
+    <button mat-raised-button color="primary" (click)="saveObligation()">Guardar</button>
+         <!-- <button mat-raised-button color="primary" [disabled]="eventForm.invalid" aria-label="SAVE"
+            (click)="dialogRef.close({ action: 'save', event: eventForm.value })">Guardar</button>-->
+     <!-- </form>-->
+    </mat-card>
+  </div>  
+</div>
+

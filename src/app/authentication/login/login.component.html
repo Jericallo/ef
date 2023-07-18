@@ -1,0 +1,53 @@
+<div class="login-register" style="background-image:url(assets/images/background/login-register.jpg);">
+    <div class="login-register-box">
+        <!--<div class="bg-info text-white m-b-10 text-center p-t-10 p-b-10 alert-box">
+            <span class="m-r-10">Username : </span> |
+            <span class="m-l-10">Password : </span>
+        </div>-->
+        <mat-card class="m-t-10">
+        <mat-card-content>
+        <form id="loginform" [formGroup]="loginForm">
+            <div class="text-center">
+                <img alt="homepage" src="assets/images/logo-icon.png">
+                <h4 class="m-t-0">Ingreso</h4>
+            </div>
+            <div *ngIf="msg" style="margin-bottom: 5px;" class="bg-danger p-10 text-white">{{ msg }}</div>
+            <div fxLayout="row wrap">
+                <!-- col full-->
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    <mat-form-field>
+                    <input matInput placeholder="Correo" formControlName="username" required="" #usernameInput #u1>
+                    <mat-error *ngIf="loginForm.controls.username.hasError('required')">El usuario es requerido</mat-error>
+                    <mat-error *ngIf="loginForm.controls.username.hasError('email')">Ingrese un email válido</mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- col full-->
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" style="display: flex; align-items: center;">
+                    <mat-form-field style="flex: 1;">
+                      <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Contraseña" #passwordInput required="" #p2>
+                    </mat-form-field>
+                    <div class="eye-container">
+                      <button mat-icon-button class="eyeButton" (click)="togglePasswordVisibility()">
+                        <mat-icon style="display: flex; align-items: center; cursor: pointer;">{{icon}}</mat-icon>
+                      </button>    
+                    </div>
+                  </div>
+                <!-- col half-->
+                <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+                    <mat-checkbox color="warn" (change)="rememberMe($event.checked)">Recordarme</mat-checkbox>
+                </div>
+                <!-- col half-->
+                <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" class="text-right">
+                    <a class="link" (click)="openDialog()">Olvidaste la contraseña?</a>
+                </div>
+                <!-- col full-->
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    <button mat-raised-button color="primary" class="btn-block btn-lg m-t-20 m-b-20" (click)="login()" type="button">Ingresar</button>
+                </div>
+                <!-- col full-->
+            </div>
+        </form>
+        </mat-card-content>
+        </mat-card>
+    </div>
+</div>

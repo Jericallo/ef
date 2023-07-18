@@ -1,0 +1,179 @@
+<div class="text-center" *ngIf="titVideo" style="margin-top: 1rem;">
+  <h1>{{titVideo}}</h1>
+</div>
+<div *ngIf="srcVideo" id="divVideo">
+  <video (error)="handleVideoError()" autoplay="autoplay" preload="auto" id="myVideo" controls controlsList="nodownload noremoteplayback" #video style="width: 70%; height: auto;"><!--<source type="video/mp4">--></video>
+</div>
+<div fxLayout="row wrap">
+  <div *ngFor="let res of results" fxFlex.gt-sm="25%" fxFlex="100" (click)="setSrcVideo(res)">
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar>
+          <img src="assets/images/logo-light-icon.png" class="img-fluid img-circle" />
+        </div>
+        <mat-card-title>{{res.video.duracion/60 | number:'1.0-0'}} Minuto<span *ngIf="res.video.duracion != 60">s</span> </mat-card-title>
+        <mat-card-subtitle>{{res.autor}}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image [src]="res.imagen" alt="Photo of a Shiba Inu" />
+      <mat-card-content>
+        <p>{{res.texto || ''}}</p>
+        <mat-card-actions style="display: flex; align-items: center; justify-content: center;" >
+          <button style="background:rgb(45, 87, 202);"mat-raised-button color="accent"><mat-icon>play_arrow</mat-icon></button>
+         <!-- <button mat-button><mat-icon>share</mat-icon></button>-->
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  </div>
+    <!--<div fxFlex.gt-sm="25%" fxFlex="100">
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar>
+            <img src="assets/images/users/1.jpg" class="img-fluid img-circle" />
+          </div>
+          <mat-card-title>1 Minuto</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="assets/images/big/img4.jpg" alt="Photo of a Shiba Inu" />
+        <mat-card-content>
+          <p>
+            Un breve video explicando nuestro objetivo.
+          </p>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">
+                <mat-icon>play_arrow</mat-icon>
+            </button>
+            <button mat-button>
+                <mat-icon>share</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex.gt-sm="25%" fxFlex="100">
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar>
+            <img src="assets/images/users/2.jpg" class="img-fluid img-circle" />
+          </div>
+          <mat-card-title>5 Minutos</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="assets/images/big/img3.jpg" alt="Photo of a Shiba Inu" />
+        <mat-card-content>
+          <p>
+            Un video con un resumen de toda la funcionalidad
+          </p>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">
+                <mat-icon>play_arrow</mat-icon>
+            </button>
+            <button mat-button>
+                <mat-icon>share</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex.gt-sm="25%" fxFlex="100">
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar>
+            <img src="assets/images/users/3.jpg" class="img-fluid img-circle" />
+          </div>
+          <mat-card-title>15 minutos</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="assets/images/big/img5.jpg" alt="Photo of a Shiba Inu" />
+        <mat-card-content>
+          <p>
+            Introduccion completa del sistema
+          </p>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">
+                <mat-icon>play_arrow</mat-icon>
+            </button>
+            <button mat-button>
+                <mat-icon>share</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex.gt-sm="25%" fxFlex="100">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar>
+              <img src="assets/images/users/1.jpg" class="img-fluid img-circle" />
+            </div>
+            <mat-card-title>30 minutos</mat-card-title>
+            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="assets/images/big/img4.jpg" alt="Photo of a Shiba Inu" />
+          <mat-card-content>
+            <p>
+              Mas información
+            </p>
+            <mat-card-actions>
+                <button mat-raised-button color="accent">
+                    <mat-icon>play_arrow</mat-icon>
+                </button>
+                <button mat-button>
+                    <mat-icon>share</mat-icon>
+                </button>
+              </mat-card-actions>
+          </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex.gt-sm="25%" fxFlex="100">
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar>
+            <img src="assets/images/users/1.jpg" class="img-fluid img-circle" />
+          </div>
+          <mat-card-title>60 Minutos</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="assets/images/big/img4.jpg" alt="Photo of a Shiba Inu" />
+        <mat-card-content>
+          <p>
+            Un breve video explicando nuestro objetivo.
+          </p>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">
+                <mat-icon>play_arrow</mat-icon>
+            </button>
+            <button mat-button>
+                <mat-icon>share</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </div>-->
+</div>
+<!--<div fxLayout="row wrap">
+    <div fxFlex.gt-sm="25%" fxFlex="100">
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar>
+            <img src="assets/images/users/1.jpg" class="img-fluid img-circle" />
+          </div>
+          <mat-card-title>60 Minutos</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="assets/images/big/img4.jpg" alt="Photo of a Shiba Inu" />
+        <mat-card-content>
+          <p>
+            Un breve video explicando nuestro objetivo.
+          </p>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">
+                <mat-icon>play_arrow</mat-icon>
+            </button>
+            <button mat-button>
+                <mat-icon>share</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </div>
+</div>-->
