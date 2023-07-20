@@ -1,0 +1,10 @@
+<div class="button-container" (click)="toggleMenu()">
+    <i class="material-icons user-icon">person</i>
+    <div class="menu-container" [ngStyle]="{ 'display': isMenuOpen ? 'flex' : 'none' }">
+      <ul>
+        <li><a id="config" href="#">Configuraciones</a></li>
+        <li><a id="logOut" (click)="logOut()">Salir</a></li>
+      </ul>
+    </div>
+  </div>
+  
