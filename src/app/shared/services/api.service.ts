@@ -192,7 +192,7 @@ export class ApiService {
   public getPrivateKey(){
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
-      if(res.token) return res.llave;
+      if(res.llave) return res.llave;
       else return '';
     }
   }
@@ -258,11 +258,11 @@ public encrypt(data: any, keyP:string = '') {
     const url = this.insert;
     const body = {model: this.models.clasificaciones,data:{nombre: name,}};
     const encryptedBody = this.encrypt(body,'private');
-    return this.http.post(url, encryptedBody,{headers:headers});
+    return this.http.post(url, {text:encryptedBody},{headers:headers});
   }
 
   public saveArticleChapter(request:Article_Chapter):Observable<any>{
-    return this.http.post(this.insert, {model:this.models.articulo_capitulos,data:this.encrypt(request)});
+    return this.http.post(this.insert,{model:this.models.articulo_capitulos,data:this.encrypt(request)});
   }
 
   public getClassifications(): Observable<any> {
