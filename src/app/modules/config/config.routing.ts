@@ -13,8 +13,8 @@ export const ConfigRoutes: Routes = [
         path:'',
         children:[
             {
-                path:'laws',
-                component:null,
+                path:'',
+                component:LeyesConfigComponent,
                 data: {
                     title: 'Leyes',
                     urls: [
@@ -23,28 +23,86 @@ export const ConfigRoutes: Routes = [
                 },
             },
             {
-                path:'leyes-config',
-                component:LeyesConfigComponent,
+                path:'agregararticulo',
+                component:AddArticleComponent,
                 data: {
-                    title:'Configuración',
+                    title:'Agregar artículo',
                     urls:[
-                        {title:'config', url:'/config'},
-                        {title:'Configuración Leyes'}
+                        {title:'Agregar artículo', url:'/config'},
+                        {title:'Leyes'}
                     ]
                 }
             
             },
             {
-                path:'leyes-config/agregar',
-                component:AddArticleComponent,
+                path:'agregarcategoria',
+                component:AddCategoryComponent,
                 data: {
-                    title:'Add article',
+                    title:'Agregar categoría',
                     urls:[
-                        {title:'config', url:'/add'},
-                        {title:'Add article'}
+                        {title:'Agregar categoría', url:'/config'},
+                        {title:'Leyes'}
                     ]
                 }
             
+            },
+            {
+                path:'agregarcapitulo',
+                component:AddChapterComponent,
+                data: {
+                    title:'Agregar capítulo',
+                    urls:[
+                        {title:'Agregar capítulo', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
+                path:'agregardocumento',
+                component:AddDocumentComponent,
+                data: {
+                    title:'Agregar documento',
+                    urls:[
+                        {title:'Agregar documento', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
+                path:'agregarparrafo',
+                component:AddParagraphComponent,
+                data: {
+                    title:'Agregar párrafo',
+                    urls:[
+                        {title:'Agregar párrafo', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
+                path:'agregarseccion',
+                component:AddSectionComponent,
+                data: {
+                    title:'Agregar sección',
+                    urls:[
+                        {title:'Agregar sección', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            },
+            {
+                path:'agregartitulo',
+                component:AddTitleComponent,
+                data: {
+                    title:'Agregar título',
+                    urls:[
+                        {title:'Agregar título', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
             },
         ]
     }
