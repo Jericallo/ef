@@ -52,12 +52,13 @@ export class AddDocumentComponent implements OnInit {
 
   mainTitle = "Agregar documento";
 
-  constructor(public getDocumentsService: ApiService, public snackBar: MatSnackBar, private globalTitle: ApiService) {
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar, private globalTitle: ApiService) {
     this.globalTitle.updateGlobalTitle(this.mainTitle);
     this.showSpinner = true;
-    this.getDocumentsService.getClassifications()
+    this.apiService.getClassifications()
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true;
         this.showSpinner = false;
         this.optionsClassifications = response.result;
@@ -139,9 +140,10 @@ export class AddDocumentComponent implements OnInit {
   saveDocument() {
     this.validateInputs();
     this.showSpinner = true;
-    this.getDocumentsService.saveDocument(this.sendingDocument)
+    this.apiService.saveDocument(this.sendingDocument)
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         console.log(response);
         this.showSpinner = false;
         this.snackBar.open('Documento guardado correctamente', '', { 

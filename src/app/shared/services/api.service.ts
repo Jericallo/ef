@@ -201,7 +201,7 @@ export class ApiService {
   secureIV = '1ae68ad336c3a81e';
   public decrypt(data:any, keyP:string = ''){
     this.privateKey = keyP;
-    let key = (keyP === '') ? this.publicKey : this.privateKey;
+    let key = (keyP === '') ? this.publicKey : this.getPrivateKey();
     if(key.length != 32){return '';}
     ////this.secureIV = key.substring(0,16);
     let _key = CryptoJS.enc.Utf8.parse(key);
