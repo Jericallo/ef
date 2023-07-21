@@ -7,12 +7,10 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog'
-
 //My owns modules
 import { DemoMaterialModule } from './demo-material-module';
 import { SharedModule } from './shared/shared.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
@@ -87,7 +85,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         deps: [HttpClient]
       }
     }),
-    AuthenticationModule
+    AuthenticationModule,
+    
   ],
   providers: [
    PushNotificationService,

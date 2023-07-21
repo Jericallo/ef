@@ -157,6 +157,7 @@ export class ApiService {
     });
     return this.http.get(url,{headers:headers})
   }
+
   
   private getToken(){
     console.log(localStorage)
@@ -175,6 +176,8 @@ export class ApiService {
       else return '';
     }
   }
+
+
   privateKey = '';
   publicKey = 'krmhNDxjib2pcllpk8zKABzauZgz4pc/';//'ex0ix+S22lFhQXcEVrcT1nYmqD+6OAS5';//'64963515cacd41b683cb4ca8305a30ae';
   secureIV = '1ae68ad336c3a81e';

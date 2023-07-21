@@ -1,0 +1,17 @@
+<!--<p  *ngFor="let item of notifications">{{item.asunto}} {{item.correo}}</p>-->
+
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+        <mat-card>
+           <mat-table [dataSource]="dataSource">
+                <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
+                    <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="table-element"[innerHtml]="element[column]"></mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+                </mat-table>           
+        </mat-card>
+    </div>
+</div>›
