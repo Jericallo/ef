@@ -220,7 +220,7 @@ export class ApiService {
 
   
 public encrypt(data: any, keyP:string = '') {
-    let key = (keyP === '' ? this.publicKey : this.privateKey)
+    let key = (keyP === '' ? this.publicKey : this.getPrivateKey())
     console.log(this.publicKey, this.privateKey)
     if (key.length != 32) { return ''; }
     let _key = CryptoJS.enc.Utf8.parse(key)
@@ -251,10 +251,14 @@ public encrypt(data: any, keyP:string = '') {
   }
 
   public saveClasification(name: string | undefined): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
     const url = this.insert;
     const body = {model: this.models.clasificaciones,data:{nombre: name,}};
-    const encryptedBody = this.encrypt(body);
-    return this.http.post(url, encryptedBody);
+    const encryptedBody = this.encrypt(body,'private');
+    return this.http.post(url, encryptedBody,{headers:headers});
   }
 
   public saveArticleChapter(request:Article_Chapter):Observable<any>{
