@@ -8,7 +8,7 @@ import { AddParagraphComponent } from './leyes-config/add-paragraph/add-paragrap
 import { AddSectionComponent } from './leyes-config/add-section/add-section.component';
 import { AddTitleComponent } from './leyes-config/add-title/add-title.component';
 
-export const MainRoutes: Routes = [
+export const ConfigRoutes: Routes = [
     {
         path:'',
         children:[
