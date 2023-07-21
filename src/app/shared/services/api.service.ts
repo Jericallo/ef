@@ -1,9 +1,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Classifications } from 'src/app/modules/config/entities/classifications-interface';
+import { Documents } from 'src/app/modules/config/entities/documents-interface';
+import { Article, Article_Chapter, Article_Title } from 'src/app/modules/config/entities/article-interface';
 
 import { environment } from 'src/environments/environment';
 
@@ -11,6 +14,16 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ApiService {
+  get:string = `${environment.url_base}getAll?model=`
+  insert: string = 'https://api.escudofiscal.alphadev.io/v1/insert';
+  update: string = 'https://api.escudofiscal.alphadev.io/v1/update';
+  models = {clasificaciones:"clasificaciones",documentos:"documentos",documentaciones:"documentaciones",
+    articulo_titulos:"articulo_titulos",articulo_capitulos:"articulo_capitulos", 
+    articulo_secciones:"articulo_secciones",articulos:"articulos",clientes:"clientes",obligaciones:"obligaciones",
+    obligaciones_tipos:"obligaciones_tipos",regimen_fiscal:"regimen_fiscal"}
+  
+    private title: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    public title$: Observable<string> = this.title.asObservable();
 
   public readonly TOKEN = "token_escudo";
 
@@ -52,6 +65,14 @@ export class ApiService {
       //'Authorization':`Bearer ${environment.token}`
     });
     return this.http.get(url,{params:params,headers:headers});
+  }
+
+  public getAllArticles(model:string,params?:HttpParams):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.TOKEN}`
+    });
+    return this.http.get<any>(this.get + model,{params:params,headers:headers})
   }
 
 
@@ -209,9 +230,53 @@ public encrypt(data: any, keyP:string = '') {
 
     return encrypted.toString();
   }
-  
 
+  public getDocuments(): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.TOKEN}`
+    });
+    return this.http.get<Documents[]>(this.http.get + this.models.documentos,{headers:headers});
+  }
 
+  updateGlobalTitle(globalTitle: string) {
+    this.title.next(globalTitle);
+  }
 
+  public saveArticle(request: Article): Observable<any> {
+    const url = this.insert;
+    const body = {model: this.models.articulos,data: request};
+    return this.http.post(url, body);
+  }
 
+  public saveClasification(name: string | undefined): Observable<any> {
+    const url = this.insert;
+    const body = {model: this.models.clasificaciones,data:{nombre: name,}};
+    return this.http.post(url, body);
+  }
+
+  public saveArticleChapter(request:Article_Chapter):Observable<any>{
+    return this.http.post(this.insert, {model:this.models.articulo_capitulos,data:request});
+  }
+
+  public getClassifications(): Observable<any> {
+    return this.http.get<Classifications[]>(this.get + this.models.clasificaciones);
+  }
+
+  public saveDocument(request: Documents): Observable<any> {
+    const url = this.insert;
+    const body = {model: this.models.documentos,data: request};
+    return this.http.post(url, body);
+  }
+
+  public save(request:any, model:any):Observable<any>{
+    if(request && model)  return this.http.post(this.insert,{model:model,data:request}) 
+    else return new Observable<void>(observer => observer.next())
+  }
+
+  public saveArticleTitle(request:Article_Title):Observable<any>{
+    return this.http.post(this.insert, {model:this.models.articulo_titulos,data:request});
+  }
 }
+
+
