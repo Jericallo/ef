@@ -10,6 +10,10 @@ import { AddSectionComponent } from './leyes-config/add-section/add-section.comp
 import { AddParagraphComponent } from './leyes-config/add-paragraph/add-paragraph.component';
 import { DialogTemplate } from './leyes-config/add-article/add-article.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfigRoutes } from './config.routing';
+import { RouterModule } from '@angular/router';
+import { DemoMaterialModule } from 'src/app/demo-material-module';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -26,9 +30,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     FormsModule,
     CommonModule,
-    NgModule,
     ReactiveFormsModule,
-    
+    AngularEditorModule,
+    RouterModule.forChild(ConfigRoutes),
+    DemoMaterialModule
   ]
 })
 export class ConfigModule { }

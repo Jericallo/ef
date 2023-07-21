@@ -8,7 +8,7 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
 import { MatRadioChange } from '@angular/material/radio';
-import { AngularEditorComponent } from '@kolkov/angular-editor';
+import { AngularEditorComponent,AngularEditorModule } from '@kolkov/angular-editor';
 //Services
 import { ApiService } from 'src/app/shared/services/api.service';
 
@@ -479,7 +479,7 @@ export class AddArticleComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   config_snack = { duration: 3000,verticalPosition: this.verticalPosition}
 
-  editorConfig: AngularEditorConfig = {
+  /*editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
     height: 'auto',
@@ -508,7 +508,7 @@ export class AddArticleComponent implements OnInit {
     uploadWithCredentials: false,
     sanitize: true,
     toolbarPosition: 'top',
-  };
+  };*/
 
   myControlDocuments = new FormControl<string | Documents>('');
   optionsDocuments: Documents[] = [];

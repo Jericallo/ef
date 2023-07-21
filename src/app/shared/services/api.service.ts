@@ -246,17 +246,19 @@ public encrypt(data: any, keyP:string = '') {
   public saveArticle(request: Article): Observable<any> {
     const url = this.insert;
     const body = {model: this.models.articulos,data: request};
-    return this.http.post(url, body);
+    const encryptedBody = this.encrypt(body);
+    return this.http.post(url, encryptedBody);
   }
 
   public saveClasification(name: string | undefined): Observable<any> {
     const url = this.insert;
     const body = {model: this.models.clasificaciones,data:{nombre: name,}};
-    return this.http.post(url, body);
+    const encryptedBody = this.encrypt(body);
+    return this.http.post(url, encryptedBody);
   }
 
   public saveArticleChapter(request:Article_Chapter):Observable<any>{
-    return this.http.post(this.insert, {model:this.models.articulo_capitulos,data:request});
+    return this.http.post(this.insert, {model:this.models.articulo_capitulos,data:this.encrypt(request)});
   }
 
   public getClassifications(): Observable<any> {
@@ -266,16 +268,17 @@ public encrypt(data: any, keyP:string = '') {
   public saveDocument(request: Documents): Observable<any> {
     const url = this.insert;
     const body = {model: this.models.documentos,data: request};
-    return this.http.post(url, body);
+    const encryptedBody = this.encrypt(body);
+    return this.http.post(url, encryptedBody);
   }
 
   public save(request:any, model:any):Observable<any>{
-    if(request && model)  return this.http.post(this.insert,{model:model,data:request}) 
+    if(request && model)  return this.http.post(this.insert,{model:model,data:this.encrypt(request)}) 
     else return new Observable<void>(observer => observer.next())
   }
 
   public saveArticleTitle(request:Article_Title):Observable<any>{
-    return this.http.post(this.insert, {model:this.models.articulo_titulos,data:request});
+    return this.http.post(this.insert, {model:this.models.articulo_titulos,data:this.encrypt(request)});
   }
 }
 
