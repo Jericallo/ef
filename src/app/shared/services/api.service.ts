@@ -117,6 +117,16 @@ export class ApiService {
     return this.http.post(environment.baseUrl + 'setNewPassword', { text: encryptedData }, { headers: headers });
   }
 
+  public deleteUser(userId: number): Observable<any> {
+    const url = environment.baseUrl + 'getAll?model=usuarios'; 
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.delete(`${url}/${userId}`, { headers });
+  }
+  
+
   /*
   public login(body:any):Observable<any>{
     return this.http.post(environment.baseUrl+'login',body,{});

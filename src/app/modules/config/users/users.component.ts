@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { AddUserDialogComponent } from '../add-user-dialog/add-user-dialog.component';
+import { RemoveUserDialogComponent } from '../remove-user-dialog/remove-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 interface Columns {
@@ -37,13 +38,26 @@ export class UsersComponent implements OnInit {
   }
 
   openAdd(){
-    const dialogRef = this.dialog.open(AddUserDialogComponent, {
+     this.dialog.open(AddUserDialogComponent, {
       width: '400px',
-      // Puedes pasar datos adicionales al diálogo si lo necesitas.
-      // Por ejemplo, podrías pasar un objeto con información relacionada con el usuario actualmente seleccionado.
-      // data: { selectedUser: this.selectedUser }
     });
   }
+
+  openRemove(user: any) {
+    const dialogRef = this.dialog.open(RemoveUserDialogComponent, {
+      width: '600px',
+      data: { user }
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.deleteUser(user.id);
+      }
+    });
+  }
+
+  
+  
 
   openEdit(){
 
@@ -60,4 +74,16 @@ export class UsersComponent implements OnInit {
       }
     })
   }
+
+  deleteUser(userId: number) {
+    this.apiService.deleteUser(userId).subscribe(
+      () => {
+        this.getUsers();
+      },
+      (error) => {
+        console.error('Error al eliminar el usuario:', error);
+      }
+    );
+  }
+  
 }
