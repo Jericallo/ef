@@ -35,10 +35,11 @@ export class AddTitleComponent implements OnInit {
     id:0, nombre:"", id_documento:0
   }
 
-  constructor(public getDocumentsService: ApiService, public snackBar: MatSnackBar) { 
-    this.getDocumentsService.getDocuments()
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar) { 
+    this.apiService.getDocuments()
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true;
         this.showSpinner = false;
         console.log(response);
@@ -103,9 +104,10 @@ export class AddTitleComponent implements OnInit {
   saveAssignation() {
     this.showSpinner = true;
     this.sendingData.nombre = this.name || ""
-    this.getDocumentsService.saveArticleTitle(this.sendingData)
+    this.apiService.saveArticleTitle(this.sendingData)
     .subscribe({
       next: response => {
+        
         this.showSpinner = false;
         console.log(response);
         this.snackBar.open('Titulo guardado correctamente', '', { 

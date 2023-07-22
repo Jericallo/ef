@@ -50,10 +50,11 @@ export class AddSectionComponent implements OnInit {
     id:0, nombre:"", id_documento:0, id_titulo:0, id_capitulo:0
   }
 
-  constructor(public getDocumentsService: ApiService, public snackBar: MatSnackBar) { 
-    this.getDocumentsService.getDocuments()
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar) { 
+    this.apiService.getDocuments()
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true;this.showSpinner = false;
         this.optionsDocuments = response.result;
       },
@@ -93,10 +94,12 @@ export class AddSectionComponent implements OnInit {
     this.myControlTitles.disable();
     this.optionsTitles = [];
     this.filteredTitOptions = undefined
-    this.getDocumentsService
-    .getAllArticles(this.getDocumentsService.models.articulo_titulos,new HttpParams().set("id_documento",id_documento))
+    this.apiService
+    .getAllArticles(this.apiService.models.articulo_titulos,new HttpParams().set("id_documento",id_documento))
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
+        console.log(response)
         this.showMain = true;this.showSpinner = false;
         this.optionsTitles = response.result;
         this.filteredTitOptions = this.myControlTitles.valueChanges.pipe(
@@ -147,10 +150,12 @@ export class AddSectionComponent implements OnInit {
     let httpParams = new HttpParams();
     if(id_documento) httpParams = httpParams.set("id_documento",id_documento)
     if(id_titulo) httpParams = httpParams.set("id_titulo",id_titulo)
-    this.getDocumentsService
-    .getAllArticles(this.getDocumentsService.models.articulo_capitulos,httpParams)
+    this.apiService
+    .getAllArticles(this.apiService.models.articulo_capitulos,httpParams)
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
+        console.log(response)
         this.showMain = true;this.showSpinner = false;
         this.optionsChapters = response.result;
         this.filteredChaOptions = this.myControlChapters.valueChanges.pipe(
@@ -197,7 +202,7 @@ export class AddSectionComponent implements OnInit {
   saveAssignation() {
     this.showSpinner = true;
     this.sendingData.nombre = this.name || ""
-    this.getDocumentsService.save(this.sendingData, this.getDocumentsService.models.articulo_secciones)
+    this.apiService.saveSection(this.sendingData)
     .subscribe({
       next: () => {
         this.showSpinner = false;

@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Classifications } from 'src/app/modules/config/entities/classifications-interface';
 import { Documents } from 'src/app/modules/config/entities/documents-interface';
-import { Article, Article_Chapter, Article_Title } from 'src/app/modules/config/entities/article-interface';
+import { Article, Article_Chapter, Article_Section, Article_Title } from 'src/app/modules/config/entities/article-interface';
 
 import { environment } from 'src/environments/environment';
 
@@ -66,15 +66,6 @@ export class ApiService {
     });
     return this.http.get(url,{params:params,headers:headers});
   }
-
-  public getAllArticles(model:string,params?:HttpParams):Observable<any>{
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.TOKEN}`
-    });
-    return this.http.get<any>(this.get + model,{params:params,headers:headers})
-  }
-
 
   public content(model:string="", where:string="", orderby:string="",limit:number=-1, offset:number=-1, querys:Object=null): Observable<any>{
     const url = environment.baseUrl+`content`;
@@ -232,11 +223,30 @@ public encrypt(data: any, keyP:string = '') {
   }
 
   public getDocuments(): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=documentos'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.TOKEN}`
+      'Authorization':`Bearer ${this.getToken()}`
     });
-    return this.http.get<Documents[]>(this.http.get + this.models.documentos,{headers:headers});
+    return this.http.get<Documents[]>(url,{headers:headers});
+  }
+
+  public getAllArticles(model:string,params?:HttpParams):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=' + model
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get<any>(url,{params:params,headers:headers})
+  }
+
+  public getClassifications(): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=clasificaciones'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get<Classifications[]>(url,{headers:headers});
   }
 
   updateGlobalTitle(globalTitle: string) {
@@ -249,8 +259,8 @@ public encrypt(data: any, keyP:string = '') {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = this.insert;
-    const body = {model: this.models.articulos,data: request};
-    const encryptedBody = this.encrypt(body);
+    const body = {model: this.models.articulos,data: {id_documento:request.id_documento,id_titulo:request.id_titulo,id_capitulo:request.id_capitulo,id_seccion:request.id_seccion,articulo:request.articulo,indicador:request.indicador,indice_numerico:request.indice_numerico,indice_alfanumerico:request.indice_alfanumerico,contenido:request.contenido, nombre:request.nombre,ids_relacionados:request.ids_relacionados,fragmentos:request.fragmentos,parrafos:request.parrafos}};
+    const encryptedBody = this.encrypt(body,'private');
     return this.http.post(url, {text:encryptedBody},{headers:headers});
   }
 
@@ -271,27 +281,9 @@ public encrypt(data: any, keyP:string = '') {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = this.insert;
-    const body = {model:this.models.articulo_capitulos,data:request};
+    const body = {model:this.models.articulo_capitulos,data:{nombre:request.nombre, id_documento:request.id_documento,id_titulo:request.id_titulo,fecha_creacion:request.fecha_creacion,fecha_modificacion:request.fecha_modificacion}};
     const encrybtedBody = this.encrypt(body,'private')
     return this.http.post(url,{text:encrybtedBody},{headers:headers});
-  }
-
-  /*public getPeriods():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones_periodos'
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
-    });
-    return this.http.get(url,{headers:headers})
-  }*/
-
-  public getClassifications(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=clasificaciones'
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
-    });
-    return this.http.get<Classifications[]>(url,{headers:headers});
   }
 
   public saveDocument(request: Documents): Observable<any> {
@@ -300,8 +292,8 @@ public encrypt(data: any, keyP:string = '') {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = this.insert;
-    const body = {model: this.models.documentos,data: request};
-    const encryptedBody = this.encrypt(body);
+    const body = {model: this.models.documentos,data: {titulo:request.titulo, editorial:request.editorial, abreviatura:request.abreviatura, num_articulos:request.num_articulos, ayo:request.ayo, fecha_modificacion:request.fecha_modificacion, fecha_creacion:request.fecha_creacion, clasificacion:request.clasificacion}};
+    const encryptedBody = this.encrypt(body,'private');
     return this.http.post(url, {text:encryptedBody},{headers:headers});
   }
 
@@ -325,10 +317,20 @@ public encrypt(data: any, keyP:string = '') {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = this.insert;
-    const body = {model:this.models.articulo_titulos,data:request};
-    const encryptedBody = this.encrypt(body);
+    const body = {model:this.models.articulo_titulos,data:{nombre: request.nombre, id_documento:request.id_documento}};
+    const encryptedBody = this.encrypt(body, 'private');
+    return this.http.post(url,{text:encryptedBody},{headers:headers});
+  }
+
+  public saveSection(request:Article_Section):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert;
+    const body = {model:this.models.articulo_secciones,data:{id_capitulo: request.id_capitulo, id_titulo:request.id_titulo, id_documento:request.id_documento, nombre:request.nombre}};
+    console.log(body)
+    const encryptedBody = this.encrypt(body, 'private');
     return this.http.post(url,{text:encryptedBody},{headers:headers});
   }
 }
-
-

@@ -583,12 +583,13 @@ export class AddArticleComponent implements OnInit {
 
   title = "Agregar articulo";
 
-  constructor(public serv: ApiService, public snackBar: MatSnackBar, private readonly cdRef: ChangeDetectorRef, public dialog: MatDialog) {
-      this.serv.updateGlobalTitle(this.title);
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar, private readonly cdRef: ChangeDetectorRef, public dialog: MatDialog) {
+      this.apiService.updateGlobalTitle(this.title);
       this.showSpinner = true;
-      this.serv.getDocuments()
+      this.apiService.getDocuments()
       .subscribe({
         next: response => {
+          response = JSON.parse(this.apiService.decrypt(response.message,"private"));
           this.showMain = true;
           this.showSpinner = false;
           this.optionsDocuments = response.result;
@@ -785,7 +786,7 @@ export class AddArticleComponent implements OnInit {
       this.sendingArticle.parrafos?.push({indicador:el.ind, orden:el.order,contenido:el.htmlCont, tipo:el.type, numero:el.num, nombre:el.name, id_articulo:0})
     });
 
-    this.serv.saveArticle(this.sendingArticle)
+    this.apiService.saveArticle(this.sendingArticle)
     .subscribe({
       next: response => {
         console.log(response);
@@ -850,9 +851,10 @@ export class AddArticleComponent implements OnInit {
     this.myControlTitles.disable();
     this.optionsTitles = [];
     this.filteredTitOptions = undefined
-    this.serv.getAllArticles(this.serv.models.articulo_titulos,new HttpParams().set("id_documento",id_documento))
+    this.apiService.getAllArticles(this.apiService.models.articulo_titulos,new HttpParams().set("id_documento",id_documento))
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true;
         this.showSpinner = false;
         this.optionsTitles = response.result;
@@ -884,9 +886,10 @@ export class AddArticleComponent implements OnInit {
     let httpParams = new HttpParams();
     if(id_documento) httpParams = httpParams.set("id_documento",id_documento)
     if(id_titulo) httpParams = httpParams.set("id_titulo",id_titulo)
-    this.serv.getAllArticles(this.serv.models.articulo_capitulos,httpParams)
+    this.apiService.getAllArticles(this.apiService.models.articulo_capitulos,httpParams)
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true;
         this.showSpinner = false;
         this.optionsChapters = response.result;
@@ -917,9 +920,10 @@ export class AddArticleComponent implements OnInit {
     if(id_documento) httpParams = httpParams.set("id_documento",id_documento)
     if(id_titulo) httpParams = httpParams.set("id_titulo",id_titulo)
     if(id_titulo) httpParams = httpParams.set("id_capitulo",id_capitulo)
-    this.serv.getAllArticles(this.serv.models.articulo_secciones,httpParams)
+    this.apiService.getAllArticles(this.apiService.models.articulo_secciones,httpParams)
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true;
         this.showSpinner = false;
         this.optionsSections = response.result;

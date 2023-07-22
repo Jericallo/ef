@@ -44,10 +44,11 @@ export class AddChapterComponent implements OnInit {
     id:0, nombre:"", id_documento:0, id_titulo:0
   }
 
-  constructor(public getDocumentsService: ApiService, public snackBar: MatSnackBar) {
-    this.getDocumentsService.getDocuments()
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
+    this.apiService.getDocuments()
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true;this.showSpinner = false;
         this.optionsDocuments = response.result;
       },
@@ -86,10 +87,11 @@ export class AddChapterComponent implements OnInit {
     this.myControlTitles.disable();
     this.optionsTitles = [];
     this.filteredTitOptions = undefined
-    this.getDocumentsService
-    .getAllArticles(this.getDocumentsService.models.articulo_titulos,new HttpParams().set("id_documento",id_document))
+    this.apiService
+    .getAllArticles(this.apiService.models.articulo_titulos,new HttpParams().set("id_documento",id_document))
   .subscribe({
     next: response => {
+      response = JSON.parse(this.apiService.decrypt(response.message,"private"));
       this.showMain = true;this.showSpinner = false;
       this.optionsTitles = response.result;
       this.filteredTitOptions = this.myControlTitles.valueChanges.pipe(
@@ -137,7 +139,7 @@ export class AddChapterComponent implements OnInit {
   saveAssignation() {
     this.showSpinner = true;
     this.sendingData.nombre = this.name || ""
-    this.getDocumentsService.saveArticleChapter(this.sendingData)
+    this.apiService.saveArticleChapter(this.sendingData)
     .subscribe({
       next: response => {
         this.showSpinner = false;
