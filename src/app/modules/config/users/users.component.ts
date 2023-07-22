@@ -39,7 +39,7 @@ export class UsersComponent implements OnInit {
 
   openAdd(){
      this.dialog.open(AddUserDialogComponent, {
-      width: '400px',
+      width: '1000px',
     });
   }
 
@@ -56,9 +56,6 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  
-  
-
   openEdit(){
 
   }
@@ -68,7 +65,6 @@ export class UsersComponent implements OnInit {
       next:res => {
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         this.usersList = res.result;
-        console.log(this.usersList)
         this.dataSource = new MatTableDataSource<any>(this.usersList);
 
       }
