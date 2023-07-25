@@ -44,7 +44,7 @@ export const AppRoutes: Routes = [
             {
                 path:'config',
                 loadChildren: () => import('./modules/config/config.module').then(m => m.ConfigModule)
-            },
+            }
         ]
     },
     {
