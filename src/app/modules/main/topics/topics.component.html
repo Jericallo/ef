@@ -1,5 +1,6 @@
+<app-user-icon></app-user-icon>
 <div class="row">
-  <div class="col-4">
+  <div class="col-5">
     <mat-card>
       <mat-card-content>
         <!--<mat-card-title>Tree with flat nodes</mat-card-title>-->
@@ -7,7 +8,6 @@
           <cdk-tree-node *cdkTreeNodeDef="let node" cdkTreeNodePadding [cdkTreeNodeToggleRecursive]="true"
             [style.display]="shouldRender(node) ? 'flex' : 'none'" class="example-tree-node">
             <button mat-icon-button disabled></button>
-    
             <button mat-button (click)="showContent(node.name)" *ngIf="node.level==1;else onlyName">{{ node.name }}</button>
             <ng-template #onlyName>{{node.name}}</ng-template>
           </cdk-tree-node>
@@ -25,7 +25,7 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="col-8">
+  <div class="col-7">
     <mat-card style="position: sticky; top:5.5vh">
       <mat-card-content>
         <div class="accordion-container" style="overflow: auto; max-height: 85vh;" [ngClass]="{'col-md-8 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-12 col-lg-12 col-xxxl-12':!article && !articleRel, 'col-md-4 col-lg-4 col-xxxl-4':article && articleRel}">

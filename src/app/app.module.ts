@@ -85,8 +85,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         deps: [HttpClient]
       }
     }),
-    AuthenticationModule,
-    
+    AuthenticationModule
   ],
   providers: [
    PushNotificationService,
