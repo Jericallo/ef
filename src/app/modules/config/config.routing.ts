@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { UsersComponent } from './users/users.component';
+import { MenuComponent } from './menu/menu.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -14,6 +15,13 @@ export const ConfigRoutes: Routes = [
                         { title: 'Configuración', url: '/config' },
                         { title: 'Usuarios' }
                     ]
+                }
+            },
+            {
+                path: 'menu',
+                component:MenuComponent,
+                data:{
+                    title:'Menu Configuraciones'
                 }
             }
         ]
