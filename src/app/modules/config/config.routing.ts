@@ -7,6 +7,8 @@ import { AddDocumentComponent } from './leyes-config/add-document/add-document.c
 import { AddParagraphComponent } from './leyes-config/add-paragraph/add-paragraph.component';
 import { AddSectionComponent } from './leyes-config/add-section/add-section.component';
 import { AddTitleComponent } from './leyes-config/add-title/add-title.component';
+import { UsersComponent } from './users/users.component';
+import { MenuComponent } from './menu/menu.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -15,10 +17,13 @@ export const ConfigRoutes: Routes = [
             {
                 path:'',
                 component:LeyesConfigComponent,
+                path: 'users',
+                component: UsersComponent,
                 data: {
-                    title: 'Leyes',
+                    title: 'Usuarios',
                     urls: [
-                        { title: 'Leyes' }
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'Usuarios' }
                     ]
                 },
             },
@@ -104,6 +109,13 @@ export const ConfigRoutes: Routes = [
                     ]
                 }
             },
+            {
+                path: 'menu',
+                component:MenuComponent,
+                data:{
+                    title:'Menu Configuraciones'
+                }
+            }
         ]
     }
 ];
