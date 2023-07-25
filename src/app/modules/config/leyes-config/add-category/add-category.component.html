@@ -1,0 +1,18 @@
+<div class="mainDiv" *ngIf="showMain">
+    <mat-card class="mainCard">
+        <a routerLink="/index" class="return"><mat-icon>arrow_back</mat-icon></a>
+        <p>{{ title }}</p>
+        <mat-card-content>
+            <form>
+                <mat-form-field class="category-full-width" appearance="fill">
+                    <mat-label>Clasificacion documento</mat-label>
+                    <input type="text" matInput [formControl]="myControlCategory" [(ngModel)]="clasification" required>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="saveCategory()">Guardar</button>
+    </mat-card>
+</div>
+<div class="spinner" *ngIf="showSpinner">
+    <mat-spinner></mat-spinner>
+</div>
