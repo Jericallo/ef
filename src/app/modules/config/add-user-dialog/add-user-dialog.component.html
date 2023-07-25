@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>Agregar nuevo usuario</h2>
+<mat-dialog-content>
+  <div class="grid-container">
+    <div class="grid-item">
+      <mat-form-field>
+        <mat-select matInput placeholder="Perfil" required (selectionChange)="onPerfilChange($event)">
+          <mat-option value="1">Administrador</mat-option>
+          <mat-option value="2">Capturista</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="grid-item">
+      <mat-form-field>
+        <input matInput [(ngModel)]="nuevoUsuario.correo" required placeholder="Correo" >
+      </mat-form-field>
+      <mat-error *ngIf="camposInvalidos && !emailPattern.test(nuevoUsuario.correo.trim())">
+         Por favor, ingrese un correo electrónico válido.
+      </mat-error>
+    </div>
+    <div class="grid-item">
+      <mat-form-field>
+        <input matInput [(ngModel)]="nuevoUsuario.nombre" required placeholder="Nombre">
+      </mat-form-field>
+    </div>
+    <div class="grid-item">
+      <mat-form-field>
+        <input matInput [(ngModel)]="nuevoUsuario.telefono" placeholder="Teléfono" type="number" required>
+      </mat-form-field>
+      <mat-error *ngIf="camposInvalidos && !phonePattern.test(nuevoUsuario.telefono.toString())">
+        Por favor, ingrese un número de teléfono válido (8 o 10 dígitos).
+      </mat-error>
+    </div>
+    <div class="grid-item">
+      <mat-form-field>
+        <input matInput [(ngModel)]="nuevoUsuario.contra" required placeholder="Contraseña">
+      </mat-form-field>
+      <mat-error *ngIf="camposInvalidos && !passwordPattern.test(nuevoUsuario.contra.trim())">
+        La contraseña debe contener mayúsculas, minúsculas, números y carácteres especiales.
+      </mat-error>
+    </div>
+  </div>
+  <mat-error *ngIf="camposInvalidos" class="error-message">Por favor, complete todos los campos.</mat-error>
+</mat-dialog-content>
+<mat-dialog-actions style="justify-content: end;">
+  <button mat-raised-button color="primary" (click)="saveUser()">Agregar</button>
+  <button mat-button (click)="cancel()">Cancelar</button>
+</mat-dialog-actions>

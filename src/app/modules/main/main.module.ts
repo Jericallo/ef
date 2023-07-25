@@ -9,6 +9,7 @@ import { MainRoutes } from './main.routing';
 import { IndexComponent } from './index/index.component';
 import { CalendarFormDialogComponent } from './index/calendar-form-dialog/calendar-form-dialog.component';
 import { AlertTemplate } from './index/calendar-form-dialog/calendar-form-dialog.component';
+import { UserIconComponent } from 'src/app/layouts/full/user-icon/user-icon.component';
 
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -34,6 +35,7 @@ import { ResponseComponent } from './response/response.component'
     CalendarFormDialogComponent,
     AlertTemplate,
     LawsComponent,
+    UserIconComponent,
     TopicsComponent,
     CourseDetailComponent,
     SearchComponent,

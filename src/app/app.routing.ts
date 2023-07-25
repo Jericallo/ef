@@ -40,6 +40,10 @@ export const AppRoutes: Routes = [
             {
                 path:'warning',
                 loadChildren: () => import('./modules/warning/warning.module').then(m => m.WarningModule)
+            },
+            {
+                path:'config',
+                loadChildren: () => import('./modules/config/config.module').then(m => m.ConfigModule)
             }
         ]
     },
