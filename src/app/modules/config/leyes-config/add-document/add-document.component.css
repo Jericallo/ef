@@ -1,0 +1,32 @@
+.flex-container {
+    display: flex;
+}
+
+.title-full-width {
+    width: 95vw;
+}
+
+.classification-full-width {
+    width: 31.3vw;
+    margin-right: 10px;
+}
+
+.year-full-width {
+    width: 31.3vw;
+    margin-right: 10px;
+}
+
+.abbreviation-full-width {
+    width: 31.3vw;
+    margin-right: 10px;
+}
+
+.editorial-full-width {
+    width: 47.2vw;
+    margin-right: 10px;
+}
+
+.articles-full-width {
+    width: 47.2vw;
+    margin-right: 10px;
+}
