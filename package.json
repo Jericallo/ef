@@ -24,9 +24,7 @@
     "@angular/platform-browser": "14.0.1",
     "@angular/platform-browser-dynamic": "14.0.1",
     "@angular/router": "14.0.1",
-    "@kolkov/angular-editor": "^3.0.0-beta.0",
     "@nebular/theme": "^11.0.0",
-    "@ng-bootstrap/ng-bootstrap": "^13.1.1",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@videogular/ngx-videogular": "^8.0.0",
@@ -40,15 +38,13 @@
     "extend": "^3.0.2",
     "firebase": "^9.23.0",
     "handlebars": "^4.7.3",
-    "jquery": "^3.6.1",
     "lodash": "^4.17.15",
     "moment": "^2.29.4",
     "ng-apexcharts": "^1.2.1",
     "ngx-perfect-scrollbar": "^8.0.0",
-    "rxjs": "~7.5.0",
+    "rxjs": "~6.6.0",
     "rxjs-compat": "^6.5.4",
     "sass": "^1.29.0",
-    "summernote": "^0.8.20",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
   },
@@ -72,9 +68,6 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    
-    "karma-coverage": "~2.2.0",
-    
-    "typescript": "~4.7.2"
+    "typescript": "~4.7.3"
   }
 }
