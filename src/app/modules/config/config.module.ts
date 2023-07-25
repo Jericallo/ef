@@ -9,6 +9,7 @@ import { RemoveUserDialogComponent } from './remove-user-dialog/remove-user-dial
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from './menu/menu.component';
 
+
 @NgModule({
   declarations: [
     UsersComponent,
