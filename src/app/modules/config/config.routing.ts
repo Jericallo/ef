@@ -1,16 +1,18 @@
 import { Routes } from '@angular/router';
+import { UsersComponent } from './users/users.component';
 
 export const ConfigRoutes: Routes = [
     {
         path:'',
         children:[
             {
-                path:'laws',
-                component:null,
+                path: 'users',
+                component: UsersComponent,
                 data: {
-                    title: 'Leyes',
+                    title: 'Usuarios',
                     urls: [
-                        { title: 'Leyes' }
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'Usuarios' }
                     ]
                 }
             }

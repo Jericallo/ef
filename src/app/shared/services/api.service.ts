@@ -117,6 +117,35 @@ export class ApiService {
     return this.http.post(environment.baseUrl + 'setNewPassword', { text: encryptedData }, { headers: headers });
   }
 
+  public deleteUser(userId: number): Observable<any> {
+    const url = environment.baseUrl + 'delete'; 
+    console.log("id", userId);
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });  
+         
+    let params = new HttpParams().set('model', 'usuarios');
+    params = params.append('id', userId.toString());
+    return this.http.delete(url, { headers, params });
+  }
+
+  public postUser(data: any): Observable<any> {
+    const url = environment.baseUrl + 'insert'; 
+    console.log("data",data)
+    const encryptedData = this.encrypt(data, "1")
+    let body = ({
+      text:encryptedData
+    })
+    console.log("body",body)
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, body, { headers });
+  }
+  
+
   /*
   public login(body:any):Observable<any>{
     return this.http.post(environment.baseUrl+'login',body,{});
@@ -124,7 +153,6 @@ export class ApiService {
   */
 
   public postObligations( data: any): Observable<any> {
-    //const url = 'http://192.168.100.154:3000/v1/insert'
     const url = 'https://api.escudofiscal.alphadev.io/v1/insert';
     console.log("data",data)
     //let dataStr = JSON.stringify(data);
@@ -157,6 +185,7 @@ export class ApiService {
     });
     return this.http.get(url,{headers:headers})
   }
+
   
   private getToken(){
     console.log(localStorage)
@@ -175,6 +204,8 @@ export class ApiService {
       else return '';
     }
   }
+
+
   privateKey = '';
   publicKey = 'krmhNDxjib2pcllpk8zKABzauZgz4pc/';//'ex0ix+S22lFhQXcEVrcT1nYmqD+6OAS5';//'64963515cacd41b683cb4ca8305a30ae';
   secureIV = '1ae68ad336c3a81e';
