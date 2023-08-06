@@ -119,7 +119,6 @@ export class ApiService {
 
   public deleteUser(userId: number): Observable<any> {
     const url = environment.baseUrl + 'delete'; 
-    console.log("id", userId);
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -132,18 +131,30 @@ export class ApiService {
 
   public postUser(data: any): Observable<any> {
     const url = environment.baseUrl + 'insert'; 
-    console.log("data",data)
     const encryptedData = this.encrypt(data, "1")
     let body = ({
       text:encryptedData
     })
-    console.log("body",body)
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
     });
     return this.http.post(url, body, { headers });
   }
+
+  public putUser(data: any): Observable<any> {
+    const url = environment.baseUrl + 'update'; 
+    const encryptedData = this.encrypt(data, "1")
+    let body = ({
+      text:encryptedData
+    })
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, { headers });
+  }
+
   
 
   /*
@@ -188,10 +199,8 @@ export class ApiService {
 
   
   private getToken(){
-    console.log(localStorage)
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
-      console.log('res',res)
       if(res.token) return res.token;
       else return environment.token;
     }
@@ -224,14 +233,12 @@ export class ApiService {
         {keySize:256, iv:_iv, mode:CryptoJS.mode.CBC, padding:CryptoJS.pad.Pkcs7})
         .toString(CryptoJS.enc.Utf8);
     //let decrypted = CryptoJS.AES.decrypt(data,_key).toString(CryptoJS.enc.Utf8);
-    console.log(data)
     return decrypted;
   }
 
   
 public encrypt(data: any, keyP:string = '') {
     let key = (keyP === '' ? this.publicKey : this.privateKey)
-    console.log(this.publicKey, this.privateKey)
     if (key.length != 32) { return ''; }
     let _key = CryptoJS.enc.Utf8.parse(key)
     let _iv = CryptoJS.enc.Utf8.parse(this.secureIV)
