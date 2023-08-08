@@ -9,6 +9,12 @@ import { RemoveUserDialogComponent } from './users/remove-user-dialog/remove-use
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from './menu/menu.component';
 import { EditUserDialogComponent } from './users/edit-user-dialog/edit-user-dialog.component';
+import { ProfilesComponent } from './profiles/profiles.component';
+import { DatePipe } from '@angular/common';
+import { RemoveProfileDialogComponent } from './profiles/remove-profile-dialog/remove-profile-dialog.component';
+import { AddProfileDialogComponent } from './profiles/add-profile-dialog/add-profile-dialog.component';
+import { EditProfileDialogComponent } from './profiles/edit-profile-dialog/edit-profile-dialog.component';
+
 
 
 @NgModule({
@@ -18,7 +24,12 @@ import { EditUserDialogComponent } from './users/edit-user-dialog/edit-user-dial
     EditUserDialogComponent,
     RemoveUserDialogComponent,
     MenuComponent,
+    ProfilesComponent,
+    RemoveProfileDialogComponent,
+    AddProfileDialogComponent,
+    EditProfileDialogComponent,
   ],
+  providers: [DatePipe],
   imports: [
     CommonModule,
     RouterModule.forChild(ConfigRoutes),

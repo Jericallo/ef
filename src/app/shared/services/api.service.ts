@@ -129,6 +129,18 @@ export class ApiService {
     return this.http.delete(url, { headers, params });
   }
 
+  public deleteProfile(userId: number): Observable<any> {
+    const url = environment.baseUrl + 'delete'; 
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });  
+         
+    let params = new HttpParams().set('model', 'perfiles');
+    params = params.append('id', userId.toString());
+    return this.http.delete(url, { headers, params });
+  }
+
   public postUser(data: any): Observable<any> {
     const url = environment.baseUrl + 'insert'; 
     const encryptedData = this.encrypt(data, "1")
@@ -143,6 +155,32 @@ export class ApiService {
   }
 
   public putUser(data: any): Observable<any> {
+    const url = environment.baseUrl + 'update'; 
+    const encryptedData = this.encrypt(data, "1")
+    let body = ({
+      text:encryptedData
+    })
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, { headers });
+  }
+
+  public postProfile(data: any): Observable<any> {
+    const url = environment.baseUrl + 'insert'; 
+    const encryptedData = this.encrypt(data, "1")
+    let body = ({
+      text:encryptedData
+    })
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, body, { headers });
+  }
+
+  public putProfile(data: any): Observable<any> {
     const url = environment.baseUrl + 'update'; 
     const encryptedData = this.encrypt(data, "1")
     let body = ({
