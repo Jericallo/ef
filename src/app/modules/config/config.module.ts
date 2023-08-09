@@ -15,6 +15,8 @@ import { RemoveProfileDialogComponent } from './profiles/remove-profile-dialog/r
 import { AddProfileDialogComponent } from './profiles/add-profile-dialog/add-profile-dialog.component';
 import { EditProfileDialogComponent } from './profiles/edit-profile-dialog/edit-profile-dialog.component';
 import { ModulesComponent } from './modules/modules.component';
+import { AddModuleDialogComponent } from './modules/add-module-dialog/add-module-dialog.component';
+import { RemoveModuleDialogComponent } from './modules/remove-module-dialog/remove-module-dialog.component';
 
 
 
@@ -30,6 +32,8 @@ import { ModulesComponent } from './modules/modules.component';
     AddProfileDialogComponent,
     EditProfileDialogComponent,
     ModulesComponent,
+    AddModuleDialogComponent,
+    RemoveModuleDialogComponent,
   ],
   providers: [DatePipe],
   imports: [

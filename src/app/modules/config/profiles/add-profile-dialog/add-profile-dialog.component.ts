@@ -19,7 +19,7 @@ export class AddProfileDialogComponent implements OnInit {
     this.getModules();
   }
 
-  getModules(){
+ public getModules(){
     this.apiService.getAll("modulos").subscribe({
       next:res => {
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()));
@@ -40,7 +40,7 @@ export class AddProfileDialogComponent implements OnInit {
 
     const body = { model: "perfiles", data: newProfile };
 
-    this.apiService.postProfile(body).subscribe({
+    this.apiService.post(body).subscribe({
       next: (response) => {
         console.log('Perfil creado exitosamente:', response);
         this.dialogRef.close(); 

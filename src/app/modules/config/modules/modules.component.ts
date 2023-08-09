@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { AddModuleDialogComponent } from './add-module-dialog/add-module-dialog.component';
+import { RemoveModuleDialogComponent } from './remove-module-dialog/remove-module-dialog.component';
 
 @Component({
   selector: 'app-modules',
@@ -23,7 +25,7 @@ export class ModulesComponent implements OnInit {
   };
 
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getModules()
@@ -54,5 +56,36 @@ export class ModulesComponent implements OnInit {
     }
     return '---';
   }
+
+  openAdd(){
+    this.dialog.open(AddModuleDialogComponent, {
+     width: '1000px',
+   });
+ }
+
+ openRemove(module: any) {
+  const dialogRef = this.dialog.open(RemoveModuleDialogComponent, {
+    width: '600px',
+    data: { module }
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result === true) {
+      this.deleteModule(module.id);
+    }
+  });
+}
+
+deleteModule(profileId: number) {
+  this.apiService.deleteModule(profileId).subscribe(
+    () => {
+      this.getModules();
+    },
+    (error) => {
+      console.error('Error al eliminar el perfil:', error);
+    }
+  );
+}
+
 
 }

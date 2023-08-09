@@ -1,7 +1,7 @@
 
 <div fxLayout="row wrap">
     <div fxFlex="100">
-        <button mat-raised-button color="primary" style="margin-left: 20px;">Agregar modulo</button>
+        <button mat-raised-button color="primary" style="margin-left: 20px;" (click)="openAdd()">Agregar modulo</button>
         <mat-card>
             <mat-table [dataSource]="dataSource">
                 <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">

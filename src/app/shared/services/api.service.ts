@@ -167,7 +167,7 @@ export class ApiService {
     return this.http.put(url, body, { headers });
   }
 
-  public postProfile(data: any): Observable<any> {
+  public post(data: any): Observable<any> {
     const url = environment.baseUrl + 'insert'; 
     const encryptedData = this.encrypt(data, "1")
     let body = ({
@@ -180,7 +180,7 @@ export class ApiService {
     return this.http.post(url, body, { headers });
   }
 
-  public putProfile(data: any): Observable<any> {
+  public put(data: any): Observable<any> {
     const url = environment.baseUrl + 'update'; 
     const encryptedData = this.encrypt(data, "1")
     let body = ({
@@ -193,7 +193,17 @@ export class ApiService {
     return this.http.put(url, body, { headers });
   }
 
-  
+  public deleteModule(moduleId: number): Observable<any> {
+    const url = environment.baseUrl + 'delete'; 
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });    
+    let params = new HttpParams().set('model', 'modulos');
+    params = params.append('id', moduleId);
+    return this.http.delete(url, { headers, params });
+  }
+
 
   /*
   public login(body:any):Observable<any>{

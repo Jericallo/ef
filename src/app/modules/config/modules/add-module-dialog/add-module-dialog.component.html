@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Agregar nuevo modulo</h2>
+<mat-dialog-content>
+    <div class="grid-container">
+        <div class="grid-item">
+            <mat-form-field>
+                <input matInput required placeholder="Nombre" [(ngModel)]="newModuleName">
+            </mat-form-field>
+        </div> 
+        <div class="grid-item">
+            <mat-form-field>
+                <input matInput required type="number" placeholder="Orden" [(ngModel)]="newOrder">
+            </mat-form-field>
+        </div> 
+        <div style="display: flex; flex-direction: column;">
+            <mat-form-field>
+                <mat-label>Modulo padre:</mat-label>
+                <mat-select [(ngModel)]="selectedModule">
+                    <mat-option *ngFor="let module of moduleList" [value]="module.id">{{ module.nombre }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-dialog-actions>
+        <button mat-button (click)="dialogRef.close()">Cancelar</button>
+        <button mat-button color="primary" (click)="createModule()">Guardar</button>
+    </mat-dialog-actions>    
+</mat-dialog-content>

@@ -45,7 +45,7 @@ export class EditProfileDialogComponent implements OnInit {
 
     const body = { model: "perfiles", data: editedProfile }
 
-    this.apiService.putProfile(body).subscribe({
+    this.apiService.put(body).subscribe({
       next: (response) => {
         console.log('Perfil actualizado exitosamente:', response);
         this.dialogRef.close(); 
