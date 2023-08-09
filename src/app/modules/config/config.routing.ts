@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { UsersComponent } from './users/users.component';
 import { MenuComponent } from './menu/menu.component';
 import { ProfilesComponent } from './profiles/profiles.component';
+import { ModulesComponent } from './modules/modules.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -33,6 +34,17 @@ export const ConfigRoutes: Routes = [
                     urls: [
                         { title: 'Configuración', url: '/config' },
                         { title: 'Perfiles' }
+                    ]
+                }
+            },
+            {
+                path: 'modules',
+                component: ModulesComponent,
+                data: {
+                    title: 'Modulos',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'Modulos' }
                     ]
                 }
             },

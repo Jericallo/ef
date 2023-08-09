@@ -64,9 +64,8 @@ export class UsersComponent implements OnInit {
       data: { user }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        console.log("hola")
-      }    });
+      this.getUsers()
+    });
   }
 
   getUsers(){

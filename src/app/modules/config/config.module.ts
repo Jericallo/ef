@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { RemoveProfileDialogComponent } from './profiles/remove-profile-dialog/remove-profile-dialog.component';
 import { AddProfileDialogComponent } from './profiles/add-profile-dialog/add-profile-dialog.component';
 import { EditProfileDialogComponent } from './profiles/edit-profile-dialog/edit-profile-dialog.component';
+import { ModulesComponent } from './modules/modules.component';
 
 
 
@@ -28,6 +29,7 @@ import { EditProfileDialogComponent } from './profiles/edit-profile-dialog/edit-
     RemoveProfileDialogComponent,
     AddProfileDialogComponent,
     EditProfileDialogComponent,
+    ModulesComponent,
   ],
   providers: [DatePipe],
   imports: [

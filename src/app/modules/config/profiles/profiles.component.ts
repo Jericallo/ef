@@ -52,7 +52,7 @@ export class ProfilesComponent implements OnInit {
     if (profile.modulos && profile.modulos.length > 0) {
       return profile.modulos.map(modulo => modulo.nombre).join(', ');
     }
-    return '';
+    return '---';
   }
 
   openRemove(profile: any) {
