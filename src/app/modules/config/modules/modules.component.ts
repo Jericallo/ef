@@ -58,9 +58,12 @@ export class ModulesComponent implements OnInit {
   }
 
   openAdd(){
-    this.dialog.open(AddModuleDialogComponent, {
+    const dialogRef = this.dialog.open(AddModuleDialogComponent, {
      width: '1000px',
    });
+   dialogRef.afterClosed().subscribe((result) => {
+   this.getModules()
+    });
  }
 
  openRemove(module: any) {

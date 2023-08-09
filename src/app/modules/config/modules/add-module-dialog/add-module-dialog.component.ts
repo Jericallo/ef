@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -9,10 +9,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class AddModuleDialogComponent implements OnInit {
 
+  @ViewChild('orderInput') orderInput: any;
+
   newModuleName = ''
   moduleList = [];
   newOrder = 0
   selectedModule: number;
+
+  
 
   constructor(private apiService: ApiService, public dialogRef: MatDialogRef<AddModuleDialogComponent>) { }
 
@@ -25,20 +29,22 @@ export class AddModuleDialogComponent implements OnInit {
       next:res => {
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()));
         this.moduleList = res.result;
-        console.log(this.moduleList)
       }
     });
   }
 
   createModule() {
+    if (this.orderInput.invalid) {
+      this.orderInput.nativeElement.focus(); // Coloca el enfoque en el campo "Orden"
+      return;
+    }
+
     const newModule = {
       nombre: this.newModuleName,
-      orden: this.newOrder,
+      orden: this.newOrder.toString(),
       modulo_padre: this.selectedModule
     };
-
     const body = { model: "modulos", data: newModule };
-
     this.apiService.post(body).subscribe({
       next: (response) => {
         console.log('Modulo creado exitosamente:', response);
