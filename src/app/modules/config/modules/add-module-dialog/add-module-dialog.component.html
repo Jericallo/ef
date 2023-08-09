@@ -8,8 +8,7 @@
         </div> 
         <div class="grid-item">
             <mat-form-field>
-                <input matInput required type="number" placeholder="Orden" [(ngModel)]="newOrder" #orderInput="ngModel">
-                <mat-error *ngIf="orderInput.invalid && (orderInput.dirty || orderInput.touched)">El campo Orden es requerido.</mat-error>
+                <input matInput required type="number" placeholder="Orden" [(ngModel)]="newOrder">
             </mat-form-field>
         </div>
         <div style="display: flex; flex-direction: column;">

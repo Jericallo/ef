@@ -34,14 +34,11 @@ export class AddModuleDialogComponent implements OnInit {
   }
 
   createModule() {
-    if (this.orderInput.invalid) {
-      this.orderInput.nativeElement.focus(); // Coloca el enfoque en el campo "Orden"
-      return;
-    }
+
 
     const newModule = {
       nombre: this.newModuleName,
-      orden: this.newOrder.toString(),
+      orden: this.newOrder.toString() || "0",
       modulo_padre: this.selectedModule
     };
     const body = { model: "modulos", data: newModule };

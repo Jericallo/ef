@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddModuleDialogComponent } from './add-module-dialog/add-module-dialog.component';
 import { RemoveModuleDialogComponent } from './remove-module-dialog/remove-module-dialog.component';
+import { EditModuleDialogComponent } from './edit-module-dialog/edit-module-dialog.component';
 
 @Component({
   selector: 'app-modules',
@@ -76,6 +77,19 @@ export class ModulesComponent implements OnInit {
     if (result === true) {
       this.deleteModule(module.id);
     }
+  });
+}
+
+openEdit(element: any) {
+  const dialogRef = this.dialog.open(EditModuleDialogComponent, {
+    data: {
+      moduleData: element,
+      moduleList: this.modulesList
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    this.getModules()
   });
 }
 
