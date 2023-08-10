@@ -12,6 +12,9 @@
                             <ng-container *ngSwitchCase="'nombre'">{{ element.nombre }}</ng-container>
                             <ng-container *ngSwitchCase="'modulos'">  {{ getModuleNames(element) }}</ng-container>
                             <ng-container *ngSwitchCase="'fecha_creacion'">{{ element.fecha_creacion }}</ng-container>
+                            <ng-container *ngSwitchCase="'permisos'">
+                                    {{ getPermissionsText(element) }}
+                            </ng-container>
                             <ng-container *ngSwitchCase="'acciones'">
                                 <button mat-icon-button (click)="openEdit(element)">
                                     <mat-icon>edit</mat-icon>

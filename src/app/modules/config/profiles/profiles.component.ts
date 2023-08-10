@@ -17,13 +17,15 @@ export class ProfilesComponent implements OnInit {
 
   dataSource!: MatTableDataSource<any>;
   profileList = []
-  columnsToDisplay = ['id','nombre', 'modulos','fecha_creacion', 'acciones'];
+  permissions = []
+  columnsToDisplay = ['id','nombre', 'modulos','fecha_creacion', 'permisos', 'acciones'];
 
   columnNames = {
     id: '#',
     nombre: 'Nombre',
     modulos: 'Modulo',     
     fecha_creacion: 'Fecha de creación',
+    permisos: "Permisos",
     acciones: 'Acciones'
   };
 
@@ -32,6 +34,7 @@ export class ProfilesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProfiles()
+    this.getPermissions()
   }
 
 
@@ -48,6 +51,32 @@ export class ProfilesComponent implements OnInit {
       }
     })
   }
+
+  getPermissions(){
+    this.apiService.getAll("perfiles_modulos").subscribe({
+      next:res => {
+        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+        this.permissions = res.result;
+        console.log(this.permissions)
+
+      }
+    })
+  }
+
+  getPermissionsText(element: any): string {
+    const foundPermissions = this.permissions.filter(permission =>
+      permission.id_perfil === element.id
+    );
+  
+    if (foundPermissions.length === 0) {
+      return 'Sin permisos';
+    }
+  
+    return foundPermissions.map(permission => {
+      return `${permission.permisos}`;
+    }).join(' / ');
+  }
+  
 
   getModuleNames(profile: any): string {
     if (profile.modulos && profile.modulos.length > 0) {
@@ -106,6 +135,7 @@ export class ProfilesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
         this.getProfiles();
+        this.getPermissions()
     });  
   }
 }
