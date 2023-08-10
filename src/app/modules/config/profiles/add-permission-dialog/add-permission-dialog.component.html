@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Permisos del perfil: {{ data.profile.nombre }}</h2>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Módulo:</mat-label>
+        <mat-select [(ngModel)]="selectedModule">
+            <mat-option *ngFor="let module of moduleList" [value]="module.id">{{ module.nombre }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div style="display: flex; flex-direction: column;">
+        <mat-checkbox [(ngModel)]="permissions['R']">Read</mat-checkbox>
+        <mat-checkbox [(ngModel)]="permissions['W']">Write</mat-checkbox>
+        <mat-checkbox [(ngModel)]="permissions['E']">Execute</mat-checkbox>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button mat-button color="primary" (click)="savePermissions()">Guardar</button>
+</mat-dialog-actions>

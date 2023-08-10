@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { RemoveProfileDialogComponent } from './remove-profile-dialog/remove-profile-dialog.component';
 import { AddProfileDialogComponent } from './add-profile-dialog/add-profile-dialog.component';
 import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
+import { AddPermissionDialogComponent } from './add-permission-dialog/add-permission-dialog.component';
 
 @Component({
   selector: 'app-profiles',
@@ -98,5 +99,13 @@ export class ProfilesComponent implements OnInit {
   });
 }
 
-
+  openPermission(profile: any){
+    const dialogRef = this.dialog.open(AddPermissionDialogComponent, {
+      width: '1000px',
+      data: { profile } 
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+        this.getProfiles();
+    });  
+  }
 }

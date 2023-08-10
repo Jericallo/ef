@@ -5,18 +5,25 @@
             <mat-form-field>
                 <input matInput required placeholder="Nombre" [(ngModel)]="newProfileName">
             </mat-form-field>
-        </div> 
-        <div style="display: flex; flex-direction: column;">
-            <span><b>Modulos:</b></span>
-            <mat-checkbox
-                *ngFor="let module of moduleList"
-                [(ngModel)]="selectedModules[module.id]">
-                {{ module.nombre }}
-            </mat-checkbox>
+        </div>
+        <div *ngFor="let module of moduleList" class="grid-item">
+            <div style="display: flex; flex-direction: column;">
+                <div style="display: flex; flex-direction: row">
+                    <mat-checkbox style="margin-right: 5px;" [(ngModel)]="selectedModules[module.id]"></mat-checkbox>
+                    <span><b>{{ module.nombre }}</b></span>
+                </div>
+                <!--                
+                <div *ngIf="selectedModules[module.id]">
+                    <mat-checkbox style="margin: 5px;" [(ngModel)]="permissions[module.id]" value="R">Read</mat-checkbox>
+                    <mat-checkbox style="margin: 5px;" [(ngModel)]="permissions[module.id]" value="W">Write</mat-checkbox>
+                    <mat-checkbox style="margin: 5px;" [(ngModel)]="permissions[module.id]" value="E">Execute</mat-checkbox>
+                </div>  
+                -->              
+            </div>
         </div>
     </div>
-    <mat-dialog-actions>
-        <button mat-button (click)="dialogRef.close()">Cancelar</button>
-        <button mat-button color="primary" (click)="createProfile()">Guardar</button>
-    </mat-dialog-actions>    
 </mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button mat-button color="primary" (click)="createProfile()">Guardar</button>
+</mat-dialog-actions>

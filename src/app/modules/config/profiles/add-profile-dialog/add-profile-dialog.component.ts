@@ -12,6 +12,7 @@ export class AddProfileDialogComponent implements OnInit {
   moduleList = [];
   selectedModules: { [moduleId: number]: boolean } = {}; // Usamos un objeto para almacenar las selecciones
   newProfileName = '';
+  permissions: { [moduleId: number]: string } = {}; // Objeto para almacenar permisos seleccionados
 
   constructor(private apiService: ApiService, public dialogRef: MatDialogRef<AddProfileDialogComponent>) { }
 
@@ -49,5 +50,6 @@ export class AddProfileDialogComponent implements OnInit {
         console.error('Error al crear el perfil:', error);
       }
     });
+    
   }
 }

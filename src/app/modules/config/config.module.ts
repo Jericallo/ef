@@ -18,6 +18,7 @@ import { ModulesComponent } from './modules/modules.component';
 import { AddModuleDialogComponent } from './modules/add-module-dialog/add-module-dialog.component';
 import { RemoveModuleDialogComponent } from './modules/remove-module-dialog/remove-module-dialog.component';
 import { EditModuleDialogComponent } from './modules/edit-module-dialog/edit-module-dialog.component';
+import { AddPermissionDialogComponent } from './profiles/add-permission-dialog/add-permission-dialog.component';
 
 
 
@@ -36,6 +37,7 @@ import { EditModuleDialogComponent } from './modules/edit-module-dialog/edit-mod
     AddModuleDialogComponent,
     RemoveModuleDialogComponent,
     EditModuleDialogComponent,
+    AddPermissionDialogComponent,
   ],
   providers: [DatePipe],
   imports: [

@@ -11,7 +11,7 @@ import { isSameDay } from 'date-fns';
 export class EditModuleDialogComponent implements OnInit {
 
   editedModuleName = ''
-  moduleList = [];
+  moduleList: any[] = [];
   editedOrder = 0
   selectedModule: null;
 
@@ -21,11 +21,14 @@ export class EditModuleDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.moduleData) {
       this.editedModuleName = this.data.moduleData.nombre;
-      this.editedOrder = +this.data.moduleData.orden; // Convierte a número
+      this.editedOrder = +this.data.moduleData.orden;
       this.selectedModule = this.data.moduleData.modulo_padre;
+  
+      // Filtra la lista de módulos para excluir el módulo que se esta editando
+      this.moduleList = this.data.moduleList.filter(module => module.id !== this.data.moduleData.id);
     }
   }
-
+  
   removeSubmodule(index: number) {
     console.log(this.data.moduleData.submodulos)
     const removedSubmoduleId = this.data.moduleData.submodulos[index].id; // Obtiene el id del submódulo eliminado
@@ -50,7 +53,7 @@ export class EditModuleDialogComponent implements OnInit {
 editSubmoduleName(index: number) {
   console.log(this.data.moduleData.submodulos)
   const removedSubmoduleId = this.data.moduleData.submodulos[index].id; 
-  const newName= this.data.moduleData.submodulos[index].nombre// Obtiene el id del submódulo eliminado
+  const newName= this.data.moduleData.submodulos[index].nombre
 
   const editedSub = {
     id: removedSubmoduleId,
