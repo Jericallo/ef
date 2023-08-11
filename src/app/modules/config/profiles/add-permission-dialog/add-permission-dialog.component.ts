@@ -18,32 +18,57 @@ export class AddPermissionDialogComponent implements OnInit {
     'E': false
   };
 
+  permissionsList = []
+
+
   constructor(public dialogRef: MatDialogRef<AddPermissionDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: { profile: any }, private apiService: ApiService) { }
 
   ngOnInit(): void {
+    this.getPermissions()
     this.getModulesForProfile();
   }
 
+  getPermissions(){
+    this.apiService.getAll("perfiles_modulos").subscribe({
+      next:res => {
+        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+        this.permissionsList = res.result;
+      }
+    })
+  }
+
+  
+  permissionsListIncludes(permission: string): boolean {
+    const existingPermissions = this.permissionsList.find(permission =>
+      permission.id_perfil === this.data.profile.id &&
+      permission.id_modulo === this.selectedModule
+    );
+  
+    if (existingPermissions) {
+      return existingPermissions.permisos.includes(permission);
+    }
+  
+    return false;
+  }
+
+  
   getModulesForProfile(){
     const moduleIdsInProfile = this.data.profile.modulos.map(module => module.id);
-
-    console.log(this.data.profile)
-
     this.apiService.getAll("modulos").subscribe({
       next:res => {
-        console.log(res)
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         this.moduleList = res.result.filter(module => moduleIdsInProfile.includes(module.id));
-        console.log(this.moduleList)
       }
     });
   }
 
+    
   savePermissions() {
     if (this.selectedModule === null) {
-      console.error('Debes seleccionar un módulo');
+      alert('Debes seleccionar un módulo');
       return;
     }  
+
     const selectedModule = this.data.profile.modulos.find(module => module.id === this.selectedModule);
   
     if (selectedModule) {

@@ -15,6 +15,7 @@ import { AddPermissionDialogComponent } from './add-permission-dialog/add-permis
 })
 export class ProfilesComponent implements OnInit {
 
+
   dataSource!: MatTableDataSource<any>;
   profileList = []
   permissions = []
@@ -57,7 +58,6 @@ export class ProfilesComponent implements OnInit {
       next:res => {
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         this.permissions = res.result;
-        console.log(this.permissions)
 
       }
     })
@@ -73,7 +73,7 @@ export class ProfilesComponent implements OnInit {
     }
   
     return foundPermissions.map(permission => {
-      return `${permission.permisos}`;
+      return ` ${permission.permisos}`;
     }).join(' / ');
   }
   
