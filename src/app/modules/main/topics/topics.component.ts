@@ -4,7 +4,8 @@ import { ArrayDataSource } from '@angular/cdk/collections';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree'
 import { ApiService } from 'src/app/shared/services/api.service';
 
-const TREE_DATA: ExampleFlatNode[] = [
+const TREE_DATA: ExampleFlatNode[] = []; 
+/*[
   {
     name: 'Fruit',
     expandable: true,
@@ -60,7 +61,7 @@ const TREE_DATA: ExampleFlatNode[] = [
     expandable: false,
     level: 2,
   },
-];
+];*/
 
 /** Flat node with expandable and level information */
 interface ExampleFlatNode {

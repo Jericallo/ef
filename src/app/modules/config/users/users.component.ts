@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { AddUserDialogComponent } from '../add-user-dialog/add-user-dialog.component';
-import { RemoveUserDialogComponent } from '../remove-user-dialog/remove-user-dialog.component';
+import { AddUserDialogComponent } from './add-user-dialog/add-user-dialog.component';
+import { RemoveUserDialogComponent } from './remove-user-dialog/remove-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
+
 
 interface Columns {
   id: number,
@@ -56,8 +58,14 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  openEdit(){
-
+  openEdit(user: any) {
+    const dialogRef = this.dialog.open(EditUserDialogComponent, {
+      width: '600px',
+      data: { user }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getUsers()
+    });
   }
 
   getUsers(){

@@ -40,6 +40,7 @@ import { PushNotificationService } from './shared/services/push-notification.ser
 //import { PasswordModalComponent } from './login/password-modal/password-modal.component';
 //import { ResetComponent } from './login/reset-component/reset/reset.component';
 
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -85,8 +86,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         deps: [HttpClient]
       }
     }),
-    AuthenticationModule,
-    
+    AuthenticationModule
   ],
   providers: [
    PushNotificationService,

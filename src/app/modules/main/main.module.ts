@@ -26,6 +26,8 @@ import { SearchComponent } from './search/search.component';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { ResponseComponent } from './response/response.component'
 
+import { SpinnerComponent } from 'src/app/shared/spinner.component';
+
 
 @NgModule({
   declarations: [

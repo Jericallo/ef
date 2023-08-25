@@ -1,7 +1,7 @@
 
 <div fxLayout="row wrap">
     <div fxFlex="100">
-        <button mat-raised-button color="primary" style="margin-left: 20px;"(click)="openAdd()">Agregar usuario</button>
+        <button mat-raised-button color="primary" style="margin-left: 20px;"(click)="openAdd()">Agregar perfil</button>
         <mat-card>
             <mat-table [dataSource]="dataSource">
                 <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
@@ -10,14 +10,20 @@
                         <ng-container [ngSwitch]="column">
                             <ng-container *ngSwitchCase="'id'">{{ element.id }}</ng-container>
                             <ng-container *ngSwitchCase="'nombre'">{{ element.nombre }}</ng-container>
-                            <ng-container *ngSwitchCase="'correo'">{{ element.correo }}</ng-container>
-                            <ng-container *ngSwitchCase="'telefono'">{{ element.telefono }}</ng-container>
+                            <ng-container *ngSwitchCase="'modulos'">  {{ getModuleNames(element) }}</ng-container>
+                            <ng-container *ngSwitchCase="'fecha_creacion'">{{ element.fecha_creacion }}</ng-container>
+                            <ng-container *ngSwitchCase="'permisos'">
+                                    {{ getPermissionsText(element) }}
+                            </ng-container>
                             <ng-container *ngSwitchCase="'acciones'">
                                 <button mat-icon-button (click)="openEdit(element)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
                                 <button mat-icon-button color="warn" (click)="openRemove(element)">
                                     <mat-icon>delete</mat-icon>
+                                </button>
+                                <button mat-button color="primary" (click)="openPermission(element)">
+                                    Agregar permisos
                                 </button>
                             </ng-container>
                         </ng-container>
