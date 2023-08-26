@@ -8,14 +8,44 @@
         <mat-grid-list cols="2" gutterSize="10px" rowHeight="1:1">
             <mat-grid-tile>
                 <mat-grid-tile-header >Usuarios</mat-grid-tile-header>
-                <a routerLink="/config/users">Ver Todos</a>
+                <div>
+                    <div>
+                        <a routerLink="/config/users">Ver Todos</a>
+                    </div>
+                    <div>
+                        <a routerLink="/config/profiles">Perfiles</a>
+                    </div>
+                    <div>
+                        <a routerLink="/config/modules">Módulos</a>
+                    </div>
+                </div>
+                
                 <!--<mat-grid-tile-footer>Prueba</mat-grid-tile-footer>-->
             </mat-grid-tile>
             <mat-grid-tile>
                 <mat-grid-tile-header >Leyes</mat-grid-tile-header>
                 <div style="margin-top:2rem">
-                    <div>Clasificaciones</div><div>Documentos</div><div>Títulos</div><div>Capítulos</div>
-                    <div>Artículos</div><div>Parrafos</div>
+                    <div>
+                        <a routerLink="/config/categories">Clasificaciones</a>
+                    </div>
+                    <div>
+                        <a routerLink="/config/documents">Documentos</a>
+                    </div>
+                    <div>
+                        <a routerLink="/config/titles">Títulos</a>
+                    </div>
+                    <div>
+                        <a routerLink="/config/chapters">Capítulos</a>
+                    </div>
+                    <div>
+                        <a routerLink="/config/sections">Secciones</a>
+                    </div>
+                    <div>
+                        <a routerLink="/config/articles">Artículos</a>
+                    </div>
+                    <div>
+                        <a routerLink="/config/paragraphs">Párrafos</a>
+                    </div>
                 </div>
             </mat-grid-tile>
             <!--<mat-grid-tile>3</mat-grid-tile>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -304,7 +304,7 @@ export class ApiService {
   secureIV = '1ae68ad336c3a81e';
   public decrypt(data:any, keyP:string = ''){
     this.privateKey = keyP;
-    let key = (keyP === '') ? this.publicKey : this.privateKey;
+    let key = (keyP === '') ? this.publicKey : this.getPrivateKey();
     if(key.length != 32){return '';}
     ////this.secureIV = key.substring(0,16);
     let _key = CryptoJS.enc.Utf8.parse(key);
@@ -361,6 +361,14 @@ export class ApiService {
     return this.http.get<any>(url,{params:params,headers:headers})
   }
 
+  public getClassifications(): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=clasificaciones'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get<Classifications[]>(url,{headers:headers});
+  }
 
   public searchArticle(id: number, request: string): Observable<any> {
     const url = 'https://api.escudofiscal.alphadev.io/v1/content?model=articulos&id_documento=' + id + '&where=' + request;

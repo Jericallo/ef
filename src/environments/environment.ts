@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   baseUrl:"/v1/",
   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNhcmlvIjoiRGFuaWVsIFdpc2UgUnVpeiBWZWxhc2NvIiwiY29ycmVvIjoiZGFuaWVsQGFscGhhZGV2LmlvIiwiaWF0IjoxNjg3NjI4MDI0fQ.9sA2aTYzzmInU9jWjv1wxrphlCSQ0mpg_dcB_yoHOag",
+  url_base:"https://api.escudofiscal.alphadev.io/v1/",
   configFirebase:{
     apiKey: "AIzaSyDcVMlPAXULZsnuptCIjw1AkeFS7IjG5W4",
     authDomain: "escudo-test.firebaseapp.com",
