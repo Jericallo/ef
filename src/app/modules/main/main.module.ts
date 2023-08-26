@@ -6,7 +6,7 @@ import { DemoMaterialModule } from 'src/app/demo-material-module';
 import { IntroComponent } from './intro/intro.component';
 import { NewsComponent } from './news/news.component';
 import { MainRoutes } from './main.routing';
-import { IndexComponent } from './index/index.component';
+import { CalendarDialogComponent, IndexComponent } from './index/index.component';
 import { CalendarFormDialogComponent } from './index/calendar-form-dialog/calendar-form-dialog.component';
 import { AlertTemplate } from './index/calendar-form-dialog/calendar-form-dialog.component';
 import { UserIconComponent } from 'src/app/layouts/full/user-icon/user-icon.component';
@@ -24,10 +24,14 @@ import {CourseService} from './topics/course.service';
 import { SearchComponent } from './search/search.component';
 
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
-import { ResponseComponent } from './response/response.component'
 
 import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
+import { ResponseComponent } from './response/response.component';
+import { NotificationComponent } from './index/notification/notification.component'
+import { NotificationService } from './index/notification.service';
+import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,10 @@ import { SpinnerComponent } from 'src/app/shared/spinner.component';
     TopicsComponent,
     CourseDetailComponent,
     SearchComponent,
-    ResponseComponent
+    ResponseComponent,
+    NotificationComponent,
+    SearchDocumentationComponent,
+    CalendarDialogComponent
   ],
   imports: [
     CommonModule,
@@ -55,8 +62,8 @@ import { SpinnerComponent } from 'src/app/shared/spinner.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    CdkTreeModule
+    CdkTreeModule,
   ],
-  providers:[CourseService]
+  providers:[CourseService, NotificationService]
 })
 export class MainModule { }

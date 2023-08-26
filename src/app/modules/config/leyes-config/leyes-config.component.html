@@ -1,0 +1,18 @@
+<div [@slideInOut]="currentIndex">
+    <app-add-category *ngIf="currentIndex === 0" (dataEvent)="onDataReceived($event)"></app-add-category>
+    <app-add-document *ngIf="currentIndex === 1" (dataEvent)="onDataReceived($event)"></app-add-document>
+    <app-add-title *ngIf="currentIndex === 2" (dataEvent)="onDataReceived($event)"></app-add-title>
+    <app-add-chapter *ngIf="currentIndex === 3" (dataEvent)="onDataReceived($event)"></app-add-chapter>
+    <app-add-section *ngIf="currentIndex === 4" (dataEvent)="onDataReceived($event)"></app-add-section>
+    <app-add-article *ngIf="currentIndex === 5" (dataEvent)="onDataReceived($event)"></app-add-article>
+    <app-add-paragraph *ngIf="currentIndex === 6" (dataEvent)="onDataReceived($event)"></app-add-paragraph>
+    
+    <!-- Add more forms here as needed -->
+  </div>
+  <div>
+    <button mat-raised-button color="primary" (click)="previous()" [disabled]="currentIndex === 0">Anterior</button>
+    <button mat-raised-button color="primary" (click)="next()" [disabled]="currentIndex === 6">Siguiente</button>
+  </div>
+
+  
+  

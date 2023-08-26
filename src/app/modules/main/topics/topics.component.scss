@@ -36,8 +36,54 @@
   }*/
 .example-tree-node {
   display: flex;
-  align-items: center;
 }
+
 mark, .highlight{
   padding: 0px !important;
+}
+
+.tree-invisible {
+  display: none;
+}
+
+.tree-node{
+  display: block;
+}
+
+
+
+
+.nombre_parrafo{
+  width: 100%;
+  text-align: end;
+  font-weight: bold;
+}
+
+.fraccion{
+  text-indent: 1.2em;
+}
+
+ul{
+  list-style: none !important;
+}
+
+.hide{
+  display: none !important;
+}
+
+.nombre_parrafo{
+  color:#3366ff !important;
+}
+
+.fraccion{
+  font-size: 0.9375rem;
+  color:#222b45;
+  line-height: 1.25rem;
+  font-family: Open Sans, sans-serif;
+  text-align: justify;
+}
+
+.ancla{
+  color:#5881fd !important;
+  cursor: pointer;
 }

@@ -7,7 +7,7 @@ export interface Obligations {
     indicador_riesgo?: number | null,
     id_periodo?: number | null,
     periodo: number,
-    fecha_cumplimiento: string | null,
+    fecha_cumplimiento: number | null,
     fecha_inicio?: string,
     alertas: ObligationsAlert[],
     con_documento?: boolean,

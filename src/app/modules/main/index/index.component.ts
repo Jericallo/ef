@@ -2,12 +2,15 @@ import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/cor
 import { DOCUMENT } from '@angular/common';
 import{MatDialog,MatDialogRef,MatDialogConfig,MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder,FormControl,Validators,UntypedFormGroup } from '@angular/forms';
-import {CalendarFormDialogComponent} from './calendar-form-dialog/calendar-form-dialog.component';
+import { CalendarFormDialogComponent } from './calendar-form-dialog/calendar-form-dialog.component';
 import {startOfDay,endOfDay,subDays,addDays,endOfMonth,isSameDay,isSameMonth,addHours} from 'date-fns';
 import { Subject } from 'rxjs';
 import {CalendarEvent,CalendarEventAction,CalendarEventTimesChangedEvent,CalendarView} from 'angular-calendar';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { HttpParams } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { NotificationService } from './notification.service';
+import * as moment from 'moment';
 
 
 const colors: any = {
@@ -28,6 +31,7 @@ const colors: any = {
 @Component({
   selector: 'app-calendar-dialog',
   templateUrl: './dialog.component.html',
+  styleUrls: ['./index.component.scss']
 })
 export class CalendarDialogComponent {
   options!: UntypedFormGroup;
@@ -35,8 +39,18 @@ export class CalendarDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<CalendarDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
+     
   }
 
+  fileNames: string[] = [];
+
+  onFileSelected(event: any, index: number) {
+    const file = event.target.files[0];
+    if (file) {
+      this.fileNames[index] = file.name;
+      // Aquí puedes manejar la carga del archivo si es necesario
+    }
+  }
 }
 
 @Component({
@@ -105,12 +119,13 @@ export class IndexComponent implements OnInit {
 
   activeDayIsOpen = true;
 
-  constructor(public dialog: MatDialog, @Inject(DOCUMENT) doc: any, private apiService:ApiService /*, private notification: PushNotificationService*/) {
+  constructor(public dialog: MatDialog, @Inject(DOCUMENT) doc: any, private ntfService: NotificationService, private apiService:ApiService /*, private notification: PushNotificationService*/, ) {
    
    }
 
   ngOnInit(): void {
     this.getObligations();
+    this.getObligationsForToday();
     /*this.notification.requestPermission().then(token=>{
       console.log(token);
      })
@@ -181,15 +196,14 @@ export class IndexComponent implements OnInit {
       },
     });
     this.dialogRef2.afterClosed().subscribe((res) => {
-      if (!res) {
-        return;
-      }
+      /*
       const dialogAction = res.action;
       const responseEvent = res.event;
       responseEvent.actions = this.actions;
       this.events.push(responseEvent);
       this.dialogRef2 = Object.create(null);
-      this.refresh.next(true);
+      this.refresh.next(true);*/
+      this.getObligations()
     });
   }
 
@@ -241,31 +255,44 @@ export class IndexComponent implements OnInit {
     this.apiService.dates(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
+        console.log(res)
         if (Array.isArray(res.result)) {
           this.events = res.result.flatMap(obligation => {
+            console.log('OBLIGAMEEEEEEEEEE',obligation)
+
+            let color = ''
+            if(obligation.prioridad === 1){
+              color = '#ff6e33'
+            } else if (obligation.prioridad === 2){
+              color = '#3355ff'
+            } else {
+              color = '#8c5ddd'
+            }
             const alerts = obligation.alertas && Array.isArray(obligation.alertas) ? obligation.alertas.map(alert => ({
-              start: new Date(alert.fecha),
-              end: new Date(alert.fecha),
+              start: new Date(alert.periodo * 1000),
+              end: new Date(alert.periodo * 1000),
               title: alert.mensaje,
               description: alert.tipo,
               color: {
-                primary: alert.color ?? "#2D57CA",
-                secondary: alert.color ?? "#2D57CA",
+                primary: color,
+                secondary: color,
               },
               actions: this.actions
             })) : [];
+            console.log(alerts)
             return [
               ...alerts,
               {
-                start: new Date(obligation.fecha_cumplimiento),
-                end: new Date(obligation.fecha_cumplimiento),
+                start: new Date(obligation.fecha_cumplimiento * 1000),
+                end: new Date(obligation.fecha_cumplimiento * 1000),
                 title: obligation.nombre,
                 description: obligation.descripcion,
                 color: {
-                  primary: obligation.color ?? "#2D57CA",
-                  secondary: obligation.color ?? "#2D57CA",
+                  primary: color,
+                  secondary: color,
                 },
-                actions: this.actions
+                actions: obligation.documentaciones,
+                documentations: obligation.documentaciones
               }
             ];
           });
@@ -277,6 +304,39 @@ export class IndexComponent implements OnInit {
       }
     });
   }
-  
-  
+
+  getObligationsForToday() {
+    var fechaMañana = new Date();
+    fechaMañana.setDate(fechaMañana.getDate()-1); // Agregar un día para obtener la fecha de mañana
+
+    var d = Math.floor(fechaMañana.getTime()).toString()
+
+    this.apiService.getObligationsForToday(d).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
+        let arreglo = res.result
+        console.log(arreglo)
+        this.notify(arreglo)
+        //console.log(res.results)
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
+
+  notify(variable:any) {
+    variable.forEach((element, i) => {
+      console.log(element)
+      setTimeout(() => {
+        if(element.prioridad === 3){
+          this.ntfService.success(element.descripcion)
+        } else if (element.prioridad === 2){
+          this.ntfService.warning(element.descripcion)
+        } else {
+            this.ntfService.error(element.descripcion)
+        }
+      }, i * 1000)
+    })
+  }
 }

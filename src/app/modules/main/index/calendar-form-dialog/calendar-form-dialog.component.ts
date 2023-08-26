@@ -13,7 +13,9 @@ import { Obligations, ObligationsPeriod } from 'src/app/shared/interfaces/obliga
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from 'src/app/shared/services/api.service';
+import { DateAdapter } from '@angular/material/core';
 import { Data } from '@angular/router';
+import { Documentations } from 'src/app/shared/interfaces/documentations-interface';
 
 export var alertDate: string = '';
 export var alertPeriod: string = '';
@@ -28,7 +30,12 @@ export interface Priority {type: string;}
 interface ObligationsAlert {
   mensaje: string,
   periodo: number,
+  fecha: number
 }
+
+export var chicken1: Boolean | undefined
+export var chicken2: Boolean | undefined
+export var chicken3: Boolean | undefined
 
 export var sendAlert1: ObligationsAlert | undefined;
 export var sendAlert2: ObligationsAlert | undefined;
@@ -58,9 +65,9 @@ export class AlertTemplate implements OnInit {
   checked3 = false;
   disabled = false;
 
-  dateAlert1: string | undefined;
-  dateAlert2: string | undefined;
-  dateAlert3: string | undefined;
+  dateAlert1: any | undefined;
+  dateAlert2: any | undefined;
+  dateAlert3: any | undefined;
 
   startDate: any;
 
@@ -86,29 +93,36 @@ export class AlertTemplate implements OnInit {
 
   alert1Change() {
     const duration = moment.duration(this.dateAlert1);
-    //sendAlert1 = {
-      //mensaje: this.message ? this.message : '',
-      //periodo: duration.asMinutes()
-    //}
+    sendAlert1 = {
+      mensaje: this.message ? this.message : '',
+      periodo: duration.asSeconds(),
+      fecha: duration.asSeconds()
+    }
+    chicken1 = this.checked
     // aqui estaba asMinutes pero asi explota
-    alerts.push({mensaje:this.message ? this.message: '', periodo: duration.asMilliseconds()})
-    console.log(alerts)
+    //alerts.push({mensaje:this.message ? this.message: '', periodo: duration.asMilliseconds()})
+    console.log(sendAlert1)
   }
 
   alert2Change() {
+    
     const duration = moment.duration(this.dateAlert2);
     sendAlert2 = {
       mensaje: this.message2 ? this.message2 : '',
-      periodo: duration.asMinutes()
+      periodo: duration.asSeconds(),
+      fecha:duration.asSeconds()
     }
+    chicken2 = this.checked2
   }
 
   alert3Change() {
     const duration = moment.duration(this.dateAlert3);
     sendAlert3 = {
       mensaje: this.message3 ? this.message3 : '',
-      periodo: duration.asMinutes(),
+      periodo: duration.asSeconds(),
+      fecha:duration.asSeconds()
     }
+    chicken3 = this.checked3
   }
 
   onToggleChanged(event: MatSlideToggleChange, alertNumber: number) {
@@ -197,15 +211,16 @@ export class CalendarFormDialogComponent implements OnInit {
   obligations = null;
   description = null;
   date: string = '';
-  dateS: string = '';
+  period:any;
+  dateS: any;
+  dateNow:any;
   selectType = null;
   selectPeriod = null;
   htmlContent = "";
 
-
   showMain = true;
   showSpinner = false;
-
+  showDocumentation = false;
 
   event: any;
   dialogTitle: string;
@@ -226,9 +241,10 @@ export class CalendarFormDialogComponent implements OnInit {
     documentaciones: []
   }
   
+  sentDocumentations = null
 
   constructor(
-    public dialogRef: MatDialogRef<CalendarFormDialogComponent>, private http: HttpClient, private apiService:ApiService,
+    public dialogRef: MatDialogRef<CalendarFormDialogComponent>, private http: HttpClient, private apiService:ApiService, 
     
 
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
@@ -269,6 +285,10 @@ export class CalendarFormDialogComponent implements OnInit {
     });
   }
 
+  onToggleDocumentationChanged(event: MatSlideToggleChange, alertNumber: number) {
+    console.log("aaaa")
+    this.showDocumentation = !this.showDocumentation
+  }
 
   //RISK ----------------------------------------------------------------------------------------------------
 
@@ -310,7 +330,8 @@ export class CalendarFormDialogComponent implements OnInit {
 //PERIOD ----------------------------------------------------------------------------------------------------
 
   selectedPeriod(opt: MatAutocompleteSelectedEvent) {
-    this.selectPeriod = opt.option.value.minutos;
+    this.period = opt.option.value.milisegundos;
+    console.log('Option:', opt.option.value.milisegundos)
   }
 
   displayPeriod(period: ObligationsPeriod): string {
@@ -328,28 +349,63 @@ export class CalendarFormDialogComponent implements OnInit {
 
 
   selectedDate() {
-    alertDate = this.dateS;
+    const fechaAhora = moment.duration(this.dateS).asSeconds();
+    this.sendingObligation.fecha_cumplimiento = fechaAhora
+    console.log(this.period)
+    const dia = this.dateS.getDate() 
+    const mes = this.dateS.getMonth()
+    const ano = this.dateS.getFullYear()
+    let fecha = ''
+    if(dia < 10 && mes > 9){
+      fecha = `${mes}/0${dia}/${ano}`
+    }else if (dia > 9 && mes < 10) {
+      fecha = `0${mes}/${dia}/${ano}`
+    }else if (dia < 10 && mes < 10){
+      fecha = `0${dia}/0${mes}/${ano}`
+    } else {
+      fecha = `${dia}/${mes}/${ano}`
+    }
+    
+    this.dateNow = fecha
+
+    alertDate = fecha
   }
 
   saveObligation() {
+    if(chicken1) { alerts.push(sendAlert1) }
+    if(chicken2) { alerts.push(sendAlert2) }
+    if(chicken3) { alerts.push(sendAlert3) }
+    
     const body = {model:"obligaciones", data: {
-      fecha_cumplimiento: this.dateS.toString(),
+      fecha_cumplimiento: this.sendingObligation.fecha_cumplimiento,
       id_cliente: 2,
       indicador_riesgo: this.sendingObligation.indicador_riesgo,
       prioridad: this.sendingObligation.prioridad,
       nombre: this.obligations,
       descripcion: this.description,
       id_tipo: this.sendingObligation.id_tipo,
-      periodo: this.sendingObligation.periodo,
+      periodo: this.period,
       con_document: 0,
+      documentaciones:this.sentDocumentations,
+      id_usuario: 2,
       alertas: alerts
     }};
+    console.log(body)
     this.apiService.postObligations(body).subscribe(
       response => {
-        console.log(response);
+        const respuesta = JSON.parse(this.apiService.decrypt(response.message,"private"));
+        console.log('Respuesta desencriptada:',respuesta)
+        if(respuesta.status === 'OK'){
+          alert('Obligación agregada correctamente.')
+        } else {
+          alert('Ocurrió un error al agregar la obligación, intente de nuevo más tarde.')
+        }
+        alerts = []
       },
       error => {
-        console.error(this.apiService.decrypt(error, 'private'));
+        alert('Ocurrió un error al agregar la obligación, intente de nuevo más tarde.')
+        console.error(this.apiService.decrypt(error.message, 'private'));
+        alerts = []
       }
     );
     //this.resetFields();
@@ -360,7 +416,7 @@ export class CalendarFormDialogComponent implements OnInit {
     this.description = null;
     this.myControlPriority.reset();
     this.myControlRisk.reset();
-    this.dateS = '';
+    this.dateS = null;
     this.htmlContent = '';
     alertDate = "";
   }
@@ -418,7 +474,6 @@ export class CalendarFormDialogComponent implements OnInit {
       }
     })
   }
-  
     
   assignPriorityAndRisk(type: string, opt: string) {
     switch (type) {
@@ -436,6 +491,7 @@ export class CalendarFormDialogComponent implements OnInit {
     }
   }
 
-
-
+  onDataReceived(data: any[]) {
+    this.sentDocumentations = data
+  }
 }

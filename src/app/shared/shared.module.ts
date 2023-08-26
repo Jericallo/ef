@@ -7,12 +7,13 @@ import {
   AccordionLinkDirective,
   AccordionDirective
 } from './accordion';
+import { SearchDocumentationComponent } from './components/search-documentation/search-documentation.component';
 
 @NgModule({
   declarations: [
     AccordionAnchorDirective,
     AccordionLinkDirective,
-    AccordionDirective
+    AccordionDirective  
   ],
   exports: [
     AccordionAnchorDirective,

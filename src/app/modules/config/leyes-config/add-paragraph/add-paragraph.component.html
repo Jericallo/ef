@@ -1,0 +1,185 @@
+<!-- Evento -->
+<div class="mainDiv" style="max-height: 90vh;">
+  <mat-card class="mainCard">
+  <div class="mainCard">
+    <h2>Contenido para el articulo</h2>
+    <div ><!--class="artlet-container"-->
+      <section class="example-section">
+        <label class="example-margin bold">Tipo:&nbsp;&nbsp;</label>
+        <mat-radio-group [(ngModel)]="tipo" (change)="changeRadio($event)" class="quarter-width-mr">
+          <mat-radio-button class="example-margin" value="0">Parrafo</mat-radio-button>
+          <mat-radio-button class="example-margin" value="1">Fracción</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <!--<form *ngIf="type=='1'">
+        <mat-form-field class="arlet-new-container" appearance="fill">
+          <mat-label>Indicador</mat-label>
+          <input type="text" matInput [formControl]="myControlMain" [matAutocomplete]="autoMain" (change)="handleEmptyMai($event)">
+          <mat-autocomplete #autoMain="matAutocomplete" [displayWith]="displayMain" (optionSelected)="selectedMai($event)">
+            <mat-option *ngFor="let option of filteredMaiOptions | async" [value]="option">
+              {{option.main}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>-->
+      <!-- Mayuscula -->
+      <!--<form *ngIf="showMay">
+        <mat-form-field class="arlet-new-container" appearance="fill">
+          <mat-label>{{ optMay }}</mat-label>
+          <input type="text" matInput [formControl]="myControlLetter" [matAutocomplete]="autoC" (change)="handleEmptyLet($event)">
+          <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayLetter" (optionSelected)="selectedLet($event)">
+            <mat-option *ngFor="let option of filteredLetOptions | async" [value]="option">
+              {{option.lett}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>-->
+
+      <!-- Minuscula -->
+      <!--<form *ngIf="showMis">
+        <mat-form-field class="arlet-new-container" appearance="fill">
+          <mat-label>{{ optMis }}</mat-label>
+          <input type="text" matInput [formControl]="myControlLetterMis" [matAutocomplete]="autoMis" (change)="handleEmptyLetMis($event)">
+          <mat-autocomplete #autoMis="matAutocomplete" [displayWith]="displayLetterMis" (optionSelected)="selectedLetMis($event)">
+            <mat-option *ngFor="let option of filteredLetMisOptions | async" [value]="option">
+              {{option.lett}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>-->
+
+      <!-- Numero -->
+      <!--<form *ngIf="showNum">
+        <mat-form-field class="arlet-new-container" appearance="fill">
+          <mat-label>{{ optNum }}</mat-label>
+          <input type="text" matInput [formControl]="myControlNumber" [matAutocomplete]="autoD" (change)="handleEmptyNum($event)">
+          <mat-autocomplete #autoD="matAutocomplete" [displayWith]="displayNumber" (optionSelected)="selectedNum($event)">
+            <mat-option *ngFor="let option of filteredNumOptions | async" [value]="option">
+              {{option.num}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>-->
+
+      <!-- Romano -->
+      <!--<form *ngIf="showRom">
+        <mat-form-field class="arlet-new-container" appearance="fill">
+          <mat-label>{{ optRom }}</mat-label>
+          <input type="text" matInput [formControl]="myControlNumberRom" [matAutocomplete]="autoRom" (change)="handleEmptyNumRom($event)">
+          <mat-autocomplete #autoRom="matAutocomplete" [displayWith]="displayNumberRom" (optionSelected)="selectedNumRom($event)">
+            <mat-option *ngFor="let option of filteredNumRomOptions | async" [value]="option">
+              {{option.num}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>-->
+    </div>
+    <div class="artlet-container">
+      <div>
+        <mat-checkbox class="example-margin" [(ngModel)]="useDoc">Seguir utilizando</mat-checkbox>
+        <mat-form-field class="quarter-width-mr" appearance="fill">
+          <mat-label>Documento</mat-label>
+          <input type="text" matInput [formControl]="myControlDocuments" [matAutocomplete]="auto" (change)="handleEmptyDoc($event)" required>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDocuments" (optionSelected)="selectedDoc($event)">
+            <mat-option *ngFor="let option of filteredDocOptions | async" [value]="option">
+              {{option.titulo}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-checkbox class="example-margin" [(ngModel)]="useTit">Seguir utilizando</mat-checkbox>
+        <mat-form-field class="quarter-width-mr" appearance="fill">
+          <mat-label>Titulo</mat-label>
+          <input type="text" matInput [formControl]="myControlTitles" [matAutocomplete]="autoT" (change)="handleEmptyTit($event)">
+          <mat-autocomplete #autoT="matAutocomplete" [displayWith]="displayTitles" (optionSelected)="selectedTit($event)">
+            <mat-option *ngFor="let option of filteredTitOptions | async" [value]="option">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-checkbox class="example-margin" [(ngModel)]="useCap">Seguir utilizando</mat-checkbox>
+        <mat-form-field class="quarter-width-mr" appearance="fill">
+          <mat-label>Capitulo</mat-label>
+          <input type="text" matInput [formControl]="myControlChapters" [matAutocomplete]="autoC" (change)="handleEmptyCha($event)" >
+          <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayChapters" (optionSelected)="selectedCha($event)">
+            <mat-option *ngFor="let option of filteredChaOptions | async" [value]="option">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-checkbox class="example-margin" [(ngModel)]="useSec">Seguir utilizando</mat-checkbox>
+        <mat-form-field class="quarter-width-mr" appearance="fill">
+          <mat-label>Sección</mat-label>
+          <input type="text" matInput [formControl]="myControlSections" [matAutocomplete]="autoS" (change)="handleEmptySec($event)" >
+          <mat-autocomplete #autoS="matAutocomplete" [displayWith]="displaySections" (optionSelected)="selectedSec($event)">
+            <mat-option *ngFor="let option of filteredSecOptions | async" [value]="option">
+              {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+    <section class="example-section">
+      <form>
+        <mat-form-field class="clients-full-width" appearance="fill">
+          <mat-label>Articulo</mat-label>
+          <input type="text" matInput [formControl]="myControlArticle" [matAutocomplete]="autoA" (change)="handleEmptyArticle($event)" required>
+          <mat-autocomplete #autoA="matAutocomplete" [displayWith]="displayArticle" (optionSelected)="selectedArt($event)">
+            <mat-option *ngFor="let option of filteredArtOptions | async" [value]="option">
+              Articulo {{option.id_articulo}} | {{option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+
+      <mat-form-field class="quarter-width-mr" appearance="fill" >
+        <mat-label>Orden</mat-label>
+        <input type="text" matInput [formControl]="myControlOrder" [matAutocomplete]="autoO" (change)="handleEmptyOrd($event)" required [(ngModel)]="orden">
+        <mat-autocomplete #autoO="matAutocomplete" [displayWith]="displayOrder" (optionSelected)="selectedOrd($event)">
+          <mat-option *ngFor="let option of filteredOrdOptions | async" [value]="option">
+            {{option.num}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field class="quarter-width-mr" appearance="fill">
+        <mat-label>Indicador</mat-label>
+        <input type="text" matInput [(ngModel)]="indicator" [(ngModel)]="indicador">
+      </mat-form-field>
+    </section>
+    <section class="example-section">
+      <mat-form-field class="quarter-width-mr" appearance="fill" *ngIf="type=='0'">
+        <mat-label>Numero de Parrafo</mat-label>
+        <input type="number" matInput [(ngModel)]="number" placeholder="1,2,3..." min="1" max="100" [(ngModel)]="numero">
+      </mat-form-field>
+      <mat-form-field class="quarter-width-mr" appearance="fill" *ngIf="type=='0'">
+        <mat-label>Nombre</mat-label>
+        <input type="text" matInput [(ngModel)]="name" [(ngModel)]="nombre">
+      </mat-form-field>
+    </section>
+    <!-- Editor Texto -->
+    <div class="toolkit">
+      <mat-label>Contenido</mat-label>
+      <angular-editor [(ngModel)]="contenido" [config]="editorConfig" required></angular-editor>
+    </div>
+    <br>
+
+    <!--Relaciones-->
+    <div class="buttonsContainer">
+      <button mat-raised-button color="basic" (click)="showSearchComponent()">Relaciones</button>&nbsp;
+    </div>
+    <ng-container *ngIf="isShownComponent">
+      <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
+    </ng-container>
+    <!-- Botones -->
+    <div class="buttonsContainer">
+      <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="addEvent()">Agregar</button>&nbsp;
+    </div>
+  </div>
+</mat-card>
+</div>

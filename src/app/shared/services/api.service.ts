@@ -4,13 +4,30 @@ import { Observable } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Classifications } from '../interfaces/classifications-interface';
+import { Documents } from '../interfaces/documents-interface';
+import { Article, Article_Chapter, Article_Section, Article_Title } from '../interfaces/article-interface';
 
 import { environment } from 'src/environments/environment';
+import { Paragraph } from '../interfaces/paragraph-interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+  
+  id = 0
+  get:string = `${environment.url_base}getAll?model=`
+  insert: string = 'https://api.escudofiscal.alphadev.io/v1/insert';
+  update: string = 'https://api.escudofiscal.alphadev.io/v1/update';
+  models = {clasificaciones:"clasificaciones",documentos:"documentos",documentaciones:"documentaciones",
+    articulo_titulos:"articulo_titulos",articulo_capitulos:"articulo_capitulos", 
+    articulo_secciones:"articulo_secciones",articulos:"articulos",clientes:"clientes",obligaciones:"obligaciones",
+    obligaciones_tipos:"obligaciones_tipos",regimen_fiscal:"regimen_fiscal"}
+  
+    private title: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    public title$: Observable<string> = this.title.asObservable();
+    
 
   public readonly TOKEN = "token_escudo";
 
@@ -57,20 +74,25 @@ export class ApiService {
 
   public content(model:string="", where:string="", orderby:string="",limit:number=-1, offset:number=-1, querys:Object=null): Observable<any>{
     const url = environment.baseUrl+`content`;
+    //const url = 'https://api.escudofiscal.alphadev.io/v1/content?model=articulos&id_articulo=89&more=1'
     let params = new HttpParams();
     if(model) params = params.set("model",model);
     if(where) params =  params.set("where",where);
     if(orderby) params = params.set("orderby",orderby);
     if(limit > 0) params = params.set("limit", limit);
     if(offset > 0) params = params.set("offset", offset);
+    params.set("more",1);
     if(querys)
       for (const que in querys)
         if(querys[que])
           params = params.set(que,querys[que]);
+    console.log(params)
+    console.log(url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
+    console.log(this.getToken())
     return this.http.get(url,{params:params,headers:headers});
   }
 
@@ -89,14 +111,27 @@ export class ApiService {
     return this.http.get(url,{params:params,headers:headers});
   }
 
+  public getObligationsForToday(momento:string):Observable<any>{
+    console.log(this.id)
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones&where='+ momento +'&id_usuario=' + this.id
+    //&where='+ momento +'&id_usuario=' + this.id
+    console.log('URL CON FECHA',url)
+    console.log(this.id)
+    return this.http.get(url,{headers:headers});
+  }
+
   public login(body: any): Observable<any> {
-    console.log("body",body)
+    //console.log("body",body)
     const encryptedBody = this.encrypt(body, '');
-    console.log("encrybtedBody", encryptedBody)
-    console.log("llave",this.publicKey)
+    //console.log("encrybtedBody", encryptedBody)
+    //console.log("llave",this.publicKey)
     return this.http.post(environment.baseUrl + 'login', {"text":encryptedBody}, {});
   }
- 
+
   public postResetPass(data: any): Observable<any>{
     const encryptedData = this.encrypt(data, '');
     const headers = new HttpHeaders({
@@ -106,7 +141,6 @@ export class ApiService {
     return this.http.post(environment.baseUrl + 'requestNewPassword',{"text":encryptedData},{headers:headers})
   }
   
-
   public setNewPassword(data: any): Observable<any> {
     console.log(data)
     const encryptedData = this.encrypt(data, '');
@@ -213,17 +247,16 @@ export class ApiService {
 
   public postObligations( data: any): Observable<any> {
     const url = 'https://api.escudofiscal.alphadev.io/v1/insert';
-    console.log("data",data)
-    //let dataStr = JSON.stringify(data);
     const encryptedData = this.encrypt(data, "1");
     if(encryptedData == "") {
-      console.log("PP", this.privateKey)
+      //console.log("PP", this.privateKey)
       this.encrypt(data,"private")
     }
+    
     let body = ({
       text:encryptedData
     });
-    console.log("body",body);
+    //console.log("body",body);
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -249,6 +282,7 @@ export class ApiService {
   private getToken(){
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
+      this.id = res.id
       if(res.token) return res.token;
       else return environment.token;
     }
@@ -257,7 +291,9 @@ export class ApiService {
   public getPrivateKey(){
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
-      if(res.token) return res.llave;
+      this.id = res.id
+      //console.log(res)
+      if(res.llave) return res.llave;
       else return '';
     }
   }
@@ -285,8 +321,9 @@ export class ApiService {
   }
 
   
-public encrypt(data: any, keyP:string = '') {
-    let key = (keyP === '' ? this.publicKey : this.privateKey)
+  public encrypt(data: any, keyP:string = '') {
+    let key = (keyP === '' ? this.publicKey : this.getPrivateKey())
+    console.log(this.publicKey, this.privateKey)
     if (key.length != 32) { return ''; }
     let _key = CryptoJS.enc.Utf8.parse(key)
     let _iv = CryptoJS.enc.Utf8.parse(this.secureIV)
@@ -297,7 +334,160 @@ public encrypt(data: any, keyP:string = '') {
   }
   
 
+  public getDocumentations(): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=documentaciones'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get<Documents[]>(url,{headers:headers});
+  }
+
+  public getDocuments(): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=documentos'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get<Documents[]>(url,{headers:headers});
+  }
+
+  public getAllArticles(model:string,params?:HttpParams, queries:string = ''):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=' + model + queries
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get<any>(url,{params:params,headers:headers})
+  }
 
 
+  public searchArticle(id: number, request: string): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/content?model=articulos&id_documento=' + id + '&where=' + request;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url ,{headers:headers});
+  }
 
+  updateGlobalTitle(globalTitle: string) {
+    this.title.next(globalTitle);
+  }
+
+  public saveArticle(request: Article): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert;
+    const body = {model: this.models.articulos,data: {
+      id_documento:request.id_documento,
+      id_titulo:request.id_titulo,
+      id_capitulo:request.id_capitulo,
+      id_seccion:request.id_seccion,
+      articulo:request.articulo,
+      indicador:request.indicador,
+      indice_numerico:request.indice_numerico,
+      indice_alfanumerico:request.indice_alfanumerico,
+      contenido:request.contenido, 
+      nombre:request.nombre,
+      ids_relacionados:request.ids_relacionados,
+      fragmentos:request.fragmentos,
+      parrafos:request.parrafos}};
+    const encryptedBody = this.encrypt(body,'private');
+    return this.http.post(url, {text:encryptedBody},{headers:headers});
+  }
+
+  public saveClasification(name: string | undefined): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert;
+    const body = {model: this.models.clasificaciones,data:{nombre: name,}};
+    const encryptedBody = this.encrypt(body,'private');
+    return this.http.post(url, {text:encryptedBody},{headers:headers});
+  }
+
+  public saveArticleChapter(request:Article_Chapter):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert;
+    const body = {model:this.models.articulo_capitulos,data:{nombre:request.nombre, id_documento:request.id_documento,id_titulo:request.id_titulo,fecha_creacion:request.fecha_creacion,fecha_modificacion:request.fecha_modificacion}};
+    const encrybtedBody = this.encrypt(body,'private')
+    return this.http.post(url,{text:encrybtedBody},{headers:headers});
+  }
+
+  public saveParagraph(request:Paragraph):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert
+    const body = {model:'articulo_parrafos',data:{indicador:request.indicador, orden:request.orden, id_articulo:request.id_articulo, contenido:request.contenido,tipo:request.tipo,numero:request.numero,nombre:request.nombre, relaciones:request.relaciones}};
+    console.log(body)
+    const encrybtedBody = this.encrypt(body,'private')
+    return this.http.post(url,{text:encrybtedBody},{headers:headers});
+  }
+
+  public saveDocument(request: Documents): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert;
+    const body = {model: this.models.documentos,data: {titulo:request.titulo, editorial:request.editorial, abreviatura:request.abreviatura, num_articulos:request.num_articulos, ayo:request.ayo, fecha_modificacion:request.fecha_modificacion, fecha_creacion:request.fecha_creacion, clasificacion:request.clasificacion}};
+    const encryptedBody = this.encrypt(body,'private');
+    return this.http.post(url, {text:encryptedBody},{headers:headers});
+  }
+
+  public save(request:any, model:any):Observable<any>{
+    if(request && model){
+      let headers = new HttpHeaders({
+        'Content-type':'application/json',
+        'Authorization':`Bearer ${this.getToken()}`
+      });
+      const url = this.insert;
+      const body = {model:model,data:request};
+      const encryptedBody = this.encrypt(body);
+      return this.http.post(url,{text:encryptedBody},{headers:headers}) 
+    }  
+    else return new Observable<void>(observer => observer.next())
+  }
+
+  public saveArticleTitle(request:Article_Title):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert;
+    const body = {model:this.models.articulo_titulos,data:{nombre: request.nombre, id_documento:request.id_documento}};
+    const encryptedBody = this.encrypt(body, 'private');
+    return this.http.post(url,{text:encryptedBody},{headers:headers});
+  }
+
+  public saveSection(request:Article_Section):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert;
+    const body = {model:this.models.articulo_secciones,data:{id_capitulo: request.id_capitulo, id_titulo:request.id_titulo, id_documento:request.id_documento, nombre:request.nombre}};
+    console.log(body)
+    const encryptedBody = this.encrypt(body, 'private');
+    return this.http.post(url,{text:encryptedBody},{headers:headers});
+  }
+
+  public delete(model:string,id:number):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v1/'+model+'?&id=' + id
+    console.log('URL:',url)
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.delete<any>(url,{headers:headers})
+  }
 }

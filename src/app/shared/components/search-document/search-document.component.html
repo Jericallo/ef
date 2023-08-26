@@ -1,0 +1,51 @@
+<div class="mainDiv">
+    <mat-card class="mainCard">
+        <mat-card-content>
+            <!-- Documentos -->
+            <form>
+                <mat-form-field class="documents-full-width" appearance="fill">
+                <mat-label>Documento</mat-label>
+                <input type="text" matInput [formControl]="myControlDocuments" [matAutocomplete]="auto" (change)="handleEmptyDoc($event)" required>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDocuments" (optionSelected)="selectedDoc($event)">
+                    <mat-option *ngFor="let option of filteredDocOptions | async" [value]="option">
+                    {{option.titulo}}
+                    </mat-option>
+                </mat-autocomplete>
+                </mat-form-field>
+            </form>
+
+            <!-- Buscador de Articulos -->
+            <div class="article-search">
+                <form class="artlet-form">
+                    <mat-form-field class="artlet-full-width" appearance="fill">
+                        <mat-label>Buscador de Articulos</mat-label>
+                        <input type="text" placeholder="Ingresa la busqueda" [(ngModel)]="searchInput" matInput [formControl]="myControlSearch">
+                    </mat-form-field>
+                </form>
+                <button class="buttonSearch" mat-mini-fab color="primary" (click)="validateSearch()" [disabled]="isActiveSearch()"><mat-icon>search</mat-icon></button>
+            </div>
+            <div *ngIf="showSpinner">
+                <mat-spinner></mat-spinner>
+            </div>
+            <mat-card *ngIf="showResults">
+                <mat-card-content>
+                    <label *ngIf="articles.length == 0">Sin coincidencias</label>
+                    <mat-selection-list #art (selectionChange)="onChange(art.selectedOptions.selected)">
+                        <mat-list-option style="height: 200%;" *ngFor="let art of articles" [value]="art">
+                            <mat-label>Art {{ art.articulo }}.- {{ art.nombre }}</mat-label>
+                            <br>
+                        </mat-list-option>
+                    </mat-selection-list>
+                    <br>
+                    <p>Articulos seleccionados: {{art.selectedOptions.selected.length}}</p>
+                </mat-card-content>
+            </mat-card>
+            
+        </mat-card-content>
+        <button mat-raised-button color="primary" (click)="saveRelation()" [disabled]="isActiveRelation()">Relacionar</button>&nbsp;
+        <button mat-raised-button color="secondary" (click)="closePanel()">Cancelar</button>
+    </mat-card>
+</div>
+<div class="spinner" *ngIf="showMainSpinner">
+    <mat-spinner></mat-spinner>
+</div>

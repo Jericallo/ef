@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { MatAccordion } from '@angular/material/expansion';
+import { E } from '@angular/cdk/keycodes';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-laws',
@@ -32,6 +34,7 @@ export class LawsComponent implements OnInit {
     //this.articles = [];
     this.article = art;
     this.articleRel = null;
+    console.log(art)
     if(par){
       let parEle = document.getElementById("par-"+par.id);
       parEle.style.borderBottom = "solid 2px #3366ff";
@@ -256,6 +259,97 @@ export class LawsComponent implements OnInit {
   addArticle(ar){
     //this.articles.push(ar);
     this.articleRel = ar;
+    console.log(this.articleRel)
+  }
+
+  deleteS(id:number, model:string){
+
+    Swal.fire({
+      title: '¿Seguro que deseas borrar este elemento?',
+      showDenyButton: true,
+      showCancelButton: true,
+      denyButtonText: `Borrar`,
+      showConfirmButton:false,
+      cancelButtonText:"Cancelar"
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        
+      } else if (result.isDenied) {
+        console.log('Comienza la eliminación...')
+        this.apiService.delete(model, id).subscribe({
+          next:res=>{
+            res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+            this.findById(id, model)
+          },
+          error:(msg)=>{
+            msg = JSON.parse(this.apiService.decrypt(msg.message,this.apiService.getPrivateKey()))
+            console.log(msg)
+          }
+        })
+      }
+    })
+    
+  }
+
+  findById(id:number, model:string) {
+    if(model === 'articulos')
+    for (const clasifications of this.data.clasifications) {
+      for(const documents of clasifications.documents) {
+        for( const titulos of documents.titles){
+          for(const capitulos of titulos.chapters){
+            capitulos.articles.splice(id, 1)
+          }
+        }
+      }
+    }
+    else if (model === 'clasificaciones') {
+      const foundArticle = this.data.clasifications.find(document => document.id === id);
+        if (foundArticle) {
+          const indexOf = this.data.clasifications.indexOf(foundArticle)
+          console.log(foundArticle)
+          this.data.clasifications.splice(indexOf, 1)
+          return foundArticle;
+        }
+    } else if (model === 'documentos') {
+      for (const clasifications of this.data.clasifications) {
+        const foundArticle = clasifications.documents.find(document => document.id === id);
+        if (foundArticle) {
+          const indexOf = clasifications.documents.indexOf(foundArticle)
+          console.log(foundArticle)
+          clasifications.documents.splice(indexOf, 1)
+          return foundArticle;
+        }
+      }
+    } else if (model === 'articulo_titulos') {
+      for (const clasifications of this.data.clasifications) {
+        for(const documentos of clasifications.documents){
+          const foundArticle = documentos.titles.find(document => document.id === id);
+          if (foundArticle) {
+            const indexOf = documentos.titles.indexOf(foundArticle)
+            console.log(foundArticle)
+            documentos.titles.splice(indexOf, 1)
+            return foundArticle;
+          }
+        }
+      }
+    } else if (model === 'articulo_capitulos') {
+      for (const clasifications of this.data.clasifications) {
+        for(const documentos of clasifications.documents){
+          for( const titulos of documentos.titles){
+            const foundArticle = titulos.chapters.find(document => document.id === id);
+            if (foundArticle) {
+              const indexOf = titulos.chapters.indexOf(foundArticle)
+              console.log(foundArticle)
+              titulos.chapters.splice(indexOf, 1)
+              return foundArticle;
+            }
+          }
+          
+        }
+      }
+    }
+    return null; // Si no se encuentra el artículo con el id proporcionado
   }
 
 }

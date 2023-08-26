@@ -12,6 +12,7 @@ export class SearchComponent{
   input: any;
   public keyword = "nombre";
   data = [];
+  articlesFull = [];
   firstShow = true;
 
   clasificaciones=[];
@@ -39,17 +40,36 @@ export class SearchComponent{
 */
 
 constructor(private apiService:ApiService, private router: Router){}
-  ngOnInit(): void {this.get()}
+  ngOnInit(): void {this.get(); this,this.getAll();}
 
 private get(){
   this.apiService.getAll(this.apiService.MODELS.topics).subscribe({
     next:(res)=>{
       try {
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+        console.log(res)
         res.result.forEach(res =>{
           this.data.push(res.palabras);
         })
         this.data = this.data.flat(1);
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    error:()=>{}
+  });
+}
+
+private getAll(){
+  this.apiService.getAll(this.apiService.MODELS.articles).subscribe({
+    next:(res)=>{
+      try {
+        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+        console.log(res)
+        res.result.forEach(res =>{
+          this.articlesFull.push(res);
+        })
+        console.log(this.articlesFull)
       } catch (error) {
         console.log(error)
       }
@@ -66,6 +86,7 @@ public response(){
     next:(res)=>{
       try{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+        console.log(res)
         res.result.forEach(res =>{
           this.clasificaciones.push(res);
         })
@@ -89,8 +110,14 @@ navigateToSearchResults() {
 
 articleClick(art, par = null){
   //this.articles = [];
-  this.article = art;
+  this.articlesFull.forEach((element) =>{
+    if(element.id == art.id){
+      this.article = element
+    }
+  })
+  console.log(this.article)
   this.articleRel = null;
+  console.log(this.article.parrafos[0].articulos_relacionados)
   if(par){
     let parEle = document.getElementById("par-"+par.id);
     parEle.style.borderBottom = "solid 2px #3366ff";
@@ -99,5 +126,10 @@ articleClick(art, par = null){
   }
 }
 
+addArticle(ar){
+  //this.articles.push(ar);
+  this.articleRel = ar;
+  console.log(this.articleRel)
+}
 
 }
