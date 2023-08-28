@@ -110,14 +110,10 @@ navigateToSearchResults() {
 
 articleClick(art, par = null){
   //this.articles = [];
-  this.articlesFull.forEach((element) =>{
-    if(element.id == art.id){
-      this.article = element
-    }
-  })
+  this.article = art
   console.log(this.article)
   this.articleRel = null;
-  console.log(this.article.parrafos[0].articulos_relacionados)
+  console.log(par)
   if(par){
     let parEle = document.getElementById("par-"+par.id);
     parEle.style.borderBottom = "solid 2px #3366ff";

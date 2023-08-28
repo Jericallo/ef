@@ -111,11 +111,7 @@ export class TopicsComponent implements OnInit {
 
   articleClick(art, par = null){
     //this.articles = [];
-    this.articlesFull.forEach((element) =>{
-      if(element.id == art.id){
-        this.article = element
-      }
-    })
+    this.article = art
     console.log(this.article)
     this.articleRel = null;
     console.log(this.article.parrafos[0].articulos_relacionados)
