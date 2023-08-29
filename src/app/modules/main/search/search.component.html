@@ -57,7 +57,7 @@
                                           <mat-expansion-panel *ngFor="let art of tit.articulos">
                                               <mat-expansion-panel-header>
                                                   <mat-panel-title (click)="articleClick(art,art.parrafos)">
-                                                      <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
+                                                      <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- <div [innerHTML]="art.nombre"></div>
                                                   </mat-panel-title>
                                               </mat-expansion-panel-header>
                                               <div *ngIf="art.parrafos">
@@ -82,7 +82,7 @@
                                                       <mat-expansion-panel *ngFor="let art of cha.articulos">
                                                           <mat-expansion-panel-header>
                                                               <mat-panel-title (click)="articleClick(art)">
-                                                                  <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
+                                                                  <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- <div [innerHTML]="art.nombre"></div>
                                                               </mat-panel-title>
                                                           </mat-expansion-panel-header>
                                                           <div *ngIf="art.parrafos" class="parrafos">
@@ -111,7 +111,7 @@
                                   <div *ngIf="cha.articulos">
                                       <mat-list role="list" >
                                           <mat-list-item role="listitem" *ngFor="let art of cha.articulos" (click)="articleClick(art)">
-                                              <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
+                                              <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- <div [innerHTML]="art.nombre"></div>
                                           </mat-list-item>
                                       </mat-list>
                                   </div>
@@ -137,9 +137,9 @@
                 <mat-panel-title class="flex-grow-1">
                     <mat-icon>auto_stories</mat-icon> &nbsp; Articulo {{article.articulo}} {{article.indicador || ''}}.-
                 </mat-panel-title>
-                <mat-panel-description *ngIf="!articleRel">{{article.nombre || ''}}</mat-panel-description>
+                <mat-panel-description *ngIf="!articleRel"><div [innerHTML]="article.nombre"></div></mat-panel-description>
             </mat-expansion-panel-header>
-            <h5 *ngIf="articleRel">{{article.nombre || ''}}</h5>
+            <h5 *ngIf="articleRel"><div [innerHTML]="article.nombre"></div></h5>
             <div *ngFor="let par of article.parrafos" >
                 <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> <div [innerHTML]="par.nombre"></div></label>
                 <!--<p [innerHtml]="par.contenido || ''"></p>-->
@@ -148,7 +148,7 @@
                 </div>
                 <p *ngIf="par.tipo == 0" [ngClass]="{'fraccion':par.tipo == 1}" [innerHtml]="par.contenido || ''" style="text-align: justify;"></p>
 
-                <a [routerLink]="" (click)="addArticle(ar)" *ngFor="let ar of par.articulos_relacionados" class="ancla">{{ar.abreviatura || ''}}  Art.- {{ar.articulo || ''}} {{ar.indicador || ''}} - {{ar.nombre}}</a>
+                <a [routerLink]="" (click)="addArticle(ar)" *ngFor="let ar of par.articulos_relacionados" class="ancla">{{ar.abreviatura || ''}}  Art.- {{ar.articulo || ''}} {{ar.indicador || ''}} - <div [innerHTML]="ar.nombre"></div></a>
             </div>
 
         </mat-expansion-panel>
