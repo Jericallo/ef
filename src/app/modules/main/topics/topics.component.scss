@@ -36,6 +36,7 @@
   }*/
 .example-tree-node {
   display: flex;
+  flex-direction: column;
 }
 
 mark, .highlight{
@@ -44,14 +45,13 @@ mark, .highlight{
 
 .tree-invisible {
   display: none;
+  max-width: 200px; /* Ajusta este valor según sea necesario */
+  overflow: hidden;
 }
 
 .tree-node{
   display: block;
 }
-
-
-
 
 .nombre_parrafo{
   width: 100%;

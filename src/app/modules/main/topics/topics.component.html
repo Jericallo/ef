@@ -9,14 +9,15 @@
             [style.display]="shouldRender(node) ? 'flex' : 'none'" class="example-tree-node">
                 <!--<button mat-icon-button disabled></button>-->
     
-                <button mat-button (click)="showContent(node.name)" *ngIf="node.level==1;else onlyName">{{ node.name }}</button>
+                <button style="text-align: left; white-space: normal;" mat-button (click)="showContent(node.name)" *ngIf="node.level==1;else onlyName">{{ node.name }}</button>
                 <ng-template #onlyName>{{node.name}}</ng-template>
             </cdk-nested-tree-node>
             <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" cdkTreeNodePadding [cdkTreeNodeToggleRecursive]="true"
             [style.display]="shouldRender(node) ? 'flex' : 'none'" class="example-tree-node">
+            <div style="flex-direction: row;">
                 <button mat-icon-button cdkTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename"
                 (click)="node.isExpanded = !node.isExpanded" [style.visibility]="node.expandable ? 'visible' : 'hidden'">
-                <div style="position: absolute; top: -1px;">
+                <div style="position: absolute; top: 1px;">
                     <mat-icon class="mat-icon-rtl-mirror">
                         {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
                     </mat-icon>
@@ -24,6 +25,8 @@
                     
                 </button>
                 {{ node.name }}
+            </div>
+                
 
                 <div [class.tree-invisible]="!treeControl.isExpanded(node)">
                     <ng-container cdkTreeNodeOutlet></ng-container>
