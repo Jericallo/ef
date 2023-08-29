@@ -79,7 +79,7 @@
                                                 <div *ngIf="art.parrafos">
                                                     <mat-list role="list">
                                                         <mat-list-item role="listitem" [ngClass]="{'hide':par.tipo == 1}" *ngFor="let par of art.parrafos" (click)="articleClick(art,par)">
-                                                            Parr. {{par.numero || ''}} {{par.nombre || ''}}
+                                                            Parr. {{par.numero || ''}} - <div [innerHTML]="par.nombre"></div>
                                                         </mat-list-item>
                                                     </mat-list>
                                                 </div>
@@ -104,7 +104,8 @@
                                                             <div *ngIf="art.parrafos" class="parrafos">
                                                                 <mat-list role="list" >
                                                                     <mat-list-item role="listitem" [ngClass]="{'hide':par.tipo == 1}" *ngFor="let par of art.parrafos" (click)="articleClick(art,par)">
-                                                                        <span *ngIf="par.tipo == 0"><mat-icon>bookmark</mat-icon> &nbsp; Párr. {{par.numero || ''}} {{par.nombre || '--'}}</span>
+                                                                        <span *ngIf="par.tipo == 0"><mat-icon>bookmark</mat-icon> &nbsp; Parr. {{par.numero || ''}} - <div [innerHTML]="par.nombre"></div></span>
+                                                                        
                                                                     </mat-list-item>
                                                                 </mat-list>
                                                             </div>
@@ -158,7 +159,8 @@
                 </mat-expansion-panel-header>
                 <h5 *ngIf="articleRel">{{article.nombre || ''}}</h5>
                 <div *ngFor="let par of article.parrafos" >
-                    <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> {{par.nombre || ''}}</label>
+                    <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> <div [innerHTML]="par.nombre"></div></label>
+                    
                     <!--<p [innerHtml]="par.contenido || ''"></p>-->
                     <div *ngIf="par.tipo == 1" class="fraccion">
                         <b>{{par.indicador}}</b>.&nbsp;<span [innerHtml]="par.contenido || ''"></span>
@@ -181,7 +183,7 @@
                 </mat-expansion-panel-header>
                 <h5 *ngIf="articleRel">{{articleRel.nombre || ''}}</h5>
                 <div *ngFor="let par of articleRel.parrafos" >
-                    <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> {{par.nombre || ''}}</label>
+                    <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> <div [innerHTML]="par.nombre"></div></label>
                     <div *ngIf="par.tipo == 1" class="fraccion">
                         <b>{{par.indicador}}</b>.&nbsp;<span [innerHtml]="par.contenido || ''"></span>
                     </div>
