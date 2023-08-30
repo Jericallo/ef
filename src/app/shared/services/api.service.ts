@@ -52,6 +52,7 @@ export class ApiService {
   }
 
   public getAll(model:string="", where:string="", orderby:string="",limit:number=-1, offset:number=-1, querys:Object=null): Observable<any> {
+    console.log(querys)
     const url = environment.baseUrl+`getAll`;
     let params = new HttpParams();
     if(model) params = params.set("model",model);
@@ -71,6 +72,15 @@ export class ApiService {
     return this.http.get(url,{params:params,headers:headers});
   }
 
+  public emergencyContent(model:string='', params=''): Observable<any>{
+    const url = environment.baseUrl+`content&` + params;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    console.log(this.getToken())
+    return this.http.get(url,{headers:headers});
+  }
 
   public content(model:string="", where:string="", orderby:string="",limit:number=-1, offset:number=-1, querys:Object=null): Observable<any>{
     const url = environment.baseUrl+`content`;

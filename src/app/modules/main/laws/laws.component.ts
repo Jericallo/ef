@@ -34,7 +34,7 @@ export class LawsComponent implements OnInit {
     //this.articles = [];
     this.article = art;
     this.articleRel = null;
-    console.log(art)
+    //log(art)
     if(par){
       let parEle = document.getElementById("par-"+par.id);
       parEle.style.borderBottom = "solid 2px #3366ff";
@@ -74,7 +74,7 @@ export class LawsComponent implements OnInit {
             this.data.clasifications[index].documents = res.result;
             for (let d = 0; d < this.data.clasifications[index].documents.length; d++) {
               this.getTitles(this.data.clasifications[index].documents[d].id);
-              //this.getArticles(this.data.clasifications[index].documents[d].id);              
+              this.getArticles(this.data.clasifications[index].documents[d].id);              
             }
             break;
           } 
@@ -85,6 +85,18 @@ export class LawsComponent implements OnInit {
     });
   }
 
+  getEverything(id_documento){
+    this.apiService.emergencyContent('articulos','id_documento='+id_documento).subscribe({
+      next:res=>{
+        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+        console.log(res)
+      },
+      error:()=>{},
+      complete:()=>{}
+    });
+  }
+
+  
   getTitles(id_documento){
     this.apiService.getAll("articulo_titulos","","",-1,-1,{id_documento:id_documento}).subscribe({
       next:res=>{
@@ -114,8 +126,9 @@ export class LawsComponent implements OnInit {
   }
 
   getChapters(id_documento, id_titulo){
-    this.apiService.getAll("articulo_capitulos","","",-1,-1,(id_titulo == 0 ? {id_documento:id_documento}:{id_titulo:id_titulo})).subscribe({
+    this.apiService.getAll("articulo_capitulos","","",-1,-1,(id_titulo === 0 ? {id_documento:id_documento}:{id_titulo:id_titulo})).subscribe({
       next:res=>{
+        if(res !== null){
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         let findit = false; 
         for (let c = 0; c < this.data.clasifications.length; c++) {
@@ -143,11 +156,12 @@ export class LawsComponent implements OnInit {
           }
           if(findit) break;
         }
-        this.getArticles(id_documento, id_titulo, 0);
+        }
+        this.getArticles(id_documento, id_titulo);
       },
       error:(msg)=>{
         if(msg.error.message){
-          this.getArticles(id_documento, id_titulo, 0);
+          this.getArticles(id_documento, id_titulo);
         }
       },
       complete:()=>{}
@@ -194,10 +208,24 @@ export class LawsComponent implements OnInit {
       complete:()=>{}
     });
   }
+  
 
   getArticles(id_documento, id_titulo=0, id_capitulo=0){
-    this.apiService.getAll("articulos","","",-1,-1,{id_documento:id_documento, id_titulo:id_titulo, id_capitulo:id_capitulo}).subscribe({
+    let querys = null
+    if(id_titulo === 0 && id_capitulo === 0){
+      querys = {id_documento:id_documento}
+    } else if(id_titulo === 0 && id_capitulo !== 0) {
+      querys = {id_documento:id_documento, id_capitulo:id_capitulo}
+    } else if(id_titulo !== 0 && id_capitulo === 0) {
+      querys = {id_documento:id_documento, id_titulo:id_titulo}
+    } else {
+      querys = {id_documento:id_documento, id_titulo:id_titulo, id_capitulo:id_capitulo}
+    }
+    //querys = {id_documento:id_documento}
+    this.apiService.getAll("articulos","","",-1,-1,querys).subscribe({
       next:res=>{
+        if(res === null){return}
+        if(res.message == 'yAfu2LmX+QNhwJG99OWNO82jTZgZSx9OAUHJJoXrXBQ0bzRPJbK6XFWH4mUG+TjOJ+9oz+DoRFkx9xnLEIHc8Q=='){return}
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         if(id_capitulo != 0){
           let findit = false;
@@ -235,7 +263,8 @@ export class LawsComponent implements OnInit {
           let findit = false;
           for (let c = 0; c < this.data.clasifications.length; c++) {
             for (let d = 0; d < this.data.clasifications[c].documents.length; d++) {
-              if(this.data.clasifications[c].documents[d].id == id_documento){
+              if(this.data.clasifications[c].documents[d].id == id_documento && 'titles' in this.data.clasifications[c].documents[d]){
+                if(this.data.clasifications[c].documents[d].titles.length > 0){
                 for (let t = 0; t < this.data.clasifications[c].documents[d].titles.length; t++) {
                   if(this.data.clasifications[c].documents[d].titles[t].id == id_titulo){
                     this.data.clasifications[c].documents[d].titles[t].articles = res.result;
@@ -243,7 +272,7 @@ export class LawsComponent implements OnInit {
                     break;
                   }
                   if(findit) break;
-                }
+                }}
               }
               if(findit) break;
             }
@@ -327,7 +356,7 @@ export class LawsComponent implements OnInit {
           const foundArticle = documentos.titles.find(document => document.id === id);
           if (foundArticle) {
             const indexOf = documentos.titles.indexOf(foundArticle)
-            console.log(foundArticle)
+            //console.log(foundArticle)
             documentos.titles.splice(indexOf, 1)
             return foundArticle;
           }
@@ -340,7 +369,7 @@ export class LawsComponent implements OnInit {
             const foundArticle = titulos.chapters.find(document => document.id === id);
             if (foundArticle) {
               const indexOf = titulos.chapters.indexOf(foundArticle)
-              console.log(foundArticle)
+              //console.log(foundArticle)
               titulos.chapters.splice(indexOf, 1)
               return foundArticle;
             }
