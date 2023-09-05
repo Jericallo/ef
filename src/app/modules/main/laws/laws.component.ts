@@ -13,6 +13,7 @@ export class LawsComponent implements OnInit {
   @ViewChild(MatAccordion) accordion:MatAccordion;
 
   data = {clasifications:[]};
+  dataSegmented = {}
 
   article=null;
   articles=[];
@@ -89,7 +90,8 @@ export class LawsComponent implements OnInit {
     this.apiService.emergencyContent('articulos','id_documento='+id_documento).subscribe({
       next:res=>{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
-        console.log(res)
+        this.dataSegmented = res.result[0].documentos[0]
+        console.log(this.dataSegmented)
       },
       error:()=>{},
       complete:()=>{}
@@ -305,7 +307,6 @@ export class LawsComponent implements OnInit {
       if (result.isConfirmed) {
         
       } else if (result.isDenied) {
-        console.log('Comienza la eliminación...')
         this.apiService.delete(model, id).subscribe({
           next:res=>{
             res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
@@ -336,7 +337,6 @@ export class LawsComponent implements OnInit {
       const foundArticle = this.data.clasifications.find(document => document.id === id);
         if (foundArticle) {
           const indexOf = this.data.clasifications.indexOf(foundArticle)
-          console.log(foundArticle)
           this.data.clasifications.splice(indexOf, 1)
           return foundArticle;
         }
@@ -345,7 +345,6 @@ export class LawsComponent implements OnInit {
         const foundArticle = clasifications.documents.find(document => document.id === id);
         if (foundArticle) {
           const indexOf = clasifications.documents.indexOf(foundArticle)
-          console.log(foundArticle)
           clasifications.documents.splice(indexOf, 1)
           return foundArticle;
         }
