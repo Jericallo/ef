@@ -660,6 +660,13 @@ export class AddArticleComponent implements OnInit {
 
     this.myControlTitles.reset();
     this.getTitles(opt.option.value.id)
+
+    this.myControlChapters.enable();
+    this.getChapters(opt.option.value.id);
+
+    this.myControlSections.enable();
+    this.getSections(opt.option.value.id)
+
   }
 
   selectedArt(opt: MatAutocompleteSelectedEvent) {
@@ -901,10 +908,12 @@ export class AddArticleComponent implements OnInit {
     let httpParams = new HttpParams();
     if(id_documento) httpParams = httpParams.set("id_documento",id_documento)
     if(id_titulo) httpParams = httpParams.set("id_titulo",id_titulo)
+    console.log(httpParams)
     this.apiService.getAllArticles(this.apiService.models.articulo_capitulos,httpParams)
     .subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
+        console.log(response)
         this.showMain = true;
         this.showSpinner = false;
         this.optionsChapters = response.result;

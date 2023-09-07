@@ -401,9 +401,12 @@ export class AddParagraphComponent implements OnInit {
     this.paramsDoc = '&id_documento=' + opt.option.value.id
     this.getArticles()
     this.getTitles(opt.option.value.id)
-    this.myControlArticle.enable();
+    this.myControlChapters.enable();
+    this.myControlSections.enable();
+    this.getChapters(opt.option.value.id)
+    this.getSections(opt.option.value.id)
     this.myControlTitles.enable();
-
+    
   }
 
   selectedArt(opt: MatAutocompleteSelectedEvent) {
@@ -534,6 +537,7 @@ export class AddParagraphComponent implements OnInit {
     let httpParams = new HttpParams();
     if(id_documento) httpParams = httpParams.set("id_documento",id_documento)
     if(id_titulo) httpParams = httpParams.set("id_titulo",id_titulo)
+    httpParams.set('model','articulo_capitulos')
     this.apiService.getAllArticles(this.apiService.models.articulo_capitulos,httpParams)
     .subscribe({
       next: response => {
