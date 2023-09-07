@@ -11,6 +11,7 @@ import { UsersComponent } from './users/users.component';
 import { MenuComponent } from './menu/menu.component';
 import { ProfilesComponent } from './profiles/profiles.component';
 import { ModulesComponent } from './modules/modules.component';
+import { CapacitationsComponent } from './capacitations/capacitations.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -148,7 +149,18 @@ export const ConfigRoutes: Routes = [
                     ]
                 }
             },
-
+            {
+                path:'capacitaciones',
+                component:CapacitationsComponent,
+                data: {
+                    title:'Capacitaciones',
+                    urls:[
+                        {title:'Configuración', url:'/config'},
+                        {title:'Capacitaciones'}
+                    ]
+                }
+            
+            },
         ]
     }
 ];

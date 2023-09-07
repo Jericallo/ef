@@ -30,6 +30,7 @@ import { AddModuleDialogComponent } from './modules/add-module-dialog/add-module
 import { RemoveModuleDialogComponent } from './modules/remove-module-dialog/remove-module-dialog.component';
 import { EditModuleDialogComponent } from './modules/edit-module-dialog/edit-module-dialog.component';
 import { AddPermissionDialogComponent } from './profiles/add-permission-dialog/add-permission-dialog.component';
+import { AnswerTemplate, QuestionsComponent } from 'src/app/shared/components/questions/questions.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { AddPermissionDialogComponent } from './profiles/add-permission-dialog/a
     AddSectionComponent,
     AddParagraphComponent,
     SearchDocumentComponent,
+    QuestionsComponent,
     UsersComponent,
     AddUserDialogComponent,
     EditUserDialogComponent,
@@ -57,6 +59,7 @@ import { AddPermissionDialogComponent } from './profiles/add-permission-dialog/a
     RemoveModuleDialogComponent,
     EditModuleDialogComponent,
     AddPermissionDialogComponent,
+    AnswerTemplate
   ],
   providers: [DatePipe],
   imports: [
