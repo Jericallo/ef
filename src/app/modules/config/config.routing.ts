@@ -12,6 +12,7 @@ import { MenuComponent } from './menu/menu.component';
 import { ProfilesComponent } from './profiles/profiles.component';
 import { ModulesComponent } from './modules/modules.component';
 import { CapacitationsComponent } from './capacitations/capacitations.component';
+import { VideosComponent } from './videos/videos.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -159,8 +160,8 @@ export const ConfigRoutes: Routes = [
                         {title:'Capacitaciones'}
                     ]
                 }
-            
             },
+            { path: 'videos', component: VideosComponent, pathMatch: 'full' },
         ]
     }
 ];

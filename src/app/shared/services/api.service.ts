@@ -7,6 +7,8 @@ import { throwError } from 'rxjs';
 import { Classifications } from '../interfaces/classifications-interface';
 import { Documents } from '../interfaces/documents-interface';
 import { Article, Article_Chapter, Article_Section, Article_Title } from '../interfaces/article-interface';
+import { Capacitations } from '../interfaces/capacitations-interface';
+import { VideoResumeInterface } from '../interfaces/video-resume-interface';
 
 import { environment } from 'src/environments/environment';
 import { Paragraph } from '../interfaces/paragraph-interface';
@@ -506,5 +508,24 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     return this.http.delete<any>(url,{headers:headers})
+  }
+
+  public getCapacitations(): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/capacitaciones?id_usuario=' + this.id;
+    console.log(url)
+    return this.http.get<Capacitations[]>(url, {headers:headers});
+  }
+
+  public saveVideoSecond(request: VideoResumeInterface): Observable<any> {
+    const url = this.update;
+    const body = {
+      model: 'videos_resumenes',
+      data: request 
+    }
+    return this.http.put(url, body);
   }
 }

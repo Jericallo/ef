@@ -3,6 +3,7 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 import { Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Capacitations } from 'src/app/shared/interfaces/capacitations-interface';
+import { ApiService } from 'src/app/shared/services/api.service';
 import { DocumentsService } from 'src/app/shared/services/documents.service';
 import { GlobalTitleService } from 'src/app/shared/services/global-title.service';
 
@@ -20,7 +21,7 @@ export class CapacitationsComponent implements OnInit {
 
   title = "Capacitaciones";
 
-  constructor(public getDocumentsService: DocumentsService, public snackBar: MatSnackBar, private _router: Router, private globalTitle: GlobalTitleService) {
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar, private _router: Router, private globalTitle: GlobalTitleService) {
     this.globalTitle.updateGlobalTitle(this.title);
     sessionStorage.removeItem('state');
   }
@@ -32,12 +33,14 @@ export class CapacitationsComponent implements OnInit {
   }
 
   getCapacitations(): Observable<any> {
-    this.getDocumentsService.getCapacitations()
+    this.apiService.getCapacitations()
     .subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true;
         this.showSpinner = false;
         this.capacitations = response.result;
+        console.log('CAPACITACIONES:',this.capacitations)
       },
       error: err => {
         this.showMain = true;
@@ -49,18 +52,21 @@ export class CapacitationsComponent implements OnInit {
         });
       }
     });
-    return this.getDocumentsService.getCapacitations();
+    return this.apiService.getCapacitations();
   }
 
   goToVideo(cap: Capacitations, restart?: boolean) {
     restart ? cap.restart = restart : false;
+    console.log('CAPACITACION:',cap)
     const navigationExtras: NavigationExtras = { state: cap }
-    this._router.navigate(['videos'], navigationExtras);
+    console.log('NAVIGATIONEXTRAS:',navigationExtras)
+    this._router.navigate(['config/videos'], navigationExtras);
   }
 
   public prevCapacitation(current: Capacitations) {
-    this.getCapacitations().subscribe({
+    this.apiService.getCapacitations().subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.capacitations = response.result;
       },
       error: err => {
@@ -73,8 +79,9 @@ export class CapacitationsComponent implements OnInit {
   }
 
   public nextCapacitation(current: Capacitations) {
-    this.getCapacitations().subscribe({
+    this.apiService.getCapacitations().subscribe({
       next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.capacitations = response.result;
       },
       error: err => {

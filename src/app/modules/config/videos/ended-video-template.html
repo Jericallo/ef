@@ -1,0 +1,20 @@
+<div class="mainDiv">
+    <div class="mainCard">
+        <div class="result">
+            <label class="main-label">El cuestionario empezara en</label><br><br>
+            <label class="counter-label">{{ counter }}</label><br><br>
+            <label class="main-label">o puedes elegir</label>
+        </div>
+         <!-- Botones -->
+         <div class="buttons-container">
+            <button class="customBtn1" mat-raised-button color="primary" (click)="repeatVideo()">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+                Repetir Video
+            </button>&nbsp;
+            <button mat-raised-button style="float: right;" color="primary" (click)="goToQuest()">
+                Ir a Cuestionario
+                <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

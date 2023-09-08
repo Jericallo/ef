@@ -30,7 +30,7 @@
     "@ng-bootstrap/ng-bootstrap": "^13.1.1",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
-    "@videogular/ngx-videogular": "^8.0.0",
+    "@videogular/ngx-videogular": "^6.0.0",
     "ajv": "^6.12.0",
     "angular-calendar": "^0.29.0",
     "angular-ng-autocomplete": "^2.0.12",
@@ -53,6 +53,7 @@
     "summernote": "^0.8.20",
     "sweetalert2": "^11.7.27",
     "tslib": "^2.0.0",
+    "videogular2": "^7.0.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

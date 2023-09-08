@@ -1,0 +1,57 @@
+<div class="mainDiv">
+    <mat-card class="mainCard">
+        <div class="video-player-wrapper">
+          {{title}}
+            <vg-player (onPlayerReady)="onPlayerReady($event)">
+              <vg-overlay-play></vg-overlay-play>
+              <vg-buffering></vg-buffering>
+              <vg-scrub-bar>
+                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+              </vg-scrub-bar>
+              <vg-controls>
+                <vg-play-pause></vg-play-pause>
+                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+                <vg-mute></vg-mute>
+                <vg-volume></vg-volume>
+                <vg-fullscreen></vg-fullscreen>
+              </vg-controls>
+              
+              <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin>
+                <source src="{{ video }}" type="video/mp4">
+              </video>
+              
+            </vg-player>
+          </div>
+          <div class="buttons-container">
+            <div class="left-button">
+              <button mat-raised-button color="basic" (click)="goBack()" class="buttons-margin">
+                <mat-icon fontIcon="arrow_back"></mat-icon>
+                <small>Regresar</small>
+              </button>
+            </div>
+            
+            <!-- Capacitations Buttons -->
+            <div class="center-button">
+              <button mat-raised-button color="basic" (click)="prevCapacitation()" class="buttons-margin">
+                <mat-icon fontIcon="chevron_left"></mat-icon>
+                <small>Anterior</small>
+              </button>
+              <button mat-raised-button color="basic" (click)="nextCapacitation()" class="buttons-margin">
+                <small>Siguiente</small>
+                <mat-icon fontIcon="chevron_right"></mat-icon>
+              </button>
+            </div>
+            
+            <div class="right-button">
+              <button mat-raised-button color="accent" (click)="goToQuestions()" class="buttons-margin">
+                <mat-icon fontIcon="quiz"></mat-icon>
+                Ir a Cuestionario
+              </button>
+            </div>
+            
+          </div>
+    </mat-card>
+</div>
+
