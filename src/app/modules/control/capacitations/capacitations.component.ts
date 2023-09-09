@@ -57,10 +57,10 @@ export class CapacitationsComponent implements OnInit {
 
   goToVideo(cap: Capacitations, restart?: boolean) {
     restart ? cap.restart = restart : false;
+    cap.url = cap.url + '?authorization=' + this.apiService.returnToken()
     console.log('CAPACITACION:',cap)
     const navigationExtras: NavigationExtras = { state: cap }
-    console.log('NAVIGATIONEXTRAS:',navigationExtras)
-    this._router.navigate(['config/videos'], navigationExtras);
+    this._router.navigate(['control/videos'], navigationExtras);
   }
 
   public prevCapacitation(current: Capacitations) {

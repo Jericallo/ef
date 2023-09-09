@@ -55,7 +55,7 @@ const MENUITEMS = [
         icon: '',
         class: 'cumplimiento-menu',
         children:[
-            {state:'intro', name:'Impuestos',type:'link', icon:'checklist'},
+            {state:'', name:'Impuestos',type:'link', icon:'checklist'},
             {state:'', name:'Sellos Buzón Fiscal',type:'link'},
             {state:'', name:'Materialidad Razon',type:'link',icon:'folder_open'},
             {state:'', name:'Informativas',type:'link',icon:'lightbulb'},
@@ -66,13 +66,13 @@ const MENUITEMS = [
         ]
     },
     {
-        state:'',
+        state:'control',
         name:'Control',
         type:'sub',
         icon:'',
         class: 'control-menu',
         children:[
-            {state:'', name:'Capacitación',type:'link',icon:'local_library'},
+            {state:'capacitaciones', name:'Capacitación',type:'link',icon:'local_library'},
             {state:'', name:'Ayuda',type:'link',icon:'help_center'},
             {state:'', name:'Supervisión',type:'link',icon:'supervisor_account'},
             {state:'', name:'Semaforo',type:'link',icon:'traffic'},

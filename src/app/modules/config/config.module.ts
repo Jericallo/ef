@@ -31,8 +31,8 @@ import { RemoveModuleDialogComponent } from './modules/remove-module-dialog/remo
 import { EditModuleDialogComponent } from './modules/edit-module-dialog/edit-module-dialog.component';
 import { AddPermissionDialogComponent } from './profiles/add-permission-dialog/add-permission-dialog.component';
 import { AnswerTemplate, QuestionsComponent } from 'src/app/shared/components/questions/questions.component';
-import { CapacitationsComponent } from './capacitations/capacitations.component';
-import { EndedVideoComponent, VideosComponent } from './videos/videos.component';
+import { CapacitationsComponent } from '../control/capacitations/capacitations.component';
+import { EndedVideoComponent, VideosComponent } from '../control/videos/videos.component';
 import { VgCoreModule } from '@videogular/ngx-videogular/core';
 import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
@@ -67,13 +67,9 @@ import {VgStreamingModule} from '@videogular/ngx-videogular/streaming';
     RemoveModuleDialogComponent,
     EditModuleDialogComponent,
     AddPermissionDialogComponent,
-    AnswerTemplate,
-    CapacitationsComponent,
-    EndedVideoComponent,
-    VideosComponent,
-    
+    AnswerTemplate,    
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, CapacitationsComponent],
   imports: [
     FormsModule,
     CommonModule,

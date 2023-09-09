@@ -528,4 +528,8 @@ export class ApiService {
     }
     return this.http.put(url, body);
   }
+
+  public returnToken(){
+    return this.getToken()
+  }
 }
