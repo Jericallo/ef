@@ -521,12 +521,18 @@ export class ApiService {
   }
 
   public saveVideoSecond(request: VideoResumeInterface): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
     const url = this.update;
     const body = {
       model: 'videos_resumenes',
       data: request 
     }
-    return this.http.put(url, body);
+    console.log('CUERPO:',body)
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.put(url, {text:encryptedBody},{headers:headers});
   }
 
   public returnToken(){

@@ -63,6 +63,8 @@ export class VideosComponent implements OnInit {
 
     if(sessionStorage.getItem('state')){
       const stateVideo = JSON.parse(sessionStorage.getItem('state') || '{}');
+      stateVideo.url = stateVideo.url.replace('media/videos','streaming')
+
       this.video = stateVideo.url;
       this.idCapacitation = stateVideo.id;
       this.title = stateVideo.nivel_1 + (stateVideo.nivel_2 > 0 ? "." + stateVideo.nivel_2 : "") + 
@@ -80,11 +82,11 @@ export class VideosComponent implements OnInit {
     this.api = api;
 
     this.setStartVideo();
-
+    this.apiService.encrypt('','')
     const videoData: VideoResumeInterface = {
       special: 'true',
       id_capacitacion: this.idCapacitation,
-      id_usuario: 1,
+      id_usuario: this.apiService.id,
       segundo: 0,
     };
 
@@ -130,11 +132,13 @@ export class VideosComponent implements OnInit {
 
   sendVideoSeconds(event: boolean, data: VideoResumeInterface) {
     if(event) {
+      console.log('GOINT TO SUBSCRIBE')
       this.subscription = this.apiService.saveVideoSecond(data)
         .subscribe({
           next: response => {
+            response = this.apiService.decrypt(response,'private')
             this.timer = setTimeout(() => {
-              console.log(response);
+              console.log('Respuesta:',response);
              //unsubscribe
               this.subscription?.unsubscribe();
               data.segundo = Math.round(this.api.currentTime);
@@ -153,21 +157,21 @@ export class VideosComponent implements OnInit {
   }
 
   goBack() {
-    this._router.navigate(['capacitaciones']);
+    this._router.navigate(['control/capacitaciones']);
   }
 
   goToQuestions() {
     const navigationExtras: NavigationExtras = { state: this.state }
-    this._router.navigate(['cuestionario'], navigationExtras);
+    this._router.navigate(['control/capacitaciones'], navigationExtras);
   }
 
   prevCapacitation() {
-    this._router.navigate(['capacitaciones']);
+    this._router.navigate(['control/capacitaciones']);
     this.capComponent.prevCapacitation(this.state ? this.state : undefined as any);
   }
 
   nextCapacitation() {
-    this._router.navigate(['capacitaciones']);
+    this._router.navigate(['control/capacitaciones']);
     this.capComponent.nextCapacitation(this.state ? this.state : undefined as any);
   }
 
