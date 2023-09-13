@@ -148,7 +148,7 @@ export const ConfigRoutes: Routes = [
                     ]
                 }
             },
-
+            
         ]
     }
 ];

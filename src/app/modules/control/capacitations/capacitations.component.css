@@ -1,0 +1,44 @@
+.matListItemTitle {
+    font-size: 16px !important;
+    font-weight: bold !important;
+}
+
+.matListItemLine {
+    font-size: 13px;
+    color:gray;
+}
+
+.matListItemLineSeconds {
+    font-size: 13px;
+    color:gray;
+    text-align: center;
+}
+
+.matListItemLineStatus {
+    font-size: 13px !important;
+    color:gray
+}
+
+.list-container {
+    display: flex !important;
+}
+
+.list-item :hover {
+    background-color: whitesmoke;
+}
+
+.left {
+    width: 60em !important;
+}
+
+.right {
+    width: 20em !important;
+}
+
+.level2{
+    padding-left: 2em;
+}
+
+.level3{
+    padding-left: 3em;;
+}

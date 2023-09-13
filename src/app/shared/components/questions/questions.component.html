@@ -1,0 +1,41 @@
+<div class="mainDiv">
+    <mat-card class="mainCard">
+        <p>{{ title }}</p>
+        <mat-card-content>
+            <!-- Editor Texto -->
+            <div class="toolkit">
+                <angular-editor [(ngModel)]="htmlContentQ" [config]="editorConfig" required></angular-editor>
+            </div>
+            <br>
+        </mat-card-content>
+
+        <!-- Lista Evento -->
+        <mat-card class="listCard" *ngIf="showEvents">
+            <mat-list role="list" *ngFor="let item of listOfEvents; let i = index">
+                <div class="itemList">
+                    <mat-list-item role="listitem">
+                        {{item.answer}}
+                    </mat-list-item>
+                    <button mat-icon-button color="primary" (click)="editEvent(item)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteEvent(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </mat-list>
+        </mat-card>
+        <br>
+
+        <!-- Botones -->
+        <div class="buttons-container">
+            <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="saveQuestion()">Guardar</button>
+            <button mat-fab style="float: right;" color="secondary" (click)="showAnswer()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </mat-card>
+</div>
+<div class="spinner" *ngIf="showSpinner">
+    <mat-spinner></mat-spinner>
+</div>

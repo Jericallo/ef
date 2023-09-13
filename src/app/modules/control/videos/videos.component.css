@@ -1,0 +1,31 @@
+.video-player-wrapper {
+    width: 95vw !important;
+    height: 40vw !important;
+    margin-top: 5px !important;
+    margin: auto;
+}
+
+.buttons-container {
+    margin-top: 2em;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.left-button, .center-button, .right-button {
+    flex: 100px;
+}
+
+.buttons-container div:nth-of-type(1) {
+    text-align: left;
+}
+.buttons-container div:nth-of-type(2) {
+    text-align: center;
+}
+.buttons-container div:nth-of-type(3) {
+    text-align: right;
+}
+
+.buttons-margin{
+    margin:.2em;
+}

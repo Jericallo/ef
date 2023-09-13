@@ -30,6 +30,15 @@ import { AddModuleDialogComponent } from './modules/add-module-dialog/add-module
 import { RemoveModuleDialogComponent } from './modules/remove-module-dialog/remove-module-dialog.component';
 import { EditModuleDialogComponent } from './modules/edit-module-dialog/edit-module-dialog.component';
 import { AddPermissionDialogComponent } from './profiles/add-permission-dialog/add-permission-dialog.component';
+import { AnswerTemplate, QuestionsComponent } from 'src/app/shared/components/questions/questions.component';
+import { CapacitationsComponent } from '../control/capacitations/capacitations.component';
+import { EndedVideoComponent, VideosComponent } from '../control/videos/videos.component';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
+import { BrowserModule } from '@angular/platform-browser';
+import {VgStreamingModule} from '@videogular/ngx-videogular/streaming';
 
 @NgModule({
   declarations: [
@@ -43,6 +52,7 @@ import { AddPermissionDialogComponent } from './profiles/add-permission-dialog/a
     AddSectionComponent,
     AddParagraphComponent,
     SearchDocumentComponent,
+    QuestionsComponent,
     UsersComponent,
     AddUserDialogComponent,
     EditUserDialogComponent,
@@ -57,15 +67,21 @@ import { AddPermissionDialogComponent } from './profiles/add-permission-dialog/a
     RemoveModuleDialogComponent,
     EditModuleDialogComponent,
     AddPermissionDialogComponent,
+    AnswerTemplate,    
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, CapacitationsComponent],
   imports: [
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
     AngularEditorModule,
     RouterModule.forChild(ConfigRoutes),
-    DemoMaterialModule
+    DemoMaterialModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
+    VgStreamingModule
   ]
 })
 export class ConfigModule { }

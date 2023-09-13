@@ -1,0 +1,25 @@
+.result {
+    width: 50vw !important;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 40px !important;
+    margin-bottom: 60px !important;
+}
+
+.counter-label {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.main-label {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.customBtn1 {
+    background-color: #C6E6CF !important;
+}
+
+.customBtn2 {
+    background-color: #7ED4E5 !important;
+}
