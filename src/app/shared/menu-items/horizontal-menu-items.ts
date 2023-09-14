@@ -49,20 +49,19 @@ const MENUITEMS = [
         ]
     },
     {
-        state:'main',
+        state:'compliance',
         name: 'Cumplimiento',
         type:'sub',
         icon: '',
         class: 'cumplimiento-menu',
         children:[
-            {state:'', name:'Impuestos',type:'link', icon:'checklist'},
-            {state:'', name:'Sellos Buzón Fiscal',type:'link'},
-            {state:'', name:'Materialidad Razon',type:'link',icon:'folder_open'},
-            {state:'', name:'Informativas',type:'link',icon:'lightbulb'},
+            {state:'index', name:'Calendario',type:'link', icon:'event'},
+            {state:'', name:'Registra',type:'link', icon:'input'},
+            {state:'', name:'Impuestos',type:'link',icon:'monetization_on'},
+            {state:'', name:'Informativas',type:'link',icon:'inbox'},
             {state:'', name:'Prevención Lavado',type:'link',icon:'security'},
             {state:'', name:'Legal Corporativo',type:'link',icon:'shield_lock'},
-            {state:'', name:'Documentación',type:'link',icon:'archive'},
-            {state:'', name:'Alertas',type:'link',icon:'notifications'}
+            {state:'', name:'Claves',type:'link',icon:'lock'},
         ]
     },
     {

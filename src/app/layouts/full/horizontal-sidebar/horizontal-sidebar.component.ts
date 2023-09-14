@@ -22,6 +22,7 @@ export class HorizontalAppSidebarComponent implements OnDestroy {
   public config: PerfectScrollbarConfigInterface = {};
   mobileQuery: MediaQueryList;
   backgroundColor: string = 'red'
+  subItemVisible:boolean = false
 
   private _mobileQueryListener: () => void;
 
@@ -37,5 +38,10 @@ export class HorizontalAppSidebarComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  toggleSubItemVisibility(clase:any){
+    this.subItemVisible = !this.subItemVisible
+    console.log(clase)
   }
 }

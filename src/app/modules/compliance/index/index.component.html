@@ -1,12 +1,10 @@
-<app-user-icon></app-user-icon>
 <app-notification></app-notification>
-
 <mat-card>
     <mat-card-content>
         <div class="d-flex align-items-center">
             <h3 class="m-t-0">Obligaciones</h3>
             <div class="ml-auto">
-                <button mat-raised-button color="primary" (click)="addEvent()">Agregar Obligación</button>
+                <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c;" (click)="addEvent()">Agregar Obligación</button>
             </div>
         </div>
     </mat-card-content>
@@ -14,7 +12,7 @@
   
 <mat-card>
     <mat-card-content>
-      <mat-toolbar color="primary" class="no-shadow">
+      <mat-toolbar class="no-shadow" style="background-color:#ffcc0c;">
         <mat-toolbar-row>
             <span fxFlex fxShow="false" fxShow.gt-xs>
                 {{ viewDate | calendarDate: view + 'ViewTitle':'en'}}
