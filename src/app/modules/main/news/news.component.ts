@@ -16,6 +16,10 @@ export class NewsComponent implements OnInit {
   // Timeline
   mytimelines: any[] = []; // Aquí se declara mytimelines como un arreglo vacío
 
+  idIntVideo = null;
+
+  videoDeInicio = 11
+
   constructor(private apiService:ApiService) { moment.locale("es"); }
 
   ngOnInit(): void {
@@ -24,44 +28,41 @@ export class NewsComponent implements OnInit {
     console.log(this.mytimelines)
   }
 
-  idIntVideo = null;
-  playNew(obj: any, numVideo = -1) {
-    console.log(obj)
-    console.log(this.mytimelines)
-    if (typeof obj === "undefined") {
-      return;
+  
+  playNew(obj: any, vieoSeleccionao = -1) {
+    if(typeof obj === "undefined"){
+      return
     }
-    this.mytimelines.forEach(mtl => { mtl.selected = false; });
-    obj.selected = true;
+    console.log(vieoSeleccionao)
+    this.mytimelines.forEach(mtl => {mtl.selected = false;});
+    obj.selected=true;
     this.noticia.nativeElement.src = obj.video.url;
     this.noticia.nativeElement.muted = false;
     this.noticia.nativeElement.load();
     this.noticia.nativeElement.play();
-    
-    // Obtén el índice inverso del video actual
-    const reverseIndex = this.mytimelines.length - 1 - this.mytimelines.indexOf(obj);
-    
-    if (this.idIntVideo == null) {
-      clearInterval(this.idIntVideo);
-      this.idIntVideo = null;
+
+    if(vieoSeleccionao !== -1){
+      this.videoDeInicio = vieoSeleccionao
     }
-    
-    this.idIntVideo = setInterval(() => {
-      if (this.noticia.nativeElement.ended || this.noticia.nativeElement.src == 'http://localhost:4200/null') {
+
+    /*if(this.idIntVideo !== null){
+      clearInterval(this.idIntVideo); this.idIntVideo = null;
+    }
+    console.log(numVideo)
+    this.idIntVideo = setInterval(()=>{
+      clearInterval(this.idIntVideo);
+      console.log(numVideo)
+      if(this.noticia.nativeElement.ended || this.noticia.nativeElement.src == 'http://localhost:4200/null'){
         console.log('ended');
-        numVideo = -1
-        if (numVideo < 0) {
-          if (this.mytimelines.indexOf(obj) === 0) {
-            // Redireccionar a otra página cuando se reproduzcan todos los videos
-            window.location.href = 'compliance/index';
-          } else {
-            this.playNew(this.mytimelines[this.mytimelines.indexOf(obj) - 1]);
-          }
-        } else {
-          this.playNew(this.mytimelines[this.mytimelines.length - 1 - numVideo - 1]);
-        }
+        if(numVideo < 12){
+          if(numVideo === 0) window.location.href = '/compliance/index'
+          else numVideo--;
+        }else numVideo = numVideo + 1;
+        this.noticia.nativeElement.src = this.mytimelines[numVideo].video.url
+        this.noticia.nativeElement.load()
+        this.noticia.nativeElement.play()
       }
-    }, 1000);
+    },1000);*/
   }
   
 
@@ -86,7 +87,11 @@ export class NewsComponent implements OnInit {
   }
 
   vidEnded(){
-    console.log('ended');
+    if(this.videoDeInicio === 0){
+      window.location.href = 'compliance/index'
+    }
+    this.videoDeInicio --
+    this.playNew(this.mytimelines[this.videoDeInicio])
   }
 
   scrollDown() {
