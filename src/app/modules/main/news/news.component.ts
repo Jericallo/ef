@@ -33,7 +33,6 @@ export class NewsComponent implements OnInit {
     if(typeof obj === "undefined"){
       return
     }
-    console.log(vieoSeleccionao)
     this.mytimelines.forEach(mtl => {mtl.selected = false;});
     obj.selected=true;
     this.noticia.nativeElement.src = obj.video.url;

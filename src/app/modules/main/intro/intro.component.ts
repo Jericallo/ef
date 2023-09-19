@@ -9,7 +9,8 @@ import * as moment from 'moment';
 })
 export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   @ViewChild('video', {read:ElementRef, static:false}) video:ElementRef
-  @ViewChild('divVideo',{static:false}) divVideo:ElementRef;
+  @ViewChild('divVideo',{static:false}) divVideo:ElementRef;  
+  @ViewChild('scrollElement') scrollElement: ElementRef;
 
   messageReceived = '';
 
@@ -18,15 +19,9 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   results =[];
 
   constructor(private apiService:ApiService, private changeDetector:ChangeDetectorRef) {moment.locale("es"); }
-  /*ngAfterViewInit(): void {
-    console.log(this.video);
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-  }*/
 
   ngOnInit(): void {
-    this.get();
+    this.get();    
   }
 
   get(){
@@ -35,6 +30,8 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         if(res.status == "OK"){
           this.results = res.result;
+          this.setSrcVideo(this.results[0])
+          console.log(this.results)
           /*res.result.forEach(res => {
             res.fecha = (moment(res.fecha * 60000).format('MMMM/YYYY')).toUpperCase(); //(new Date((res.fecha * 60000))).toLocaleDateString()
           });
@@ -66,7 +63,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     //this.mytimelines.forEach(mtl => {mtl.selected = false;});
     obj.selected=true;
     this.video.nativeElement.src = obj.video.url;
-    ////this.video.nativeElement.muted = true;
+    this.video.nativeElement.muted = false;
     this.video.nativeElement.load();
     //this.noticia.nativeElement.onended = () => {console.log('ended');}
     //this.noticia.nativeElement.onended = (event) => {alert(event);}
@@ -85,6 +82,16 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
       }
     },1000);*/
     this.divVideo.nativeElement.parentElement.parentElement.parentElement.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  videoLoaded() {
+    // Este método se llama cuando se ha cargado la metadata del video
+    // Reproduce el video automáticamente
+    this.video.nativeElement.play();
+  }
+
+  scrollDown() {
+    this.scrollElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
 }
