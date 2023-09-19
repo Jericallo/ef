@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { IntroComponent } from './intro/intro.component';
 import { NewsComponent } from './news/news.component';
-import { IndexComponent } from './index/index.component';
 import { LawsComponent } from './laws/laws.component';
 import { TopicsComponent } from './topics/topics.component';
 import {SearchComponent} from './search/search.component'
@@ -13,7 +12,7 @@ export const MainRoutes: Routes = [
         children:[
             {
                 path:'',
-                component:IndexComponent,
+                component:NewsComponent,
                 data: {
                     title: 'Inicio',
                     urls: [

@@ -94,6 +94,10 @@ export class IndexComponent implements OnInit {
   view = 'month';
   viewDate: Date = new Date();
 
+  d = new Date()
+  month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  mes = this.month[this.d.getMonth()]
+  anio = this.d.getFullYear().toString()
   
   actions: CalendarEventAction[] = [
     {

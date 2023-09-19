@@ -29,7 +29,7 @@ import { AuthGuard } from './auth.guard';
 
 import { SpinnerComponent } from './shared/spinner.component';
 
-import { AlertTemplate } from './modules/main/index/calendar-form-dialog/calendar-form-dialog.component';
+import { AlertTemplate } from './modules/compliance/index/calendar-form-dialog/calendar-form-dialog.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';

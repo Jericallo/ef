@@ -1,12 +1,10 @@
-<app-user-icon></app-user-icon>
 <app-notification></app-notification>
-
 <mat-card>
     <mat-card-content>
         <div class="d-flex align-items-center">
-            <h3 class="m-t-0">Obligaciones</h3>
+            <h3 class="m-t-0">Calendario de obligaciones {{mes + ' ' + anio}}</h3>
             <div class="ml-auto">
-                <button mat-raised-button color="primary" (click)="addEvent()">Agregar Obligación</button>
+                <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c;" (click)="addEvent()">Agregar Obligación</button>
             </div>
         </div>
     </mat-card-content>
@@ -14,14 +12,26 @@
   
 <mat-card>
     <mat-card-content>
-      <mat-toolbar color="primary" class="no-shadow">
+      <mat-toolbar class="no-shadow" style="background-color:#ffcc0c;">
         <mat-toolbar-row>
-            <span fxFlex fxShow="false" fxShow.gt-xs>
+            <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <span >
                 {{ viewDate | calendarDate: view + 'ViewTitle':'en'}}
             </span>
+            <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" >
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+            <div fxFlex>
+
+            </div>
+            
+            
             <!-- ============================================================== -->
             <!-- Event View -->
             <!-- ============================================================== -->
+            
             <div fxShow="false" fxShow.gt-xs>
                 <button mat-button (click)="view = 'month'" [class.active]="view === 'month'">Mes</button>
                 <button mat-button (click)="view = 'week'" [class.active]="view === 'week'">Semana</button>
@@ -46,15 +56,11 @@
             <!-- ============================================================== -->
             <!-- Event next prev -->
             <!-- ============================================================== -->
-            <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
-                <mat-icon>chevron_left</mat-icon>
-            </button>
+            
             <button mat-icon-button mwlCalendarToday [(viewDate)]="viewDate">
                 <mat-icon>today</mat-icon>
             </button>
-            <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
-                <mat-icon>chevron_right</mat-icon>
-            </button>
+            
             </mat-toolbar-row>
         </mat-toolbar>
         <!-- ============================================================== -->
