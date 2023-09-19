@@ -49,10 +49,35 @@
   background: rgb(45, 87, 202);
 }
 .inicio-menu:hover{
-  background:$themecolor !important;
+  background:rgb(0, 0, 172);
   span,.mat-icon{
     text-shadow: 2px 2px 1px rgba(0,0,0,0.75);
     color: white !important;
+  }
+}
+
+.cumplimiento-menu:hover{
+  background:rgb(227, 152, 1) !important;
+  span,.mat-icon{
+    text-shadow: 2px 2px 1px rgba(0,0,0,0.75);
+    color: white !important;
+  }
+}
+
+.control-menu:hover{
+  background:rgb(26, 120, 0) !important;
+  span,.mat-icon{
+    text-shadow: 2px 2px 1px rgba(0,0,0,0.75);
+    color: white !important;
+  }
+}
+
+.precaucion-menu:hover{
+  background:rgb(120, 0, 0) !important;
+  span,.mat-icon{
+    text-shadow: 2px 2px 1px rgba(0,0,0,0.75);
+    color: white !important;
+    z-index: 5;
   }
 }
 
@@ -67,18 +92,6 @@
 .cumplimiento-menu span{
   color: black;
 }
-.cumplimiento-menu:after {
-  position: absolute;
-  top: 19px;
-  right: -19px;/*25px*/
-  width: 38px;/*48px*/
-  height: 32px;/*47px*/
-  border-left: solid 1px #ccc;
-  border-top: solid 1px #ccc;
-  transform: rotate(130deg) skewX(-10deg) skewY(-10deg);
-  background: rgb(249, 222, 21); //linear-gradient(45deg, white, #f1f1f1 37%, #e1e1e1 57%, #f6f6f6);
-  content: '';
-}
 
 .control-menu{
   background: rgb(0, 187, 0);
@@ -92,6 +105,109 @@
 }
 .precaucion-menu span{
   color: black;
+}
+
+
+.inicio-menu:hover::after,
+.inicio-menu:hover::before {
+  position: absolute;
+  top: 9px;
+  z-index: 2;
+  content: '';
+}
+
+.inicio-menu:hover::after {
+  right: -19px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 27px 0 27px 20px; /* Tamaño de la flecha */
+  border-color: transparent transparent transparent rgb(0, 0, 172); /* Flecha derecha */
+}
+.inicio-menu:hover::before {
+  left: 0px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 27px 0 27px 10px; /* Tamaño de la flecha más angosta */
+  border-color: transparent transparent transparent rgb(45, 87, 202);
+}
+
+.cumplimiento-menu:hover::after,
+.cumplimiento-menu:hover::before {
+  position: absolute;
+  top: 9px;
+  z-index: 2;
+  content: '';
+}
+
+.cumplimiento-menu:hover::after {
+  right: -19px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 27px 0 27px 20px; /* Tamaño de la flecha */
+  border-color: transparent transparent transparent rgb(227, 152, 1); /* Flecha derecha */
+}
+.cumplimiento-menu:hover::before {
+  left: 0px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 27px 0 27px 10px; /* Tamaño de la flecha más angosta */
+  border-color: transparent transparent transparent rgb(249, 222, 21);
+}
+
+
+.control-menu:hover::after,
+.control-menu:hover::before {
+  position: absolute;
+  top: 9px;
+  z-index: 2;
+  content: '';
+}
+
+.control-menu:hover::after {
+  right: -19px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 27px 0 27px 20px; /* Tamaño de la flecha */
+  border-color: transparent transparent transparent rgb(26, 120, 0); /* Flecha derecha */
+}
+.control-menu:hover::before {
+  left: 0px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 27px 0 27px 10px; /* Tamaño de la flecha más angosta */
+  border-color: transparent transparent transparent rgb(0, 187, 0);
+}
+
+
+.precaucion-menu:hover::after,
+.precaucion-menu:hover::before {
+  position: absolute;
+  top: 9px;
+  z-index: 2;
+  content: '';
+}
+
+.precaucion-menu:hover::after {
+  right: -19px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 27px 0 27px 20px; /* Tamaño de la flecha */
+  border-color: transparent transparent transparent rgb(120, 0, 0); /* Flecha derecha */
+}
+.precaucion-menu:hover::before {
+  left: 0px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 27px 0 27px 10px; /* Tamaño de la flecha más angosta */
+  border-color: transparent transparent transparent rgb(255, 0, 0); /* Flecha derecha */
 }
 
 .sub2-item{
