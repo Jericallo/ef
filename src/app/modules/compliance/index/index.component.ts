@@ -11,6 +11,10 @@ import { HttpParams } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from './notification.service';
 import * as moment from 'moment';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs);
 
 
 const colors: any = {
@@ -62,6 +66,7 @@ export class CalendarDialogComponent {
 export class IndexComponent implements OnInit {
   dialogRef: MatDialogRef<CalendarDialogComponent> = Object.create({});
   dialogRef2: MatDialogRef<CalendarFormDialogComponent> = Object.create({});
+  locale: string = "es";
 
   messageReceived = '';
   
@@ -97,6 +102,8 @@ export class IndexComponent implements OnInit {
   d = new Date()
   month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   mes = this.month[this.d.getMonth()]
+  mespasadio = this.month[this.d.getMonth() === 0 ? 11 : this.d.getMonth()-1]
+  mesiguiente = this.month[this.d.getMonth() === 11 ? 1 : this.d.getMonth()+1]
   anio = this.d.getFullYear().toString()
   
   actions: CalendarEventAction[] = [
@@ -265,12 +272,10 @@ export class IndexComponent implements OnInit {
             console.log('OBLIGAMEEEEEEEEEE',obligation)
 
             let color = ''
-            if(obligation.prioridad === 1){
-              color = '#ff6e33'
-            } else if (obligation.prioridad === 2){
-              color = '#3355ff'
+            if(obligation.indicador_riesgo === 1){
+              color = '#ff3333'
             } else {
-              color = '#8c5ddd'
+              color = '#fff700'
             }
             const alerts = obligation.alertas && Array.isArray(obligation.alertas) ? obligation.alertas.map(alert => ({
               start: new Date(alert.periodo * 1000),

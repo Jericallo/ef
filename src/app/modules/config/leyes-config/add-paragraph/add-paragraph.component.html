@@ -2,7 +2,7 @@
 <div class="mainDiv" style="max-height: 90vh;">
   <mat-card class="mainCard">
   <div class="mainCard">
-    <h2>Contenido para el articulo</h2>
+    <p>Agregar Párrafo</p>
     <div ><!--class="artlet-container"-->
       <section class="example-section">
         <label class="example-margin bold">Tipo:&nbsp;&nbsp;</label>
@@ -128,7 +128,7 @@
       <form>
         <mat-form-field class="clients-full-width" appearance="fill">
           <mat-label>Articulo</mat-label>
-          <input type="text" matInput [formControl]="myControlArticle" [matAutocomplete]="autoA" (change)="handleEmptyArticle($event)" required>
+          <input (keypress)="numberOnly($event)" type="text" matInput [formControl]="myControlArticle" [matAutocomplete]="autoA" (change)="handleEmptyArticle($event)" required>
           <mat-autocomplete #autoA="matAutocomplete" [displayWith]="displayArticle" (optionSelected)="selectedArt($event)">
             <mat-option *ngFor="let option of filteredArtOptions | async" [value]="option">
               Articulo {{option.id_articulo}} | {{option.nombre}}
@@ -155,7 +155,7 @@
     <section class="example-section">
       <mat-form-field class="quarter-width-mr" appearance="fill" *ngIf="type=='0'">
         <mat-label>Numero de Parrafo</mat-label>
-        <input type="number" matInput [(ngModel)]="number" placeholder="1,2,3..." min="1" max="100" [(ngModel)]="numero">
+        <input (keypress)="numberOnly($event)" type="number" matInput [(ngModel)]="number" placeholder="1,2,3..." min="1" max="100" [(ngModel)]="numero">
       </mat-form-field>
       <mat-form-field class="quarter-width-mr" appearance="fill" *ngIf="type=='0'">
         <mat-label>Nombre</mat-label>
