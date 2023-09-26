@@ -23,7 +23,7 @@ export class HorizontalAppSidebarComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
   backgroundColor: string = 'red'
   subItemVisible:boolean = false
-
+  
   private _mobileQueryListener: () => void;
 
   constructor(
@@ -36,6 +36,8 @@ export class HorizontalAppSidebarComponent implements OnDestroy {
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
+  
+
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
@@ -44,4 +46,5 @@ export class HorizontalAppSidebarComponent implements OnDestroy {
     this.subItemVisible = !this.subItemVisible
     console.log(clase)
   }
+  
 }

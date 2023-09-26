@@ -1,10 +1,11 @@
+<!--
 <mat-card>
     <mat-card-content>
         <mat-card-title>Configuraciones</mat-card-title>
-        <!--<mat-card-subtitle>
+       <mat-card-subtitle>
             <code>&lt;mat-grid-list&gt;</code> is a two-dimensional list view that arranges cells into grid-based layout. See Material Design spec.
             <a href="https://material.io/guidelines/components/grid-lists.html">here</a>
-        </mat-card-subtitle>-->
+        </mat-card-subtitle>
         <mat-grid-list cols="2" gutterSize="10px" rowHeight="1:1">
             <mat-grid-tile>
                 <mat-grid-tile-header >Usuarios</mat-grid-tile-header>
@@ -20,7 +21,6 @@
                     </div>
                 </div>
                 
-                <!--<mat-grid-tile-footer>Prueba</mat-grid-tile-footer>-->
             </mat-grid-tile>
             <mat-grid-tile>
                 <mat-grid-tile-header >Leyes</mat-grid-tile-header>
@@ -48,8 +48,108 @@
                     </div>
                 </div>
             </mat-grid-tile>
-            <!--<mat-grid-tile>3</mat-grid-tile>
-            <mat-grid-tile>4</mat-grid-tile>-->
+            <mat-grid-tile>3</mat-grid-tile>
+            <mat-grid-tile>4</mat-grid-tile>
         </mat-grid-list>
+    </mat-card-content>
+</mat-card>
+-->
+<mat-card>
+    <mat-card-content>
+        <mat-card-title>Configuraciones</mat-card-title>
+
+        <mat-form-field>
+            <input matInput placeholder="Buscar">
+        </mat-form-field>
+
+        <div class="title">Usuarios</div>
+
+        <div class="container">
+            <div class="box">
+                <a href="/config/users">
+                    <div class="option_container">
+                        <mat-icon class="icon">group</mat-icon>
+                        <span>Ver todos</span>
+                    </div>
+                </a>
+            </div>
+            <div class="box">
+                <a href="/config/profiles">
+                    <div class="option_container">
+                        <mat-icon class="icon">assignment_ind</mat-icon>
+                        <span>Perfiles</span>
+                    </div>
+                </a>
+            </div>
+            <div class="box">
+                <a href="/config/modules">
+                    <div class="option_container">
+                        <mat-icon class="icon">view_module</mat-icon>
+                        <span>Modulos</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="title">Leyes</div>
+
+        <div class="container">
+            <div class="box">
+                <a href="/config/profiles">
+                    <div class="option_container">
+                        <mat-icon class="icon">widgets</mat-icon>
+                        <span>Categorias</span>
+                    </div>
+                </a>
+            </div>
+            <div class="box">
+                <a href="/config/profiles">
+                    <div class="option_container">
+                        <mat-icon class="icon">insert_drive_file</mat-icon>
+                        <span>Documentos</span>
+                    </div>
+                </a>
+            </div>
+            <div class="box">
+                <a href="/config/profiles">
+                    <div class="option_container">
+                        <mat-icon class="icon">text_fields</mat-icon>
+                        <span>Títulos</span>
+                    </div>
+                </a>
+            </div>
+            <div class="box">
+                <a href="/config/profiles">
+                    <div class="option_container">
+                        <mat-icon class="icon">book</mat-icon>
+                        <span>Capítulos</span>
+                    </div>
+                </a>           
+             </div>
+             <div class="box">
+                <a href="/config/profiles">
+                    <div class="option_container">
+                        <mat-icon class="icon">bookmark</mat-icon>
+                        <span>Secciones</span>
+                    </div>
+                </a>           
+             </div>
+             <div class="box">
+                <a href="/config/profiles">
+                    <div class="option_container">
+                        <mat-icon class="icon">description</mat-icon>
+                        <span>Artículos</span>
+                    </div>
+                </a>           
+             </div>
+             <div class="box">
+                <a href="/config/profiles">
+                    <div class="option_container">
+                        <mat-icon class="icon">format_align_left</mat-icon>
+                        <span>Párrafos</span>
+                    </div>
+                </a>           
+             </div>
+        </div>
     </mat-card-content>
 </mat-card>

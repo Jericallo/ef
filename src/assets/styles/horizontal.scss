@@ -106,22 +106,6 @@
 .precaucion-menu span{
   color: black;
 }
-.inicio-menu::after,
-.inicio-menu::before {
-  position: absolute;
-  top: 35px;
-  right:-20px;
-  content: '';
-  width: 0;
-  height: 0;
-  z-index: 4;
-  border-style: solid;
-  border-width: 30px 10px;
-  border-color: transparent transparent transparent rgba(0, 0, 166, 0.436);
-  transform: translate(0, -50%);
-}
-
-
 .cumplimiento-menu:hover::after,
 .cumplimiento-menu:hover::before {
   position: absolute;
@@ -145,58 +129,6 @@
   border-style: solid;
   border-width: 27px 0 27px 10px; /* Tamaño de la flecha más angosta */
   border-color: transparent transparent transparent rgb(249, 222, 21);
-}
-
-
-.control-menu:hover::after,
-.control-menu:hover::before {
-  position: absolute;
-  top: 9px;
-  z-index: 2;
-  content: '';
-}
-
-.control-menu:hover::after {
-  right: -19px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 27px 0 27px 20px; /* Tamaño de la flecha */
-  border-color: transparent transparent transparent rgb(26, 120, 0); /* Flecha derecha */
-}
-.control-menu:hover::before {
-  left: 0px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 27px 0 27px 10px; /* Tamaño de la flecha más angosta */
-  border-color: transparent transparent transparent rgb(0, 187, 0);
-}
-
-
-.precaucion-menu:hover::after,
-.precaucion-menu:hover::before {
-  position: absolute;
-  top: 9px;
-  z-index: 2;
-  content: '';
-}
-
-.precaucion-menu:hover::after {
-  right: -19px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 27px 0 27px 20px; 
-  border-color: transparent transparent transparent rgb(120, 0, 0); 
-}
-.precaucion-menu:hover::before {
-  left: 0px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 27px 0 27px 10px; 
-  border-color: transparent transparent transparent rgb(255, 0, 0);
 }
 
 .sub2-item{
@@ -332,6 +264,7 @@
               max-height: 400px;
               overflow: hidden;
               transition: 1.5s;
+              transition-duration: 2s;
               .mat-nav-list {
                 padding: 0px;
               }
@@ -353,6 +286,7 @@
             }
             &:hover {
               background: transparent;
+              transition-delay: 0s;
               > a {
                 color: $themecolor;
               }
@@ -418,7 +352,6 @@
         right: auto;
       }
     }
-
     @media (max-width: 1022px) {
       .page-wrapper {
         height: calc(100vh - 64px);
