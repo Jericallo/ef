@@ -262,20 +262,30 @@ export class IndexComponent implements OnInit {
   getObligations() {
     const date = new Date();
     let params = new HttpParams().set("day", date.getTime() / 60000);
-  
+
     this.apiService.dates(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         console.log(res)
         if (Array.isArray(res.result)) {
+          const currentDate = new Date(); // Get the current date and time
           this.events = res.result.flatMap(obligation => {
-            console.log('OBLIGAMEEEEEEEEEE',obligation)
-
-            let color = ''
-            if(obligation.indicador_riesgo === 1){
-              color = '#ff3333'
-            } else {
-              color = '#fff700'
+            console.log('OBLIGAMEEEEEEEEEE', obligation);
+            let color = '';
+            if (new Date(obligation.fecha_inicio) < currentDate) {
+              console.log("AAAAA", obligation.id)
+              if(obligation.estatus.id === 1){
+                color = '#00D700'
+              }else if (obligation.estatus.id === 0){
+                color = '#D70000'
+              }
+            }
+            else{
+              if (obligation.indicador_riesgo === 1) {
+                color = '#ff3333';
+              } else {
+                color = '#fff700';
+              }
             }
             const alerts = obligation.alertas && Array.isArray(obligation.alertas) ? obligation.alertas.map(alert => ({
               start: new Date(alert.periodo * 1000),
@@ -288,9 +298,10 @@ export class IndexComponent implements OnInit {
               },
               actions: this.actions
             })) : [];
-            console.log(alerts)
+            console.log(alerts);
             return [
               ...alerts,
+
               {
                 start: new Date(obligation.fecha_cumplimiento * 1000),
                 end: new Date(obligation.fecha_cumplimiento * 1000),
