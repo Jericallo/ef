@@ -11,6 +11,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   @ViewChild('video', {read:ElementRef, static:false}) video:ElementRef
   @ViewChild('divVideo',{static:false}) divVideo:ElementRef;  
   @ViewChild('scrollElement') scrollElement: ElementRef;
+  @ViewChild('scrollerElement') scrollerElement: ElementRef;
 
   messageReceived = '';
 
@@ -61,6 +62,10 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
   playNew(obj:any, numVideo=-1){
     //this.mytimelines.forEach(mtl => {mtl.selected = false;});
+    if(typeof obj === "undefined"){
+      return
+    }
+    this.results.forEach(mtl => {mtl.selected = false;});
     obj.selected=true;
     this.video.nativeElement.src = obj.video.url;
     this.video.nativeElement.muted = false;
@@ -92,6 +97,10 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
   scrollDown() {
     this.scrollElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  scrollerDown() {
+    this.scrollerElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
 }
