@@ -530,9 +530,25 @@ export class ApiService {
       model: 'videos_resumenes',
       data: request 
     }
-    console.log('CUERPO:',body)
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});
+  }
+
+  public saveVideoPeriod(request:any):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/capacitaciones_usuarios_tiempo'
+    const body = {
+      data:{
+        id_usuario:request.id_usuario,
+        segundos:request.segundo,
+        id_periodo:1
+      }
+    }
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});
   }
 
   public returnToken(){
