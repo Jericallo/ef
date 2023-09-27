@@ -1,37 +1,23 @@
+<!--
 <mat-card>
     <mat-card-content>
         <mat-card-title>Configuraciones</mat-card-title>
-        <!--<mat-card-subtitle>
+       <mat-card-subtitle>
             <code>&lt;mat-grid-list&gt;</code> is a two-dimensional list view that arranges cells into grid-based layout. See Material Design spec.
             <a href="https://material.io/guidelines/components/grid-lists.html">here</a>
-        </mat-card-subtitle>-->
-        <mat-accordion>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>Usuarios</mat-panel-title>
-              </mat-expansion-panel-header>
-              <div>
+        </mat-card-subtitle>
+        <mat-grid-list cols="2" gutterSize="10px" rowHeight="1:1">
+            <mat-grid-tile>
+                <mat-grid-tile-header >Usuarios</mat-grid-tile-header>
+
                 <div>
                   <a routerLink="/config/users">Ver Todos</a>
                 </div>
-                <div>
-                  <a routerLink="/config/profiles">Perfiles</a>
-                </div>
-                <div>
-                  <a routerLink="/config/modules">Módulos</a>
-                </div>
-              </div>
-            </mat-expansion-panel>
-          
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>Leyes</mat-panel-title>
-              </mat-expansion-panel-header>
-              <div style="margin-top: 2rem">
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>Clasificaciones</mat-panel-title>
-                    </mat-expansion-panel-header>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-grid-tile-header >Leyes</mat-grid-tile-header>
+                <div style="margin-top:2rem">
+
                     <div>
                         <app-add-category></app-add-category>
                     </div>
@@ -83,10 +69,50 @@
                     <div>
                         <app-add-paragraph></app-add-paragraph>
                     </div>
-                </mat-expansion-panel>
-              </div>
-            </mat-expansion-panel>
-          </mat-accordion>
-          
+
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>3</mat-grid-tile>
+            <mat-grid-tile>4</mat-grid-tile>
+        </mat-grid-list>
+
     </mat-card-content>
 </mat-card>
+-->
+<mat-card>
+    <mat-card-content>
+      <mat-card-title>Configuraciones</mat-card-title>
+  
+      <mat-form-field>
+        <input matInput placeholder="Buscar" [(ngModel)]="searchTerm" >
+      </mat-form-field>
+  
+      <div class="title">Usuarios</div>
+  
+      <div class="container">
+        <div class="box" *ngFor="let usuario of filterUsuarios()">
+          <a [href]="'/config/' + usuario.path">
+            <div class="option_container">
+              <mat-icon class="icon">{{ usuario.icon }}</mat-icon>
+              <span>{{ usuario.descripcion }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+  
+      <div class="title">Leyes</div>
+  
+      <div class="container">
+        <div class="box" *ngFor="let ley of filterLeyes()">
+          <a [href]="'/config/' + ley.path">
+            <div class="option_container">
+              <mat-icon class="icon">{{ ley.icon }}</mat-icon>
+              <span>{{ ley.descripcion }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+  
+    </mat-card-content>
+  </mat-card>
+  

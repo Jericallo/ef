@@ -7,36 +7,95 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  tiles = [
+  //[(ngModel)]="searchTerm"
+  searchTerm: string = '';
+  
+
+  usuarios: any[] = [
     {
-      text: 'One',
-      cols: 3,
-      rows: 1,
-      color: 'lightblue'
+      icon: 'group',
+      descripcion: 'Ver todos',
+      path: 'users'
     },
     {
-      text: 'Two',
-      cols: 1,
-      rows: 2,
-      color: 'lightgreen'
+      icon: 'assignment_ind',
+      descripcion: 'Perfiles',
+      path: 'profiles'
     },
     {
-      text: 'Three',
-      cols: 1,
-      rows: 1,
-      color: 'lightpink'
-    },
-    {
-      text: 'Four',
-      cols: 2,
-      rows: 1,
-      color: '#DDBDF1'
+      icon: 'view_module',
+      descripcion: 'Módulos',
+      path: 'modules'
     }
   ];
 
+  leyes: any[] = [
+    {
+      icon: 'widgets',
+      descripcion: 'Categorías',
+      path: 'categories'
+    },
+    {
+      icon: 'insert_drive_file',
+      descripcion: 'Documentos',
+      path: 'documents'
+    },
+    {
+      icon: 'text_fields',
+      descripcion: 'Títulos',
+      path: 'titles'
+    },
+    {
+      icon: 'book',
+      descripcion: 'Capítulos',
+      path: 'chapters'
+    },
+    {
+      icon: 'bookmark',
+      descripcion: 'Secciones',
+      path:'sections'
+    },
+    {
+      icon: 'description',
+      descripcion: 'Artículos',
+      path:'articles'
+    },
+    {
+      icon: 'format_align_left',
+      descripcion: 'Parrafos',
+      path:'paragraphs'
+    }
+  ];
+
+  filterUsuarios() {
+    const searchTermLower = this.searchTerm.toLowerCase();
+    if (searchTermLower.includes('usuarios')) {
+      return this.usuarios;
+    } else {
+      return this.usuarios.filter(usuario =>
+        usuario.descripcion.toLowerCase().includes(searchTermLower)
+      );
+    }
+  }
+  
+  filterLeyes() {
+    const searchTermLower = this.searchTerm.toLowerCase();
+    if (searchTermLower.includes('leyes')) {
+      return this.leyes;
+    } else {
+      return this.leyes.filter(ley =>
+        ley.descripcion.toLowerCase().includes(searchTermLower)
+      );
+    }
+  }
+  
+  
+  
+
+  
   constructor() { }
 
   ngOnInit(): void {
-  }
 
+  }
 }
