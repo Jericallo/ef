@@ -133,6 +133,7 @@ export class VideosComponent implements OnInit {
   sendVideoSeconds(event: boolean, data: VideoResumeInterface) {
     if(event) {
       console.log('GOINT TO SUBSCRIBE')
+      console.log(data)
       this.subscription = this.apiService.saveVideoSecond(data)
         .subscribe({
           next: response => {
@@ -151,6 +152,16 @@ export class VideosComponent implements OnInit {
         })
     } else {
       console.log('Going to unsubcribe');
+      this.apiService.saveVideoPeriod(data)
+      .subscribe({
+        next: response => {
+          response = this.apiService.decrypt(response,'private')
+          console.log(response)
+        },
+        error: err => {
+          console.log(err)
+        }
+      });
       this.subscription ? this.subscription.unsubscribe() : undefined;
       clearTimeout(this.timer);
     }

@@ -89,7 +89,7 @@
         </mat-form-field>
         <mat-form-field class="quarter-width-mr" appearance="fill" *ngIf="type=='0'">
           <mat-label>Numero de Parrafo</mat-label>
-          <input type="number" matInput [(ngModel)]="number" placeholder="1,2,3..." min="1" max="100">
+          <input (keypress)="numberOnly($event)" type="number" matInput [(ngModel)]="number" placeholder="1,2,3..." min="1" max="100">
         </mat-form-field>
         <mat-form-field class="quarter-width-mr" appearance="fill">
           <mat-label>Nombre</mat-label>

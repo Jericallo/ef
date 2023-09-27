@@ -29,7 +29,7 @@
                 <form>
                     <mat-form-field class="year-full-width" appearance="fill">
                         <mat-label>Año</mat-label>
-                        <input type="number" maxlength="4" min="{{minYear}}" max="{{maxYear}}" matInput [formControl]="myControlYear" [(ngModel)]="year" (ngModelChange)="onChangeYear($event)" required>
+                        <input inputmode="numeric" type="number" (keypress)="numberOnly($event)" maxlength="4" min="{{minYear}}" max="{{maxYear}}" matInput [formControl]="myControlYear" [(ngModel)]="year" (ngModelChange)="onChangeYear($event)" required>
                     </mat-form-field>
                 </form>
                 <form>
@@ -49,7 +49,7 @@
                 <form>
                     <mat-form-field class="articles-full-width" appearance="fill">
                         <mat-label>Articulos</mat-label>
-                        <input type="number" matInput [formControl]="myControlArticles" [(ngModel)]="articles" required>
+                        <input type="number" (keypress)="numberOnly($event)" matInput [formControl]="myControlArticles" [(ngModel)]="articles" required>
                     </mat-form-field>
                 </form>
             </div>
