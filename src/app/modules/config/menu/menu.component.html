@@ -56,100 +56,38 @@
 -->
 <mat-card>
     <mat-card-content>
-        <mat-card-title>Configuraciones</mat-card-title>
-
-        <mat-form-field>
-            <input matInput placeholder="Buscar">
-        </mat-form-field>
-
-        <div class="title">Usuarios</div>
-
-        <div class="container">
-            <div class="box">
-                <a href="/config/users">
-                    <div class="option_container">
-                        <mat-icon class="icon">group</mat-icon>
-                        <span>Ver todos</span>
-                    </div>
-                </a>
+      <mat-card-title>Configuraciones</mat-card-title>
+  
+      <mat-form-field>
+        <input matInput placeholder="Buscar" >
+      </mat-form-field>
+  
+      <div class="title">Usuarios</div>
+  
+      <div class="container">
+        <div class="box" *ngFor="let usuario of filterUsuarios()">
+          <a [href]="'/config/' + usuario.path">
+            <div class="option_container">
+              <mat-icon class="icon">{{ usuario.icon }}</mat-icon>
+              <span>{{ usuario.descripcion }}</span>
             </div>
-            <div class="box">
-                <a href="/config/profiles">
-                    <div class="option_container">
-                        <mat-icon class="icon">assignment_ind</mat-icon>
-                        <span>Perfiles</span>
-                    </div>
-                </a>
-            </div>
-            <div class="box">
-                <a href="/config/modules">
-                    <div class="option_container">
-                        <mat-icon class="icon">view_module</mat-icon>
-                        <span>Modulos</span>
-                    </div>
-                </a>
-            </div>
+          </a>
         </div>
-
-        <div class="title">Leyes</div>
-
-        <div class="container">
-            <div class="box">
-                <a href="/config/categories">
-                    <div class="option_container">
-                        <mat-icon class="icon">widgets</mat-icon>
-                        <span>Categorias</span>
-                    </div>
-                </a>
+      </div>
+  
+      <div class="title">Leyes</div>
+  
+      <div class="container">
+        <div class="box" *ngFor="let ley of filterLeyes()">
+          <a [href]="'/config/' + ley.path">
+            <div class="option_container">
+              <mat-icon class="icon">{{ ley.icon }}</mat-icon>
+              <span>{{ ley.descripcion }}</span>
             </div>
-            <div class="box">
-                <a href="/config/documents">
-                    <div class="option_container">
-                        <mat-icon class="icon">insert_drive_file</mat-icon>
-                        <span>Documentos</span>
-                    </div>
-                </a>
-            </div>
-            <div class="box">
-                <a href="/config/titles">
-                    <div class="option_container">
-                        <mat-icon class="icon">text_fields</mat-icon>
-                        <span>Títulos</span>
-                    </div>
-                </a>
-            </div>
-            <div class="box">
-                <a href="/config/chapters">
-                    <div class="option_container">
-                        <mat-icon class="icon">book</mat-icon>
-                        <span>Capítulos</span>
-                    </div>
-                </a>           
-             </div>
-             <div class="box">
-                <a href="/config/sections">
-                    <div class="option_container">
-                        <mat-icon class="icon">bookmark</mat-icon>
-                        <span>Secciones</span>
-                    </div>
-                </a>           
-             </div>
-             <div class="box">
-                <a href="/config/articles">
-                    <div class="option_container">
-                        <mat-icon class="icon">description</mat-icon>
-                        <span>Artículos</span>
-                    </div>
-                </a>           
-             </div>
-             <div class="box">
-                <a href="/config/paragraphs">
-                    <div class="option_container">
-                        <mat-icon class="icon">format_align_left</mat-icon>
-                        <span>Párrafos</span>
-                    </div>
-                </a>           
-             </div>
+          </a>
         </div>
+      </div>
+  
     </mat-card-content>
-</mat-card>
+  </mat-card>
+  
