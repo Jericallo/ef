@@ -24,7 +24,7 @@ export class MenuComponent implements OnInit {
     },
     {
       icon: 'view_module',
-      descripcion: 'Modulos',
+      descripcion: 'Módulos',
       path: 'modules'
     }
   ];
@@ -32,7 +32,7 @@ export class MenuComponent implements OnInit {
   leyes: any[] = [
     {
       icon: 'widgets',
-      descripcion: 'Categorias',
+      descripcion: 'Categorías',
       path: 'categories'
     },
     {
@@ -42,12 +42,12 @@ export class MenuComponent implements OnInit {
     },
     {
       icon: 'text_fields',
-      descripcion: 'Titulos',
+      descripcion: 'Títulos',
       path: 'titles'
     },
     {
       icon: 'book',
-      descripcion: 'Capitulos',
+      descripcion: 'Capítulos',
       path: 'chapters'
     },
     {
@@ -57,7 +57,7 @@ export class MenuComponent implements OnInit {
     },
     {
       icon: 'description',
-      descripcion: 'Articulos',
+      descripcion: 'Artículos',
       path:'articles'
     },
     {
