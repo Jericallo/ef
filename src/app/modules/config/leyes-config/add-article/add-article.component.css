@@ -10,12 +10,15 @@
 }
 
 .artlet2-full-width{
-    width: 7.5vw;
+    width: 15vw;
     margin-right: 10px;
 }
 
 .artlet-container {
+    overflow: scroll;
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .arlet-new-container {
@@ -44,9 +47,8 @@
     font-size: 13px;
 }
 
-.buttonsContainer {
-    display: flex;
-    margin: 1em;
+.buttons-container {
+    margin: 3em;
 }
 
 .example-h2 {

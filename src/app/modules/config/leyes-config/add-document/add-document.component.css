@@ -1,9 +1,13 @@
+
 .flex-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .title-full-width {
     width: 82vw;
+    margin-right: 10px;
 }
 
 .classification-full-width {
@@ -30,3 +34,4 @@
     width: 40.7vw;
     margin-right: 10px;
 }
+

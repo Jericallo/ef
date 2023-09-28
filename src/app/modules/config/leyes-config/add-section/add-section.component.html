@@ -1,7 +1,9 @@
 <div class="mainDiv" *ngIf="showMain">
     <mat-card class="mainCard">
-      <a routerLink="/index" class="return"><mat-icon>arrow_back</mat-icon></a>
-        <p>{{ title }}</p>
+      <a routerLink="/config/menu" class="return"><mat-icon  style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <p style="font-weight: 700;">{{ title }}</p>
+        </div>
         <mat-card-content>
             <div class="flex-container">
                 <form>
@@ -45,7 +47,9 @@
                 </mat-form-field>
             </div>
         </mat-card-content>
+        <div style="display: flex; align-items: center; justify-content: end; margin-right: 25px; margin-top:-20px; margin-bottom: 20px;">
         <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="saveAssignation()">Guardar</button>
+      </div>
     </mat-card>
 </div>
 <div class="spinner" *ngIf="showSpinner">
