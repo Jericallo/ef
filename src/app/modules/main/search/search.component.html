@@ -5,7 +5,7 @@
   <h1 [ngClass]="{'title-big':firstShow,'title':!firstShow}">Búsqueda</h1>
   <div class="search-box">
     <div class="ng-autocomplete">
-      <ng-autocomplete [(ngModel)]="input" [data]="data" [searchKeyword]="keyword"
+      <ng-autocomplete [(ngModel)]="input" style="z-index: 1000;" [data]="data" [searchKeyword]="keyword"
         placeholder="Buscar en Escudo Fiscal" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" 
         (keyup.enter)="navigateToSearchResults()" (selected)="navigateToSearchResults()">
       </ng-autocomplete>
@@ -20,14 +20,14 @@
 </div>
 
 
-<div class="accordions-container row"style="margin-top:15px" >
+<div class="accordions-container row"style="margin-top:15px; height: 100vh" >
   <div class="accordion-container" style="overflow: auto; max-height: 90vh;" [ngClass]="{'col-md-8 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-12 col-lg-12 col-xxxl-12':!article && !articleRel, 'col-md-4 col-lg-4 col-xxxl-4':article && articleRel}">
       <div class="example-action-buttons">
           <!--<button mat-button (click)="accordion.openAll()">Abrir Todo</button>
           <button mat-button (click)="accordion.closeAll()">Cerrar Todo</button>-->
       </div>
       <!--<pre><code>{{data | json}}</code></pre>-->
-      <mat-accordion class="example-headers-align" multi style="position: sticky; top:10vh">
+      <mat-accordion class="example-headers-align" multi style="position: sticky; top:1vh">
           <mat-expansion-panel *ngFor="let cla of clasificaciones" ><!--style="overflow-y: auto; max-height: 80vh;"-->
               <mat-expansion-panel-header>
                   <mat-panel-title>
