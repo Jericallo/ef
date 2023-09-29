@@ -11,6 +11,8 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   @ViewChild('video', {read:ElementRef, static:false}) video:ElementRef
   @ViewChild('divVideo',{static:false}) divVideo:ElementRef;  
   @ViewChild('scrollElement') scrollElement: ElementRef;
+  @ViewChild('scrollElement2') scrollElement2: ElementRef;
+
 
   messageReceived = '';
 
@@ -93,6 +95,12 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   scrollDown() {
     this.scrollElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
+
+  scrollToManual() {
+    this.scrollElement2.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  
 
 }
  
