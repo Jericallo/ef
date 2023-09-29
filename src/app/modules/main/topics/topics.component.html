@@ -40,7 +40,7 @@
 
 
 <div class="col-9">
-  <div class="accordions-container row"style="margin-top:15px" >
+  <div class="accordions-container row"style="margin-top:15px; height:100vh" >
     <div class="accordion-container" style="overflow: auto; max-height: 90vh;" [ngClass]="{'col-md-8 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-12 col-lg-12 col-xxxl-12':!article && !articleRel, 'col-md-4 col-lg-4 col-xxxl-4':article && articleRel}">
         <div class="example-action-buttons">
             <!--<button mat-button (click)="accordion.openAll()">Abrir Todo</button>
@@ -48,7 +48,7 @@
         </div>
         <!--<pre><code>{{data | json}}</code></pre>-->
         
-        <mat-accordion class="example-headers-align" multi style="position: sticky; top:10vh">
+        <mat-accordion class="example-headers-align" multi style="position: sticky; top:1vh">
             <h3>{{title}}</h3>
             <mat-expansion-panel *ngFor="let cla of clasificaciones" ><!--style="overflow-y: auto; max-height: 80vh;"-->
                 <mat-expansion-panel-header>

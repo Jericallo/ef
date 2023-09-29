@@ -43,6 +43,11 @@ mark, .highlight{
   padding: 0px !important;
 }
 
+.mat-expansion-panel{
+  width: 800px;
+  overflow: visible;
+}
+
 .tree-invisible {
   display: none;
   max-width: 200px; /* Ajusta este valor según sea necesario */
