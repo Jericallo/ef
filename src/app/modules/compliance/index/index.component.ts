@@ -266,16 +266,13 @@ export class IndexComponent implements OnInit {
     this.apiService.dates(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        console.log(res)
         if (Array.isArray(res.result)) {
           const currentDate = Date.now() / 1000 // Get the current date and time
-          
           this.events = res.result.flatMap(obligation => {
-            console.log('OBLIGAMEEEEEEEEEE', obligation);
-
+            obligation.fecha_cumplimiento = (obligation.fecha_cumplimiento / 1000) + 86400
+            console.log('obligation:',obligation)
             let color = '';
             if (obligation.fecha_cumplimiento < currentDate) {
-              console.log("AAAAA", obligation.id)
               if(obligation.estatus.id === 1){
                 color = '#00D700'
               }else if (obligation.estatus.id === 0){
@@ -290,8 +287,8 @@ export class IndexComponent implements OnInit {
               }
             }
             const alerts = obligation.alertas && Array.isArray(obligation.alertas) ? obligation.alertas.map(alert => ({
-              start: new Date(alert.periodo * 1000),
-              end: new Date(alert.periodo * 1000),
+              start: new Date(alert.fecha),
+              end: new Date(alert.fecha),
               title: alert.mensaje,
               description: alert.tipo,
               color: {
@@ -300,7 +297,6 @@ export class IndexComponent implements OnInit {
               },
               actions: this.actions
             })) : [];
-            console.log(alerts);
             return [
               ...alerts,
 
@@ -337,7 +333,6 @@ export class IndexComponent implements OnInit {
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         let arreglo = res.result
-        console.log(arreglo)
         this.notify(arreglo)
         //console.log(res.results)
       },
@@ -349,7 +344,6 @@ export class IndexComponent implements OnInit {
 
   notify(variable:any) {
     variable.forEach((element, i) => {
-      console.log(element)
       setTimeout(() => {
         if(element.prioridad === 3){
           this.ntfService.success(element.descripcion)

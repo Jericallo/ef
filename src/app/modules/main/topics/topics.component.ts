@@ -26,10 +26,12 @@ interface ExampleFlatNode {
 export class TopicsComponent implements OnInit {
   //@ViewChild('treeControl')
   data=[];
+  selectedNode: any;
   clasificaciones = [];
   article=null;
   articleRel=null;
   articlesFull = [];
+  title = ''
 
   treeControl = new NestedTreeControl((node:ExampleFlatNode) => node.children);
 
@@ -44,18 +46,21 @@ export class TopicsComponent implements OnInit {
     this.apiService.getAll(this.apiService.MODELS.topics).subscribe({
       next:(res)=>{
         try {
+          let b = []
           res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
           res.result.forEach(res => {
             const a = ({expandable:true, isExpanded:true, name:res.letra.toUpperCase(), level:0, children:[]} as ExampleFlatNode)
             res.palabras.forEach(pal => {
               a.children.push({expandable:false, name:pal.nombre, level:1, url:pal.url} as ExampleFlatNode)
+              b.push({expandable:false, name:pal.nombre, level:1, url:pal.url} as ExampleFlatNode)
             });
 
             this.data.push(a)
           });
           console.log(this.data)
+          console.log(b)
           //this.dataSource.disconnect();// = null;// = new ArrayDataSource(this.data);
-          this.dataSource = new ArrayDataSource(this.data);
+          this.dataSource = new ArrayDataSource(b);
           console.log(this.data)
           //this.dataSource.connect();
           //this.treeControl.render
