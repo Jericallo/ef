@@ -105,7 +105,5 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     this.scrollElement2.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
-  
-+
 }
  
