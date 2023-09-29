@@ -49,7 +49,7 @@
             <form>
             <mat-form-field class="period-full-width" appearance="fill">
               <mat-label>Periodo</mat-label>
-              <input type="text" matInput [formControl]="myControlPeriod" name="periodo"[matAutocomplete]="autob" required (change)="handleEmptyPeriod($event)">
+              <input type="text" matInput [formControl]="myControlPeriod" name="periodo"[matAutocomplete]="autob"  (change)="handleEmptyPeriod($event)">
               <mat-autocomplete #autob="matAutocomplete" name="autoPeriod" [displayWith]="displayPeriod" (optionSelected)="selectedPeriod($event)">
                   <mat-option *ngFor="let option of filteredPeriodOptions | async" [value]="option">
                     {{option.nombre}}
@@ -67,6 +67,19 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             </form>
           </div>
+
+          <div class="form-container" *ngIf="showFinal">
+            <form>
+            <mat-form-field class="date-full-width" appearance="fill">
+                <mat-label>Fecha final de cumplimiento:</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="dateF" name="fecha_final" (dateChange)="selectedDate()" required>
+                <mat-hint>Mes/Dia/Año</mat-hint>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            </form>
+          </div>
+
         </mat-card-content>
   
         <alert-template></alert-template>

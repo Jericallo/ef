@@ -9,11 +9,18 @@
 <div class="news-container" fxLayout="row wrap">
 
   <div class="content" style="display: flex;">
-    <div (click)="setSrcVideo(time)" *ngFor="let time of results;let indexTime=index;" style="width: 18.33%; height: auto; padding-right: 1%; padding-left: 1%; cursor: pointer;" >
+    <div (click)="setSrcVideo(time)" *ngFor="let time of results;let indexTime=index;" style="width: 14.33%; height: auto; padding-right: 1%; padding-left: 1%; cursor: pointer;" >
       <div>
         <h6 style="text-align: center;">{{ time.titulo || '' }}</h6>
       </div>
       <img [src]="time.imagen" alt="" style="width: 100%; height: auto;" [ngClass]="{'b-red':time.selected}">
+    </div>
+
+    <div (click)="scrollerDown()" style="width: 28.33%; height: 2%;  padding-right: 1%; padding-left: 1%; cursor: pointer;" >
+      <div>
+        <h6 style="text-align: center;">Manual</h6>
+      </div>
+      <img src="https://concepto.de/wp-content/uploads/2023/01/manual-texto-documento.jpg" alt="" style="width: 100%; height: 108px; " >
     </div>
   </div>
 
@@ -36,4 +43,28 @@
       </mat-card-content>
     </mat-card>
   </div>
+  <div #scrollerElement fxFlex="100">
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+    <p>Soy un manual</p>
+  </div>
 </div>
+

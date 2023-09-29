@@ -6,10 +6,11 @@
         <!--<mat-card-title>Tree with flat nodes</mat-card-title>-->
         <cdk-tree [dataSource]="dataSource" [treeControl]="treeControl">
             <cdk-nested-tree-node *cdkTreeNodeDef="let node" cdkTreeNodePadding [cdkTreeNodeToggleRecursive]="true"
-            [style.display]="shouldRender(node) ? 'flex' : 'none'" class="example-tree-node">
+            [style.display]="shouldRender(node) ? 'flex' : 'none'" class="example-tree-node"
+            [ngClass]="{'selected-item': selectedNode === node}">
                 <!--<button mat-icon-button disabled></button>-->
     
-                <button style="text-align: left; white-space: normal;" mat-button (click)="showContent(node.name)" *ngIf="node.level==1;else onlyName">{{ node.name }}</button>
+                <button style="text-align: left; white-space: normal;" mat-button (click)="showContent(node.name); selectedNode = node; title = node.name" *ngIf="node.level==1;else onlyName">{{ node.name }}</button>
                 <ng-template #onlyName>{{node.name}}</ng-template>
             </cdk-nested-tree-node>
             <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" cdkTreeNodePadding [cdkTreeNodeToggleRecursive]="true"
@@ -46,7 +47,9 @@
             <button mat-button (click)="accordion.closeAll()">Cerrar Todo</button>-->
         </div>
         <!--<pre><code>{{data | json}}</code></pre>-->
+        
         <mat-accordion class="example-headers-align" multi style="position: sticky; top:10vh">
+            <h3>{{title}}</h3>
             <mat-expansion-panel *ngFor="let cla of clasificaciones" ><!--style="overflow-y: auto; max-height: 80vh;"-->
                 <mat-expansion-panel-header>
                     <mat-panel-title>

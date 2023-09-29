@@ -122,15 +122,12 @@ export class ApiService {
   }
 
   public getObligationsForToday(momento:string):Observable<any>{
-    console.log(this.id)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones&where='+ momento +'&id_usuario=' + this.id
     //&where='+ momento +'&id_usuario=' + this.id
-    console.log('URL CON FECHA',url)
-    console.log(this.id)
     return this.http.get(url,{headers:headers});
   }
 

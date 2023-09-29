@@ -37,6 +37,9 @@ export var chicken1: Boolean | undefined
 export var chicken2: Boolean | undefined
 export var chicken3: Boolean | undefined
 
+export var period:any;
+
+
 export var sendAlert1: ObligationsAlert | undefined;
 export var sendAlert2: ObligationsAlert | undefined;
 export var sendAlert3: ObligationsAlert | undefined;
@@ -95,13 +98,12 @@ export class AlertTemplate implements OnInit {
     const duration = moment.duration(this.dateAlert1);
     sendAlert1 = {
       mensaje: this.message ? this.message : '',
-      periodo: duration.asSeconds(),
-      fecha: duration.asSeconds()
+      periodo: period -1,
+      fecha: duration.asMilliseconds()
     }
     chicken1 = this.checked
     // aqui estaba asMinutes pero asi explota
     //alerts.push({mensaje:this.message ? this.message: '', periodo: duration.asMilliseconds()})
-    console.log(sendAlert1)
   }
 
   alert2Change() {
@@ -109,8 +111,8 @@ export class AlertTemplate implements OnInit {
     const duration = moment.duration(this.dateAlert2);
     sendAlert2 = {
       mensaje: this.message2 ? this.message2 : '',
-      periodo: duration.asSeconds(),
-      fecha:duration.asSeconds()
+      periodo: period -1,
+      fecha:duration.asMilliseconds()
     }
     chicken2 = this.checked2
   }
@@ -119,8 +121,8 @@ export class AlertTemplate implements OnInit {
     const duration = moment.duration(this.dateAlert3);
     sendAlert3 = {
       mensaje: this.message3 ? this.message3 : '',
-      periodo: duration.asSeconds(),
-      fecha:duration.asSeconds()
+      periodo: period -1,
+      fecha:duration.asMilliseconds()
     }
     chicken3 = this.checked3
   }
@@ -211,13 +213,14 @@ export class CalendarFormDialogComponent implements OnInit {
   obligations = null;
   description = null;
   date: string = '';
-  period:any;
   dateS: any;
+  dateF: any;
   dateNow:any;
   selectType = null;
   selectPeriod = null;
   htmlContent = "";
 
+  showFinal = false;
   showMain = true;
   showSpinner = false;
   showDocumentation = false;
@@ -238,7 +241,8 @@ export class CalendarFormDialogComponent implements OnInit {
     alertas: [],
     con_documento: false,
     texto_documentos: "",
-    documentaciones: []
+    documentaciones: [],
+    fecha_final:null
   }
   
   sentDocumentations = null
@@ -286,7 +290,6 @@ export class CalendarFormDialogComponent implements OnInit {
   }
 
   onToggleDocumentationChanged(event: MatSlideToggleChange, alertNumber: number) {
-    console.log("aaaa")
     this.showDocumentation = !this.showDocumentation
   }
 
@@ -330,12 +333,12 @@ export class CalendarFormDialogComponent implements OnInit {
 //PERIOD ----------------------------------------------------------------------------------------------------
 
   selectedPeriod(opt: MatAutocompleteSelectedEvent) {
-    this.period = opt.option.value.milisegundos;
-    console.log('Option:', opt.option.value.milisegundos)
+    period = opt.option.value.minutos;
+    this.showFinal = true
   }
 
-  displayPeriod(period: ObligationsPeriod): string {
-    return period && period.nombre ? period.nombre : '';
+  displayPeriod(periodo: ObligationsPeriod): string {
+    return periodo && periodo.nombre ? periodo.nombre : '';
   }
 
   handleEmptyPeriod(event: any) {
@@ -351,7 +354,6 @@ export class CalendarFormDialogComponent implements OnInit {
   selectedDate() {
     const fechaAhora = moment.duration(this.dateS).asSeconds();
     this.sendingObligation.fecha_cumplimiento = fechaAhora
-    console.log(this.period)
     const dia = this.dateS.getDate() 
     const mes = this.dateS.getMonth()
     const ano = this.dateS.getFullYear()
@@ -371,10 +373,18 @@ export class CalendarFormDialogComponent implements OnInit {
     alertDate = fecha
   }
 
+  selectedFinalDate() {
+    const fechaAhora = moment.duration(this.dateF).asSeconds();
+    this.sendingObligation.fecha_final = fechaAhora
+  }
+
   saveObligation() {
     if(chicken1) { alerts.push(sendAlert1) }
     if(chicken2) { alerts.push(sendAlert2) }
     if(chicken3) { alerts.push(sendAlert3) }
+    var a = new Date(this.sendingObligation.fecha_cumplimiento * 1000);
+    var dayOfMonth = a.getDate()
+    console.log(this.sendingObligation.fecha_cumplimiento)
     
     const body = {model:"obligaciones", data: {
       fecha_cumplimiento: this.sendingObligation.fecha_cumplimiento,
@@ -384,17 +394,17 @@ export class CalendarFormDialogComponent implements OnInit {
       nombre: this.obligations,
       descripcion: this.description,
       id_tipo: this.sendingObligation.id_tipo,
-      periodo: this.period,
+      periodo: period,
       con_document: 0,
       documentaciones:this.sentDocumentations,
       id_usuario: 2,
-      alertas: alerts
+      alertas: alerts,
+      dia_del_mes:dayOfMonth
     }};
     console.log(body)
     this.apiService.postObligations(body).subscribe(
       response => {
         const respuesta = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        console.log('Respuesta desencriptada:',respuesta)
         if(respuesta.status === 'OK'){
           alert('Obligación agregada correctamente.')
         } else {
@@ -451,14 +461,15 @@ export class CalendarFormDialogComponent implements OnInit {
     );
 
     this.getPeriod()
-
+    chicken1 = false
+    chicken2 = false
+    chicken3 = false
   }
 
   getPeriod() {
     this.apiService.getPeriods().subscribe({
       next: res =>{
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        console.log(res.result)
         if (res.status === 'OK'){
           this.optionsPeriod = res.result.map((period: any) => {
             return {
@@ -466,10 +477,10 @@ export class CalendarFormDialogComponent implements OnInit {
               nombre: period.nombre,
               milisegundos: period.milisegundos,
               fecha_creacion: period.fecha_creacion,
-              fecha_modificacion: period.fecha_modificacion
+              fecha_modificacion: period.fecha_modificacion,
+              minutos:period.minutos
             };
           });
-          console.log('Periods:', this.optionsPeriod);
         }
       }
     })
