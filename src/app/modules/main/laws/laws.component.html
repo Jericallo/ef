@@ -27,7 +27,7 @@
 <app-user-icon></app-user-icon>
 
 <div class="accordions-container row"style="margin-top:15px; height:100vh; display: flex; justify-content:center;" >
-    <div class="accordion-container" style="overflow: auto; max-height: 90vh;" [ngClass]="{'col-md-8 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-12 col-lg-12 col-xxxl-12':!article && !articleRel, 'col-md-4 col-lg-4 col-xxxl-4':article && articleRel}">
+    <div class="accordion-container" style="overflow: auto; max-height: 90vh;" [ngClass]="{'col-md-6 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-12 col-lg-12 col-xxxl-12':!article && !articleRel, 'col-md-6  col-lg-7 col-xxxl-7':article && articleRel}">
         <div class="example-action-buttons">
             <!--<button mat-button (click)="accordion.openAll()">Abrir Todo</button>
             <button mat-button (click)="accordion.closeAll()">Cerrar Todo</button>-->
@@ -71,7 +71,7 @@
                                 </mat-list>-->
                             <mat-accordion class="example-headers-align" multi>
                                 <mat-expansion-panel *ngFor="let tit of doc.titles">
-                                    <mat-expansion-panel-header>
+                                    <mat-expansion-panel-header style="display: flex; align-items: center;">
                                         <mat-panel-title>TITULO {{tit.nombre}}</mat-panel-title>
                                         <mat-icon (click)="deleteS(tit.id,'articulo_titulos')">delete</mat-icon>
                                         <mat-panel-description *ngIf="tit.articles">Artículos del {{tit.articles[0].articulo}} al {{tit.articles[tit.articles.length - 1].articulo}}</mat-panel-description>
@@ -80,7 +80,7 @@
                                     <div *ngIf="tit.articles">
                                         <mat-accordion>
                                             <mat-expansion-panel *ngFor="let art of tit.articles">
-                                                <mat-expansion-panel-header>
+                                                <mat-expansion-panel-header >
                                                     <mat-panel-title (click)="articleClick(art)">
                                                         <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                                     </mat-panel-title>
@@ -153,13 +153,13 @@
             </mat-expansion-panel>
         </mat-accordion>
     </div>
-    <div *ngIf="article" class="accordion-container" [ngClass]="{'col-md-4 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-4 col-lg-4 col-xxxl-4':article && articleRel}">
+    <div *ngIf="article" class="accordion-container" style="display: flex; flex-direction: column; margin-top: -50px;" [ngClass]="{'col-md-4 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-4 col-lg-4 col-xxxl-4':article && articleRel}">
         <div class="example-action-buttons">
           <!--<button mat-button (click)="accordion.openAll()">Mostrar Todo</button>
           <button mat-button (click)="accordion.closeAll()">Esconder Todo</button>-->
         </div>
-        <mat-accordion class="example-headers-align" style="position: sticky; top:10vh">
-            <mat-expansion-panel [expanded]="true" style="overflow: auto; max-height: 90vh;">
+        <mat-accordion class="example-headers-align" style="position: sticky; top:30p; left: 1vh;">
+            <mat-expansion-panel [expanded]="true" style="overflow: auto; height: 40vh; width: 60vh;">
                 <mat-expansion-panel-header>
                     <mat-panel-title class="flex-grow-1">
                         <mat-icon>auto_stories</mat-icon> &nbsp; Articulo {{article.articulo}} {{article.indicador || ''}}.-
@@ -201,25 +201,25 @@
                 </mat-accordion>-->
             </mat-expansion-panel>
         </mat-accordion>
-    </div>
-    <div *ngIf="articleRel" class="accordion-container col-md-4 col-lg-4 col-xxxl-4">
-        <mat-accordion class="example-headers-align" style="position: sticky; top:10vh">
-            <mat-expansion-panel [expanded]="true" style="overflow: auto; max-height: 90vh;">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <mat-icon>auto_stories</mat-icon> &nbsp; Articulo {{articleRel.articulo}} {{articleRel.indicador || ''}}.-
-                    </mat-panel-title>
-                  
-                </mat-expansion-panel-header>
-                <h5 *ngIf="articleRel">{{articleRel.nombre || ''}}</h5>
-                <div *ngFor="let par of articleRel.parrafos" >
-                    <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> {{par.nombre || ''}}</label>
-                    <div *ngIf="par.tipo == 1" class="fraccion">
-                        <b>{{par.indicador}}</b>.&nbsp;<span [innerHtml]="par.contenido || ''"></span>
+        <div *ngIf="articleRel" class="accordion-container" style="margin-top: 30px;">
+            <mat-accordion class="example-headers-align"style="position: sticky; top:3.5vh; left: 1vh;" >
+                <mat-expansion-panel [expanded]="true" style="overflow: auto; max-height: 40vh; width: 60vh;">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon>auto_stories</mat-icon> &nbsp; Articulo {{articleRel.articulo}} {{articleRel.indicador || ''}}.-
+                        </mat-panel-title>
+                      
+                    </mat-expansion-panel-header>
+                    <h5 *ngIf="articleRel">{{articleRel.nombre || ''}}</h5>
+                    <div *ngFor="let par of articleRel.parrafos" >
+                        <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> {{par.nombre || ''}}</label>
+                        <div *ngIf="par.tipo == 1" class="fraccion">
+                            <b>{{par.indicador}}</b>.&nbsp;<span [innerHtml]="par.contenido || ''"></span>
+                        </div>
+                        <p *ngIf="par.tipo == 0" [ngClass]="{'fraccion':par.tipo == 1}" [innerHtml]="par.contenido || ''" style="text-align: justify;"></p>
                     </div>
-                    <p *ngIf="par.tipo == 0" [ngClass]="{'fraccion':par.tipo == 1}" [innerHtml]="par.contenido || ''" style="text-align: justify;"></p>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
     </div>
 </div>
