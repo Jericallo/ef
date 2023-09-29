@@ -14,6 +14,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   @ViewChild('scrollElement2') scrollElement2: ElementRef;
 
 
+
   messageReceived = '';
 
   srcVideo = "";
@@ -63,6 +64,10 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
   playNew(obj:any, numVideo=-1){
     //this.mytimelines.forEach(mtl => {mtl.selected = false;});
+    if(typeof obj === "undefined"){
+      return
+    }
+    this.results.forEach(mtl => {mtl.selected = false;});
     obj.selected=true;
     this.video.nativeElement.src = obj.video.url;
     this.video.nativeElement.muted = false;
@@ -101,6 +106,6 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   }
 
   
-
++
 }
  
