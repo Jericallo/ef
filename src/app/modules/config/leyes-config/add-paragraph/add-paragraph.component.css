@@ -1,26 +1,25 @@
 
 .documents-full-width {
     width: 31.5vw;
-    margin-right: 10px;
 }
   
 .artlet-full-width {
     width: 30vw;
-    margin-right: 10px;
 }
 
 .artlet2-full-width{
     width: 20vw;
-    margin-right: 10px;
 }
 
 .artlet-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
 }
 
 .arlet-new-container {
     width: 47.6vw;
-    margin-right: 10px;
 }
 
 .category-full-width {
@@ -49,17 +48,10 @@
     margin: 1em;
 }
 
-.example-h2 {
-    margin: 10px;
-}
-  
 .example-section {
     display: flex;
-    align-content: center;
     align-items: center;
-    height: 60px;
+    justify-content: center;
+    height: 80px;
 }
   
-.example-margin {
-    margin: 10px;
-}

@@ -2,6 +2,10 @@
     width: 100%;
 }
 
+.mainCard{
+    border-radius: 30px;
+}
+
 .container-half-width{
     width: 50%;
 }

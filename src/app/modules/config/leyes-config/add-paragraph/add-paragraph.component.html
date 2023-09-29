@@ -2,17 +2,20 @@
 <div class="mainDiv" style="max-height: 90vh;">
   <mat-card class="mainCard">
   <div class="mainCard">
-    <p>Agregar Párrafo</p>
+    <a href="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+    <div style="display: flex; align-items: center; justify-content: center;">
+      <p style="font-weight: 700;">Agregar parrafo</p>
+      </div>
     <div ><!--class="artlet-container"-->
       <section class="example-section">
         <label class="example-margin bold">Tipo:&nbsp;&nbsp;</label>
         <mat-radio-group [(ngModel)]="tipo" (change)="changeRadio($event)" class="quarter-width-mr">
-          <mat-radio-button class="example-margin" value="0">Parrafo</mat-radio-button>
+          <mat-radio-button style="margin-right: 10px;" value="0">Parrafo</mat-radio-button>
           <mat-radio-button class="example-margin" value="1">Fracción</mat-radio-button>
         </mat-radio-group>
       </section>
       <!--<form *ngIf="type=='1'">
-        <mat-form-field class="arlet-new-container" appearance="fill">
+        <mat-form-field class="arlet-new-container" >
           <mat-label>Indicador</mat-label>
           <input type="text" matInput [formControl]="myControlMain" [matAutocomplete]="autoMain" (change)="handleEmptyMai($event)">
           <mat-autocomplete #autoMain="matAutocomplete" [displayWith]="displayMain" (optionSelected)="selectedMai($event)">
@@ -24,7 +27,7 @@
       </form>-->
       <!-- Mayuscula -->
       <!--<form *ngIf="showMay">
-        <mat-form-field class="arlet-new-container" appearance="fill">
+        <mat-form-field class="arlet-new-container" >
           <mat-label>{{ optMay }}</mat-label>
           <input type="text" matInput [formControl]="myControlLetter" [matAutocomplete]="autoC" (change)="handleEmptyLet($event)">
           <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayLetter" (optionSelected)="selectedLet($event)">
@@ -37,7 +40,7 @@
 
       <!-- Minuscula -->
       <!--<form *ngIf="showMis">
-        <mat-form-field class="arlet-new-container" appearance="fill">
+        <mat-form-field class="arlet-new-container" >
           <mat-label>{{ optMis }}</mat-label>
           <input type="text" matInput [formControl]="myControlLetterMis" [matAutocomplete]="autoMis" (change)="handleEmptyLetMis($event)">
           <mat-autocomplete #autoMis="matAutocomplete" [displayWith]="displayLetterMis" (optionSelected)="selectedLetMis($event)">
@@ -50,7 +53,7 @@
 
       <!-- Numero -->
       <!--<form *ngIf="showNum">
-        <mat-form-field class="arlet-new-container" appearance="fill">
+        <mat-form-field class="arlet-new-container" >
           <mat-label>{{ optNum }}</mat-label>
           <input type="text" matInput [formControl]="myControlNumber" [matAutocomplete]="autoD" (change)="handleEmptyNum($event)">
           <mat-autocomplete #autoD="matAutocomplete" [displayWith]="displayNumber" (optionSelected)="selectedNum($event)">
@@ -63,7 +66,7 @@
 
       <!-- Romano -->
       <!--<form *ngIf="showRom">
-        <mat-form-field class="arlet-new-container" appearance="fill">
+        <mat-form-field class="arlet-new-container" >
           <mat-label>{{ optRom }}</mat-label>
           <input type="text" matInput [formControl]="myControlNumberRom" [matAutocomplete]="autoRom" (change)="handleEmptyNumRom($event)">
           <mat-autocomplete #autoRom="matAutocomplete" [displayWith]="displayNumberRom" (optionSelected)="selectedNumRom($event)">
@@ -77,7 +80,7 @@
     <div class="artlet-container">
       <div>
         <mat-checkbox class="example-margin" [(ngModel)]="useDoc">Seguir utilizando</mat-checkbox>
-        <mat-form-field class="quarter-width-mr" appearance="fill">
+        <mat-form-field class="quarter-width-mr" >
           <mat-label>Documento</mat-label>
           <input type="text" matInput [formControl]="myControlDocuments" [matAutocomplete]="auto" (change)="handleEmptyDoc($event)" required>
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDocuments" (optionSelected)="selectedDoc($event)">
@@ -89,7 +92,7 @@
       </div>
       <div>
         <mat-checkbox class="example-margin" [(ngModel)]="useTit">Seguir utilizando</mat-checkbox>
-        <mat-form-field class="quarter-width-mr" appearance="fill">
+        <mat-form-field class="quarter-width-mr" >
           <mat-label>Titulo</mat-label>
           <input type="text" matInput [formControl]="myControlTitles" [matAutocomplete]="autoT" (change)="handleEmptyTit($event)">
           <mat-autocomplete #autoT="matAutocomplete" [displayWith]="displayTitles" (optionSelected)="selectedTit($event)">
@@ -101,7 +104,7 @@
       </div>
       <div>
         <mat-checkbox class="example-margin" [(ngModel)]="useCap">Seguir utilizando</mat-checkbox>
-        <mat-form-field class="quarter-width-mr" appearance="fill">
+        <mat-form-field class="quarter-width-mr" >
           <mat-label>Capitulo</mat-label>
           <input type="text" matInput [formControl]="myControlChapters" [matAutocomplete]="autoC" (change)="handleEmptyCha($event)" >
           <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayChapters" (optionSelected)="selectedCha($event)">
@@ -113,7 +116,7 @@
       </div>
       <div>
         <mat-checkbox class="example-margin" [(ngModel)]="useSec">Seguir utilizando</mat-checkbox>
-        <mat-form-field class="quarter-width-mr" appearance="fill">
+        <mat-form-field class="quarter-width-mr" >
           <mat-label>Sección</mat-label>
           <input type="text" matInput [formControl]="myControlSections" [matAutocomplete]="autoS" (change)="handleEmptySec($event)" >
           <mat-autocomplete #autoS="matAutocomplete" [displayWith]="displaySections" (optionSelected)="selectedSec($event)">
@@ -125,19 +128,19 @@
       </div>
     </div>
     <section class="example-section">
+      <div style="display: flex; justify-content: center; align-items: center; width: 91%;">
       <form>
-        <mat-form-field class="clients-full-width" appearance="fill">
-          <mat-label>Articulo</mat-label>
-          <input (keypress)="numberOnly($event)" type="text" matInput [formControl]="myControlArticle" [matAutocomplete]="autoA" (change)="handleEmptyArticle($event)" required>
-          <mat-autocomplete #autoA="matAutocomplete" [displayWith]="displayArticle" (optionSelected)="selectedArt($event)">
-            <mat-option *ngFor="let option of filteredArtOptions | async" [value]="option">
-              Articulo {{option.id_articulo}} | {{option.nombre}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+          <mat-form-field  style="margin-right:10px; width: 500px;" >
+            <mat-label>Articulo</mat-label>
+            <input (keypress)="numberOnly($event)" type="text" matInput [formControl]="myControlArticle" [matAutocomplete]="autoA" (change)="handleEmptyArticle($event)" required>
+            <mat-autocomplete #autoA="matAutocomplete" [displayWith]="displayArticle" (optionSelected)="selectedArt($event)">
+              <mat-option *ngFor="let option of filteredArtOptions | async" [value]="option">
+                Articulo {{option.id_articulo}} | {{option.nombre}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
       </form>
-
-      <mat-form-field class="quarter-width-mr" appearance="fill" >
+      <mat-form-field class="quarter-width-mr" style="margin-right: 10px;"  >
         <mat-label>Orden</mat-label>
         <input type="text" matInput [formControl]="myControlOrder" [matAutocomplete]="autoO" (change)="handleEmptyOrd($event)" required [(ngModel)]="orden">
         <mat-autocomplete #autoO="matAutocomplete" [displayWith]="displayOrder" (optionSelected)="selectedOrd($event)">
@@ -147,39 +150,42 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <mat-form-field class="quarter-width-mr" appearance="fill">
+      <mat-form-field class="quarter-width-mr" >
         <mat-label>Indicador</mat-label>
         <input type="text" matInput [(ngModel)]="indicator" [(ngModel)]="indicador">
       </mat-form-field>
+    </div>
     </section>
     <section class="example-section">
-      <mat-form-field class="quarter-width-mr" appearance="fill" *ngIf="type=='0'">
+      <div style="display: flex; justify-content: center; align-items: center; width: 91%;">
+      <mat-form-field  *ngIf="type=='0'" style="margin-right: 10px;">
         <mat-label>Numero de Parrafo</mat-label>
         <input (keypress)="numberOnly($event)" type="number" matInput [(ngModel)]="number" placeholder="1,2,3..." min="1" max="100" [(ngModel)]="numero">
       </mat-form-field>
-      <mat-form-field class="quarter-width-mr" appearance="fill" *ngIf="type=='0'">
+      <mat-form-field class="quarter-width-mr"  *ngIf="type=='0'">
         <mat-label>Nombre</mat-label>
         <input type="text" matInput [(ngModel)]="name" [(ngModel)]="nombre">
       </mat-form-field>
+    </div>
     </section>
     <!-- Editor Texto -->
     <div class="toolkit">
-      <mat-label>Contenido</mat-label>
-      <angular-editor [(ngModel)]="contenido" [config]="editorConfig" required></angular-editor>
-    </div>
-    <br>
-
+      <div style="display: flex; justify-content: center; align-items: center; width: 100%; flex-direction: column;">
+        <mat-label style="font-weight: 700;">Contenido</mat-label>
+        <angular-editor style="width: 91%;" [(ngModel)]="contenido" [config]="editorConfig" required></angular-editor>
+      </div>
+      </div>
     <!--Relaciones-->
-    <div class="buttonsContainer">
-      <button mat-raised-button color="basic" (click)="showSearchComponent()">Relaciones</button>&nbsp;
-    </div>
-    <ng-container *ngIf="isShownComponent">
-      <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
-    </ng-container>
-    <!-- Botones -->
-    <div class="buttonsContainer">
-      <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="addEvent()">Agregar</button>&nbsp;
-    </div>
+
+    <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="addEvent()">Guardar</button>&nbsp;
+    <button mat-raised-button color="basic" (click)="showSearchComponent()">Relaciones</button>&nbsp;
+      <div style="position: absolute; top:230px; left: 390px; width: 50%;">
+        <div *ngIf="isShownComponent" style="background: rgb(0, 0, 0); width: 100%; height: 100%; border-radius: 40px; position: absolute; top: 0; left: 0;"></div>
+        <ng-container style="border: solid 20px black;" *ngIf="isShownComponent">
+            <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
+          </ng-container>
+      </div>
+      <!-- Botones -->
   </div>
 </mat-card>
 </div>

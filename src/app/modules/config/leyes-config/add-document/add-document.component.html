@@ -1,17 +1,21 @@
 <div class="mainDiv" *ngIf="showMain">
     <mat-card class="mainCard">
-        <a routerLink="/index" class="return"><mat-icon>arrow_back</mat-icon></a>
-        <p>{{ mainTitle }}</p>
+        <a href="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+        <div style="display: flex; align-items: center; justify-content: center;">
+        <p style="font-weight: 700;">{{ mainTitle }}</p>
+        </div>
         <mat-card-content>
-            <form>
-                <mat-form-field class="title-full-width" appearance="fill">
-                    <mat-label>Titulo</mat-label>
-                    <input type="text" matInput [formControl]="myControlTitle" [(ngModel)]="title" required>
-                </mat-form-field>
-            </form>
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <form>
+                    <mat-form-field class="title-full-width">
+                        <mat-label>Titulo</mat-label>
+                        <input type="text" matInput [formControl]="myControlTitle" [(ngModel)]="title" required>
+                    </mat-form-field>
+                </form>
+            </div>
             <div class="flex-container">
                 <form>
-                    <mat-form-field class="classification-full-width" appearance="fill">
+                    <mat-form-field class="classification-full-width">
                       <mat-label>Clasificacion</mat-label>
                       <input type="text" matInput [formControl]="myControlClassifications" [matAutocomplete]="auto"> <!-- (change)="handleEmptyCla($event)" -->
                     </mat-form-field>
@@ -27,13 +31,13 @@
                     </mat-autocomplete>
                 </form>
                 <form>
-                    <mat-form-field class="year-full-width" appearance="fill">
+                    <mat-form-field class="year-full-width" >
                         <mat-label>Año</mat-label>
                         <input inputmode="numeric" type="number" (keypress)="numberOnly($event)" maxlength="4" min="{{minYear}}" max="{{maxYear}}" matInput [formControl]="myControlYear" [(ngModel)]="year" (ngModelChange)="onChangeYear($event)" required>
                     </mat-form-field>
                 </form>
                 <form>
-                    <mat-form-field class="abbreviation-full-width" appearance="fill">
+                    <mat-form-field class="abbreviation-full-width" >
                         <mat-label>Abreviatura</mat-label>
                         <input type="text" matInput [formControl]="myControlAbbreviation" [(ngModel)]="abbreviation">
                     </mat-form-field>
@@ -41,13 +45,13 @@
             </div>
             <div class="flex-container">
                 <form>
-                    <mat-form-field class="editorial-full-width" appearance="fill">
+                    <mat-form-field class="editorial-full-width" >
                         <mat-label>Editorial</mat-label>
                         <input type="text" matInput [formControl]="myControlEditorial" [(ngModel)]="editorial">
                     </mat-form-field>
                 </form>
                 <form>
-                    <mat-form-field class="articles-full-width" appearance="fill">
+                    <mat-form-field class="articles-full-width" >
                         <mat-label>Articulos</mat-label>
                         <input type="number" (keypress)="numberOnly($event)" matInput [formControl]="myControlArticles" [(ngModel)]="articles" required>
                     </mat-form-field>
@@ -55,7 +59,9 @@
             </div>
         </mat-card-content>
 
-        <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="saveDocument()">Guardar</button>
+        <div style="display: flex; align-items: center; justify-content: end; margin-right: 120px; margin-top:-20px; margin-bottom: 20px;">
+            <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="saveDocument()">Guardar</button>
+        </div>
     </mat-card>
 </div>
 
