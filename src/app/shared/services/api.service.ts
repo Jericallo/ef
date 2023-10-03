@@ -295,6 +295,13 @@ export class ApiService {
     }
   }
 
+  public getId(){
+    if(localStorage[this.TOKEN]){
+      let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
+      return res.id
+    }
+  }
+
   public getPrivateKey(){
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");

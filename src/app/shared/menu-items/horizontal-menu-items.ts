@@ -56,7 +56,7 @@ const MENUITEMS = [
         class: 'cumplimiento-menu',
         children:[
             {state:'index', name:'Calendario',type:'link', icon:'event'},
-            {state:'', name:'Registra',type:'link', icon:'input'},
+            {state:'register', name:'Registra',type:'link', icon:'input'},
             {state:'', name:'Impuestos',type:'link',icon:'monetization_on'},
             {state:'', name:'Informativas',type:'link',icon:'inbox'},
             {state:'', name:'Prevención Lavado',type:'link',icon:'security'},

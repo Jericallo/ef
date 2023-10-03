@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
   getObligations() {
     const date = new Date();
     let params = new HttpParams().set("day", date.getTime() / 60000);
-
+    params.append('id_usuario', this.apiService.getId())
     this.apiService.dates(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
