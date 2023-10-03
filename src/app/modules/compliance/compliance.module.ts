@@ -11,6 +11,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NotificationComponent } from './index/notification/notification.component';
 import { NotificationService } from './index/notification.service';
+import { RegisterComponent } from './register/register.component';
 
 
 
@@ -18,7 +19,8 @@ import { NotificationService } from './index/notification.service';
   declarations: [
     IndexComponent,
     CalendarDialogComponent,
-    NotificationComponent
+    NotificationComponent,
+    RegisterComponent,
   ],
   imports: [
     CommonModule,

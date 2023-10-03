@@ -1,0 +1,56 @@
+<mat-card>
+    <mat-card-content>
+        <div class="d-flex align-items-center">
+            <h3 class="m-t-0">Obligaciones</h3>
+            <div class="ml-auto">
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Color primario</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha de fin</th>
+                        <th>Borrar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let event of events">
+                        <td class="p-r-10">
+                            <mat-form-field>
+                                <input matInput placeholder="Editar Título" name="title" [(ngModel)]="event.title" />
+                            </mat-form-field>
+                        </td>
+                        <td class="p-r-10">
+                            <mat-form-field>
+                                <input matInput placeholder="Cambiar color" name="color" type="color"
+                                    [(ngModel)]="event.color.primary"/>
+                            </mat-form-field>
+                        </td>
+                        <td class="p-r-10">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="startDateDP" placeholder="Fecha de inicio"
+                                    name="startDate" [(ngModel)]="event.start"/>
+                                <mat-datepicker-toggle matSuffix [for]="startDateDP"></mat-datepicker-toggle>
+                                <mat-datepicker #startDateDP></mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                        <td class="p-r-10">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="endDateDP" placeholder="Fecha de fin"
+                                    name="endDate" [(ngModel)]="event.end" />
+                                <mat-datepicker-toggle matSuffix [for]="endDateDP"></mat-datepicker-toggle>
+                                <mat-datepicker #endDateDP></mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <button mat-raised-button color="warn" >Borrar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>

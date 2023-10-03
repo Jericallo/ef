@@ -267,12 +267,13 @@ export class IndexComponent implements OnInit {
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         if (Array.isArray(res.result)) {
-          const currentDate = Date.now() / 1000 // Get the current date and time
+          const currentDate = Date.now() // Get the current date and time
           this.events = res.result.flatMap(obligation => {
-            obligation.fecha_cumplimiento = (obligation.fecha_cumplimiento / 1000) + 86400
+            console.log(obligation)
+            obligation.fecha_inicio = (obligation.fecha_inicio * 60000)
             console.log('obligation:',obligation)
             let color = '';
-            if (obligation.fecha_cumplimiento < currentDate) {
+            if (obligation.fecha_inicio < currentDate) {
               if(obligation.estatus.id === 1){
                 color = '#00D700'
               }else if (obligation.estatus.id === 0){
@@ -301,8 +302,8 @@ export class IndexComponent implements OnInit {
               ...alerts,
 
               {
-                start: new Date(obligation.fecha_cumplimiento * 1000),
-                end: new Date(obligation.fecha_cumplimiento * 1000),
+                start: new Date(obligation.fecha_inicio),
+                end: new Date(obligation.fecha_inicio),
                 title: obligation.nombre,
                 description: obligation.descripcion,
                 color: {
