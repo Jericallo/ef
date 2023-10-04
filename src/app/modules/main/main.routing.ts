@@ -5,6 +5,7 @@ import { LawsComponent } from './laws/laws.component';
 import { TopicsComponent } from './topics/topics.component';
 import {SearchComponent} from './search/search.component'
 import { ResponseComponent } from './response/response.component';
+import { VideoIntroComponent } from './video-intro/video-intro.component';
 
 export const MainRoutes: Routes = [
     {
@@ -82,7 +83,18 @@ export const MainRoutes: Routes = [
                 title: 'Búsqueda',
                 urls: [
                     { title: 'Inicio', url: '/main' },
-                    { title: 'Búsqueda' }
+                    { title: 'Respuesta' }
+                ]
+            }
+        },
+        {
+            path: 'videoIntro',
+            component: VideoIntroComponent,
+            data: {
+                title: 'Video Introducción',
+                urls: [
+                    { title: 'Inicio', url: '/main' },
+                    { title: 'Introducción' }
                 ]
             }
         }

@@ -21,6 +21,7 @@ import { SearchComponent } from './search/search.component';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { ResponseComponent } from './response/response.component';
 import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
+import { VideoIntroComponent } from './video-intro/video-intro.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { SearchDocumentationComponent } from 'src/app/shared/components/search-d
     SearchComponent,
     ResponseComponent,
     SearchDocumentationComponent,
+    VideoIntroComponent,
   ],
   imports: [
     CommonModule,
