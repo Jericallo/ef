@@ -112,8 +112,20 @@ export class ApiService {
    * @returns response with obligations
    */
   public dates(params:HttpParams):Observable<any>{
+    console.log(params)
     //const url = 'http://192.168.100.154:3000/v1/getAll?model=obligaciones'
     const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{params:params,headers:headers});
+  }
+
+  public historial(params:HttpParams):Observable<any>{
+    console.log(params)
+    //const url = 'http://192.168.100.154:3000/v1/getAll?model=obligaciones'
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones_historial'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -292,6 +304,13 @@ export class ApiService {
       this.id = res.id
       if(res.token) return res.token;
       else return environment.token;
+    }
+  }
+
+  public getId(){
+    if(localStorage[this.TOKEN]){
+      let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
+      return res.id
     }
   }
 

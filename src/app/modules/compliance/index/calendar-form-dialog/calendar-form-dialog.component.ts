@@ -197,6 +197,7 @@ export class CalendarFormDialogComponent implements OnInit {
   
   myControlObligations = new FormControl('');
   myControlDescription = new FormControl('');
+  myControlQuantity = new FormControl(1)
 
   myControlRisk = new FormControl<string | Priority>('');
   optionsRisk: Priority[] = [{ type: 'Alta' }, { type: 'Media' }, { type: 'Baja' }];
@@ -219,6 +220,7 @@ export class CalendarFormDialogComponent implements OnInit {
   selectType = null;
   selectPeriod = null;
   htmlContent = "";
+  quantity = 1;
 
   showFinal = false;
   showMain = true;
@@ -334,7 +336,6 @@ export class CalendarFormDialogComponent implements OnInit {
 
   selectedPeriod(opt: MatAutocompleteSelectedEvent) {
     period = opt.option.value.minutos;
-    this.showFinal = true
   }
 
   displayPeriod(periodo: ObligationsPeriod): string {
@@ -344,6 +345,10 @@ export class CalendarFormDialogComponent implements OnInit {
   handleEmptyPeriod(event: any) {
     event.target.value === '' ? this.selectPeriod = null : "";
   }
+
+  handleEmptyQuantity(event: any) {
+    event.target.value === '' ? this.quantity = null : "";
+  }
   
   private _filterPeriod(doc: string): ObligationsPeriod[] {
     const filterValuePeriod = doc.toLowerCase();
@@ -352,7 +357,7 @@ export class CalendarFormDialogComponent implements OnInit {
 
 
   selectedDate() {
-    const fechaAhora = moment.duration(this.dateS).asSeconds();
+    const fechaAhora = moment.duration(this.dateS).asMilliseconds();
     this.sendingObligation.fecha_cumplimiento = fechaAhora
     const dia = this.dateS.getDate() 
     const mes = this.dateS.getMonth()
@@ -374,7 +379,8 @@ export class CalendarFormDialogComponent implements OnInit {
   }
 
   selectedFinalDate() {
-    const fechaAhora = moment.duration(this.dateF).asSeconds();
+    const fechaAhora = moment.duration(this.dateF).asMilliseconds();
+    console.log(fechaAhora)
     this.sendingObligation.fecha_final = fechaAhora
   }
 
@@ -384,22 +390,22 @@ export class CalendarFormDialogComponent implements OnInit {
     if(chicken3) { alerts.push(sendAlert3) }
     var a = new Date(this.sendingObligation.fecha_cumplimiento * 1000);
     var dayOfMonth = a.getDate()
-    console.log(this.sendingObligation.fecha_cumplimiento)
     
     const body = {model:"obligaciones", data: {
-      fecha_cumplimiento: this.sendingObligation.fecha_cumplimiento,
+      fecha_cumplimiento: this.sendingObligation.fecha_final,
       id_cliente: 2,
       indicador_riesgo: this.sendingObligation.indicador_riesgo,
       prioridad: this.sendingObligation.prioridad,
       nombre: this.obligations,
       descripcion: this.description,
       id_tipo: this.sendingObligation.id_tipo,
-      periodo: period,
+      periodo: period * this.quantity,
       con_document: 0,
       documentaciones:this.sentDocumentations,
       id_usuario: 2,
       alertas: alerts,
-      dia_del_mes:dayOfMonth
+      dia_del_mes:dayOfMonth,
+      fecha_inicio:this.sendingObligation.fecha_cumplimiento
     }};
     console.log(body)
     this.apiService.postObligations(body).subscribe(
