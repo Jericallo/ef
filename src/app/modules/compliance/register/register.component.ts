@@ -30,10 +30,18 @@ export class RegisterComponent implements OnInit {
     },
   ];
 
+  mes=''
+  anio=''
+
   constructor(private apiService:ApiService) { }
 
   ngOnInit(): void {
     this.getObligations()
+
+    const month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+    const d = new Date()
+    this.mes = month[d.getMonth()]
+    this.anio = d.getFullYear().toString()
   }
 
   getObligations() {

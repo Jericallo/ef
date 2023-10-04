@@ -136,7 +136,7 @@ export class IndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.getObligations();
-    this.getObligationsForToday();
+    //this.getObligationsForToday();
     /*this.notification.requestPermission().then(token=>{
       console.log(token);
      })
@@ -261,17 +261,19 @@ export class IndexComponent implements OnInit {
   
   getObligations() {
     const date = new Date();
-    let params = new HttpParams().set("day", date.getTime() / 60000);
-
+    console.log(date.getTime())
+    let params = new HttpParams().set("day", (date.getTime() / 60000).toString());
+    params = params.set('where', date.getTime().toString());
+    params = params.set('id_usuario', this.apiService.getId().toString());
+        
     this.apiService.dates(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         if (Array.isArray(res.result)) {
           const currentDate = Date.now() // Get the current date and time
+          console.log(currentDate)
           this.events = res.result.flatMap(obligation => {
-            console.log(obligation)
             obligation.fecha_inicio = (obligation.fecha_inicio * 60000)
-            console.log('obligation:',obligation)
             let color = '';
             if (obligation.fecha_inicio < currentDate) {
               if(obligation.estatus.id === 1){
@@ -298,9 +300,23 @@ export class IndexComponent implements OnInit {
               },
               actions: this.actions
             })) : [];
+
+            const obligacionesFuturas = obligation.obligaciones_futuras && Array.isArray(obligation.obligaciones_futuras) && obligation.obligaciones_futuras.length > 1 ? obligation.obligaciones_futuras.map(element => ({
+              start:new Date(element),
+              end:new Date(element),
+              title:obligation.nombre,
+              description:obligation.descripcion,
+              color: {
+                primary: color,
+                secondary: color,
+              },
+              actions: obligation.documentaciones,
+              documentations: obligation.documentaciones
+            })) : [];
+
             return [
               ...alerts,
-
+              ...obligacionesFuturas,
               {
                 start: new Date(obligation.fecha_inicio),
                 end: new Date(obligation.fecha_inicio),
@@ -315,13 +331,76 @@ export class IndexComponent implements OnInit {
               }
             ];
           });
-          //console.log(this.events);
+          this.apiService.historial(params).subscribe({
+            next: res => {
+              res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
+              if (Array.isArray(res.result)) {
+                const currentDate = Date.now() // Get the current date and time
+                let historial = res.result.flatMap(obligation => {
+                  let color = '';
+                  if (obligation.fecha < currentDate) {
+                    if(obligation.obligacion.estatus.id === 1){
+                      color = '#00D700'
+                    }else if (obligation.oblgiacion.estatus.id === 0){
+                      color = '#D70000'
+                    }
+                  }
+                  else{
+                    if (obligation.fecha === 1) {
+                      color = '#ff3333';
+                    } else {
+                      color = '#fff700';
+                    }
+                  }
+                  const alerts = obligation.obligacion.alertas && Array.isArray(obligation.obligacion.alertas) ? obligation.alertas.obligacion.map(alert => ({
+                    start: new Date(alert.fecha),
+                    end: new Date(alert.fecha),
+                    title: alert.mensaje,
+                    description: alert.tipo,
+                    color: {
+                      primary: color,
+                      secondary: color,
+                    },
+                    actions: this.actions
+                  })) : [];
+                  return [
+                    ...alerts,
+                    {
+                      start: new Date(parseInt(obligation.fecha)),
+                      end: new Date(parseInt(obligation.fecha)),
+                      title: obligation.obligacion.nombre,
+                      description: obligation.obligacion.descripcion,
+                      color: {
+                        primary: color,
+                        secondary: color,
+                      },
+                      actions: obligation.obligacion.documentaciones,
+                      documentations: obligation.obligacion.documentaciones
+                    }
+                  ];
+                });
+                console.log(this.events)
+                historial.forEach((element) => {
+                  this.events.push(element)
+                })
+                console.log(this.events)
+              }
+            },
+            error: err => {
+              console.log(err);
+            }
+          });
         }
       },
       error: err => {
         console.log(err);
       }
     });
+
+
+    
+
+    
   }
 
   getObligationsForToday() {
