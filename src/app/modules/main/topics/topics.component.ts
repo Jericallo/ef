@@ -42,6 +42,7 @@ export class TopicsComponent implements OnInit {
   constructor(private apiService:ApiService){}
   ngOnInit(): void {this.get(); this.getAll()}
 
+
   private get(){
     this.apiService.getAll(this.apiService.MODELS.topics).subscribe({
       next:(res)=>{
@@ -70,6 +71,15 @@ export class TopicsComponent implements OnInit {
       },
       error:()=>{}
     });
+  }
+
+  toggleMenu() {
+    const menuContainer = document.getElementById("menu-container");
+    if (menuContainer.style.display === "block") {
+      menuContainer.style.display = "none";
+    } else {
+      menuContainer.style.display = "block";
+    }
   }
 
   private showContent(search){
