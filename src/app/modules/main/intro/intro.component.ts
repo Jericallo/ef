@@ -27,6 +27,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
   ngOnInit(): void {
     this.get();    
+    this.openCountdownModal()
   }
 
   get(){
@@ -104,17 +105,19 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
   openCountdownModal() {
     const dialogRef = this.dialog.open(CountdownModalComponent, {
-      width: '700px', 
+      width: '700px',
+      panelClass: 'my-custom-dialog-class',
       data: {
         scrollToBottom: () => {
           this.scrollElement2.nativeElement.scrollIntoView({ behavior: 'smooth' });
         }
       }
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
     });
   }
+  
 
   
   closeDialog(){

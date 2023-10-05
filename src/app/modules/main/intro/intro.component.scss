@@ -125,3 +125,27 @@
 .b-red{
   border: 2px solid red;
 }
+
+.bottom-modal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Opcional: ajusta el ancho según tus necesidades */
+  transform: translate(0, 100%); /* Inicialmente, coloca la modal fuera de la pantalla */
+  transition: transform 0.3s ease-in-out; /* Agrega una transición suave para animarla */
+}
+
+::ng-deep .my-custom-dialog-class {
+  mat-dialog-container {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    height: 220px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Agregamos desbordamiento vertical con barra de desplazamiento si es necesario */
+  }
+}
