@@ -20,45 +20,67 @@
       <div>
         <h6 style="text-align: center;">Manual</h6>
       </div>
-      <img src="https://concepto.de/wp-content/uploads/2023/01/manual-texto-documento.jpg" alt="" style="width: 100%; height: 108px; " >
+      <img src="https://concepto.de/wp-content/uploads/2023/01/manual-texto-documento.jpg" alt="" style="width: 100%; height: 108px; object-fit: cover; " >
     </div>
   </div>
 
+  <!--
   <div #scrollElement fxFlex.gt-sm="25" *ngFor="let res of results" fxFlex="100" (click)="setSrcVideo(res)">
     <mat-card>
       <mat-card-header>
         <div mat-card-avatar>
-          <img src="assets/images/logo-light-icon.png" class="img-fluid img-circle" />
+          <img src="assets/images/logo-light-icon.png" class=" img-fluid img-circle" />
         </div>
-        <mat-card-title>{{res.video.duracion/60 | number:'1.0-0'}} Minuto<span *ngIf="res.video.duracion != 60">s</span> </mat-card-title>
+        <mat-card-title>{{res.video.duracion/60 | number:'1.0-0'}} Minuto<span *ngIf="res.video.duracion != 60">s</span></mat-card-title>
         <mat-card-subtitle>{{res.autor}}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image [src]="res.imagen" alt="Photo of a Shiba Inu" />
       <mat-card-content>
         <p>{{res.texto || ''}}</p>
-        <mat-card-actions style="display: flex; align-items: center; justify-content: center;" >
-          <button style="background:rgb(45, 87, 202);"mat-raised-button color="accent"><mat-icon>play_arrow</mat-icon></button>
-         <!-- <button mat-button><mat-icon>share</mat-icon></button>-->
+        <mat-card-actions style="display: flex; align-items: center; justify-content: center;">
+          <button style="background:rgb(45, 87, 202);" mat-raised-button color="accent"><mat-icon>play_arrow</mat-icon></button>
         </mat-card-actions>
       </mat-card-content>
     </mat-card>
   </div>
-
-  <mat-card style="width: 679px; height: 398px; overflow: visible;">
-    <mat-card-header>
+-->
+<div #scrollElement fxFlex.gt-sm="25" *ngFor="let res of results" fxFlex="100" (click)="setSrcVideo(res)">
+  <mat-card class="card-with-overlay">
+    <div class="overlay-content">
       <div mat-card-avatar>
         <img src="assets/images/logo-light-icon.png" class="img-fluid img-circle" />
       </div>
-      <mat-card-title>Manual</mat-card-title>
-      <mat-card-subtitle>Escudo Físcal</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image src="https://assets.ltkcontent.com/images/34823/user-manual_7abbbb2796.jpg" style="width: 679px; height: 180px; object-fit: contain;" alt="Photo of a Shiba Inu" />
+      <mat-card-title>{{res.video.duracion/60 | number:'1.0-0'}} Minuto<span *ngIf="res.video.duracion != 60">s</span></mat-card-title>
+      <mat-card-subtitle style="color: rgba(255, 255, 255, 0.585);">{{res.autor}}</mat-card-subtitle>
+      <mat-card-content>
+        <p>{{res.texto || ''}}</p>
+        <mat-card-actions style="display: flex; align-items: center; justify-content: center;">
+          <button style="background:rgb(45, 87, 202);" mat-raised-button color="accent"><mat-icon>play_arrow</mat-icon></button>
+        </mat-card-actions>
+      </mat-card-content>
+    </div>
+    <img mat-card-image [src]="res.imagen" style="height: 45vh; object-fit: cover;" alt="Photo of a Shiba Inu" />
+  </mat-card>
+</div>
+
+
+  
+
+<mat-card class="card-with-overlay" style="width: 91vh;">
+  <div class="overlay-content">
+    <div mat-card-avatar>
+      <img src="assets/images/logo-light-icon.png" class="img-fluid img-circle" />
+    </div>
+    <mat-card-title>Manual</mat-card-title>
+    <mat-card-subtitle style="color: rgba(255, 255, 255, 0.585);">Escudo Fiscal</mat-card-subtitle>
     <mat-card-content>
       <p>Manual para el correcto uso de la plataforma Escudo Fiscal</p>
       <mat-card-actions style="display: flex; align-items: center; justify-content: center;" >
         <button (click)="scrollToManual()"style="background: rgb(45, 87, 202);" mat-raised-button color="accent"><mat-icon>arrow_downward</mat-icon></button>
       </mat-card-actions>
     </mat-card-content>
+     </div>
+     <img mat-card-image src="https://assets.ltkcontent.com/images/34823/user-manual_7abbbb2796.jpg" style="height: 45vh; object-fit: contain;" alt="Photo of a Shiba Inu" />
   </mat-card>
     <div #scrollElement2  class="manual-container">
       <div style="margin: 20px;">

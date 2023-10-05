@@ -1,6 +1,5 @@
 #divVideo{
   text-align: center;
-  margin-bottom:1rem;
 }
 
 #divVideo {
@@ -25,6 +24,33 @@
   position: relative;
   bottom: -700px;
 }
+.card-with-overlay {
+  height: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.overlay-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5); /* Adjust the background color and opacity as needed */
+  color: white; /* Text color for the overlay content */
+  text-align: center;
+  padding: 20px;
+}
+
+.overlay-content img {
+  max-width: 100%;
+  height: auto;
+}
+
 
 .content {
   position:relative;
@@ -75,9 +101,11 @@
   margin: 20px auto; /* Auto para centrar horizontalmente */
   border-radius: 5px;
   height: 70vh;
-  margin-bottom: 90px;
+  margin-bottom: 50px;
+  margin-left: 16px;
+  margin-right: 10px;
   overflow: scroll;
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column; /* Asegura que el contenido se alinee verticalmente */
 }
