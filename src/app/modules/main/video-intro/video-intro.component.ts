@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router'; // Importa el Router
 
 @Component({
   selector: 'app-video-intro',
@@ -16,7 +17,11 @@ export class VideoIntroComponent implements OnInit {
   titVideo = ""
   results =[];
 
-  constructor(private apiService: ApiService, private changeDetector:ChangeDetectorRef) { }
+  constructor(
+    private apiService: ApiService, 
+    private changeDetector: ChangeDetectorRef,
+    private router: Router // Inyecta el Router
+  ) { }
 
   ngOnInit(): void {
     this.get()
@@ -29,14 +34,12 @@ export class VideoIntroComponent implements OnInit {
         if(res.status == "OK"){
           this.results = res.result;
           this.setSrcVideo(this.results[0])
-          console.log(this.results[0])
         }
       }
     });
   }
 
   setSrcVideo(obj){
-    //if(!this.video) this.changeDetector.detectChanges();
     this.changeDetector.detectChanges();
     if(obj.video.url == undefined){
       alert('No se encontró el video')
@@ -45,11 +48,9 @@ export class VideoIntroComponent implements OnInit {
     }
     this.titVideo = obj.titulo;
     setTimeout(()=>{this.playNew(obj);},1)
-    //this.playNew(obj);
   }
 
   playNew(obj:any, numVideo=-1){
-    //this.mytimelines.forEach(mtl => {mtl.selected = false;});
     if(typeof obj === "undefined"){
       return
     }
@@ -59,11 +60,13 @@ export class VideoIntroComponent implements OnInit {
     this.video.nativeElement.muted = false;
     this.video.nativeElement.load();
     this.video.nativeElement.play();
-    this.divVideo.nativeElement.parentElement.parentElement.parentElement.scrollIntoView({ behavior: 'smooth' });
+
+    this.video.nativeElement.addEventListener('ended', () => {
+      this.router.navigate(['/main/news']); 
+    });
   }
 
   videoLoaded() {
     this.video.nativeElement.play();
   }
-
 }
