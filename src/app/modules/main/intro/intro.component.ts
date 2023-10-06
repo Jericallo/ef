@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
-import { CountdownModalComponent } from './countdown-modal/countdown-modal.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-intro',
@@ -18,16 +19,17 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
 
   messageReceived = '';
-
+  countdown: number = 7;
   srcVideo = "";
   titVideo = ""
   results =[];
+  showContinueWatching = false;
 
-  constructor(private apiService:ApiService, private changeDetector:ChangeDetectorRef, private dialog: MatDialog) {moment.locale("es"); }
+
+  constructor(private apiService:ApiService, private changeDetector:ChangeDetectorRef, private dialog: MatDialog, private router: Router) {moment.locale("es"); }
 
   ngOnInit(): void {
     this.get();    
-    this.openCountdownModal()
   }
 
   get(){
@@ -73,23 +75,19 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   
     this.video.nativeElement.addEventListener("loadedmetadata", () => {
       const videoDuration = this.video.nativeElement.duration;
-      const alertTime = videoDuration - 7; 
+      const alertTime = videoDuration - 7;
   
       this.video.nativeElement.play();
   
       const checkRemainingTime = () => {
         const currentTime = this.video.nativeElement.currentTime;
         if (currentTime >= alertTime) {
-          this.openCountdownModal();
           clearInterval(intervalId);
-          
-          setTimeout(() => {
-            this.closeDialog();
-          }, 7000); 
+          this.showContinueWatching = true;
+          this.startCountdown();
         }
         if (this.video.nativeElement.ended) {
           clearInterval(intervalId);
-          
         }
       };
   
@@ -102,23 +100,27 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   
     this.video.nativeElement.load();
   }
-
-  openCountdownModal() {
-    const dialogRef = this.dialog.open(CountdownModalComponent, {
-      width: '700px',
-      panelClass: 'my-custom-dialog-class',
-      data: {
-        scrollToBottom: () => {
-          this.scrollElement2.nativeElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    });
   
-    dialogRef.afterClosed().subscribe((result) => {
-    });
+
+  startCountdown() {
+    const interval = setInterval(() => {
+      this.countdown--;
+      if (this.countdown <= 0) {
+        clearInterval(interval);
+        this.showContinueWatching = false;
+      }
+    }, 1000);
   }
   
 
+  goToCalendar() {
+    this.router.navigate(['/compliance/index']);
+  }
+
+  goToManual() {
+    this.scrollToManual()
+  }
+  
   
   closeDialog(){
     this.dialog.closeAll()
