@@ -13,7 +13,7 @@ import { SearchDocumentationComponent } from './components/search-documentation/
   declarations: [
     AccordionAnchorDirective,
     AccordionLinkDirective,
-    AccordionDirective  
+    AccordionDirective,
   ],
   exports: [
     AccordionAnchorDirective,

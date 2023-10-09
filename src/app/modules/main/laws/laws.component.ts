@@ -15,7 +15,7 @@ export class LawsComponent implements OnInit {
   data = {clasifications:[]};
   dataSegmented = {}
 
-  article=null;
+  article=[];
   articles=[];
   articleRel = null;
 
@@ -33,7 +33,7 @@ export class LawsComponent implements OnInit {
 
   articleClick(art, par = null){
     //this.articles = [];
-    this.article = art;
+    this.article.push(art);
     this.articleRel = null;
     //log(art)
     if(par){
@@ -380,4 +380,7 @@ export class LawsComponent implements OnInit {
     return null; // Si no se encuentra el artículo con el id proporcionado
   }
 
+  cerrarPestana(index: number) {
+    this.article.splice(index, 1);
+  }
 }

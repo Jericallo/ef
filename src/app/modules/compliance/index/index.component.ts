@@ -99,6 +99,8 @@ export class IndexComponent implements OnInit {
   view = 'month';
   viewDate: Date = new Date();
 
+  sendableDate: Date = new Date();
+
   d = new Date()
   month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   mes = this.month[this.d.getMonth()]
@@ -259,8 +261,7 @@ export class IndexComponent implements OnInit {
   }
   */
   
-  getObligations() {
-    const date = new Date();
+  getObligations(date = new Date()) {
     console.log(date.getTime())
     let params = new HttpParams().set("day", (date.getTime() / 60000).toString());
     params = params.set('where', date.getTime().toString());
@@ -270,8 +271,8 @@ export class IndexComponent implements OnInit {
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         if (Array.isArray(res.result)) {
+          console.log(res)
           const currentDate = Date.now() // Get the current date and time
-          console.log(currentDate)
           this.events = res.result.flatMap(obligation => {
             obligation.fecha_inicio = (obligation.fecha_inicio * 60000)
             let color = '';
@@ -301,7 +302,7 @@ export class IndexComponent implements OnInit {
               actions: this.actions
             })) : [];
 
-            const obligacionesFuturas = obligation.obligaciones_futuras && Array.isArray(obligation.obligaciones_futuras) && obligation.obligaciones_futuras.length > 1 ? obligation.obligaciones_futuras.map(element => ({
+            const obligacionesFuturas = obligation.obligaciones_futuras && Array.isArray(obligation.obligaciones_futuras) && obligation.obligaciones_futuras.length > 0 ? obligation.obligaciones_futuras.map(element => ({
               start:new Date(element),
               end:new Date(element),
               title:obligation.nombre,
@@ -314,24 +315,16 @@ export class IndexComponent implements OnInit {
               documentations: obligation.documentaciones
             })) : [];
 
+            console.log('FUTURO',obligacionesFuturas)
+            console.log('OBLIGASAO', obligation)
+
             return [
               ...alerts,
               ...obligacionesFuturas,
-              {
-                start: new Date(obligation.fecha_inicio),
-                end: new Date(obligation.fecha_inicio),
-                title: obligation.nombre,
-                description: obligation.descripcion,
-                color: {
-                  primary: color,
-                  secondary: color,
-                },
-                actions: obligation.documentaciones,
-                documentations: obligation.documentaciones
-              }
+              
             ];
           });
-          this.apiService.historial(params).subscribe({
+          /*this.apiService.historial(params).subscribe({
             next: res => {
               res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
               if (Array.isArray(res.result)) {
@@ -341,7 +334,7 @@ export class IndexComponent implements OnInit {
                   if (obligation.fecha < currentDate) {
                     if(obligation.obligacion.estatus.id === 1){
                       color = '#00D700'
-                    }else if (obligation.oblgiacion.estatus.id === 0){
+                    }else if (obligation.obligacion.estatus.id === 0){
                       color = '#D70000'
                     }
                   }
@@ -389,18 +382,36 @@ export class IndexComponent implements OnInit {
             error: err => {
               console.log(err);
             }
-          });
+          });*/
+          console.log(this.events)
         }
       },
       error: err => {
         console.log(err);
       }
     });
+  }
 
+  monthNext(){
+    console.log('Month Next')
+    console.log(this.sendableDate)
 
-    
+    this.sendableDate.setMonth(this.sendableDate.getMonth()+1)
+    console.log(this.sendableDate)
 
-    
+    this.events = []
+    this.getObligations(this.sendableDate)
+  }
+
+  monthPrevious(){
+    console.log('Month Previous')
+    console.log(this.sendableDate)
+
+    this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
+    console.log(this.sendableDate)
+
+    this.events = []
+    this.getObligations(this.sendableDate)
   }
 
   getObligationsForToday() {

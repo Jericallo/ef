@@ -14,6 +14,8 @@ export class RegisterComponent implements OnInit {
   events: CalendarEvent[] = [    
   ];
 
+  data: any[][] = [];
+
   actions: CalendarEventAction[] = [
     {
       label: '',
@@ -33,7 +35,11 @@ export class RegisterComponent implements OnInit {
   mes=''
   anio=''
 
-  constructor(private apiService:ApiService) { }
+  dataSource: any[];
+  displayedColumns: string[];
+  fixedColumns: string[];
+
+  constructor(private apiService:ApiService) {}
 
   ngOnInit(): void {
     this.getObligations()
@@ -42,71 +48,59 @@ export class RegisterComponent implements OnInit {
     const d = new Date()
     this.mes = month[d.getMonth()]
     this.anio = d.getFullYear().toString()
+
+    console.log(this.dataSource)
   }
 
   getObligations() {
     const date = new Date();
     let params = new HttpParams().set("day", date.getTime() / 60000);
     params.append('id_usuario', this.apiService.getId())
-    this.apiService.dates(params).subscribe({
+    this.apiService.getCumplimientos().subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        if (Array.isArray(res.result)) {
-          const currentDate = Date.now() // Get the current date and time
-          this.events = res.result.flatMap(obligation => {
-            console.log(obligation)
-            obligation.fecha_inicio = (obligation.fecha_inicio * 60000)
-            console.log('obligation:',obligation)
-            let color = '';
-            if (obligation.fecha_inicio < currentDate) {
-              if(obligation.estatus.id === 1){
-                color = '#00D700'
-              }else if (obligation.estatus.id === 0){
-                color = '#D70000'
-              }
-            }
-            else{
-              if (obligation.indicador_riesgo === 1) {
-                color = '#ff3333';
-              } else {
-                color = '#fff700';
-              }
-            }
-            const alerts = obligation.alertas && Array.isArray(obligation.alertas) ? obligation.alertas.map(alert => ({
-              start: new Date(alert.fecha),
-              end: new Date(alert.fecha),
-              title: alert.mensaje,
-              description: alert.tipo,
-              color: {
-                primary: color,
-                secondary: color,
-              },
-              actions: this.actions
-            })) : [];
-            return [
-              ...alerts,
+        console.log(res.result)
 
-              {
-                start: new Date(obligation.fecha_inicio),
-                end: new Date(obligation.fecha_inicio),
-                title: obligation.nombre,
-                description: obligation.descripcion,
-                color: {
-                  primary: color,
-                  secondary: color,
-                },
-                actions: obligation.documentaciones,
-                documentations: obligation.documentaciones
-              }
-            ];
-          });
-          //console.log(this.events);
+        this.dataSource = [];
+        this.displayedColumns = [];
+        this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3'];
+
+        for (let i = 1; i <= 50; i++) {
+          const columnName = `Column ${i}`;
+          this.displayedColumns.push(columnName);
+          this.fixedColumns.push(columnName);
         }
+        this.fixedColumns.push('fixedColumn4')
+
+        for (let i = 1; i <= 500; i++) {
+          const row = { fixedColumn: `Row ${i}`,fixedColumn2: `Rowf ${i}`,fixedColumn3: `Rowff ${i}` };
+          for (let j = 1; j <= 50; j++) {
+            const columnName = `Column ${j}`;
+            row[columnName] = `${columnName} - Row ${i}`;
+          }
+          row['switch'] = true
+          row['textColor'] = 'black'
+
+          this.dataSource.push(row);
+        }
+
+        res.result.forEach((element,index) => {
+          this.dataSource[index].fixedColumn = element.descripcion
+        });
       },
       error: err => {
         console.log(err);
       }
     });
+  }
+
+  onSwitchChange(row: any) {
+    row.switch
+    if (!row.switch) {
+      row.textColor = 'white'; // Establece el contenido en blanco
+    } else {
+      row.textColor = 'black';
+    }
   }
 
 }
