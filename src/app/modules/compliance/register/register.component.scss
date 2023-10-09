@@ -1,0 +1,8 @@
+/* Estilo para la columna fija */
+.mat-cell,
+.mat-header-cell {
+  min-width: 100px; /* Ajusta el valor según tus necesidades */
+}
+
+.fixed-column tr:first-child { background-color: yellow; }
+  

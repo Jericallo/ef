@@ -1,4 +1,4 @@
-<mat-card>
+<!--<mat-card>
     <mat-card-content>
         <div class="d-flex align-items-center">
             <h3 class="m-t-0">Obligaciones {{mes}} {{anio}}</h3>
@@ -53,4 +53,55 @@
             </table>
         </div>
     </mat-card-content>
-</mat-card>
+</mat-card>-->
+
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="overflow: visible; width: fit-content;">
+    <!-- Columna fija -->
+    <ng-container matColumnDef="fixedColumn" sticky>
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Fixed Column' }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: fit-content; padding: 0px; margin: 0px;">{{ row.fixedColumn }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fixedColumn2" sticky>
+        <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Fixed Column' }}</mat-header-cell>
+        <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: fit-content; padding: 0px; margin: 0px;">{{ row.fixedColumn2 }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fixedColumn3" sticky>
+        <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Fixed Column' }}</mat-header-cell>
+        <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: fit-content; padding: 0px; margin: 0px;">{{ row.fixedColumn3 }}</mat-cell>
+      </ng-container>
+  
+    <!-- Columnas desplazables -->
+    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+      <mat-header-cell *matHeaderCellDef style="width: 150px;">{{ column }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.textColor" style="width: fit-content;">{{ row[column] }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fixedColumn4" stickyEnd>
+        <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Last Column' }}</mat-header-cell>
+        <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: fit-content; padding: 0px; margin: 0px;">
+            <mat-slide-toggle [(ngModel)]="row.switch" (change)="onSwitchChange(row)"></mat-slide-toggle>
+        </mat-cell>
+    </ng-container>
+  
+    <!-- Encabezados de columna fija -->
+    <mat-header-row *matHeaderRowDef="fixedColumns" style="background-color: #ffcc0c;"></mat-header-row>
+  
+    <!-- Encabezados de columnas desplazables -->
+  
+    <!-- Filas de la tabla -->
+    <mat-row class="row-table" *matRowDef="let row; columns: fixedColumns;"></mat-row>
+  </mat-table>
+  
+  
+  
+  
+
+  
+  
+  
+
+  
+  
+  
