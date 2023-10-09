@@ -1,0 +1,15 @@
+<div>
+    <h2>¿Continuar viendo?</h2>
+
+    <p>Continuará en {{ countdown }} segundos</p>
+
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="(countdown / 7) * 100"></div>
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 40px; margin-top: 20px;">
+        <button mat-flat-button color="primary" (click)="goToCalendar()">Ir al Calendario</button>
+        <button mat-flat-button color="primary" (click)="goToManual()">Ir al Manual</button>
+    </div>
+
+
+</div>

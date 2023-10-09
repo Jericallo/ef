@@ -21,7 +21,12 @@ import { SearchComponent } from './search/search.component';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { ResponseComponent } from './response/response.component';
 import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
+
 import { MatTreeModule } from '@angular/material/tree';
+
+import { VideoIntroComponent } from './video-intro/video-intro.component';
+import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -36,6 +41,8 @@ import { MatTreeModule } from '@angular/material/tree';
     SearchComponent,
     ResponseComponent,
     SearchDocumentationComponent,
+    VideoIntroComponent,
+    CountdownModalComponent,
   ],
   imports: [
     CommonModule,

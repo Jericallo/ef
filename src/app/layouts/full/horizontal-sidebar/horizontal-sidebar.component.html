@@ -4,7 +4,7 @@
 
 <mat-nav-list appAccordion>
     <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
-        <a class="{{menuitem.class}}"  appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'link'">
+        <a class="{{menuitem.class}}"  appAccordionToggle [routerLink]="['/main/videoIntro']" *ngIf="menuitem.type === 'link'">
             <mat-icon class="icon-circle">{{ menuitem.icon }}</mat-icon>
             <span>{{ menuitem.name | translate }}</span>
             <span fxFlex></span>

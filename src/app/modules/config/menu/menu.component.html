@@ -79,7 +79,7 @@
     </mat-card-content>
 </mat-card>
 -->
-<mat-card>
+<mat-card style="height: 90vh; overflow: scroll;">
     <mat-card-content>
       <mat-card-title>Configuraciones</mat-card-title>
   
@@ -108,6 +108,19 @@
             <div class="option_container">
               <mat-icon class="icon">{{ ley.icon }}</mat-icon>
               <span>{{ ley.descripcion }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="title">Cumplimiento</div>
+  
+      <div class="container">
+        <div class="box" *ngFor="let cumplimiento of filterCumplimiento()">
+          <a [href]="'/config/' + cumplimiento.path">
+            <div class="option_container">
+              <mat-icon class="icon">{{ cumplimiento.icon }}</mat-icon>
+              <span>{{ cumplimiento.descripcion }}</span>
             </div>
           </a>
         </div>

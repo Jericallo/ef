@@ -67,6 +67,15 @@ export class MenuComponent implements OnInit {
     }
   ];
 
+  cumplimiento: any[] = [
+    {
+      icon: 'widgets',
+      descripcion: 'Ver todos',
+      path: 'categories'
+    },
+
+  ];
+
   filterUsuarios() {
     const searchTermLower = this.searchTerm.toLowerCase();
     if (searchTermLower.includes('usuarios')) {
@@ -85,6 +94,17 @@ export class MenuComponent implements OnInit {
     } else {
       return this.leyes.filter(ley =>
         ley.descripcion.toLowerCase().includes(searchTermLower)
+      );
+    }
+  }
+
+  filterCumplimiento() {
+    const searchTermLower = this.searchTerm.toLowerCase();
+    if (searchTermLower.includes('cumplimiento')) {
+      return this.cumplimiento;
+    } else {
+      return this.cumplimiento.filter(cumplimiento =>
+        cumplimiento.descripcion.toLowerCase().includes(searchTermLower)
       );
     }
   }

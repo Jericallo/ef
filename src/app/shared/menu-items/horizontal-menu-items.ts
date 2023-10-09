@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { VideoIntroComponent } from 'src/app/modules/main/video-intro/video-intro.component';
+
 
 export interface BadgeItem {
     type: string;
@@ -24,6 +27,12 @@ export interface Menu {
     class?: string;
     id?:string;
 }
+
+const routes: Routes = [
+    { path: 'main/videoIntro', component: VideoIntroComponent }, 
+  ];
+  
+
 const MENUITEMS = [
   {
     state: 'main',
@@ -31,6 +40,7 @@ const MENUITEMS = [
     type: 'link',
     icon: 'brightness_1',
     class: 'circle-menu',
+    routerLink: '/main/videoIntro' // Ruta que se redirigirá al hacer clic en este elemento
   },
     {
         state: 'main',
