@@ -11,6 +11,7 @@ import { UsersComponent } from './users/users.component';
 import { MenuComponent } from './menu/menu.component';
 import { ProfilesComponent } from './profiles/profiles.component';
 import { ModulesComponent } from './modules/modules.component';
+import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -145,6 +146,17 @@ export const ConfigRoutes: Routes = [
                     urls: [
                         { title: 'Configuración', url: '/config' },
                         { title: 'Modulos' }
+                    ]
+                }
+            },
+            {
+                path: 'compliance',
+                component: ComplianceCrudComponent,
+                data: {
+                    title: 'Cumplimiento',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'Cumplimiento' }
                     ]
                 }
             },
