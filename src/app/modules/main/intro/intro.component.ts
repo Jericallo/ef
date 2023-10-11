@@ -62,7 +62,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     alert('No se encontró el video')
   }
 
-  playNew(obj: any, numVideo = -1) {
+  playNew(obj: any) {
     if (typeof obj === "undefined") {
       return;
     }
@@ -77,22 +77,29 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
       const videoDuration = this.video.nativeElement.duration;
       const alertTime = videoDuration - 7;
   
-      this.video.nativeElement.play();
-  
       const checkRemainingTime = () => {
         const currentTime = this.video.nativeElement.currentTime;
         if (currentTime >= alertTime) {
-          clearInterval(intervalId);
           this.showContinueWatching = true;
-          this.startCountdown();
+          this.startCountdown(); // Inicia el contador cuando aparece showContinueWatching
         }
         if (this.video.nativeElement.ended) {
-          clearInterval(intervalId);
+          this.showContinueWatching = false;
+          const currentIndex = this.results.indexOf(obj);
+          if (currentIndex < this.results.length - 1) {
+            // Obtener el siguiente video en la lista
+            const nextVideo = this.results[currentIndex + 1];
+            // Reproducir automáticamente el siguiente video
+            this.playNew(nextVideo);
+          } else {
+            console.log("No hay más videos para reproducir.");
+          }
         }
       };
   
       const intervalId = setInterval(checkRemainingTime, 1000);
   
+      this.video.nativeElement.play();
       this.divVideo.nativeElement.parentElement.parentElement.parentElement.scrollIntoView({
         behavior: "smooth",
       });
@@ -101,8 +108,8 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     this.video.nativeElement.load();
   }
   
-
   startCountdown() {
+    this.countdown = 7; // Reinicia el contador a 7 segundos cuando se muestra showContinueWatching
     const interval = setInterval(() => {
       this.countdown--;
       if (this.countdown <= 0) {
@@ -111,6 +118,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
       }
     }, 1000);
   }
+  
   
 
   goToCalendar() {
