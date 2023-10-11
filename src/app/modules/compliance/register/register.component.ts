@@ -54,8 +54,11 @@ export class RegisterComponent implements OnInit {
 
   getObligations() {
     const date = new Date();
-    let params = new HttpParams().set("day", date.getTime() / 60000);
-    params.append('id_usuario', this.apiService.getId())
+
+    let params = new HttpParams().set("where", date.getTime());
+    //params.append('id_usuario', this.apiService.getId())
+    params = params.set('id_usuario', 2)
+    console.log(params)
     this.apiService.getCumplimientos().subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
@@ -73,10 +76,17 @@ export class RegisterComponent implements OnInit {
         this.fixedColumns.push('fixedColumn4')
 
         for (let i = 1; i <= 500; i++) {
-          const row = { fixedColumn: `Row ${i}`,fixedColumn2: `Rowf ${i}`,fixedColumn3: `Rowff ${i}` };
+          const row = { fixedColumn: `Row ${i}`,
+            fixedColumn2: `Rowf2 ${i}`,
+            fixedColumn3: `Rowff ${i}`, 
+            fixedColumnRec:`Row ${i}`, 
+            fixedColumn2Rec: `Rowf2 ${i}`,
+            fixedColumn3Rec:`Rowff ${i}`};
           for (let j = 1; j <= 50; j++) {
             const columnName = `Column ${j}`;
+            const columnRec = `Column ${j} Rec`
             row[columnName] = `${columnName} - Row ${i}`;
+            row[columnRec] = `${columnName} - Row ${i}`;
           }
           row['switch'] = true
           row['textColor'] = 'black'
@@ -85,7 +95,20 @@ export class RegisterComponent implements OnInit {
         }
 
         res.result.forEach((element,index) => {
-          this.dataSource[index].fixedColumn = element.descripcion
+          this.dataSource[index].fixedColumn = element.cumplimiento.descripcion
+          this.dataSource[index].fixedColumn2 = element.cumplimiento.tipo.nombre
+
+          this.dataSource[index].fixedColumnRec = element.cumplimiento.descripcion
+          this.dataSource[index].fixedColumn2Rec = element.cumplimiento.tipo.nombre
+
+          element.cumplimiento.obligaciones.forEach((element2,index2) => {
+            const aux = this.dataSource[index]
+            aux[`Column ${index2 + 1}`] = element2.nombre
+            aux[`Column ${index2 + 1} Rec`] = element2.nombre
+            console.log(aux)
+            this.dataSource[index] = aux
+          })
+          //this.dataSource[index].""
         });
       },
       error: err => {
@@ -95,11 +118,16 @@ export class RegisterComponent implements OnInit {
   }
 
   onSwitchChange(row: any) {
+    console.log(row)
     row.switch
     if (!row.switch) {
-      row.textColor = 'white'; // Establece el contenido en blanco
+      for(let i = 1; i <= 50; i++){
+        row[`Column ${i}`] = ''
+      }
     } else {
-      row.textColor = 'black';
+      for(let i = 1; i <= 50; i++){
+        row[`Column ${i}`] = row[`Column ${i} Rec`]
+      }
     }
   }
 

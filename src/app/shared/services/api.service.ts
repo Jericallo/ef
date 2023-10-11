@@ -571,12 +571,12 @@ export class ApiService {
     return this.getToken()
   }
 
-  public getCumplimientos():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimientos';
+  public getCumplimientos(params?:HttpParams):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_mensual';
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    return this.http.get(url ,{headers:headers});
+    return this.http.get(url ,{params:params,headers:headers});
   }
 }
