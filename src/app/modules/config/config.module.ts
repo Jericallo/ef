@@ -39,6 +39,7 @@ import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { BrowserModule } from '@angular/platform-browser';
 import {VgStreamingModule} from '@videogular/ngx-videogular/streaming';
+import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {VgStreamingModule} from '@videogular/ngx-videogular/streaming';
     RemoveModuleDialogComponent,
     EditModuleDialogComponent,
     AddPermissionDialogComponent,
-    AnswerTemplate,    
+    AnswerTemplate,
+    ComplianceCrudComponent,    
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [

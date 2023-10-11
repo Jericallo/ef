@@ -71,7 +71,7 @@ export class MenuComponent implements OnInit {
     {
       icon: 'widgets',
       descripcion: 'Ver todos',
-      path: 'categories'
+      path: 'compliance'
     },
 
   ];
