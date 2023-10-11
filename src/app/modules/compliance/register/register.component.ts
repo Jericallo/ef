@@ -1,100 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { ApiService } from 'src/app/shared/services/api.service';
-import {CalendarEvent,CalendarEventAction,CalendarEventTimesChangedEvent,CalendarView} from 'angular-calendar';
-
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
+
 export class RegisterComponent implements OnInit {
-
-  events: CalendarEvent[] = [    
-  ];
-
-  data: any[][] = [];
-
-  actions: CalendarEventAction[] = [
-    {
-      label: '',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-       // this.handleEvent('Edit', event);
-      },
-    },
-    {
-      label: '',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        //this.events = this.events.filter((iEvent) => iEvent !== event);
-        // this.handleEvent('Deleted', event);
-      },
-    },
-  ];
-
-  mes=''
-  anio=''
 
   dataSource: any[];
   displayedColumns: string[];
   fixedColumns: string[];
+  offset = 0
+  derechaHabilitado = false
+  izquierdaHabilitado = false
 
   constructor(private apiService:ApiService) {}
 
   ngOnInit(): void {
+    this.create_table()
     this.getObligations()
-
-    const month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    const d = new Date()
-    this.mes = month[d.getMonth()]
-    this.anio = d.getFullYear().toString()
-
     console.log(this.dataSource)
   }
 
-  getObligations() {
+  getObligations(offset=0) {
     const date = new Date();
-
-    let params = new HttpParams().set("where", date.getTime());
-    //params.append('id_usuario', this.apiService.getId())
-    params = params.set('id_usuario', 2)
+    let params = new HttpParams().set("where", date.getTime())
+    params = params.set('id_usuario', "29")
+    params = params.set('limit',11)
+    params = params.set('offset',offset)
     console.log(params)
-    this.apiService.getCumplimientos().subscribe({
+    this.apiService.getCumplimientos(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        console.log(res.result)
-
-        this.dataSource = [];
-        this.displayedColumns = [];
-        this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3'];
-
-        for (let i = 1; i <= 50; i++) {
-          const columnName = `Column ${i}`;
-          this.displayedColumns.push(columnName);
-          this.fixedColumns.push(columnName);
-        }
-        this.fixedColumns.push('fixedColumn4')
-
-        for (let i = 1; i <= 500; i++) {
-          const row = { fixedColumn: `Row ${i}`,
-            fixedColumn2: `Rowf2 ${i}`,
-            fixedColumn3: `Rowff ${i}`, 
-            fixedColumnRec:`Row ${i}`, 
-            fixedColumn2Rec: `Rowf2 ${i}`,
-            fixedColumn3Rec:`Rowff ${i}`};
-          for (let j = 1; j <= 50; j++) {
-            const columnName = `Column ${j}`;
-            const columnRec = `Column ${j} Rec`
-            row[columnName] = `${columnName} - Row ${i}`;
-            row[columnRec] = `${columnName} - Row ${i}`;
-          }
-          row['switch'] = true
-          row['textColor'] = 'black'
-
-          this.dataSource.push(row);
-        }
-
+        
         res.result.forEach((element,index) => {
+
           this.dataSource[index].fixedColumn = element.cumplimiento.descripcion
           this.dataSource[index].fixedColumn2 = element.cumplimiento.tipo.nombre
 
@@ -105,16 +48,54 @@ export class RegisterComponent implements OnInit {
             const aux = this.dataSource[index]
             aux[`Column ${index2 + 1}`] = element2.nombre
             aux[`Column ${index2 + 1} Rec`] = element2.nombre
-            console.log(aux)
             this.dataSource[index] = aux
           })
-          //this.dataSource[index].""
         });
+
+        console.log(res)
+        if(res.result.length < 10){
+          this.derechaHabilitado = true
+        }
+        if(this.offset === 0){
+          this.izquierdaHabilitado = true
+        }
       },
       error: err => {
         console.log(err);
       }
     });
+  }
+
+  create_table(){
+    this.dataSource = [];
+    this.displayedColumns = [];
+    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3'];
+    for (let i = 1; i <= 50; i++) {
+      const columnName = `Column ${i}`;
+      this.displayedColumns.push(columnName);
+      this.fixedColumns.push(columnName);
+    }
+    this.fixedColumns.push('fixedColumn4')
+
+    for (let i = 1; i <= 10; i++) {
+      const row = { fixedColumn: `Row ${i}`,
+        fixedColumn2: `Rowf2 ${i}`,
+        fixedColumn3: `Rowff ${i}`, 
+        fixedColumnRec:`Row ${i}`, 
+        fixedColumn2Rec: `Rowf2 ${i}`,
+        fixedColumn3Rec:`Rowff ${i}`};
+      for (let j = 1; j <= 50; j++) {
+        const columnName = `Column ${j}`;
+        const columnRec = `Column ${j} Rec`
+        row[columnName] = `${columnName} - Row ${i}`;
+        row[columnRec] = `${columnName} - Row ${i}`;
+      }
+      row['switch'] = true
+      row['textColor'] = 'black'
+
+      this.dataSource.push(row);
+      
+    }
   }
 
   onSwitchChange(row: any) {
@@ -129,6 +110,20 @@ export class RegisterComponent implements OnInit {
         row[`Column ${i}`] = row[`Column ${i} Rec`]
       }
     }
+  }
+
+  derecha(){
+    console.log('Derechando')
+    this.offset += 10
+    this.create_table()
+    this.getObligations(this.offset)
+  }
+
+  izquierda(){
+    console.log('Izquierdando')
+    this.offset += 10
+    this.create_table()
+    this.getObligations(this.offset)
   }
 
 }
