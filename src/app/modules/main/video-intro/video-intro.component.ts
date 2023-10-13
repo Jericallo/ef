@@ -30,7 +30,6 @@ export class VideoIntroComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    // Limpia el evento 'ended' cuando el componente se destruye para evitar fugas de memoria.
     this.video.nativeElement.removeEventListener('ended', this.handleVideoEnded);
   }
   
@@ -69,7 +68,7 @@ export class VideoIntroComponent implements OnInit {
       this.video.nativeElement.play();
       this.video.nativeElement.addEventListener('ended', this.handleVideoEnded);
     } else {
-      alert('Reproducción completada');
+      this.router.navigate(['/main/news'])    
     }
   }
 
