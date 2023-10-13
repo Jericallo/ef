@@ -16,23 +16,31 @@ export class VideoIntroComponent implements OnInit {
   srcVideo = "";
   titVideo = ""
   results =[];
+  private playCount = 0;
+  private maxPlays = 5; 
 
   constructor(
     private apiService: ApiService, 
     private changeDetector: ChangeDetectorRef,
-    private router: Router // Inyecta el Router
+    private router: Router 
   ) { }
 
   ngOnInit(): void {
     this.get()
   }
 
+  ngOnDestroy(): void {
+    // Limpia el evento 'ended' cuando el componente se destruye para evitar fugas de memoria.
+    this.video.nativeElement.removeEventListener('ended', this.handleVideoEnded);
+  }
+  
   get(){
     this.apiService.getAll(this.apiService.MODELS.intros).subscribe({
       next:(res)=>{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         if(res.status == "OK"){
           this.results = res.result;
+          console.log(this.results)
           this.setSrcVideo(this.results[0])
         }
       }
@@ -50,21 +58,26 @@ export class VideoIntroComponent implements OnInit {
     setTimeout(()=>{this.playNew(obj);},1)
   }
 
-  playNew(obj:any, numVideo=-1){
-    if(typeof obj === "undefined"){
-      return
+  playNew(obj: any, numVideo = -1) {
+    if (this.playCount < this.maxPlays) {
+      this.playCount++;
+      this.results.forEach(mtl => (mtl.selected = false));
+      obj.selected = true;
+      this.video.nativeElement.src = obj.video.url;
+      this.video.nativeElement.muted = false;
+      this.video.nativeElement.load();
+      this.video.nativeElement.play();
+      this.video.nativeElement.addEventListener('ended', this.handleVideoEnded);
+    } else {
+      alert('Reproducción completada');
     }
-    this.results.forEach(mtl => {mtl.selected = false;});
-    obj.selected=true;
-    this.video.nativeElement.src = obj.video.url;
-    this.video.nativeElement.muted = false;
-    this.video.nativeElement.load();
-    this.video.nativeElement.play();
-
-    this.video.nativeElement.addEventListener('ended', () => {
-      this.router.navigate(['/main/news']); 
-    });
   }
+
+  private handleVideoEnded = () => {
+    this.video.nativeElement.removeEventListener('ended', this.handleVideoEnded);
+    this.playNew(this.results[0]);
+  };
+
 
   videoLoaded() {
     this.video.nativeElement.play();
