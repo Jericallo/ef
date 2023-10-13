@@ -81,15 +81,13 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
         const currentTime = this.video.nativeElement.currentTime;
         if (currentTime >= alertTime) {
           this.showContinueWatching = true;
-          this.startCountdown(); // Inicia el contador cuando aparece showContinueWatching
+          this.startCountdown(); 
         }
         if (this.video.nativeElement.ended) {
           this.showContinueWatching = false;
           const currentIndex = this.results.indexOf(obj);
           if (currentIndex < this.results.length - 1) {
-            // Obtener el siguiente video en la lista
             const nextVideo = this.results[currentIndex + 1];
-            // Reproducir automáticamente el siguiente video
             this.playNew(nextVideo);
           } else {
             console.log("No hay más videos para reproducir.");
