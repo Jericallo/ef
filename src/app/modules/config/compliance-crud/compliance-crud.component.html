@@ -1,1 +1,26 @@
-<p>compliance-crud works!</p>
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+        <mat-card>
+            <a routerLink="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <p style="font-weight: 700;">Agregar Cumplimiento</p>
+            </div>    
+            <mat-card-content>
+                <div class="flex-container">
+                    <form>
+                        <mat-form-field class="input-full-width">
+                          <mat-label>Tipo</mat-label>
+                          <input matInput type="text"equired>
+                        </mat-form-field>
+                    </form>
+                    <form>
+                        <mat-form-field class="input-full-width">
+                            <mat-label>Descripción</mat-label>
+                            <input type="text" matInput required>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </mat-card-content>    
+        </mat-card>
+    </div>
+</div>
