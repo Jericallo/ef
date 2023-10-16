@@ -5,7 +5,7 @@
     <div class="accordion-container" style="overflow: auto; max-height: 90vh; background-color: white; width:25vw" [ngClass]="{'col-md-6 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-12 col-lg-12 col-xxxl-12':!article && !articleRel, 'col-md-6  col-lg-7 col-xxxl-7':article && articleRel}">
 
         <mat-accordion class="example-headers-align" multi style="position: sticky; top:1vh">
-            <mat-expansion-panel class="custom-panel" *ngFor="let cla of data.clasifications" hideToggle="true"><!--style="overflow-y: auto; max-height: 80vh;"-->
+            <mat-expansion-panel *ngFor="let cla of data.clasifications" hideToggle="true"><!--style="overflow-y: auto; max-height: 80vh;"-->
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <mat-icon class="icono">menu_book</mat-icon> &nbsp; {{cla.nombre}}
@@ -14,7 +14,7 @@
                     <!--<mat-panel-description>Type your name and age<mat-icon>account_circle</mat-icon></mat-panel-description>-->
                 </mat-expansion-panel-header>
                 <mat-accordion  multi>
-                    <mat-expansion-panel *ngFor="let doc of cla.documents" hideToggle="true">
+                    <mat-expansion-panel class="custom-panel" *ngFor="let doc of cla.documents" hideToggle="true">
                         <mat-expansion-panel-header style="flex-direction: row;">
                             <mat-icon style="align-self: flex-start;">book</mat-icon> 
                             <div class="title">
@@ -29,7 +29,7 @@
                                     </mat-list-item>
                                 </mat-list>-->
                             <mat-accordion class="mat-elevation-z0" multi>
-                                <mat-expansion-panel *ngFor="let tit of doc.titles" hideToggle="true">
+                                <mat-expansion-panel class="custom-panel" *ngFor="let tit of doc.titles" hideToggle="true">
                                     <mat-expansion-panel-header style="display: flex; align-items: center;">
                                         <mat-panel-title>TITULO {{tit.nombre}}</mat-panel-title>
                                         <mat-icon (click)="deleteS(tit.id,'articulo_titulos')">delete</mat-icon>
@@ -38,9 +38,9 @@
                                     <!--<div *ngIf="!tit.chapters">-->
                                     <div *ngIf="tit.articles">
                                         <mat-accordion>
-                                            <mat-expansion-panel *ngFor="let art of tit.articles" hideToggle="true">
+                                            <mat-expansion-panel  class="custom-panel"*ngFor="let art of tit.articles" hideToggle="true">
                                                 <mat-expansion-panel-header >
-                                                    <mat-panel-title (click)="articleClick(art)">
+                                                    <mat-panel-title (click)="articleClick(art, null, doc)">
                                                         <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                                     </mat-panel-title>
                                                     <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
@@ -57,7 +57,7 @@
                                     </div>
                                     <div *ngIf="tit.chapters">
                                         <mat-accordion class="example-headers-align" multi>
-                                            <mat-expansion-panel *ngFor="let cha of tit.chapters" hideToggle="true">
+                                            <mat-expansion-panel class="custom-panel" *ngFor="let cha of tit.chapters" hideToggle="true">
                                                 <mat-expansion-panel-header>
                                                     <mat-panel-title>CAPITULO {{cha.nombre}}</mat-panel-title>
                                                     <mat-icon (click)="deleteS(cha.id,'articulo_capitulos')">delete</mat-icon>
@@ -65,9 +65,9 @@
                                                 </mat-expansion-panel-header>
                                                 <div *ngIf="cha.articles">
                                                     <mat-accordion>
-                                                        <mat-expansion-panel *ngFor="let art of cha.articles" hideToggle="true">
+                                                        <mat-expansion-panel class="custom-panel" *ngFor="let art of cha.articles" hideToggle="true">
                                                             <mat-expansion-panel-header>
-                                                                <mat-panel-title (click)="articleClick(art)">
+                                                                <mat-panel-title (click)="articleClick(art, null, doc)">
                                                                     <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                                                 </mat-panel-title>
                                                                 <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
@@ -75,7 +75,7 @@
                                                             <div *ngIf="art.parrafos" class="parrafos">
                                                                 <mat-list role="list" >
                                                                     <mat-list-item role="listitem" [ngClass]="{'hide':par.tipo == 1}" *ngFor="let par of art.parrafos" (click)="articleClick(art,par)">
-                                                                        <span *ngIf="par.tipo == 0"><mat-icon>bookmark</mat-icon> &nbsp; Párr. {{par.numero || ''}} {{par.nombre || '--'}}</span>
+                                                                        <span *ngIf="par.tipo == 0" class="title"><mat-icon>bookmark</mat-icon> &nbsp; Párr. {{par.numero || ''}} {{par.nombre || '--'}}</span>
                                                                     </mat-list-item>
                                                                 </mat-list>
                                                             </div>
@@ -90,7 +90,7 @@
                         </div>
                         <div *ngIf="doc.chapters">
                             <mat-accordion class="example-headers-align" multi>
-                                <mat-expansion-panel *ngFor="let cha of doc.chapters" hideToggle="true">
+                                <mat-expansion-panel class="custom-panel" *ngFor="let cha of doc.chapters" hideToggle="true">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>CAPITULO {{cha.nombre}}</mat-panel-title>
                                         <mat-icon (click)="deleteS(cha.id,'articulo_capitulos')">delete</mat-icon>
@@ -98,7 +98,7 @@
                                     </mat-expansion-panel-header>
                                     <div *ngIf="cha.articles">
                                         <mat-list role="list" >
-                                            <mat-list-item role="listitem" *ngFor="let art of cha.articles" (click)="articleClick(art)">
+                                            <mat-list-item role="listitem" *ngFor="let art of cha.articles" (click)="articleClick(art, null, doc)">
                                                 <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                             </mat-list-item>
                                             <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
@@ -113,7 +113,7 @@
         </mat-accordion>
     </div>
     <div style="display: flex; flex: 1; width: 73vw; margin-left: 10px; flex-direction: column; height: 90vh;">
-    <mat-tab-group style="display: flex; flex: 1; background-color:white; width: 73vw; margin-left: 10px;" [style.height]="article && !articleRel ? '90vh' : (article && articleRel ? '55vh' : '')">
+    <mat-tab-group [(selectedIndex)]=index style="display: flex; flex: 1; background-color:white; width: 73vw; margin-left: 10px;" [style.height]="article && !articleRel ? '90vh' : (article && articleRel ? '55vh' : '')">
         <mat-tab *ngFor="let art of article; let index = index">
             <ng-template mat-tab-label>
                 <label class="titulo_tab">Artículo {{art. articulo}}.- {{ art.nombre }}</label>
@@ -133,26 +133,26 @@
                     >
                         <mat-expansion-panel-header>
                             <mat-panel-title class="flex-grow-1">
-                                <mat-icon>auto_stories</mat-icon> &nbsp; Articulo {{art.articulo}} {{art.indicador || ''}}.-
+                                <mat-icon>auto_stories</mat-icon> &nbsp; Articulo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre}}
                             </mat-panel-title>
                             <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
         
-                            <mat-panel-description *ngIf="!articleRel">{{art.nombre || ''}}</mat-panel-description>
+                            <mat-panel-description *ngIf="!articleRel">{{art.nombre_doc.titulo || ''}}</mat-panel-description>
                         </mat-expansion-panel-header>
                         <h5 *ngIf="articleRel">{{art.nombre || ''}}</h5>
-                        <div *ngFor="let par of art.parrafos" >
-                            <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> {{par.nombre || ''}}</label>
+                        <div *ngFor="let par of art.parrafos" style="align-items: end; text-align: end; align-self: flex-end;">
+                            <label [id]="'par-'+par.id" for="" style="color: gray;"><span *ngIf="par.tipo == 0 && par.numero" style="color: gray;">Párr. {{par.numero || ''}} -</span> {{par.nombre || ''}}</label>
                             <!--<p [innerHtml]="par.contenido || ''"></p>-->
                             <div *ngIf="par.tipo == 1" class="fraccion">
-                                <b>{{par.indicador}}</b>.&nbsp;<span [innerHtml]="par.contenido || ''"></span>
+                                <b>{{par.indicador}}</b>.&nbsp;<span  [innerHtml]="par.contenido || ''"></span>
                             </div>
-                            <p *ngIf="par.tipo == 0" [ngClass]="{'fraccion':par.tipo == 1}" [innerHtml]="par.contenido || ''" style="text-align: justify;"></p>
+                            <p *ngIf="par.tipo == 0" [ngClass]="{'fraccion':par.tipo == 1}" [innerHtml]="par.contenido || ''" style="color: gray;"></p>
                             <!--<mat-button-toggle-group *ngIf="par.articulos_relacionados">
                                 <mat-button-toggle value="bold" *ngFor="let ar of par.articulos_relacionados" (click)="addArticle(ar)">
                                 {{ar.abreviatura || ''}}  Art.- {{ar.articulo || ''}} {{ar.indicador || ''}} - {{ar.nombre}}
                                 </mat-button-toggle>
                             </mat-button-toggle-group>-->
-                            <a [routerLink]="" (click)="addArticle(ar)" *ngFor="let ar of par.articulos_relacionados" class="ancla">{{ar.abreviatura || ''}}  Art.- {{ar.articulo || ''}} {{ar.indicador || ''}} - {{ar.nombre}}</a>
+                            Correlación en: <a style="font-style: italic;" [routerLink]="" (click)="addArticle(ar)" *ngFor="let ar of par.articulos_relacionados" class="ancla">{{ar.abreviatura || ''}}  Art.- {{ar.articulo || ''}} {{ar.indicador || ''}} - {{ar.nombre}}</a>
                         </div>
                         <!--<mat-accordion class="example-headers-align">
                             <mat-expansion-panel [expanded]="true" *ngFor="let arts of articles">
@@ -177,6 +177,7 @@
         </mat-tab>
 
       </mat-tab-group>
+      <button mat-button (click)="cerrarTodasPestanas()" style="background-color: white; border-top-color: lightgray; border-top-width: 1px;">Cerrar Todas las Pestañas</button>
       
       <div *ngIf="articleRel" class="accordion-container" style="margin-top: 30px;">
         <mat-accordion class="example-headers-align"style="position: sticky; top:3.5vh; left: 1vh;" >
