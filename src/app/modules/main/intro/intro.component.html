@@ -6,20 +6,45 @@
   <video (error)="handleVideoError()" (loadedmetadata)="videoLoaded()" autoplay="autoplay" preload="auto" id="myVideo" #video style="width: 100%; height: auto;"><!--<source type="video/mp4">--></video>
 </div>
 
-<div class="news-container" style="color: white;" fxLayout="row wrap" [ngStyle]="{'bottom.vh': showContinueWatching ? -50 : -70}">
-  <div class="continue-watching" *ngIf="showContinueWatching">
-    <h5>Continuamos con {{nextVideoTitle}} en:</h5>
-    <div class="progress-bar">
-      <div class="progress" [style.width.%]="(countdown / 7) * 100"></div>
-      <span style="position: absolute; padding: 20px; font-weight: 900; font-size: 20px;">{{ countdown }}</span>
-    </div>
-    <span style="display: flex; align-items: center; justify-content: center;">ó ir directamente a: </span>
-    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;">
-      <button mat-flat-button style="width: 140px;" color="primary" (click)="goToManual()">Ir al Manual</button>
-      <button mat-flat-button style="background: rgb(236, 212, 0); width: 140px;" (click)="goToCalendar()">Ir al Calendario</button>
-    </div>
-  </div>  
+<div class="news-container" style="color: white;" fxLayout="row wrap" [ngStyle]="{'bottom.vh': -45}">
+
+  <div style="flex-direction: column;">
+  <div class="barra-menus">
+    
+    <!--RECUADRO DE REPETICIÓN-->
+    <div class="repeat-button">
+      <mat-icon (click)="showRepeatMenu()">replay</mat-icon>
+    </div>  
+     <!--MODAL DE REPETICION-->
+     <div class="repeat-menu" *ngIf="showRepeat">
+      <h5>Regresar:</h5>
+      
+      <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px;">
+        <button mat-flat-button style="width: 140px;" color="primary" (click)="quince()">15 Segundos</button>
+        <button mat-flat-button style="background: rgb(236, 212, 0); width: 140px;" (click)="unMinuti()">1 Minuto</button>
+        <button mat-flat-button style="background: rgb(236, 212, 0); width: 200px;" (click)="desdeElPrincipio()">Desde el principio</button>
+      </div>
+    </div>  
+    <!--MODAL DE CONTINUAR VIENDO-->
+    <div class="continue-watching" *ngIf="showContinueWatching">
+      <h5>Continuamos con {{nextVideoTitle}} en:</h5>
+      <div class="progress-bar">
+        <div class="progress" [style.width.%]="(countdown / 7) * 100"></div>
+        <span style="position: absolute; padding: 20px; font-weight: 900; font-size: 20px;">{{ countdown }}</span>
+      </div>
+      <span style="display: flex; align-items: center; justify-content: center;">ó ir directamente a: </span>
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;">
+        <button mat-flat-button style="width: 140px;" color="primary" (click)="goToManual()">Ir al Manual</button>
+        <button mat-flat-button style="background: rgb(236, 212, 0); width: 140px;" (click)="goToCalendar()">Ir al Calendario</button>
+      </div>
+    </div>  
+    
+  </div>
+
+<!--RECUADRO NEGRO CON LAS MINUATURAS DE LOS SIGUIENTES VIDEOS-->
   <div class="content" style="display: flex;">
+
+    
     <div (click)="setSrcVideo(time)" *ngFor="let time of results;let indexTime=index;" style="width: 14.33%; height: auto; padding-right: 1%; padding-left: 1%; cursor: pointer;" >
       <div>
         <h6 style="text-align: center;">{{ time.titulo || '' }}</h6>
@@ -29,12 +54,13 @@
 
     <div (click)="scrollToManual()" style="width: 28.33%; height: 2%;  padding-right: 1%; padding-left: 1%; cursor: pointer;" >
       <div>
-        <h6 style="text-align: center;">Manual de uso del Escudo Fiscal</h6>
+        <h6 style="text-align: center;">Manual completo de uso del Escudo Fiscal</h6>
       </div>
       <img src="https://concepto.de/wp-content/uploads/2023/01/manual-texto-documento.jpg" alt="" style="width: 100%; height: 108px; object-fit: cover; " >
     </div>
   </div>
 
+</div>
   <!--
   <div #scrollElement fxFlex.gt-sm="25" *ngFor="let res of results" fxFlex="100" (click)="setSrcVideo(res)">
     <mat-card>
@@ -70,32 +96,32 @@
         </mat-card-actions>
       </mat-card-content>
     </div>
-    <img mat-card-image [src]="res.imagen" style="height: 45vh; object-fit: cover;" alt="Photo of a Shiba Inu" />
+    <img mat-card-image [src]="res.imagen" style="height: 35vh; object-fit: cover;" alt="Photo of a Shiba Inu" />
   </mat-card>
 </div>
 
 
   
 
-<mat-card class="card-with-overlay" style="width: 91vh;">
+<mat-card class="card-with-overlay" style="width: 47.1vw;">
   <div class="overlay-content">
     <div mat-card-avatar>
       <img src="assets/images/logo-light-icon.png" class="img-fluid img-circle" />
     </div>
-    <mat-card-title>Manual de uso</mat-card-title>
+    <mat-card-title>Manual completo de uso</mat-card-title>
     <mat-card-subtitle style="color: rgba(255, 255, 255, 0.585);">del Escudo Fiscal</mat-card-subtitle>
     <mat-card-content>
-      <p>Manual de uso del Escudo Físcal</p>
+      <p>Manual completo de uso del Escudo Físcal</p>
       <mat-card-actions style="display: flex; align-items: center; justify-content: center;" >
         <button (click)="scrollToManual()"style="background: rgb(45, 87, 202);" mat-raised-button color="accent"><mat-icon>arrow_downward</mat-icon></button>
       </mat-card-actions>
     </mat-card-content>
      </div>
-     <img mat-card-image src="https://assets.ltkcontent.com/images/34823/user-manual_7abbbb2796.jpg" style="height: 45vh; object-fit: contain;" alt="Photo of a Shiba Inu" />
+     <img mat-card-image src="https://assets.ltkcontent.com/images/34823/user-manual_7abbbb2796.jpg" style="height: 35vh; object-fit: contain;" alt="Photo of a Shiba Inu" />
   </mat-card>
     <div #scrollElement2  class="manual-container">
       <div style="margin: 20px;  color: black;">
-        <p style="display: flex; align-items: center; justify-content: center; font-weight: 700;">MANUAL ESCUDO FISCAL</p>
+        <p style="display: flex; align-items: center; justify-content: center; font-weight: 700;">MANUAL COMPLETO DE USO DEL ESCUDO FISCAL</p>
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus, voluptates minima perspiciatis obcaecati iusto excepturi, illo 
           architecto porro at quis harum inventore animi quod 
           distinctio deleniti nulla doloremque repellat. Pariatur!

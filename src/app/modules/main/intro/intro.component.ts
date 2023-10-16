@@ -25,7 +25,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   results =[];
   showContinueWatching = false;
   nextVideoTitle: string;
-
+  showRepeat = false
 
 
   constructor(private apiService:ApiService, private changeDetector:ChangeDetectorRef, private dialog: MatDialog, private router: Router) {moment.locale("es"); }
@@ -154,5 +154,27 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     this.scrollElement2.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
+  showRepeatMenu()
+  {
+    this.showRepeat = !this.showRepeat
+  }
+
+  quince() {
+    if (this.video && this.video.nativeElement) {
+      this.video.nativeElement.currentTime -= 15;
+    }
+  }
+
+  unMinuti() {
+    if (this.video && this.video.nativeElement) {
+      this.video.nativeElement.currentTime -= 60;
+    }
+  }
+  
+  desdeElPrincipio() {
+    if (this.video && this.video.nativeElement) {
+      this.video.nativeElement.currentTime = 0;
+    }
+  }  
 }
  
