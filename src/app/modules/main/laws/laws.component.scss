@@ -2,7 +2,7 @@ mat-accordion {
   box-shadow: none;
   padding-right: 0px;
   margin-right: 0px;
-
+  
 }
 
 mat-expansion-panel {
@@ -16,6 +16,14 @@ mat-expansion-panel {
 
 mat-expansion-panel:not([class*='mat-elevation-z']) {
   box-shadow: none;
+  
+}
+
+.custom-panel{
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: black;
+  border-radius: 0px !important;
 }
 
 mat-panel-title{
@@ -26,6 +34,10 @@ mat-panel-title{
   font-size: x-small;
   width: 100%;
   margin-left: 5px;
+}
+
+.nombre_parrafo{
+  font-size: x-small;
 }
 
 .icono {
@@ -47,6 +59,15 @@ mat-expansion-panel-header {
 .titulo_tab {
   font-size: x-small;
 }
+
+a:hover{
+  cursor: po
+}
+
+.fraccion{
+  text-indent: 1.2em;
+}
+
 
 //@import '../../../@theme/styles/themes';
 
@@ -156,9 +177,7 @@ mat-expansion-panel-header {
 
 
 
-.fraccion{
-  text-indent: 1.2em;
-}
+
 
 .mat-expansion-panel{
   width: 500px;

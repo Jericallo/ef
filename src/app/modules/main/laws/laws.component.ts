@@ -22,6 +22,8 @@ export class LawsComponent implements OnInit {
   rowTable:number=0;
   subRowTable:number=-1;
 
+  index = 0
+
   public showSearch = false;
 
   constructor(private apiService:ApiService) { }
@@ -31,10 +33,15 @@ export class LawsComponent implements OnInit {
   }
 
 
-  articleClick(art, par = null){
+  articleClick(art, par = null, doc = ''){
+    art.nombre_doc = doc
     //this.articles = [];
     this.article.push(art);
+
+    this.index = this.article.length
+
     this.articleRel = null;
+    console.log(art)
     //log(art)
     if(par){
       let parEle = document.getElementById("par-"+par.id);
@@ -42,6 +49,15 @@ export class LawsComponent implements OnInit {
       setTimeout(()=>{parEle.style.borderBottom="none";},1000);
       parEle.scrollIntoView({behavior:"smooth", block:"center"});
     }
+  }
+
+  cerrarTodasPestanas() {
+    // Aquí debes implementar la lógica para cerrar todas las pestañas.
+    // Esto puede requerir iterar a través de `article` y cerrar cada pestaña individualmente.
+    // Puedes usar un bucle o el método splice para eliminar elementos de `article`.
+
+    // Por ejemplo, si `article` es un arreglo:
+    this.article = []; // Esto elimina todas las pestañas en `article`.
   }
 
   getClasifications(){
