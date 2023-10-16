@@ -24,6 +24,8 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   titVideo = ""
   results =[];
   showContinueWatching = false;
+  nextVideoTitle: string;
+
 
 
   constructor(private apiService:ApiService, private changeDetector:ChangeDetectorRef, private dialog: MatDialog, private router: Router) {moment.locale("es"); }
@@ -80,7 +82,6 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
       const checkRemainingTime = () => {
         const currentTime = this.video.nativeElement.currentTime;
         if (currentTime >= alertTime) {
-          this.showContinueWatching = true;
           this.startCountdown(); 
         }
         if (this.video.nativeElement.ended) {
@@ -91,6 +92,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
             this.playNew(nextVideo);
           } else {
             console.log("No hay más videos para reproducir.");
+            this.nextVideoTitle = "";
           }
         }
       };
@@ -107,7 +109,14 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   }
   
   startCountdown() {
-    this.countdown = 7; // Reinicia el contador a 7 segundos cuando se muestra showContinueWatching
+    this.countdown = 7; 
+    this.showContinueWatching = true;
+    const currentIndex = this.results.findIndex((item) => item.selected);
+  if (currentIndex < this.results.length - 1) {
+    this.nextVideoTitle = this.results[currentIndex + 1].titulo;
+  } else {
+    this.nextVideoTitle = ""; 
+  }
     const interval = setInterval(() => {
       this.countdown--;
       if (this.countdown <= 0) {

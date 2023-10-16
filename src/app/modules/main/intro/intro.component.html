@@ -6,16 +6,17 @@
   <video (error)="handleVideoError()" (loadedmetadata)="videoLoaded()" autoplay="autoplay" preload="auto" id="myVideo" #video style="width: 100%; height: auto;"><!--<source type="video/mp4">--></video>
 </div>
 
-<div class="news-container" style="color: white; " fxLayout="row wrap" [ngStyle]="{'bottom.vh': showContinueWatching ? -50 : -70}">
+<div class="news-container" style="color: white;" fxLayout="row wrap" [ngStyle]="{'bottom.vh': showContinueWatching ? -50 : -70}">
   <div class="continue-watching" *ngIf="showContinueWatching">
-    <h2>¿Continuar viendo?</h2>
-    <p>Continuará en {{ countdown }}  segundos</p>
+    <h5>Continuamos con {{nextVideoTitle}} en:</h5>
     <div class="progress-bar">
       <div class="progress" [style.width.%]="(countdown / 7) * 100"></div>
+      <span style="position: absolute; padding: 20px; font-weight: 900; font-size: 20px;">{{ countdown }}</span>
     </div>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 40px; margin-top: 20px;">
-      <button mat-flat-button color="primary" (click)="goToCalendar()">Ir al Calendario</button>
-      <button mat-flat-button color="primary" (click)="goToManual()">Ir al Manual</button>
+    <span style="display: flex; align-items: center; justify-content: center;">ó ir directamente a: </span>
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;">
+      <button mat-flat-button style="width: 140px;" color="primary" (click)="goToManual()">Ir al Manual</button>
+      <button mat-flat-button style="background: rgb(236, 212, 0); width: 140px;" (click)="goToCalendar()">Ir al Calendario</button>
     </div>
   </div>  
   <div class="content" style="display: flex;">

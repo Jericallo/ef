@@ -34,7 +34,7 @@
   color: white;
   margin-right: 40px;
   width: 430px;
-  height: 200px;
+  height: fit-content;
   border-top-right-radius: 20px;
   border-top-left-radius:20px;
 }
@@ -125,7 +125,7 @@
   overflow: scroll;
   width: 100%;
   display: flex;
-  flex-direction: column; /* Asegura que el contenido se alinee verticalmente */
+  flex-direction: column; 
 }
 
 @keyframes icono {
@@ -146,7 +146,7 @@
 
 .progress-bar {
   width: 100%;
-  height: 20px;
+  height: 40px;
   background-color: #ccc;
   border-radius: 20px;
 }
