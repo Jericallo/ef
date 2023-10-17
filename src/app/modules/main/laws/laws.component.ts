@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 import { MatAccordion } from '@angular/material/expansion';
 import { E } from '@angular/cdk/keycodes';
 import Swal from 'sweetalert2'
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-laws',
@@ -22,7 +23,7 @@ export class LawsComponent implements OnInit {
   rowTable:number=0;
   subRowTable:number=-1;
 
-  index = 0
+  indexado = 0
 
   public showSearch = false;
 
@@ -38,32 +39,33 @@ export class LawsComponent implements OnInit {
     art.nombre_cap = cap
     art.nombre_tit = tit
     art.nombre_sec = sec
-    //this.articles = [];
-    this.article.push(art);
-    if(this.article.length === 5) {
-      this.article.splice(0, 1)
-    }
 
-    this.index = this.article.length
+
+    this.article.push(art);
 
     this.articleRel = null;
-    console.log(art)
-    //log(art)
     if(par){
       let parEle = document.getElementById("par-"+par.id);
       parEle.style.borderBottom = "solid 2px #3366ff";
       setTimeout(()=>{parEle.style.borderBottom="none";},1000);
       parEle.scrollIntoView({behavior:"smooth", block:"center"});
     }
+
+    this.indexado = this.article.length 
+  }
+
+  onTabChange(event: MatTabGroup) {
+    console.log(this.article.length)
+    if(this.article.length === 5){
+      this.article.shift()
+    }
+    console.log('a')
+    // Por ejemplo, puedes centrar la pestaña en la vista
+    event.selectedIndex = this.article.length;
   }
 
   cerrarTodasPestanas() {
-    // Aquí debes implementar la lógica para cerrar todas las pestañas.
-    // Esto puede requerir iterar a través de `article` y cerrar cada pestaña individualmente.
-    // Puedes usar un bucle o el método splice para eliminar elementos de `article`.
-
-    // Por ejemplo, si `article` es un arreglo:
-    this.article = []; // Esto elimina todas las pestañas en `article`.
+    this.article = []; 
   }
 
   getClasifications(){
