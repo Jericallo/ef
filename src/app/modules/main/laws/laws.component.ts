@@ -33,10 +33,16 @@ export class LawsComponent implements OnInit {
   }
 
 
-  articleClick(art, par = null, doc = ''){
+  articleClick(art, par = null, doc = '', tit='', cap='', sec=''){
     art.nombre_doc = doc
+    art.nombre_cap = cap
+    art.nombre_tit = tit
+    art.nombre_sec = sec
     //this.articles = [];
     this.article.push(art);
+    if(this.article.length === 5) {
+      this.article.splice(0, 1)
+    }
 
     this.index = this.article.length
 

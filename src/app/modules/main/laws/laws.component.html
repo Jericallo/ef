@@ -40,7 +40,7 @@
                                         <mat-accordion>
                                             <mat-expansion-panel  class="custom-panel"*ngFor="let art of tit.articles" hideToggle="true">
                                                 <mat-expansion-panel-header >
-                                                    <mat-panel-title (click)="articleClick(art, null, doc)">
+                                                    <mat-panel-title (click)="articleClick(art, null, doc, tit)">
                                                         <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                                     </mat-panel-title>
                                                     <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
@@ -67,7 +67,7 @@
                                                     <mat-accordion>
                                                         <mat-expansion-panel class="custom-panel" *ngFor="let art of cha.articles" hideToggle="true">
                                                             <mat-expansion-panel-header>
-                                                                <mat-panel-title (click)="articleClick(art, null, doc)">
+                                                                <mat-panel-title (click)="articleClick(art, null, doc, tit, cha)">
                                                                     <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                                                 </mat-panel-title>
                                                                 <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
@@ -98,7 +98,7 @@
                                     </mat-expansion-panel-header>
                                     <div *ngIf="cha.articles">
                                         <mat-list role="list" >
-                                            <mat-list-item role="listitem" *ngFor="let art of cha.articles" (click)="articleClick(art, null, doc)">
+                                            <mat-list-item role="listitem" *ngFor="let art of cha.articles" (click)="articleClick(art, null, doc, '', cha)">
                                                 <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                             </mat-list-item>
                                             <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
@@ -133,11 +133,10 @@
                     >
                         <mat-expansion-panel-header>
                             <mat-panel-title class="flex-grow-1">
-                                <mat-icon>auto_stories</mat-icon> &nbsp; Articulo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre}}
+                                <mat-icon>auto_stories</mat-icon> &nbsp; {{art.nombre_doc.titulo || ''}} > {{art.nombre_tit !== '' ? art.nombre_tit.nombre + ' >' : ''}}{{art.nombre_cap !== '' ? 'CAPITULO ' + art.nombre_cap.nombre + ' >' : ''}} Articulo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre}}
                             </mat-panel-title>
                             <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
         
-                            <mat-panel-description *ngIf="!articleRel">{{art.nombre_doc.titulo || ''}}</mat-panel-description>
                         </mat-expansion-panel-header>
                         <h5 *ngIf="articleRel">{{art.nombre || ''}}</h5>
                         <div *ngFor="let par of art.parrafos" style="align-items: end; text-align: end; align-self: flex-end;">
