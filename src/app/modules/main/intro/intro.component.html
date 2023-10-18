@@ -12,7 +12,7 @@
   <div class="barra-menus">
     
     <!--RECUADRO DE REPETICIÓN-->
-    <div class="repeat-button">
+    <div class="repeat-button" [ngStyle]="{'border-top-right-radius' : showRepeat ? '0px' : '20px'}">
       <mat-icon (click)="showRepeatMenu()">replay</mat-icon>
     </div>  
      <!--MODAL DE REPETICION-->
@@ -20,7 +20,7 @@
       <h5>Regresar:</h5>
       
       <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px;">
-        <button mat-flat-button style="width: 140px;" color="primary" (click)="quince()">15 Segundos</button>
+        <button mat-flat-button style="width: 140px; margin-left: 15px;" color="primary" (click)="quince()">15 Segundos</button>
         <button mat-flat-button style="background: rgb(236, 212, 0); width: 140px;" (click)="unMinuti()">1 Minuto</button>
         <button mat-flat-button style="background: rgb(236, 212, 0); width: 200px;" (click)="desdeElPrincipio()">Desde el principio</button>
       </div>

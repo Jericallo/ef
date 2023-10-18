@@ -43,15 +43,13 @@
 .repeat-menu {
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
-  margin-left: 120px; 
-  padding: 20px; 
+  flex-direction: row;
+  padding: 14px; 
   color: white;
   margin-right: auto;
-  width: 430px;
+  width: fit-content;
   height: fit-content;
   border-top-right-radius: 20px;
-  border-top-left-radius:20px;
   bottom: 0px;
   vertical-align: bottom;
 }
@@ -66,7 +64,6 @@
   margin-right: 0px;
   width: 60px;
   height: fit-content;
-  border-top-right-radius: 20px;
   border-top-left-radius:20px;
   bottom: 0px;
   vertical-align: bottom;
@@ -139,15 +136,17 @@
 .scroll-text{
   color:rgb(187, 187, 187);
   position: absolute;
-  left: 27px;
+  left: 31px;
   top: 400px;
   cursor: pointer;
   border-radius: 100px;
   z-index: 2;
   animation: icono 2s infinite;
+  font-size: small;
+  text-align: center;
 }
 .icono{
-  font-size: 70px;
+  font-size: 40px;
   display: flex;
   align-items: center;
   justify-content: center;

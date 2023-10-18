@@ -11,7 +11,6 @@ mat-expansion-panel {
   width: auto;
   padding-right: 0px;
   margin-right: 0px;
-  
 }
 
 mat-expansion-panel:not([class*='mat-elevation-z']) {
@@ -24,6 +23,7 @@ mat-expansion-panel:not([class*='mat-elevation-z']) {
   border-left-width: 1px;
   border-left-color: black;
   border-radius: 0px !important;
+  margin-left: 25px;
 }
 
 mat-panel-title{
