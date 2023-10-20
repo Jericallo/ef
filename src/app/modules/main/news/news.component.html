@@ -1,6 +1,10 @@
 <app-user-icon></app-user-icon>
-
 <div style="width: 100vw; height: 90vh">
+
+  <div class="dialog" *ngIf="showModal" >
+    <span style="color: white;">Ocurrió un error al reproducir la noticia.</span>
+  </div>  
+  
   <button  (click)="scrollDown()" class="scroll" mat-button><mat-icon class="icono">expand_more</mat-icon></button>
   <span (click)="scrollDown()" class="scroll-text">Ver más</span>
   <video autoplay="autoplay" id="myVideo" #noticia (ended)="vidEnded()" style="width: 70%; height: auto;"><!--<source type="video/mp4">--></video>

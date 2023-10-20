@@ -1,9 +1,15 @@
 <app-user-icon></app-user-icon>
 
+<div class="modal" [ngClass]="{'show': showModal}">
+  <div class="modal-content">
+    <!-- Contenido de tu modal -->
+  </div>
+</div>
+
 <div *ngIf="srcVideo" id="divVideo" style="width: 100vw; height: 90vh">
   <button  (click)="scrollDown()" class="scroll" mat-button><mat-icon class="icono">expand_more</mat-icon></button>
   <span (click)="scrollDown()" class="scroll-text">Ver más</span>
-  <video (error)="handleVideoError()" (loadedmetadata)="videoLoaded()" autoplay="autoplay" preload="auto" id="myVideo" #video style="width: 100%; height: auto;"><!--<source type="video/mp4">--></video>
+  <video (error)="handleVideoError()" (loadedmetadata)="videoLoaded()" (ended)="videoEnded()" autoplay="autoplay" preload="auto" id="myVideo" #video style="width: 100%; height: auto;"><!--<source type="video/mp4">--></video>
 </div>
 
 <div class="news-container" style="color: white;" fxLayout="row wrap" [ngStyle]="{'bottom.vh': -45}">
@@ -25,15 +31,15 @@
         <button mat-flat-button style="background: rgb(236, 212, 0); width: 200px;" (click)="desdeElPrincipio()">Desde el principio</button>
       </div>
     </div>  
-    <!--MODAL DE CONTINUAR VIENDO-->
-    <div class="continue-watching" *ngIf="showContinueWatching">
+    <!--MODAL DE CONTINUAR VIENDO -->
+    <div class="continue-watching"  *ngIf="showContinueWatching">
       <h5>Continuamos con {{nextVideoTitle}} en:</h5>
       <div class="progress-bar">
         <div class="progress" [style.width.%]="(countdown / 7) * 100"></div>
         <span style="position: absolute; padding: 20px; font-weight: 900; font-size: 20px;">{{ countdown }}</span>
       </div>
       <span style="display: flex; align-items: center; justify-content: center;">ó ir directamente a: </span>
-      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;">
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; flex-direction: row;">
         <button mat-flat-button style="width: 140px;" color="primary" (click)="goToManual()">Ir al Manual</button>
         <button mat-flat-button style="background: rgb(236, 212, 0); width: 140px;" (click)="goToCalendar()">Ir al Calendario</button>
       </div>
