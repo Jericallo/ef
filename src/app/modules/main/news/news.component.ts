@@ -1,31 +1,36 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import * as moment from 'moment';
+import { trigger, state, style, animate, transition, AnimationEvent } from '@angular/animations';
 
 @Component({
   selector: 'app-news',
   templateUrl: './news.component.html',
-  styleUrls: ['./news.component.scss']
+  styleUrls: ['./news.component.scss'],
+  animations: [
+    trigger('dialogAnimation', [
+      state('void', style({ transform: 'translateX(-100%)' })),
+      transition(':enter', animate('0.5s ease-in-out')),
+      transition(':leave', animate('0.5s ease-in-out', style({ transform: 'translateX(-100%)' }))),
+    ])
+  ]
 })
+
 export class NewsComponent implements OnInit {
   @ViewChild('noticia', {static:true}) noticia:ElementRef
   @ViewChild('scrollElement') scrollElement: ElementRef;
 
- // noticia = "https://api.escudofiscal.alphadev.io/media/videos/1673907848066.mp4";
   numVideo = 0;
-  // Timeline
   mytimelines: any[] = []; // Aquí se declara mytimelines como un arreglo vacío
-
   idIntVideo = null;
-
   videoDeInicio = 11
+  public showModal:boolean = false
 
   constructor(private apiService:ApiService) { moment.locale("es"); }
 
   ngOnInit(): void {
-  
     this.get();
-    console.log(this.mytimelines)
+    this.noticia.nativeElement.addEventListener('error', this.handleVideoError);
   }
 
   
@@ -63,7 +68,6 @@ export class NewsComponent implements OnInit {
       }
     },1000);*/
   }
-  
 
   get(){
     this.apiService.getAll(this.apiService.MODELS.news).subscribe({
@@ -75,6 +79,7 @@ export class NewsComponent implements OnInit {
             res.fecha = (moment(res.fecha * 60000).format('MMMM/YYYY')).toUpperCase();
           });
           this.mytimelines = res.result;
+          console.log(this.mytimelines)
           if(this.mytimelines.length > 0) this.playNew(this.mytimelines[11]);
         }
       }
@@ -95,6 +100,21 @@ export class NewsComponent implements OnInit {
 
   scrollDown() {
     this.scrollElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  handleVideoError = (event) => {
+
+    setTimeout(() => {
+      this.showModal = true;
+      // Ocultar la modal después de 5 segundos
+      setTimeout(() => {
+        this.showModal = false;
+      }, 5000);
+    }, 0);
+
+    
+    this.videoDeInicio--;
+    this.playNew(this.mytimelines[this.videoDeInicio]);
   }
 
 }

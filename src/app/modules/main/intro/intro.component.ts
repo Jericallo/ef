@@ -16,8 +16,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   @ViewChild('scrollElement') scrollElement: ElementRef;
   @ViewChild('scrollElement2') scrollElement2: ElementRef;
 
-
-
+  isIntervalActive: boolean = false; 
   messageReceived = '';
   countdown: number = 7;
   srcVideo = "";
@@ -25,8 +24,9 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   results =[];
   showContinueWatching = false;
   nextVideoTitle: string;
-
-
+  showRepeat = false
+  videoIndex = 0
+  showModal:boolean = false
 
   constructor(private apiService:ApiService, private changeDetector:ChangeDetectorRef, private dialog: MatDialog, private router: Router) {moment.locale("es"); }
 
@@ -40,7 +40,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         if(res.status == "OK"){
           this.results = res.result;
-          this.setSrcVideo(this.results[0])
+          this.setSrcVideo(this.results[this.videoIndex])
           console.log(this.results)
 
         }
@@ -53,6 +53,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     if(obj.video.url == undefined){
       alert('No se encontró el video')
     }else{
+      this.videoIndex = this.results.indexOf(obj);
       this.srcVideo = obj.video.url;
     }
     this.titVideo = obj.titulo;
@@ -62,6 +63,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
   handleVideoError() {
     alert('No se encontró el video')
+
   }
 
   playNew(obj: any) {
@@ -74,37 +76,34 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     obj.selected = true;
     this.video.nativeElement.src = obj.video.url;
     this.video.nativeElement.muted = false;
-  
+
     this.video.nativeElement.addEventListener("loadedmetadata", () => {
       const videoDuration = this.video.nativeElement.duration;
       const alertTime = videoDuration - 7;
-  
-      const checkRemainingTime = () => {
-        const currentTime = this.video.nativeElement.currentTime;
-        if (currentTime >= alertTime) {
-          this.startCountdown(); 
-        }
-        if (this.video.nativeElement.ended) {
-          this.showContinueWatching = false;
-          const currentIndex = this.results.indexOf(obj);
-          if (currentIndex < this.results.length - 1) {
-            const nextVideo = this.results[currentIndex + 1];
-            this.playNew(nextVideo);
-          } else {
-            console.log("No hay más videos para reproducir.");
-            this.nextVideoTitle = "";
+
+      if (!this.isIntervalActive) { // Comprobar si el intervalo está activo
+        this.isIntervalActive = true; // Marcar el intervalo como activo
+
+        const intervalId = setInterval(() => {
+          const currentTime = this.video.nativeElement.currentTime;
+          if (currentTime >= alertTime) {
+            clearInterval(intervalId);
+            this.isIntervalActive = false; // Marcar el intervalo como inactivo
+            this.startCountdown();
           }
-        }
-      };
-  
-      const intervalId = setInterval(checkRemainingTime, 1000);
-  
+          console.log('hola');
+          if (this.video.nativeElement.ended) {
+
+          }
+        }, 1000);
+      }
+
       this.video.nativeElement.play();
       this.divVideo.nativeElement.parentElement.parentElement.parentElement.scrollIntoView({
         behavior: "smooth",
       });
     });
-  
+
     this.video.nativeElement.load();
   }
   
@@ -112,11 +111,11 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     this.countdown = 7; 
     this.showContinueWatching = true;
     const currentIndex = this.results.findIndex((item) => item.selected);
-  if (currentIndex < this.results.length - 1) {
-    this.nextVideoTitle = this.results[currentIndex + 1].titulo;
-  } else {
-    this.nextVideoTitle = ""; 
-  }
+    if (currentIndex < this.results.length - 1) {
+      this.nextVideoTitle = this.results[currentIndex + 1].titulo;
+    } else {
+      this.nextVideoTitle = ""; 
+    }
     const interval = setInterval(() => {
       this.countdown--;
       if (this.countdown <= 0) {
@@ -126,7 +125,18 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     }, 1000);
   }
   
-  
+  videoEnded() {
+    this.showContinueWatching = false;
+    const currentIndex = this.results.indexOf(this.results[this.videoIndex]);
+    if (currentIndex < this.results.length - 1) {
+      const nextVideo = this.results[currentIndex + 1];
+      this.videoIndex++
+      this.playNew(nextVideo);
+    } else {
+      console.log("No hay más videos para reproducir.");
+      this.nextVideoTitle = "";
+    }
+  }
 
   goToCalendar() {
     this.router.navigate(['/compliance/index']);
@@ -135,7 +145,6 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   goToManual() {
     this.scrollToManual()
   }
-  
   
   closeDialog(){
     this.dialog.closeAll()
@@ -154,5 +163,30 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     this.scrollElement2.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
+  showRepeatMenu()
+  {
+    this.showRepeat = !this.showRepeat
+  }
+
+  quince() {
+    if (this.video && this.video.nativeElement) {
+      this.video.nativeElement.currentTime -= 15;
+      this.showContinueWatching = false
+    }
+  }
+
+  unMinuti() {
+    if (this.video && this.video.nativeElement) {
+      this.video.nativeElement.currentTime -= 60;
+      this.showContinueWatching = false
+    }
+  }
+  
+  desdeElPrincipio() {
+    if (this.video && this.video.nativeElement) {
+      this.video.nativeElement.currentTime = 0;
+      this.showContinueWatching = false
+    }
+  }  
 }
  

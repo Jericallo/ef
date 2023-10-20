@@ -69,8 +69,8 @@ const MENUITEMS = [
             {state:'register', name:'Registra',type:'link', icon:'input'},
             {state:'', name:'Impuestos',type:'link',icon:'monetization_on'},
             {state:'', name:'Informativas',type:'link',icon:'inbox'},
-            {state:'', name:'Prevención Lavado',type:'link',icon:'security'},
-            {state:'', name:'Legal Corporativo',type:'link',icon:'shield_lock'},
+            {state:'', name:'P.L.D.',type:'link',icon:'security'},
+            {state:'', name:'Legal',type:'link',icon:'shield_lock'},
             {state:'', name:'Claves',type:'link',icon:'lock'},
         ]
     },
