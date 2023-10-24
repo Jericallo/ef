@@ -1,65 +1,10 @@
-<!--<mat-card>
-    <mat-card-content>
-        <div class="d-flex align-items-center">
-            <h3 class="m-t-0">Obligaciones {{mes}} {{anio}}</h3>
-            <div class="ml-auto">
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Color primario</th>
-                        <th>Fecha de inicio</th>
-                        <th>Fecha de fin</th>
-                        <th>Borrar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let event of events">
-                        <td class="p-r-10">
-                            <mat-form-field>
-                                <input matInput placeholder="Editar Título" name="title" [(ngModel)]="event.title" />
-                            </mat-form-field>
-                        </td>
-                        <td class="p-r-10">
-                            <mat-form-field>
-                                <input matInput placeholder="Cambiar color" name="color" type="color"
-                                    [(ngModel)]="event.color.primary"/>
-                            </mat-form-field>
-                        </td>
-                        <td class="p-r-10">
-                            <mat-form-field>
-                                <input matInput [matDatepicker]="startDateDP" placeholder="Fecha de inicio"
-                                    name="startDate" [(ngModel)]="event.start"/>
-                                <mat-datepicker-toggle matSuffix [for]="startDateDP"></mat-datepicker-toggle>
-                                <mat-datepicker #startDateDP></mat-datepicker>
-                            </mat-form-field>
-                        </td>
-                        <td class="p-r-10">
-                            <mat-form-field>
-                                <input matInput [matDatepicker]="endDateDP" placeholder="Fecha de fin"
-                                    name="endDate" [(ngModel)]="event.end" />
-                                <mat-datepicker-toggle matSuffix [for]="endDateDP"></mat-datepicker-toggle>
-                                <mat-datepicker #endDateDP></mat-datepicker>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <button mat-raised-button color="warn" >Borrar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </mat-card-content>
-</mat-card>-->
-<div class="page-content">
-<mat-toolbar-row style="background-color: #ffcc0c; width: 100%; align-items: center; align-content: center; position: fixed; z-index: 3;">
+<div class="page-content" #tableContainer>
+    
+<mat-toolbar-row style="background-color: #ffcc0c; width: 100%; position: fixed; z-index: 3; top: 30px;" >
     <div style="margin-left: auto; margin-right: auto;">
 
     
-    <button mat-icon-button mwlCalendarPreviousView style="margin-right: 50px;" (click)="monthPrevious()">
+    <button mat-icon-button mwlCalendarPreviousView style="margin-right: 90px;" (click)="monthPrevious()">
         <mat-icon>chevron_left</mat-icon><span>Anterior</span>
     </button>
     <span style="margin-right: 10px;">
@@ -71,9 +16,9 @@
 </div>
 </mat-toolbar-row>
 
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="overflow: visible; width: fit-content; margin-top: 50px;">
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="overflow: hidden; width: fit-content; margin-top: 50px; height: 70%;" >
     
-    <!-- Columna fija -->
+
     <ng-container matColumnDef="fixedColumn" sticky>
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Fixed Column' }}</mat-header-cell>
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: 8vh ; padding: 5px; margin: 0px;">{{ row.fixedColumn }}</mat-cell>
@@ -95,27 +40,17 @@
             <mat-slide-toggle [(ngModel)]="row.switch" (change)="onSwitchChange(row)"></mat-slide-toggle>
         </mat-cell>
     </ng-container>
-  
-    <!-- Columnas desplazables -->
+
     <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
       <mat-header-cell *matHeaderCellDef style="width: 150px;">{{ column }}</mat-header-cell>
       <mat-cell *matCellDef="let row" [style.color]="row.textColor" style="width: fit-content;">{{ row[column] }}</mat-cell>
     </ng-container>
 
-    
-  
-    <!-- Encabezados de columna fija -->
     <mat-header-row *matHeaderRowDef="fixedColumns" style="background-color: #ffcc0c;"></mat-header-row>
-  
-    <!-- Encabezados de columnas desplazables -->
-  
-    <!-- Filas de la tabla -->
+
     <mat-row class="row-table" *matRowDef="let row; columns: fixedColumns;"></mat-row>
   </mat-table>
-  <button (click)="izquierda()" [disabled]="izquierdaHabilitado">
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-  <button (click)="derecha()" [disabled]="derechaHabilitado">
-    <mat-icon>chevron_right</mat-icon>
-  </button>
+  <button mat-raised-button color="primary" (click)="loadMoreData()">Cargar más</button>
+
+
 </div>

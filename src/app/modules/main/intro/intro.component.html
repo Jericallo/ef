@@ -9,6 +9,24 @@
 <div *ngIf="srcVideo" id="divVideo" style="width: 100vw; height: 90vh">
   <button  (click)="scrollDown()" class="scroll" mat-button><mat-icon class="icono">expand_more</mat-icon></button>
   <span (click)="scrollDown()" class="scroll-text">Ver más</span>
+
+  <!--RECUADRO DE REPETICIÓN-->
+  <div class="repeat-button" #divElement [@scaleAnimation]="true">
+    <mat-icon (click)="showRepeatMenu()" class="repeat-icon">replay</mat-icon>
+<!--MODAL DE REPETICION-->
+
+    <div class="repeat-menu" [ngClass]="{show: showRepeat}">
+      <h5>Regresar:</h5>
+      
+      <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px; margin-left:20px;">
+        <button mat-flat-button class="boton_feo" (click)="quince()">15 Segundos</button>
+        <button mat-flat-button class="boton_feo" (click)="unMinuti()">1 Minuto</button>
+        <button mat-flat-button class="boton_feo" (click)="desdeElPrincipio()">Desde el principio</button>
+      </div>
+    </div>  
+
+  </div>  
+
   <video (error)="handleVideoError()" (loadedmetadata)="videoLoaded()" (ended)="videoEnded()" autoplay="autoplay" preload="auto" id="myVideo" #video style="width: 100%; height: auto;"><!--<source type="video/mp4">--></video>
 </div>
 
@@ -17,26 +35,15 @@
   <div style="flex-direction: column;">
   <div class="barra-menus">
     
-    <!--RECUADRO DE REPETICIÓN-->
-    <div class="repeat-button" [ngStyle]="{'border-top-right-radius' : showRepeat ? '0px' : '20px'}">
-      <mat-icon (click)="showRepeatMenu()">replay</mat-icon>
-    </div>  
-     <!--MODAL DE REPETICION-->
-     <div class="repeat-menu" *ngIf="showRepeat">
-      <h5>Regresar:</h5>
-      
-      <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px;">
-        <button mat-flat-button style="width: 140px; margin-left: 15px;" color="primary" (click)="quince()">15 Segundos</button>
-        <button mat-flat-button style="background: rgb(236, 212, 0); width: 140px;" (click)="unMinuti()">1 Minuto</button>
-        <button mat-flat-button style="background: rgb(236, 212, 0); width: 200px;" (click)="desdeElPrincipio()">Desde el principio</button>
-      </div>
-    </div>  
+    
+     
+     
     <!--MODAL DE CONTINUAR VIENDO -->
     <div class="continue-watching"  *ngIf="showContinueWatching">
       <h5>Continuamos con {{nextVideoTitle}} en:</h5>
       <div class="progress-bar">
         <div class="progress" [style.width.%]="(countdown / 7) * 100"></div>
-        <span style="position: absolute; padding: 20px; font-weight: 900; font-size: 20px;">{{ countdown }}</span>
+        <span style="position: absolute; padding: 20px; font-weight: 900; font-size: 26px;">{{ countdown }}</span>
       </div>
       <span style="display: flex; align-items: center; justify-content: center;">ó ir directamente a: </span>
       <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; flex-direction: row;">
@@ -51,7 +58,7 @@
   <div class="content" style="display: flex;">
 
     
-    <div (click)="setSrcVideo(time)" *ngFor="let time of results;let indexTime=index;" style="width: 14.33%; height: auto; padding-right: 1%; padding-left: 1%; cursor: pointer;" >
+    <div (click)="videoClicked(time)" *ngFor="let time of results;let indexTime=index;" style="width: 14.33%; height: auto; padding-right: 1%; padding-left: 1%; cursor: pointer;" >
       <div>
         <h6 style="text-align: center;">{{ time.titulo || '' }}</h6>
       </div>

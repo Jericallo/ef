@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { ApiService } from 'src/app/shared/services/api.service';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { debounceTime, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +11,6 @@ import { ApiService } from 'src/app/shared/services/api.service';
 })
 
 export class RegisterComponent implements OnInit {
-
   dataSource: any[];
   displayedColumns: string[];
   fixedColumns: string[];
@@ -18,6 +19,7 @@ export class RegisterComponent implements OnInit {
   izquierdaHabilitado = false
 
   sendableDate: Date = new Date();
+  bandera = true
 
   d = new Date()
   month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -29,20 +31,19 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.create_table()
     this.getObligations()
-    console.log(this.dataSource)
   }
 
   getObligations(offset=0) {
     const date = new Date();
     let params = new HttpParams().set("where", date.getTime())
     params = params.set('id_usuario', "29")
-    params = params.set('limit',11)
+    params = params.set('limit',21)
     params = params.set('offset',offset)
     console.log(params)
     this.apiService.getCumplimientos(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        
+        if(res.result.length < 20) this.bandera = false
         res.result.forEach((element,index) => {
 
           this.dataSource[index].fixedColumn = element.cumplimiento.descripcion
@@ -72,7 +73,7 @@ export class RegisterComponent implements OnInit {
       }
     });
   }
-  //solo sirvo para hacer commit
+
   create_table(){
     this.dataSource = [];
     this.displayedColumns = [];
@@ -84,7 +85,7 @@ export class RegisterComponent implements OnInit {
     }
     //this.fixedColumns.push('fixedColumn4')
 
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 20; i++) {
       const row = { fixedColumn: `Row ${i}`,
         fixedColumn2: `Rowf2 ${i}`,
         fixedColumn3: `Rowff ${i}`, 
@@ -119,20 +120,6 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  derecha(){
-    console.log('Derechando')
-    this.offset += 10
-    this.create_table()
-    this.getObligations(this.offset)
-  }
-
-  izquierda(){
-    console.log('Izquierdando')
-    this.offset += 10
-    this.create_table()
-    this.getObligations(this.offset)
-  }
-
   monthNext(){
     const today = new Date()
 
@@ -154,4 +141,42 @@ export class RegisterComponent implements OnInit {
       this.mesMostrar = this.month[this.sendableDate.getMonth()]
     }
   }
+
+  loadMoreData(){
+    let data = []
+    this.dataSource.forEach((element) => {
+      data.push(element)
+    })
+    this.dataSource = [];
+
+    if(this.bandera === true){
+      console.log('bandera')
+      this.offset += 20
+      this.getObligations(this.offset)
+    } else {
+      for (let i = 21; i <= 40; i++) {
+        const row = { fixedColumn: `Row ${i}`,
+          fixedColumn2: `Rowf2 ${i}`,
+          fixedColumn3: `Rowff ${i}`, 
+          fixedColumnRec:`Row ${i}`, 
+          fixedColumn2Rec: `Rowf2 ${i}`,
+          fixedColumn3Rec:`Rowff ${i}`};
+        for (let j = 1; j <= 50; j++) {
+          const columnName = `Column ${j}`;
+          const columnRec = `Column ${j} Rec`
+          row[columnName] = `${columnName} - Row ${i}`;
+          row[columnRec] = `${columnName} - Row ${i}`;
+        }
+        row['switch'] = true
+        row['textColor'] = 'black'
+  
+        data.push(row);
+      }
+
+      data.forEach((element) => {
+        this.dataSource.push(element)
+      })
+    }
+  }
+
 }
