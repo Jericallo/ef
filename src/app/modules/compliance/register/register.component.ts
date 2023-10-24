@@ -17,6 +17,13 @@ export class RegisterComponent implements OnInit {
   derechaHabilitado = false
   izquierdaHabilitado = false
 
+  sendableDate: Date = new Date();
+
+  d = new Date()
+  month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  mes = this.month[this.d.getMonth()]
+  mesMostrar = 'Mes actual'
+
   constructor(private apiService:ApiService) {}
 
   ngOnInit(): void {
@@ -126,4 +133,25 @@ export class RegisterComponent implements OnInit {
     this.getObligations(this.offset)
   }
 
+  monthNext(){
+    const today = new Date()
+
+    this.sendableDate.setMonth(this.sendableDate.getMonth()+1)
+    if(this.sendableDate.getMonth() === today.getMonth()){
+      this.mesMostrar = 'Mes Actual'
+    } else {
+      this.mesMostrar = this.month[this.sendableDate.getMonth()]
+    }
+  }
+
+  monthPrevious(){
+    const today = new Date()
+
+    this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
+    if(this.sendableDate.getMonth() === today.getMonth()){
+      this.mesMostrar = 'Mes Actual'
+    } else {
+      this.mesMostrar = this.month[this.sendableDate.getMonth()]
+    }
+  }
 }

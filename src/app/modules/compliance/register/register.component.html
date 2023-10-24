@@ -55,6 +55,18 @@
     </mat-card-content>
 </mat-card>-->
 
+<mat-toolbar-row style="background-color: #ffcc0c; width: 470vw;">
+    <button mat-icon-button mwlCalendarPreviousView  style="margin-right: 50px;" (click)="monthPrevious()">
+        <mat-icon>chevron_left</mat-icon><span>Anterior</span>
+    </button>
+    <span style="margin-right: 10px;">
+        {{mesMostrar}}
+    </span>
+    <button mat-icon-button mwlCalendarNextView  (click)="monthNext()">
+        <span>Siguiente</span><mat-icon>chevron_right</mat-icon>
+    </button>
+</mat-toolbar-row>
+
 <mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="overflow: visible; width: fit-content;">
     
     <!-- Columna fija -->
