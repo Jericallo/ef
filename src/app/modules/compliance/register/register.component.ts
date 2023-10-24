@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
       }
     });
   }
-
+  //solo sirvo para hacer commit
   create_table(){
     this.dataSource = [];
     this.displayedColumns = [];
