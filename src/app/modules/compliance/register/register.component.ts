@@ -76,13 +76,13 @@ export class RegisterComponent implements OnInit {
   create_table(){
     this.dataSource = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3'];
+    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3','fixedColumn4'];
     for (let i = 1; i <= 50; i++) {
       const columnName = `Column ${i}`;
       this.displayedColumns.push(columnName);
       this.fixedColumns.push(columnName);
     }
-    this.fixedColumns.push('fixedColumn4')
+    //this.fixedColumns.push('fixedColumn4')
 
     for (let i = 1; i <= 10; i++) {
       const row = { fixedColumn: `Row ${i}`,
