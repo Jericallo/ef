@@ -107,6 +107,8 @@ export class IndexComponent implements OnInit {
   mespasadio = this.month[this.d.getMonth() === 0 ? 11 : this.d.getMonth()-1]
   mesiguiente = this.month[this.d.getMonth() === 11 ? 1 : this.d.getMonth()+1]
   anio = this.d.getFullYear().toString()
+
+  mesMostrar = 'Mes actual'
   
   actions: CalendarEventAction[] = [
     {
@@ -393,22 +395,28 @@ export class IndexComponent implements OnInit {
   }
 
   monthNext(){
-    console.log('Month Next')
-    console.log(this.sendableDate)
+    const today = new Date()
 
     this.sendableDate.setMonth(this.sendableDate.getMonth()+1)
-    console.log(this.sendableDate)
+    if(this.sendableDate.getMonth() === today.getMonth()){
+      this.mesMostrar = 'Mes Actual'
+    } else {
+      this.mesMostrar = this.month[this.sendableDate.getMonth()]
+    }
 
     this.events = []
     this.getObligations(this.sendableDate)
   }
 
   monthPrevious(){
-    console.log('Month Previous')
-    console.log(this.sendableDate)
+    const today = new Date()
 
     this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
-    console.log(this.sendableDate)
+    if(this.sendableDate.getMonth() === today.getMonth()){
+      this.mesMostrar = 'Mes Actual'
+    } else {
+      this.mesMostrar = this.month[this.sendableDate.getMonth()]
+    }
 
     this.events = []
     this.getObligations(this.sendableDate)
