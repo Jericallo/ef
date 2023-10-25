@@ -36,15 +36,16 @@ export class RegisterComponent implements OnInit {
   getObligations(offset=0) {
     const date = new Date();
     let params = new HttpParams().set("where", date.getTime())
-    params = params.set('id_usuario', "29")
+    params = params.set('id_usuario', this.apiService.getId())
     params = params.set('limit',21)
     params = params.set('offset',offset)
     console.log(params)
     this.apiService.getCumplimientos(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        if(res.result.length < 20) this.bandera = false
-        res.result.forEach((element,index) => {
+        if(res.result[0].data.length < 20) this.bandera = false
+        console.log(this.bandera)
+        res.result[0].data.forEach((element,index) => {
 
           this.dataSource[index].fixedColumn = element.cumplimiento.descripcion
           this.dataSource[index].fixedColumn2 = element.cumplimiento.tipo.nombre
@@ -69,9 +70,18 @@ export class RegisterComponent implements OnInit {
         }
       },
       error: err => {
+        this.bandera = false
         console.log(err);
       }
     });
+  }
+
+  ngAfterViewInit() {
+    let intervalo = setInterval(() => {
+      console.log('LA BANDERA ES:',this.bandera)
+      if(this.bandera) {this.loadMoreData()}
+      else clearInterval(intervalo)
+    }, 2000);
   }
 
   create_table(){
@@ -85,7 +95,7 @@ export class RegisterComponent implements OnInit {
     }
     //this.fixedColumns.push('fixedColumn4')
 
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i <= 2; i++) {
       const row = { fixedColumn: `Row ${i}`,
         fixedColumn2: `Rowf2 ${i}`,
         fixedColumn3: `Rowff ${i}`, 
@@ -143,40 +153,13 @@ export class RegisterComponent implements OnInit {
   }
 
   loadMoreData(){
-    let data = []
-    this.dataSource.forEach((element) => {
-      data.push(element)
-    })
+    //let data = []
+    //this.dataSource.forEach((element) => {
+      //data.push(element)
+    //})
     this.dataSource = [];
-
-    if(this.bandera === true){
-      console.log('bandera')
-      this.offset += 20
-      this.getObligations(this.offset)
-    } else {
-      for (let i = 21; i <= 40; i++) {
-        const row = { fixedColumn: `Row ${i}`,
-          fixedColumn2: `Rowf2 ${i}`,
-          fixedColumn3: `Rowff ${i}`, 
-          fixedColumnRec:`Row ${i}`, 
-          fixedColumn2Rec: `Rowf2 ${i}`,
-          fixedColumn3Rec:`Rowff ${i}`};
-        for (let j = 1; j <= 50; j++) {
-          const columnName = `Column ${j}`;
-          const columnRec = `Column ${j} Rec`
-          row[columnName] = `${columnName} - Row ${i}`;
-          row[columnRec] = `${columnName} - Row ${i}`;
-        }
-        row['switch'] = true
-        row['textColor'] = 'black'
-  
-        data.push(row);
-      }
-
-      data.forEach((element) => {
-        this.dataSource.push(element)
-      })
-    }
+    this.offset += 20
+    this.getObligations(this.offset)
   }
 
 }
