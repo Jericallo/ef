@@ -30,43 +30,69 @@
   display: flex;
   flex-direction: column;
   margin-left: auto; 
-  padding: 20px; 
+  padding: 10px; 
   color: white;
   margin-right: 40px;
   width: 430px;
   height: fit-content;
-  border-top-right-radius: 20px;
-  border-top-left-radius:20px;
-  vertical-align: bottom;
+  border-radius: 20px;
 }
 
 .repeat-menu {
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
+  opacity: 0;
+  transition: 0.5s;
   flex-direction: row;
-  padding: 14px; 
   color: white;
   margin-right: auto;
   width: fit-content;
   height: fit-content;
-  border-top-right-radius: 20px;
-  bottom: 0px;
-  vertical-align: bottom;
+  left: 90px;
+  position: absolute;
+  top: 18px;
+  align-items: center;
+}
+
+.repeat-menu.show {
+  opacity: 1;
+}
+
+.boton_feo {
+  background-color: transparent;
+  color: white;
+  border-color: #848484;
+  border-width: 2px;
+  border-style: solid;
+  padding-left: 5px;
+  padding-right: 5px;
+
 }
 
 .repeat-button {
   background: rgba(0, 0, 0, 0.5);
-  display: flex;
+  position: absolute;
+  
+  left: 10px;
+  top: 420px;
   flex-direction: column;
-  margin-left: 40px; 
+   
   padding: 20px; 
   color: white;
   margin-right: 0px;
-  width: 60px;
-  height: fit-content;
-  border-top-left-radius:20px;
+  width: 80px;
+  height: 60px;
+  border-radius:20px;
   bottom: 0px;
   vertical-align: bottom;
+
+  transition: transform 0.5s;
+}
+
+.repeat-icon {
+  position: absolute;
+  top:15px;
+  left: 30px;
+  z-index: 5;
 }
 
 .barra-menus{
@@ -75,6 +101,7 @@
   display: flex;
   align-items: flex-end;
   height: 30vh;
+  margin-bottom: 10px;
 }
 
 .repeat-button:hover{

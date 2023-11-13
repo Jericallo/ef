@@ -18,7 +18,7 @@
                 <mat-icon>chevron_left</mat-icon><span>Anterior</span>
             </button>
             <span style="margin-right: 10px;">
-                Mes Actual
+                {{mesMostrar}}
             </span>
             <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (click)="monthNext()">
                 <span>Siguiente</span><mat-icon>chevron_right</mat-icon>

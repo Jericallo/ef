@@ -3,18 +3,20 @@ import { ApiService } from 'src/app/shared/services/api.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
-
+import { AnimationBuilder, animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
-  styleUrls: ['./intro.component.scss']
+  styleUrls: ['./intro.component.scss'],
+  
 })
 export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   @ViewChild('video', {read:ElementRef, static:false}) video:ElementRef
   @ViewChild('divVideo',{static:false}) divVideo:ElementRef;  
   @ViewChild('scrollElement') scrollElement: ElementRef;
   @ViewChild('scrollElement2') scrollElement2: ElementRef;
+  @ViewChild('divElement') divElement: ElementRef;
 
   isIntervalActive: boolean = false; 
   messageReceived = '';
@@ -28,7 +30,10 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   videoIndex = 0
   showModal:boolean = false
 
-  constructor(private apiService:ApiService, private changeDetector:ChangeDetectorRef, private dialog: MatDialog, private router: Router) {moment.locale("es"); }
+  constructor(private apiService:ApiService,
+    private changeDetector:ChangeDetectorRef,
+    private dialog: MatDialog, private router: Router,
+    private animationBuilder: AnimationBuilder) {moment.locale("es"); }
 
   ngOnInit(): void {
     this.get();    
@@ -79,7 +84,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
     this.video.nativeElement.addEventListener("loadedmetadata", () => {
       const videoDuration = this.video.nativeElement.duration;
-      const alertTime = videoDuration - 7;
+      const alertTime = videoDuration - 8;
 
       if (!this.isIntervalActive) { // Comprobar si el intervalo está activo
         this.isIntervalActive = true; // Marcar el intervalo como activo
@@ -118,7 +123,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     }
     const interval = setInterval(() => {
       this.countdown--;
-      if (this.countdown <= 0) {
+      if (this.countdown < 0) {
         clearInterval(interval);
         this.showContinueWatching = false;
       }
@@ -138,6 +143,11 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     }
   }
 
+  videoClicked(obj: any) {
+    this.videoIndex = this.results.indexOf(obj)
+    this.playNew(obj)
+  }
+
   goToCalendar() {
     this.router.navigate(['/compliance/index']);
   }
@@ -150,7 +160,6 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     this.dialog.closeAll()
   }
   
-
   videoLoaded() {
     this.video.nativeElement.play();
   }
@@ -163,10 +172,26 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
     this.scrollElement2.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
-  showRepeatMenu()
-  {
-    this.showRepeat = !this.showRepeat
+  showRepeatMenu() {
+    if (this.showRepeat) {
+      const factory = this.animationBuilder.build([
+        animate('200ms', style({ width: '80px', height: '60px' })),
+      ]);
+      const player = factory.create(this.divElement.nativeElement);
+  
+      player.play();
+    } else {
+      const factory = this.animationBuilder.build([
+        animate('200ms', style({ width: '550px', height: '75px' })),
+      ]);
+      const player = factory.create(this.divElement.nativeElement);
+  
+      player.play();
+    }
+    
+    this.showRepeat = !this.showRepeat;
   }
+  
 
   quince() {
     if (this.video && this.video.nativeElement) {

@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { ApiService } from 'src/app/shared/services/api.service';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { debounceTime, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +11,6 @@ import { ApiService } from 'src/app/shared/services/api.service';
 })
 
 export class RegisterComponent implements OnInit {
-
   dataSource: any[];
   displayedColumns: string[];
   fixedColumns: string[];
@@ -17,26 +18,34 @@ export class RegisterComponent implements OnInit {
   derechaHabilitado = false
   izquierdaHabilitado = false
 
+  sendableDate: Date = new Date();
+  bandera = true
+
+  d = new Date()
+  month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  mes = this.month[this.d.getMonth()]
+  mesMostrar = 'Mes actual'
+
   constructor(private apiService:ApiService) {}
 
   ngOnInit(): void {
     this.create_table()
     this.getObligations()
-    console.log(this.dataSource)
   }
 
   getObligations(offset=0) {
     const date = new Date();
     let params = new HttpParams().set("where", date.getTime())
-    params = params.set('id_usuario', "29")
-    params = params.set('limit',11)
+    params = params.set('id_usuario', this.apiService.getId())
+    params = params.set('limit',21)
     params = params.set('offset',offset)
     console.log(params)
     this.apiService.getCumplimientos(params).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        
-        res.result.forEach((element,index) => {
+        if(res.result[0].data.length < 20) this.bandera = false
+        console.log(this.bandera)
+        res.result[0].data.forEach((element,index) => {
 
           this.dataSource[index].fixedColumn = element.cumplimiento.descripcion
           this.dataSource[index].fixedColumn2 = element.cumplimiento.tipo.nombre
@@ -61,23 +70,32 @@ export class RegisterComponent implements OnInit {
         }
       },
       error: err => {
+        this.bandera = false
         console.log(err);
       }
     });
   }
 
+  ngAfterViewInit() {
+    let intervalo = setInterval(() => {
+      console.log('LA BANDERA ES:',this.bandera)
+      if(this.bandera) {this.loadMoreData()}
+      else clearInterval(intervalo)
+    }, 2000);
+  }
+
   create_table(){
     this.dataSource = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3'];
+    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3','fixedColumn4'];
     for (let i = 1; i <= 50; i++) {
       const columnName = `Column ${i}`;
       this.displayedColumns.push(columnName);
       this.fixedColumns.push(columnName);
     }
-    this.fixedColumns.push('fixedColumn4')
+    //this.fixedColumns.push('fixedColumn4')
 
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 2; i++) {
       const row = { fixedColumn: `Row ${i}`,
         fixedColumn2: `Rowf2 ${i}`,
         fixedColumn3: `Rowff ${i}`, 
@@ -112,17 +130,35 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  derecha(){
-    console.log('Derechando')
-    this.offset += 10
-    this.create_table()
-    this.getObligations(this.offset)
+  monthNext(){
+    const today = new Date()
+
+    this.sendableDate.setMonth(this.sendableDate.getMonth()+1)
+    if(this.sendableDate.getMonth() === today.getMonth()){
+      this.mesMostrar = 'Mes Actual'
+    } else {
+      this.mesMostrar = this.month[this.sendableDate.getMonth()]
+    }
   }
 
-  izquierda(){
-    console.log('Izquierdando')
-    this.offset += 10
-    this.create_table()
+  monthPrevious(){
+    const today = new Date()
+
+    this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
+    if(this.sendableDate.getMonth() === today.getMonth()){
+      this.mesMostrar = 'Mes Actual'
+    } else {
+      this.mesMostrar = this.month[this.sendableDate.getMonth()]
+    }
+  }
+
+  loadMoreData(){
+    //let data = []
+    //this.dataSource.forEach((element) => {
+      //data.push(element)
+    //})
+    this.dataSource = [];
+    this.offset += 20
     this.getObligations(this.offset)
   }
 

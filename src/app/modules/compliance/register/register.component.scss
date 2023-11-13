@@ -4,5 +4,17 @@
   min-width: 100px; /* Ajusta el valor según tus necesidades */
 }
 
+.page-content{
+  padding: 0px !important;
+  height: fit-content;
+}
+
+.button_month{
+  width: fit-content;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+
 .fixed-column tr:first-child { background-color: yellow; }
   
