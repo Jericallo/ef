@@ -7,6 +7,7 @@
 .page-content{
   padding: 0px !important;
   height: fit-content;
+  overflow: visible;
 }
 
 .button_month{
@@ -15,6 +16,29 @@
   margin-left: 20px;
 }
 
+.container {
+  display: flex;
+  padding: 0px !important;
+  height: 100% !important;
+  min-width: 100%;
+  min-height: 100%;
+}
 
-.fixed-column tr:first-child { background-color: yellow; }
+.celdas {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #81660e;
+}
+
+.fixed-column {
+  height: 100% !important;
+}
+
+.internas{
+  height: 50px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e6e6e6;
+}
+
   

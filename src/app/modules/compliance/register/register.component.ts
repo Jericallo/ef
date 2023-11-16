@@ -30,8 +30,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.create_table()
-    this.getObligations()
-  }
+    //this.getObligations()
+    }
 
   getObligations(offset=0) {
     const date = new Date();
@@ -77,56 +77,128 @@ export class RegisterComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    let intervalo = setInterval(() => {
+    /*let intervalo = setInterval(() => {
       console.log('LA BANDERA ES:',this.bandera)
       if(this.bandera) {this.loadMoreData()}
       else clearInterval(intervalo)
-    }, 2000);
+    }, 2000);*/
   }
 
   create_table(){
     this.dataSource = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3','fixedColumn4'];
-    for (let i = 1; i <= 50; i++) {
+    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3','fixedColumn4', 'fixedColumn5'];
+    /*for (let i = 1; i <= 50; i++) {
       const columnName = `Column ${i}`;
       this.displayedColumns.push(columnName);
       this.fixedColumns.push(columnName);
-    }
+    }*/
     //this.fixedColumns.push('fixedColumn4')
+    
+    for (let i = 1; i <= 10; i++) {
+      const row = { 
+        fixedColumn: `${i}`,
+        fixedColumn2: `Enero - Diciembre 2023`,
+        fixedColumn3: {
+          si:'verdadero',
+          no:'falso',
+          prioridad:'17'
+        }, 
+        fixedColumn4: {
+          leyes:'Codigo fiscal',
+          temario:'Impuestos fiscales',
+          busqueda:'No aplica',
+          numeros:'romanos',
+          impuestos:'sobre la renta',
+          documentacion:'no aplica',
+          caso_practico:'Evadir impuestos',
+          textos:'no aplica',
+          preguntas_frecuentes:'no',
+          mejores_practicas:'HA',
+          un_minuto:'no',
+          cinco_minutos:'no',
+          quince_minutos:'no',
+          treinta_minutos:'si',
+          sesenta_minutos:'no',
+          dictamen:'ilegal',
+          semaforo:'rojo',
+          inconsistencias:'no aplica',
+          sanciones_generales:'carcel eterna',
+          empresa:'no',
+          persona:'si'
+        }, 
+        fixedColumn5: {
+          fecha_cumplir:'hoy',
+          fecha_ideal:'ayer',
+          fecha_maxima:'mañana',
+          art:'14',
+          actualizado:'2022',
+          se_cumplio:'si',
+          fecha_cumplio:'antier'
+        },
+        switch:false ,
 
-    for (let i = 1; i <= 2; i++) {
-      const row = { fixedColumn: `Row ${i}`,
-        fixedColumn2: `Rowf2 ${i}`,
-        fixedColumn3: `Rowff ${i}`, 
-        fixedColumnRec:`Row ${i}`, 
-        fixedColumn2Rec: `Rowf2 ${i}`,
-        fixedColumn3Rec:`Rowff ${i}`};
-      for (let j = 1; j <= 50; j++) {
-        const columnName = `Column ${j}`;
-        const columnRec = `Column ${j} Rec`
-        row[columnName] = `${columnName} - Row ${i}`;
-        row[columnRec] = `${columnName} - Row ${i}`;
-      }
-      row['switch'] = true
-      row['textColor'] = 'black'
+        fixedColumnRec: `${i}`,
+        fixedColumn2Rec: `Enero - Diciembre 2023`,
+        fixedColumn3Rec: {
+          si:'verdadero',
+          no:'falso',
+          prioridad:'17'
+        }, 
+        fixedColumn4Rec: {
+          leyes:'Codigo fiscal',
+          temario:'Impuestos fiscales',
+          busqueda:'No aplica',
+          numeros:'romanos',
+          impuestos:'sobre la renta',
+          documentacion:'no aplica',
+          caso_practico:'Evadir impuestos',
+          textos:'no aplica',
+          preguntas_frecuentes:'no',
+          mejores_practicas:'HA',
+          un_minuto:'no',
+          cinco_minutos:'no',
+          quince_minutos:'no',
+          treinta_minutos:'si',
+          sesenta_minutos:'no',
+          dictamen:'ilegal',
+          semaforo:'rojo',
+          inconsistencias:'no aplica',
+          sanciones_generales:'carcel eterna',
+          empresa:'no',
+          persona:'si'
+        }, 
+        fixedColumn5Rec: {
+          fecha_cumplir:'hoy',
+          fecha_ideal:'ayer',
+          fecha_maxima:'mañana',
+          art:'14',
+          actualizado:'2022',
+          se_cumplio:'si',
+          fecha_cumplio:'antier'
+        },};
 
       this.dataSource.push(row);
       
     }
+    
   }
 
   onSwitchChange(row: any) {
-    console.log(row)
+    console.log(row.switch)
     row.switch
-    if (!row.switch) {
-      for(let i = 1; i <= 50; i++){
-        row[`Column ${i}`] = ''
-      }
+    if (row.switch) {
+      row.fixedColumn = ''
+      row.fixedColumn2 = ''
+      row.fixedColumn3 = ''
+      row.fixedColumn4 = ''
+      row.fixedColumn5 = ''
     } else {
-      for(let i = 1; i <= 50; i++){
-        row[`Column ${i}`] = row[`Column ${i} Rec`]
-      }
+      row.fixedColumn = row.fixedColumnRec
+      row.fixedColumn2 = row.fixedColumn2Rec
+      row.fixedColumn3 = row.fixedColumn3Rec
+      row.fixedColumn4 = row.fixedColumn4Rec
+      row.fixedColumn5 = row.fixedColumn5Rec
     }
   }
 
