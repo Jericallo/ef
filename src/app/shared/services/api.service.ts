@@ -579,4 +579,13 @@ export class ApiService {
     });
     return this.http.get(url ,{params:params,headers:headers});
   }
+
+  public getCumplimientosControl(params?:HttpParams):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_control';
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url ,{params:params,headers:headers});
+  }
 }
