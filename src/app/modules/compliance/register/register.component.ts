@@ -316,11 +316,15 @@ export class RegisterComponent implements OnInit {
   monthNext(){
     const today = new Date()
     this.sendableDate.setMonth(this.sendableDate.getMonth()+1)
-    if(this.sendableDate.getMonth() === today.getMonth()){
+    if(this.sendableDate.getMonth() === today.getMonth() && this.sendableDate.getFullYear() === today.getFullYear()){
       this.mesMostrar = 'Mes Actual'
       this.getObligations()
     } else {
-      this.mesMostrar = this.month[this.sendableDate.getMonth()]
+      if(this.sendableDate.getFullYear() === today.getFullYear()){
+        this.mesMostrar = this.month[this.sendableDate.getMonth()]
+      } else {
+        this.mesMostrar = this.month[this.sendableDate.getMonth()] + ' ' + this.sendableDate.getFullYear()
+      }
       this.getObligations()
     }
   }
@@ -328,11 +332,15 @@ export class RegisterComponent implements OnInit {
   monthPrevious(){
     const today = new Date()
     this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
-    if(this.sendableDate.getMonth() === today.getMonth()){
+    if(this.sendableDate.getMonth() === today.getMonth() && this.sendableDate.getFullYear() === today.getFullYear()){
       this.mesMostrar = 'Mes Actual'
       this.getObligations()
     } else {
-      this.mesMostrar = this.month[this.sendableDate.getMonth()]
+      if(this.sendableDate.getFullYear() === today.getFullYear()){
+        this.mesMostrar = this.month[this.sendableDate.getMonth()]
+      } else {
+        this.mesMostrar = this.month[this.sendableDate.getMonth()] + ' ' + this.sendableDate.getFullYear()
+      }
       this.getObligations()
     }
   }
