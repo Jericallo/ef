@@ -5,6 +5,8 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { debounceTime, fromEvent } from 'rxjs';
 import { ArticleRelation } from 'src/app/shared/interfaces/article-relation-interface';
 import { SearchDocumentComponent } from 'src/app/shared/components/search-document/search-document.component';
+import { DisplayModalComponent } from './display-modal/display-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -35,7 +37,7 @@ export class RegisterComponent implements OnInit {
 
   listOfArticles: ArticleRelation[] = [];
 
-  constructor(private apiService:ApiService) {}
+  constructor(private apiService:ApiService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.create_table()
@@ -105,6 +107,7 @@ export class RegisterComponent implements OnInit {
             }, 
             fixedColumn4: {
               leyes:element.correlacion.leyes,
+              leyesComp:element.correlacion.leyes,
               temario:element.correlacion.temario,
               busqueda:element.correlacion.busqueda,
               numeros:element.correlacion.numeros,
@@ -146,6 +149,7 @@ export class RegisterComponent implements OnInit {
             }, 
             fixedColumnRec4: {
               leyes:element.correlacion.leyes,
+              leyesComp:element.correlacion.leyes,
               temario:element.correlacion.temario,
               busqueda:element.correlacion.busqueda,
               numeros:element.correlacion.numeros,
@@ -182,7 +186,7 @@ export class RegisterComponent implements OnInit {
             if(row.fixedColumn5.fecha_ideal != null)row.fixedColumn5.fecha_ideal = new Date(row.fixedColumn5.fecha_ideal).toDateString(); row.fixedColumnRec5.fecha_ideal = row.fixedColumn5.fecha_ideal
             if(row.fixedColumn5.fecha_maxima != null)row.fixedColumn5.fecha_maxima = new Date(row.fixedColumn5.fecha_maxima).toDateString(); row.fixedColumnRec5.fecha_maxima = row.fixedColumn5.fecha_maxima
             if(row.fixedColumn5.fecha_cumplio != null)row.fixedColumn5.fecha_cumplio = new Date(row.fixedColumn5.fecha_cumplio).toDateString(); row.fixedColumnRec5.fecha_cumplio = row.fixedColumn5.fecha_cumplio
-
+            
             this.dataSource.push(row)
         })
       },
@@ -406,5 +410,10 @@ export class RegisterComponent implements OnInit {
     close ? this.isShownComponent = false : this.isShownComponent = true;
   }
 
-  
+  articleClicked(a:any){
+    console.log('ARTICULO',a)
+    const dialogRef = this.dialog.open(DisplayModalComponent, {
+      data: a, // Pasar el objeto a la modal
+    });
+  }  
 }

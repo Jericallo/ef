@@ -13,6 +13,7 @@ import { NotificationComponent } from './index/notification/notification.compone
 import { NotificationService } from './index/notification.service';
 import { RegisterComponent } from './register/register.component';
 import { ConfigModule } from '../config/config.module';
+import { DisplayModalComponent } from './register/display-modal/display-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ConfigModule } from '../config/config.module';
     CalendarDialogComponent,
     NotificationComponent,
     RegisterComponent,
+    DisplayModalComponent,
     
   ],
   imports: [

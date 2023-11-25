@@ -17,7 +17,7 @@
 </mat-toolbar-row>
 
 <!--
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="overflow: hidden; width: fit-content; margin-top: 50px; height: 70%;" >
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="overflow: hidden; width: 40vh; margin-top: 50px; height: 70%;" >
     
 
     <ng-container matColumnDef="fixedColumn" sticky>
@@ -44,7 +44,7 @@
 
     <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
       <mat-header-cell *matHeaderCellDef style="width: 150px;">{{ column }}</mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.textColor" style="width: fit-content;">{{ row[column] }}</mat-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.textColor" style="width: 40vh;">{{ row[column] }}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="fixedColumns" style="background-color: #ffcc0c;"></mat-header-row>
@@ -53,7 +53,7 @@
   </mat-table>
 -->
 
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" style=" margin-top: 50px; height: 70%; width: 3500px; border-top-width: 5px;" >
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" style=" margin-top: 50px; height: 70%; width: 3400px; border-top-width: 5px;" >
   
   <ng-container matColumnDef="fixedColumn" class="container" sticky >
     <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1;">
@@ -62,7 +62,7 @@
         <div class="celdas" style="height: max-content;">Número</div>
       </div>
     </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 8vh ; padding: 0px; margin: 0px; flex: 1;">
+    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 1;">
       <div class="container">
         <div class="celdas internas" style="flex: 1;">{{row.fixedColumn}}</div>  
       </div>
@@ -76,7 +76,7 @@
       <div class="celdas">Calendario:</div>
     </div>
     </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 8vh ; padding: 0px; margin: 0px; flex: 3;">
+    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 3;">
     <div class="container">
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn2}}</div>  
     </div>
@@ -94,7 +94,7 @@
       </div>
     </div>
     </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 8vh ; padding: 0px; margin: 0px; flex: 2;">
+    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 2;">
     <div class="container">
 
       <div class="celdas internas" style="flex: 2; align-items: center; align-content: center; text-align: center; padding-top: 10px;">
@@ -152,12 +152,14 @@
       </div>
     </div>
     </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 8vh ; padding: 0px; margin: 0px; flex: 20;">
+    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 20;">
     <div class="container" style="flex-direction: row;">
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.leyes}}
+      <div class="celdas internas" style="flex: 1; overflow: scroll;">
       <button (click)="openArticleRef(row)">
         <mat-icon>bookmark</mat-icon>
       </button>
+      <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)">Artículo {{a.articulo}} - {{a.nombre}} | </a><br/>
+      
       </div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.temario}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.busqueda}}</div>  
@@ -203,7 +205,7 @@
       </div>
     </div>
     </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 8vh ; padding: 0px; margin: 0px; flex: 7;">
+    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
     <div class="container" style="min-width: 100%;">
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_cumplir}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_ideal}}</div>  
@@ -217,7 +219,7 @@
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="fixedColumns" style="background-color: #ffcc0c;" ></mat-header-row>
-  <mat-row class="row-table" *matRowDef="let row; columns: fixedColumns;"></mat-row>
+  <mat-row class="row-table" style="height: 15vh;" *matRowDef="let row; columns: fixedColumns;"></mat-row>
 </mat-table>
 
   
