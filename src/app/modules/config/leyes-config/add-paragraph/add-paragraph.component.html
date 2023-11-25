@@ -180,10 +180,11 @@
     <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="addEvent()">Guardar</button>&nbsp;
     <button mat-raised-button color="basic" (click)="showSearchComponent()">Relaciones</button>&nbsp;
       <div style="position: absolute; top:230px; left: 390px; width: 50%;">
-        <div *ngIf="isShownComponent" style="background: rgb(0, 0, 0); width: 100%; height: 100%; border-radius: 40px; position: absolute; top: 0; left: 0;"></div>
+        <div *ngIf="isShownComponent" style="background: rgb(0, 0, 0); width: 100%; height: 100%; border-radius: 40px; position: absolute; top: 0; left: 0;">
+        </div>
         <ng-container style="border: solid 20px black;" *ngIf="isShownComponent">
-            <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
-          </ng-container>
+          <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
+        </ng-container>
       </div>
       <!-- Botones -->
   </div>

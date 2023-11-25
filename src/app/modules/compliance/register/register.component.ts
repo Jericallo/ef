@@ -3,6 +3,8 @@ import { HttpParams } from '@angular/common/http';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { debounceTime, fromEvent } from 'rxjs';
+import { ArticleRelation } from 'src/app/shared/interfaces/article-relation-interface';
+import { SearchDocumentComponent } from 'src/app/shared/components/search-document/search-document.component';
 
 @Component({
   selector: 'app-register',
@@ -21,10 +23,17 @@ export class RegisterComponent implements OnInit {
   sendableDate: Date = new Date();
   bandera = true
 
+  isShownComponent = false
+  showResults = false;
+
+  universalRow = null
+
   d = new Date()
   month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   mes = this.month[this.d.getMonth()]
   mesMostrar = 'Mes actual'
+
+  listOfArticles: ArticleRelation[] = [];
 
   constructor(private apiService:ApiService) {}
 
@@ -87,7 +96,7 @@ export class RegisterComponent implements OnInit {
         this.dataSource = []
         res.result.forEach((element) => {
           const row = { 
-            fixedColumn: element.id_cumplimiento_mensual,
+            fixedColumn: element.cumplimientos_obligacion.id_cumplimiento,
             fixedColumn2: element.fecha_cumplimiento,
             fixedColumn3: {
               si: element.aplica_punto.si,
@@ -355,4 +364,47 @@ export class RegisterComponent implements OnInit {
     this.getObligations(this.offset)
   }
 
+  openArticleRef(row:any){
+    if(this.isShownComponent == true){
+      this.isShownComponent = false
+    } else {
+      this.isShownComponent = true
+    }
+
+    this.universalRow = row
+    console.log(this.isShownComponent)
+  }
+
+  artReceived(art: any[]) {
+    console.log(art)
+    console.log(this.universalRow.fixedColumn)
+    art.length == 0 ? this.showResults = false : this.showResults = true;
+    this.listOfArticles = Object.assign(art)
+    let ides = []
+    art.forEach((element) => {
+      ides.push(element.id)
+    })
+    const body = {data:{
+      articulos:ides,
+      id_cumplimiento:this.universalRow.fixedColumn
+    }}
+    console.log('CUERPO', body)
+
+    this.apiService.relateCumplimientoArticulo(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        console.log('RESPONSE',res.result)
+      },
+      error: err => {
+        this.bandera = false
+        console.log(err);
+      }
+    });
+  }
+
+  closePanel(close: boolean){
+    close ? this.isShownComponent = false : this.isShownComponent = true;
+  }
+
+  
 }

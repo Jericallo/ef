@@ -588,4 +588,13 @@ export class ApiService {
     });
     return this.http.get(url ,{params:params,headers:headers});
   }
+
+  public relateCumplimientoArticulo(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_articulos'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  }
 }
