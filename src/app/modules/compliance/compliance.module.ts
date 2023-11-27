@@ -14,6 +14,7 @@ import { NotificationService } from './index/notification.service';
 import { RegisterComponent } from './register/register.component';
 import { ConfigModule } from '../config/config.module';
 import { DisplayModalComponent } from './register/display-modal/display-modal.component';
+import { SearchTopicComponent } from 'src/app/shared/components/search-topic/search-topic.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { DisplayModalComponent } from './register/display-modal/display-modal.co
     NotificationComponent,
     RegisterComponent,
     DisplayModalComponent,
-    
+    SearchTopicComponent
   ],
   imports: [
     CommonModule,

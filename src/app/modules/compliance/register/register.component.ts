@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
   bandera = true
 
   isShownComponent = false
+  isShownTopics = false
   showResults = false;
 
   universalRow = null
@@ -107,7 +108,6 @@ export class RegisterComponent implements OnInit {
             }, 
             fixedColumn4: {
               leyes:element.correlacion.leyes,
-              leyesComp:element.correlacion.leyes,
               temario:element.correlacion.temario,
               busqueda:element.correlacion.busqueda,
               numeros:element.correlacion.numeros,
@@ -189,6 +189,7 @@ export class RegisterComponent implements OnInit {
             
             this.dataSource.push(row)
         })
+        console.log(this.dataSource)
       },
       error: err => {
         this.bandera = false
@@ -228,7 +229,7 @@ export class RegisterComponent implements OnInit {
         }, 
         fixedColumn4: {
           leyes:'Codigo fiscal',
-          temario:'Impuestos fiscales',
+          temario:['Impuestos fiscales'],
           busqueda:'No aplica',
           numeros:'romanos',
           impuestos:'sobre la renta',
@@ -408,12 +409,47 @@ export class RegisterComponent implements OnInit {
 
   closePanel(close: boolean){
     close ? this.isShownComponent = false : this.isShownComponent = true;
+    this.isShownTopics = false
   }
 
   articleClicked(a:any){
-    console.log('ARTICULO',a)
+    let data = {mode:1, content:a}
     const dialogRef = this.dialog.open(DisplayModalComponent, {
-      data: a, // Pasar el objeto a la modal
+      data: data, // Pasar el objeto a la modal
     });
   }  
+
+  openTopicsRef(row:any){
+    if(this.isShownTopics == true){
+      this.isShownTopics = false
+    } else {
+      this.isShownTopics = true
+    }
+
+    this.universalRow = row
+    console.log(this.isShownTopics)
+  }
+
+  topicReceived(art: any[]) {
+    console.log(art)
+    console.log(this.universalRow.fixedColumn)
+    this.listOfArticles = Object.assign(art)
+    const body = {data:{
+      arr_temario:art,
+      id_cumplimiento:this.universalRow.fixedColumn
+    }}
+    console.log('CUERPO', body)
+
+    this.apiService.relateCumplimientoTopics(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        console.log('RESPONSE',res.result)
+        this.isShownTopics = false
+      },
+      error: err => {
+        this.bandera = false
+        console.log(err);
+      }
+    });
+  }
 }

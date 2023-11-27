@@ -155,13 +155,17 @@
     <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 20;">
     <div class="container" style="flex-direction: row;">
       <div class="celdas internas" style="flex: 1; overflow: scroll;">
-      <button (click)="openArticleRef(row)">
-        <mat-icon>bookmark</mat-icon>
-      </button>
-      <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)">Artículo {{a.articulo}} - {{a.nombre}} | </a><br/>
-      
+        <button (click)="openArticleRef(row)">
+          <mat-icon>bookmark</mat-icon>
+        </button>
+        <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)">Artículo {{a.articulo}} - {{a.nombre}} | </a><br/>
       </div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.temario}}</div>  
+      <div class="celdas internas" style="flex: 1; overflow: scroll;">
+        <button (click)="openTopicsRef(row)">
+          <mat-icon>assignment</mat-icon>
+        </button>
+        <p *ngFor="let b of row.fixedColumn4.temario">{{b.nombre}}</p>
+      </div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.busqueda}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.numeros}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.impuestos}}</div>  
@@ -225,9 +229,17 @@
   
 
 </div>
+
 <div style="position: absolute; top:230px; left: 390px; width: 50%; z-index: 4;">
   <div *ngIf="isShownComponent" style="background: rgb(0, 0, 0); width: 100%; height: 100%; border-radius: 40px; position: absolute; top: 0; left: 0;"></div>
   <ng-container style="border: solid 20px black;" *ngIf="isShownComponent">
     <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
+  </ng-container>
+</div>
+
+<div style="position: absolute; top:230px; left: 390px; width: 50%; z-index: 4;">
+  <div *ngIf="isShownTopics" style="background: rgb(0, 0, 0); width: 100%; height: 100%; border-radius: 40px; position: absolute; top: 0; left: 0;"></div>
+  <ng-container style="border: solid 20px black;" *ngIf="isShownTopics">
+    <app-search-topic (sendingTopics)="topicReceived($event)" (closingPanel)="closePanel($event)"></app-search-topic>
   </ng-container>
 </div>

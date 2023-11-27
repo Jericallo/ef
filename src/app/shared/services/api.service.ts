@@ -596,5 +596,34 @@ export class ApiService {
     });
     const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_articulos'
     const encryptedBody = this.encrypt(body,'private')
-    return this.http.post(url, {text:encryptedBody},{headers:headers});  }
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public getArticleById(id):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id=' + id
+    return this.http.get(url, {headers:headers});  
+  }
+
+  public getTopics():Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/temario'
+    return this.http.get(url, {headers:headers});  
+  }
+
+  public relateCumplimientoTopics(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_temario'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  
+  }
 }
