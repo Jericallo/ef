@@ -626,4 +626,14 @@ export class ApiService {
     const encryptedBody = this.encrypt(body,'private')
     return this.http.post(url, {text:encryptedBody},{headers:headers});  
   }
+
+  public relateCumplimientoDocumentaciones(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/documentaciones_obligaciones'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  
+  }
 }

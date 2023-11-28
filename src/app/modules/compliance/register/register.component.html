@@ -169,7 +169,12 @@
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.busqueda}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.numeros}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.impuestos}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.documentacion}}</div>  
+      <div class="celdas internas" style="flex: 1;">
+        <button (click)="openDocumentationsRef(row)">
+          <mat-icon>insert_drive_file</mat-icon>
+        </button>
+        <p *ngFor="let b of row.fixedColumn4.documentacion">{{b.nombre}}</p>
+      </div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.caso_practico}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.textos}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.preguntas_frecuentes}}</div>  
@@ -242,4 +247,12 @@
   <ng-container style="border: solid 20px black;" *ngIf="isShownTopics">
     <app-search-topic (sendingTopics)="topicReceived($event)" (closingPanel)="closePanel($event)"></app-search-topic>
   </ng-container>
+</div>
+
+<div style="position: absolute; top:130px; left: 390px; width: 50%; z-index: 4;">
+  <div style="max-height: 70vh; overflow: scroll; background-color: white;" *ngIf="isShownDocumentation">
+    <app-search-documentation (closingPanel)="closePanel($event)" (sendingDocumentations)="onDataReceived($event)"></app-search-documentation>
+    <button mat-raised-button color="primary" style="margin: 22px;" (click)="documentationReceived()">Relacionar</button>&nbsp;
+  </div>
+  
 </div>

@@ -40,6 +40,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import {VgStreamingModule} from '@videogular/ngx-videogular/streaming';
 import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
 import { SearchDocumentComponent } from 'src/app/shared/components/search-document/search-document.component';
+import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { SearchDocumentComponent } from 'src/app/shared/components/search-docume
     AddPermissionDialogComponent,
     AnswerTemplate,
     ComplianceCrudComponent,    
-    SearchDocumentComponent
+    SearchDocumentComponent,
+    SearchDocumentationComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
@@ -86,7 +88,8 @@ import { SearchDocumentComponent } from 'src/app/shared/components/search-docume
     VgStreamingModule
   ],
   exports: [
-    SearchDocumentComponent
+    SearchDocumentComponent,
+    SearchDocumentationComponent
   ]
 })
 export class ConfigModule { }

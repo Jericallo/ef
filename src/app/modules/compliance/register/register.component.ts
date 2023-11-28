@@ -5,6 +5,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { debounceTime, fromEvent } from 'rxjs';
 import { ArticleRelation } from 'src/app/shared/interfaces/article-relation-interface';
 import { SearchDocumentComponent } from 'src/app/shared/components/search-document/search-document.component';
+import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
 import { DisplayModalComponent } from './display-modal/display-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -28,6 +29,7 @@ export class RegisterComponent implements OnInit {
   isShownComponent = false
   isShownTopics = false
   showResults = false;
+  isShownDocumentation = false
 
   universalRow = null
 
@@ -37,6 +39,7 @@ export class RegisterComponent implements OnInit {
   mesMostrar = 'Mes actual'
 
   listOfArticles: ArticleRelation[] = [];
+  sentDocumentations = null
 
   constructor(private apiService:ApiService, public dialog: MatDialog) {}
 
@@ -46,47 +49,6 @@ export class RegisterComponent implements OnInit {
     }
 
   getObligations(offset=0) {
-    /*
-    const date = new Date();
-    let params = new HttpParams().set("where", date.getTime())
-    params = params.set('id_usuario', this.apiService.getId())
-    params = params.set('limit',21)
-    params = params.set('offset',offset)
-    console.log(params)
-    this.apiService.getCumplimientos(params).subscribe({
-      next: res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        if(res.result[0].data.length < 20) this.bandera = false
-        console.log(this.bandera)
-        res.result[0].data.forEach((element,index) => {
-
-          this.dataSource[index].fixedColumn = element.cumplimiento.descripcion
-          this.dataSource[index].fixedColumn2 = element.cumplimiento.tipo.nombre
-
-          this.dataSource[index].fixedColumnRec = element.cumplimiento.descripcion
-          this.dataSource[index].fixedColumn2Rec = element.cumplimiento.tipo.nombre
-
-          element.cumplimiento.obligaciones.forEach((element2,index2) => {
-            const aux = this.dataSource[index]
-            aux[`Column ${index2 + 1}`] = element2.nombre
-            aux[`Column ${index2 + 1} Rec`] = element2.nombre
-            this.dataSource[index] = aux
-          })
-        });
-
-        console.log(res)
-        if(res.result.length < 10){
-          this.derechaHabilitado = true
-        }
-        if(this.offset === 0){
-          this.izquierdaHabilitado = true
-        }
-      },
-      error: err => {
-        this.bandera = false
-        console.log(err);
-      }
-    });*/
     let params = new HttpParams().set("where", this.sendableDate.getTime())
     //params = params.set('id_usuario', this.apiService.getId())
     //params = params.set('limit',21)
@@ -139,6 +101,7 @@ export class RegisterComponent implements OnInit {
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
             },
             switch:false ,
+            obligacion:element.cumplimientos_obligacion.id_obligacion,
     
             fixedColumnRec: element.id_cumplimiento_mensual,
             fixedColumnRec2: element.fecha_cumplimiento,
@@ -211,13 +174,7 @@ export class RegisterComponent implements OnInit {
     this.dataSource = [];
     this.displayedColumns = [];
     this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3','fixedColumn4', 'fixedColumn5'];
-    /*for (let i = 1; i <= 50; i++) {
-      const columnName = `Column ${i}`;
-      this.displayedColumns.push(columnName);
-      this.fixedColumns.push(columnName);
-    }*/
-    //this.fixedColumns.push('fixedColumn4')
-    
+      
     for (let i = 1; i <= 10; i++) {
       const row = { 
         fixedColumn: `${i}`,
@@ -233,7 +190,7 @@ export class RegisterComponent implements OnInit {
           busqueda:'No aplica',
           numeros:'romanos',
           impuestos:'sobre la renta',
-          documentacion:'no aplica',
+          documentacion:['no aplica'],
           caso_practico:'Evadir impuestos',
           textos:'no aplica',
           preguntas_frecuentes:'no',
@@ -369,6 +326,14 @@ export class RegisterComponent implements OnInit {
     this.getObligations(this.offset)
   }
 
+  closePanel(close: boolean){
+    close ? this.isShownComponent = false : this.isShownComponent = true;
+    this.isShownTopics = false
+    this.isShownDocumentation = false
+  }
+
+  //---------------------------------------FOR CORRELATION WITH ARTICLES--------------------------------------//
+
   openArticleRef(row:any){
     if(this.isShownComponent == true){
       this.isShownComponent = false
@@ -407,17 +372,14 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  closePanel(close: boolean){
-    close ? this.isShownComponent = false : this.isShownComponent = true;
-    this.isShownTopics = false
-  }
-
   articleClicked(a:any){
     let data = {mode:1, content:a}
     const dialogRef = this.dialog.open(DisplayModalComponent, {
       data: data, // Pasar el objeto a la modal
     });
   }  
+
+  //---------------------------------------FOR CORRELATION WITH TOPICS--------------------------------------//
 
   openTopicsRef(row:any){
     if(this.isShownTopics == true){
@@ -450,6 +412,44 @@ export class RegisterComponent implements OnInit {
         this.bandera = false
         console.log(err);
       }
-    });
+    }); 
+  }
+
+  //---------------------------------------FOR CORRELATION WITH DOCUMENTATIONS--------------------------------------//
+
+  openDocumentationsRef(row:any){
+    if(this.isShownDocumentation == true){
+      this.isShownDocumentation = false
+    } else {
+      this.isShownDocumentation = true
+    }
+
+    this.universalRow = row
+  }
+
+  onDataReceived(data: any[]) {
+    this.sentDocumentations = data
+    console.log(this.sentDocumentations)
+  }
+
+  documentationReceived() {
+    console.log(this.sentDocumentations)
+    const body = {data:{
+      arr_documentaciones:this.sentDocumentations,
+      id_obligacion:this.universalRow.obligacion
+    }}
+    console.log('CUERPO', body)
+
+    this.apiService.relateCumplimientoDocumentaciones(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        console.log('RESPONSE',res.result)
+        this.isShownDocumentation = false
+      },
+      error: err => {
+        this.bandera = false
+        console.log(err);
+      }
+    }); 
   }
 }

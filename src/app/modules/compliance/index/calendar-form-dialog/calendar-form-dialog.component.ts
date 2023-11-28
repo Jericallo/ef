@@ -16,6 +16,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 import { DateAdapter } from '@angular/material/core';
 import { Data } from '@angular/router';
 import { Documentations } from 'src/app/shared/interfaces/documentations-interface';
+import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
 
 export var alertDate: string = '';
 export var alertPeriod: string = '';
