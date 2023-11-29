@@ -636,4 +636,24 @@ export class ApiService {
     const encryptedBody = this.encrypt(body,'private')
     return this.http.post(url, {text:encryptedBody},{headers:headers});  
   }
+
+  public getCapacitationsSinId(): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/capacitaciones';
+    console.log(url)
+    return this.http.get(url, {headers:headers});
+  }
+
+  public relateCumplimientoCapacitaciones(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_capacitaciones'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  
+  }
 }

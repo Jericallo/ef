@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
   isShownTopics = false
   showResults = false;
   isShownDocumentation = false
+  isShownCapacitations = false
 
   universalRow = null
 
@@ -40,6 +41,7 @@ export class RegisterComponent implements OnInit {
 
   listOfArticles: ArticleRelation[] = [];
   sentDocumentations = null
+  sentCapacitations = null
 
   constructor(private apiService:ApiService, public dialog: MatDialog) {}
 
@@ -79,11 +81,11 @@ export class RegisterComponent implements OnInit {
               textos:element.correlacion.capacitaciones.textos,
               preguntas_frecuentes:element.correlacion.capacitaciones.preguntas_frecuentes,
               mejores_practicas:element.correlacion.capacitaciones.mejores_practicas,
-              un_minuto:'no',
-              cinco_minutos:'no',
-              quince_minutos:'no',
-              treinta_minutos:'si',
-              sesenta_minutos:'no',
+              un_minuto:element.correlacion.capacitaciones.min1,
+              cinco_minutos:element.correlacion.capacitaciones.min5,
+              quince_minutos:element.correlacion.capacitaciones.min15,
+              treinta_minutos:element.correlacion.capacitaciones.min30,
+              sesenta_minutos:element.correlacion.capacitaciones.min60,
               dictamen:element.correlacion.dictamen,
               semaforo:element.correlacion.semaforo,
               inconsistencias:element.correlacion.inconsistencias,
@@ -122,11 +124,11 @@ export class RegisterComponent implements OnInit {
               textos:element.correlacion.capacitaciones.textos,
               preguntas_frecuentes:element.correlacion.capacitaciones.preguntas_frecuentes,
               mejores_practicas:element.correlacion.capacitaciones.mejores_practicas,
-              un_minuto:'no',
-              cinco_minutos:'no',
-              quince_minutos:'no',
-              treinta_minutos:'si',
-              sesenta_minutos:'no',
+              un_minuto:element.correlacion.capacitaciones.min1,
+              cinco_minutos:element.correlacion.capacitaciones.min5,
+              quince_minutos:element.correlacion.capacitaciones.min15,
+              treinta_minutos:element.correlacion.capacitaciones.min30,
+              sesenta_minutos:element.correlacion.capacitaciones.min60,
               dictamen:element.correlacion.dictamen,
               semaforo:element.correlacion.semaforo,
               inconsistencias:element.correlacion.inconsistencias,
@@ -195,11 +197,11 @@ export class RegisterComponent implements OnInit {
           textos:'no aplica',
           preguntas_frecuentes:'no',
           mejores_practicas:'HA',
-          un_minuto:'no',
-          cinco_minutos:'no',
-          quince_minutos:'no',
-          treinta_minutos:'si',
-          sesenta_minutos:'no',
+          un_minuto:['no'],
+          cinco_minutos:['no'],
+          quince_minutos:['no'],
+          treinta_minutos:['si'],
+          sesenta_minutos:['no'],
           dictamen:'ilegal',
           semaforo:'rojo',
           inconsistencias:'no aplica',
@@ -236,11 +238,11 @@ export class RegisterComponent implements OnInit {
           textos:'no aplica',
           preguntas_frecuentes:'no',
           mejores_practicas:'HA',
-          un_minuto:'no',
-          cinco_minutos:'no',
-          quince_minutos:'no',
-          treinta_minutos:'si',
-          sesenta_minutos:'no',
+          un_minuto:['no'],
+          cinco_minutos:['no'],
+          quince_minutos:['no'],
+          treinta_minutos:['si'],
+          sesenta_minutos:['no'],
           dictamen:'ilegal',
           semaforo:'rojo',
           inconsistencias:'no aplica',
@@ -330,6 +332,7 @@ export class RegisterComponent implements OnInit {
     close ? this.isShownComponent = false : this.isShownComponent = true;
     this.isShownTopics = false
     this.isShownDocumentation = false
+    this.isShownCapacitations = false
   }
 
   //---------------------------------------FOR CORRELATION WITH ARTICLES--------------------------------------//
@@ -441,6 +444,43 @@ export class RegisterComponent implements OnInit {
     console.log('CUERPO', body)
 
     this.apiService.relateCumplimientoDocumentaciones(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        console.log('RESPONSE',res.result)
+        this.isShownDocumentation = false
+      },
+      error: err => {
+        this.bandera = false
+        console.log(err);
+      }
+    }); 
+  }
+
+  //---------------------------------------FOR CORRELATION WITH CAPACITATIONS--------------------------------------//
+  openCapacitationsRef(row:any){
+    if(this.isShownCapacitations == true){
+      this.isShownCapacitations = false
+    } else {
+      this.isShownCapacitations = true
+    }
+
+    this.universalRow = row
+  }
+
+  onCapacitationsReceived(data: any[]) {
+    this.sentCapacitations = data
+    console.log(this.sentCapacitations)
+  }
+
+  capacitationsRecieved() {
+    console.log(this.sentCapacitations)
+    const body = {data:{
+      arr_capacitaciones:this.sentCapacitations,
+      id_cumplimiento:this.universalRow.fixedColumn
+    }}
+    console.log('CUERPO', body)
+
+    this.apiService.relateCumplimientoCapacitaciones(body).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
         console.log('RESPONSE',res.result)

@@ -175,15 +175,31 @@
         </button>
         <p *ngFor="let b of row.fixedColumn4.documentacion">{{b.nombre}}</p>
       </div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.caso_practico}}</div>  
+      <div class="celdas internas" style="flex: 1;">
+        <button (click)="openCapacitationsRef(row)">
+          <mat-icon>video_library</mat-icon>
+        </button>
+        {{row.fixedColumn4.caso_practico}}
+      
+      </div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.textos}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.preguntas_frecuentes}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.mejores_practicas}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.un_minuto}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.cinco_minutos}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.quince_minutos}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.treinta_minutos}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.sesenta_minutos}}</div>  
+      <div class="celdas internas" style="flex: 1;">
+        <a  *ngFor="link of row.fixedColumn4.un_minuto" href={{link}} >Da clic para ir al video</a>
+      </div>  
+      <div class="celdas internas" style="flex: 1;">
+        <a  *ngFor="link of row.fixedColumn4.cinco_minutos" href={{link}} >Da clic para ir al video</a>
+      </div>  
+      <div class="celdas internas" style="flex: 1;">
+        <a  *ngFor="link of row.fixedColumn4.quince_minutos" href={{link}} >Da clic para ir al video</a>
+      </div>  
+      <div class="celdas internas" style="flex: 1;">
+        <a  *ngFor="link of row.fixedColumn4.treinta_minutos" href={{link}} >Da clic para ir al video</a>
+      </div>   
+      <div class="celdas internas" style="flex: 1;">
+        <a  *ngFor="link of row.fixedColumn4.sesenta_minutos" href={{link}} >Da clic para ir al video</a>
+      </div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.dictamen}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.semaforo}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.inconsistencias}}</div>  
@@ -254,5 +270,11 @@
     <app-search-documentation (closingPanel)="closePanel($event)" (sendingDocumentations)="onDataReceived($event)"></app-search-documentation>
     <button mat-raised-button color="primary" style="margin: 22px;" (click)="documentationReceived()">Relacionar</button>&nbsp;
   </div>
-  
+</div>
+
+<div style="position: absolute; top:130px; left: 390px; width: 50%; z-index: 4;">
+  <div style="max-height: 70vh; overflow: scroll; background-color: white;" *ngIf="isShownCapacitations">
+    <app-search-capacitations (closingPanel)="closePanel($event)" (sendingCapacitations)="onCapacitationsReceived($event)"></app-search-capacitations>
+    <button mat-raised-button color="primary" style="margin: 22px;" (click)="capacitationsRecieved()">Relacionar</button>&nbsp;
+  </div>
 </div>

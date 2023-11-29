@@ -41,6 +41,7 @@ import {VgStreamingModule} from '@videogular/ngx-videogular/streaming';
 import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
 import { SearchDocumentComponent } from 'src/app/shared/components/search-document/search-document.component';
 import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
+import { SearchCapacitationsComponent } from 'src/app/shared/components/search-capacitations/search-capacitations.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { SearchDocumentationComponent } from 'src/app/shared/components/search-d
     AnswerTemplate,
     ComplianceCrudComponent,    
     SearchDocumentComponent,
-    SearchDocumentationComponent
+    SearchDocumentationComponent,
+    SearchCapacitationsComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
@@ -89,7 +91,8 @@ import { SearchDocumentationComponent } from 'src/app/shared/components/search-d
   ],
   exports: [
     SearchDocumentComponent,
-    SearchDocumentationComponent
+    SearchDocumentationComponent,
+    SearchCapacitationsComponent
   ]
 })
 export class ConfigModule { }
