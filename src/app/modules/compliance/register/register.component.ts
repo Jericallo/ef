@@ -456,6 +456,10 @@ export class RegisterComponent implements OnInit {
     }); 
   }
 
+  closeDocumentation(){
+    this.isShownDocumentation = false
+  }
+
   //---------------------------------------FOR CORRELATION WITH CAPACITATIONS--------------------------------------//
   openCapacitationsRef(row:any){
     if(this.isShownCapacitations == true){
@@ -491,5 +495,9 @@ export class RegisterComponent implements OnInit {
         console.log(err);
       }
     }); 
+  }
+
+  closeCapacitations(){
+    this.isShownCapacitations = false
   }
 }

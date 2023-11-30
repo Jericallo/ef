@@ -251,30 +251,34 @@
 
 </div>
 
-<div style="position: absolute; top:230px; left: 390px; width: 50%; z-index: 4;">
-  <div *ngIf="isShownComponent" style="background: rgb(0, 0, 0); width: 100%; height: 100%; border-radius: 40px; position: absolute; top: 0; left: 0;"></div>
-  <ng-container style="border: solid 20px black;" *ngIf="isShownComponent">
+<div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 4;">
+  <div style="background-color: white; padding: 10px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); border-radius: 10px;" *ngIf="isShownComponent">
+    <h5>Relacionar con artículos.</h5>
     <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
-  </ng-container>
-</div>
-
-<div style="position: absolute; top:230px; left: 390px; width: 50%; z-index: 4;">
-  <div *ngIf="isShownTopics" style="background: rgb(0, 0, 0); width: 100%; height: 100%; border-radius: 40px; position: absolute; top: 0; left: 0;"></div>
-  <ng-container style="border: solid 20px black;" *ngIf="isShownTopics">
-    <app-search-topic (sendingTopics)="topicReceived($event)" (closingPanel)="closePanel($event)"></app-search-topic>
-  </ng-container>
-</div>
-
-<div style="position: absolute; top:130px; left: 390px; width: 50%; z-index: 4;">
-  <div style="max-height: 70vh; overflow: scroll; background-color: white;" *ngIf="isShownDocumentation">
-    <app-search-documentation (closingPanel)="closePanel($event)" (sendingDocumentations)="onDataReceived($event)"></app-search-documentation>
-    <button mat-raised-button color="primary" style="margin: 22px;" (click)="documentationReceived()">Relacionar</button>&nbsp;
   </div>
 </div>
 
-<div style="position: absolute; top:130px; left: 390px; width: 50%; z-index: 4;">
-  <div style="max-height: 70vh; overflow: scroll; background-color: white;" *ngIf="isShownCapacitations">
+<div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 4;">
+  <div style="background-color: white; padding: 10px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); border-radius: 10px;" *ngIf="isShownTopics">
+    <h5>Relacionar con temas.</h5>
+    <app-search-topic (sendingTopics)="topicReceived($event)" (closingPanel)="closePanel($event)"></app-search-topic>
+  </div>
+</div>
+
+<div style="position: fixed; top:130px; left: 390px; width: 50%; z-index: 4;">
+  <div style="max-height: 70vh; overflow: scroll; background-color: white; padding: 10px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); border-radius: 10px;" *ngIf="isShownDocumentation">
+    <h5>Relacionar con documentaciones.</h5>
+    <app-search-documentation (closingPanel)="closePanel($event)" (sendingDocumentations)="onDataReceived($event)"></app-search-documentation>
+    <button mat-raised-button color="primary" style="margin: 22px;" (click)="documentationReceived()">Relacionar</button>&nbsp;
+    <button mat-raised-button color="secondary" (click)="closeDocumentation()">Cancelar</button>
+  </div>
+</div>
+
+<div style="position: fixed; top:130px; left: 390px; width: 50%; z-index: 4;">
+  <div style="max-height: 70vh; overflow: scroll; background-color: white; padding: 10px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); border-radius: 10px;" *ngIf="isShownCapacitations">
+    <h5>Relacionar con capacitaciones.</h5>
     <app-search-capacitations (closingPanel)="closePanel($event)" (sendingCapacitations)="onCapacitationsReceived($event)"></app-search-capacitations>
     <button mat-raised-button color="primary" style="margin: 22px;" (click)="capacitationsRecieved()">Relacionar</button>&nbsp;
+    <button mat-raised-button color="secondary" (click)="closeCapacitations()">Cancelar</button>
   </div>
 </div>
