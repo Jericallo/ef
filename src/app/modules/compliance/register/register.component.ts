@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit {
   isShownCapacitations = false
 
   universalRow = null
+  extArticulos = ''
 
   d = new Date()
   month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -97,6 +98,7 @@ export class RegisterComponent implements OnInit {
               fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
               fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
               fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
+              fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
               se_cumplio:element.cumplimientos_obligacion.se_cumplio,
@@ -140,6 +142,7 @@ export class RegisterComponent implements OnInit {
               fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
               fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
               fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
+              fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
               se_cumplio:element.cumplimientos_obligacion.se_cumplio,
@@ -151,7 +154,12 @@ export class RegisterComponent implements OnInit {
             if(row.fixedColumn5.fecha_ideal != null)row.fixedColumn5.fecha_ideal = new Date(row.fixedColumn5.fecha_ideal).toDateString(); row.fixedColumnRec5.fecha_ideal = row.fixedColumn5.fecha_ideal
             if(row.fixedColumn5.fecha_maxima != null)row.fixedColumn5.fecha_maxima = new Date(row.fixedColumn5.fecha_maxima).toDateString(); row.fixedColumnRec5.fecha_maxima = row.fixedColumn5.fecha_maxima
             if(row.fixedColumn5.fecha_cumplio != null)row.fixedColumn5.fecha_cumplio = new Date(row.fixedColumn5.fecha_cumplio).toDateString(); row.fixedColumnRec5.fecha_cumplio = row.fixedColumn5.fecha_cumplio
-            
+
+            row.fixedColumn5.fundamento_legal.forEach(element => {
+              element.fecha = new Date(element.fecha).toDateString();
+            });
+            row.fixedColumnRec5.fundamento_legal = row.fixedColumn5.fundamento_legal
+
             this.dataSource.push(row)
         })
         console.log(this.dataSource)
@@ -213,6 +221,7 @@ export class RegisterComponent implements OnInit {
           fecha_cumplir:'hoy',
           fecha_ideal:'ayer',
           fecha_maxima:'mañana',
+          fundamento_legal:[],
           art:'14',
           actualizado:'2022',
           se_cumplio:'si',
@@ -254,6 +263,7 @@ export class RegisterComponent implements OnInit {
           fecha_cumplir:'hoy',
           fecha_ideal:'ayer',
           fecha_maxima:'mañana',
+          fundamento_legal:[],
           art:'14',
           actualizado:'2022',
           se_cumplio:'si',
@@ -342,6 +352,19 @@ export class RegisterComponent implements OnInit {
       this.isShownComponent = false
     } else {
       this.isShownComponent = true
+      this.extArticulos = 'cumplimiento_articulos'
+    }
+
+    this.universalRow = row
+    console.log(this.isShownComponent)
+  }
+
+  openArticleFund(row:any){
+    if(this.isShownComponent == true){
+      this.isShownComponent = false
+    } else {
+      this.isShownComponent = true
+      this.extArticulos = 'cumplimiento_fundamentos'
     }
 
     this.universalRow = row
@@ -363,7 +386,7 @@ export class RegisterComponent implements OnInit {
     }}
     console.log('CUERPO', body)
 
-    this.apiService.relateCumplimientoArticulo(body).subscribe({
+    this.apiService.relateCumplimientoArticulo(body, this.extArticulos).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
         console.log('RESPONSE',res.result)

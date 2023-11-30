@@ -235,8 +235,17 @@
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_cumplir}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_ideal}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_maxima}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.art}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.actualizado}}</div>  
+      <div class="celdas internas" style="flex: 1;">
+        <div *ngFor="let fundamento of row.fixedColumn5.fundamento_legal">
+          <button (click)="openArticleFund(row)">
+            <mat-icon>bookmark</mat-icon>
+          </button>
+          <a (click)="articleClicked(a)">Artículo {{fundamento.art.id}} </a><br/>
+        </div>
+      </div>  
+      <div class="celdas internas" style="flex: 1;">
+        <p *ngFor="let fundamento of row.fixedColumn5.fundamento_legal">{{fundamento.fecha}}</p>
+      </div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.se_cumplio}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_cumplio}}</div>  
     </div>
