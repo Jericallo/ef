@@ -26,15 +26,30 @@ export class DisplayModalComponent implements OnInit {
   }
 
   obtenerArticulo() {
-    this.api.getArticleById(this.objectProperties.content.id).subscribe({
-      next: res => {
-        res = JSON.parse(this.api.decrypt(res.message, 'private'));
-        this.article = res.result[0]
-        console.log(this.article)
-      },
-      error: err => {
-        console.log(err);
-      }
-    });
+    console.log(this.objectProperties)
+    if(this.objectProperties.content.art !== undefined){
+      this.api.getArticleById(this.objectProperties.content.art.id).subscribe({
+        next: res => {
+          res = JSON.parse(this.api.decrypt(res.message, 'private'));
+          this.article = res.result[0]
+          console.log(this.article)
+        },
+        error: err => {
+          console.log(err);
+        }
+      });
+    } else {
+      this.api.getArticleById(this.objectProperties.content.id).subscribe({
+        next: res => {
+          res = JSON.parse(this.api.decrypt(res.message, 'private'));
+          this.article = res.result[0]
+          console.log(this.article)
+        },
+        error: err => {
+          console.log(err);
+        }
+      });
+    }
+    
   }
 }

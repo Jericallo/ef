@@ -101,7 +101,7 @@ export class RegisterComponent implements OnInit {
               fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
-              se_cumplio:element.cumplimientos_obligacion.se_cumplio,
+              se_cumplio:element.cumplimientos_obligacion.completado,
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
             },
             switch:false ,
@@ -145,9 +145,23 @@ export class RegisterComponent implements OnInit {
               fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
-              se_cumplio:element.cumplimientos_obligacion.se_cumplio,
+              se_cumplio:element.cumplimientos_obligacion.completado,
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
             },};
+
+            const ahora = new Date()
+            if(row.fixedColumn5.se_cumplio !== true){
+              if(ahora <= row.fixedColumn5.fecha_maxima) {
+                row.fixedColumn5.se_cumplio = 'No se cumplió'
+                row.fixedColumnRec5.se_cumplio = 'No se cumplió'
+              }
+              row.fixedColumn5.fecha_cumplio = null
+              row.fixedColumnRec5.fecha_cumplio = null
+            } else {
+              row.fixedColumn5.se_cumplio = 'Se cumplió'
+              row.fixedColumnRec5.se_cumplio = 'Se cumplió'
+            }
+            
 
             row.fixedColumn2 = new Date(row.fixedColumn2).toDateString(); row.fixedColumnRec2 = row.fixedColumn2
             if(row.fixedColumn5.fecha_cumplir != null)row.fixedColumn5.fecha_cumplir = new Date(row.fixedColumn5.fecha_cumplir).toDateString(); row.fixedColumnRec5.fecha_cumplir = row.fixedColumn5.fecha_cumplir
@@ -159,6 +173,8 @@ export class RegisterComponent implements OnInit {
               element.fecha = new Date(element.fecha).toDateString();
             });
             row.fixedColumnRec5.fundamento_legal = row.fixedColumn5.fundamento_legal
+
+            
 
             this.dataSource.push(row)
         })
@@ -380,10 +396,20 @@ export class RegisterComponent implements OnInit {
     art.forEach((element) => {
       ides.push(element.id)
     })
-    const body = {data:{
-      articulos:ides,
-      id_cumplimiento:this.universalRow.fixedColumn
-    }}
+    let body = {}
+
+    if(this.extArticulos == 'cumplimiento_articulos'){
+      body = {data:{
+        articulos:ides,
+        id_cumplimiento:this.universalRow.fixedColumn
+      }}
+    } else {
+      body = {data:{
+        arr_articulos:ides,
+        id_cumplimiento:this.universalRow.fixedColumn
+      }}
+    }
+    
     console.log('CUERPO', body)
 
     this.apiService.relateCumplimientoArticulo(body, this.extArticulos).subscribe({

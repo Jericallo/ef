@@ -236,11 +236,11 @@
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_ideal}}</div>  
       <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_maxima}}</div>  
       <div class="celdas internas" style="flex: 1;">
+        <button (click)="openArticleFund(row)">
+          <mat-icon>bookmark</mat-icon>
+        </button>
         <div *ngFor="let fundamento of row.fixedColumn5.fundamento_legal">
-          <button (click)="openArticleFund(row)">
-            <mat-icon>bookmark</mat-icon>
-          </button>
-          <a (click)="articleClicked(a)">Artículo {{fundamento.art.id}} </a><br/>
+          <a (click)="articleClicked(fundamento)">Artículo {{fundamento.art.articulo}} </a><br/>
         </div>
       </div>  
       <div class="celdas internas" style="flex: 1;">
