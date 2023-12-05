@@ -3,7 +3,7 @@
 <!-- ============================================================== -->
 
 <mat-nav-list appAccordion>
-    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
+    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem(); let i = index" routerLinkActive="selected" group="{{menuitem.state}}" (mouseenter) ="funcion(i)" class="juice-{{i}}">
         <a class="{{menuitem.class}}"  appAccordionToggle [routerLink]="['/main/videoIntro']" *ngIf="menuitem.type === 'link'">
             <mat-icon class="icon-circle">{{ menuitem.icon }}</mat-icon>
             <span>{{ menuitem.name | translate }}</span>
@@ -22,7 +22,7 @@
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
         </a>
 
-        <mat-nav-list class="sub-item"  *ngIf="menuitem.type === 'sub'">
+        <mat-nav-list class="sub-item juice-item-{{i}}"  *ngIf="menuitem.type === 'sub'">
             <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
                 <a [routerLink]="['/', menuitem.state, childitem.state ]" routerLinkActive="selected" class="{{menuitem.class}}" >
                     <span>{{childitem.name | translate}}</span>
