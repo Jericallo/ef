@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, LOCALE_ID, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -12,7 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  providers: [{ provide: LOCALE_ID, useValue: 'es-ES' }] // Establece el idioma como español
 })
 
 export class RegisterComponent implements OnInit {
@@ -107,7 +108,7 @@ export class RegisterComponent implements OnInit {
             switch:false ,
             obligacion:element.cumplimientos_obligacion.id_obligacion,
     
-            fixedColumnRec: element.id_cumplimiento_mensual,
+            fixedColumnRec: element.cumplimientos_obligacion.id_cumplimiento,
             fixedColumnRec2: element.fecha_cumplimiento,
             fixedColumnRec3: {
               si: element.aplica_punto.si,
@@ -155,19 +156,20 @@ export class RegisterComponent implements OnInit {
                 row.fixedColumn5.se_cumplio = 'No se cumplió'
                 row.fixedColumnRec5.se_cumplio = 'No se cumplió'
               }
-              row.fixedColumn5.fecha_cumplio = null
-              row.fixedColumnRec5.fecha_cumplio = null
+              row.fixedColumn5.se_cumplio = null
+              row.fixedColumnRec5.se_cumplio = null
             } else {
               row.fixedColumn5.se_cumplio = 'Se cumplió'
               row.fixedColumnRec5.se_cumplio = 'Se cumplió'
             }
             
-
+            /*
             row.fixedColumn2 = new Date(row.fixedColumn2).toDateString(); row.fixedColumnRec2 = row.fixedColumn2
             if(row.fixedColumn5.fecha_cumplir != null)row.fixedColumn5.fecha_cumplir = new Date(row.fixedColumn5.fecha_cumplir).toDateString(); row.fixedColumnRec5.fecha_cumplir = row.fixedColumn5.fecha_cumplir
             if(row.fixedColumn5.fecha_ideal != null)row.fixedColumn5.fecha_ideal = new Date(row.fixedColumn5.fecha_ideal).toDateString(); row.fixedColumnRec5.fecha_ideal = row.fixedColumn5.fecha_ideal
             if(row.fixedColumn5.fecha_maxima != null)row.fixedColumn5.fecha_maxima = new Date(row.fixedColumn5.fecha_maxima).toDateString(); row.fixedColumnRec5.fecha_maxima = row.fixedColumn5.fecha_maxima
             if(row.fixedColumn5.fecha_cumplio != null)row.fixedColumn5.fecha_cumplio = new Date(row.fixedColumn5.fecha_cumplio).toDateString(); row.fixedColumnRec5.fecha_cumplio = row.fixedColumn5.fecha_cumplio
+            */
 
             row.fixedColumn5.fundamento_legal.forEach(element => {
               element.fecha = new Date(element.fecha).toDateString();
@@ -204,7 +206,7 @@ export class RegisterComponent implements OnInit {
     for (let i = 1; i <= 10; i++) {
       const row = { 
         fixedColumn: `${i}`,
-        fixedColumn2: `Enero - Diciembre 2023`,
+        fixedColumn2: '',
         fixedColumn3: {
           si:'verdadero',
           no:'falso',
@@ -234,14 +236,14 @@ export class RegisterComponent implements OnInit {
           persona:'si'
         }, 
         fixedColumn5: {
-          fecha_cumplir:'hoy',
-          fecha_ideal:'ayer',
-          fecha_maxima:'mañana',
+          fecha_cumplir:'',
+          fecha_ideal:'',
+          fecha_maxima:'',
           fundamento_legal:[],
           art:'14',
           actualizado:'2022',
           se_cumplio:'si',
-          fecha_cumplio:'antier'
+          fecha_cumplio:''
         },
         switch:false ,
 
@@ -359,6 +361,7 @@ export class RegisterComponent implements OnInit {
     this.isShownTopics = false
     this.isShownDocumentation = false
     this.isShownCapacitations = false
+    this.getObligations()
   }
 
   //---------------------------------------FOR CORRELATION WITH ARTICLES--------------------------------------//
