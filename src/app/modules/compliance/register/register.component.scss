@@ -125,3 +125,13 @@ html::-moz-scrollbar-track {
 :hover::-webkit-scrollbar-thumb {
   visibility:visible;
 }
+::-webkit-scrollbar-track:horizontal {
+  background: white;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  background: #ddd;
+  visibility:hidden;
+}
+:hover::-webkit-scrollbar-thumb:horizontal {
+  visibility:visible;
+}
