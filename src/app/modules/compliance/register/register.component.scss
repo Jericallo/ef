@@ -111,27 +111,17 @@ html::-moz-scrollbar-track {
 
 /* Estilos para Gecko (Mozilla Firefox) */
 
-.scroller::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-.scroller::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: white;
 }
-.scroller::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #ddd;
   visibility:hidden;
 }
-.scroller:hover::-webkit-scrollbar-thumb {
+:hover::-webkit-scrollbar-thumb {
   visibility:visible;
-}
-.scroller {
-  overflow: auto;
-  font: 16px/1.5 Arial;
-  color: #afa74c;
-  border: 1px solid #ddd;
-  margin: 20px;
-  padding: 20px;
-  max-width: 300px;
-  height: 200px;
 }
