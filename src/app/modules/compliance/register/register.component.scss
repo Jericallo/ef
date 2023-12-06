@@ -41,6 +41,7 @@
   border-color: #e6e6e6;
   overflow: scroll;
   text-align: center;
+  scrollbar-width: none;
 }
 
 :host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
@@ -92,24 +93,6 @@
 ::-webkit-scrollbar-track:horizontal {
   background-color: #f1f1f1; /* Color del track del scrollbar */
 }
-
-body {
-  scrollbar-width: none;
-  scrollbar-color: #afa74c #f1f1f1; /* thumb color, track color */
-}
-
-/* Estilo del thumb del scroll horizontal en Firefox */
-html::-moz-scrollbar-thumb {
-  background-color: #afa74c; /* Color del thumb del scrollbar */
-  border-radius: 6px;
-}
-
-/* Estilo del track del scroll horizontal en Firefox */
-html::-moz-scrollbar-track {
-  background-color: #f1f1f1; /* Color del track del scrollbar */
-}
-
-/* Estilos para Gecko (Mozilla Firefox) */
 
 ::-webkit-scrollbar {
   width: 6px;
