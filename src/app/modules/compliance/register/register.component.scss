@@ -111,51 +111,27 @@ html::-moz-scrollbar-track {
 
 /* Estilos para Gecko (Mozilla Firefox) */
 
-  /* Para navegadores basados en WebKit (Chrome, Safari) */
-::-webkit-scrollbar {
-  width: 12px; /* Ancho del scrollbar vertical */
-  height: 12px; /* Altura del scrollbar horizontal */
+.scroller::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
-
-::-webkit-scrollbar-thumb {
-  background-color: #afa74c; /* Color del thumb del scrollbar */
-  border-radius: 6px;
+.scroller::-webkit-scrollbar-track {
+  background: white;
 }
-
-::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Color del track del scrollbar */
+.scroller::-webkit-scrollbar-thumb {
+  background: #ddd;
+  visibility:hidden;
 }
-
-/* Ocultar el scrollbar cuando no se está utilizando */
-::-webkit-scrollbar-thumb:vertical {
-  transition: background-color 0.5s;
+.scroller:hover::-webkit-scrollbar-thumb {
+  visibility:visible;
 }
-
-::-webkit-scrollbar-thumb:hover:vertical {
-  background-color: #afa74c; /* Color del thumb del scrollbar cuando se pasa el mouse */
+.scroller {
+  overflow: auto;
+  font: 16px/1.5 Arial;
+  color: #afa74c;
+  border: 1px solid #ddd;
+  margin: 20px;
+  padding: 20px;
+  max-width: 300px;
+  height: 200px;
 }
-
-/* Para navegadores basados en Gecko (Firefox) */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: #afa74c #f1f1f1; /* thumb color, track color */
-}
-
-html::-moz-scrollbar-thumb {
-  background-color: #afa74c; /* Color del thumb del scrollbar */
-  border-radius: 6px;
-}
-
-html::-moz-scrollbar-track {
-  background-color: #f1f1f1; /* Color del track del scrollbar */
-}
-
-/* Ocultar el scrollbar cuando no se está utilizando en Firefox */
-html::-moz-scrollbar-thumb:vertical {
-  transition: background-color 0.5s;
-}
-
-html::-moz-scrollbar-thumb:hover:vertical {
-  background-color: #afa74c; /* Color del thumb del scrollbar cuando se pasa el mouse */
-}
-
