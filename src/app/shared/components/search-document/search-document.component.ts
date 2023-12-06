@@ -97,7 +97,7 @@ export class SearchDocumentComponent implements OnInit {
   validateSearch(){
     this.showResults = false;
     this.showSpinner = true;
-    this.apiService.searchArticle(this.documentId, this.searchInput)
+    this.apiService.searchArticleInEndpointArticle(this.documentId, this.searchInput)
     .subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
@@ -107,6 +107,8 @@ export class SearchDocumentComponent implements OnInit {
         //Prepare yourself for the ugliest piece of code you'll ever see :)
 
         if('result' in response){ //Checks if the response array is empty
+
+          /*
           if('documentos' in response.result[0]){ //Checks if there's a tag 'documentos' inside of the response (there should always be)
             response.result[0].documentos.forEach(documentos => { //There can be many documents. This reads each one
               console.log(documentos)
@@ -167,7 +169,11 @@ export class SearchDocumentComponent implements OnInit {
                 }
               }
             });
-          }
+          }*/
+          response.result.forEach((element) => {
+            articulosLimpios.push(element)
+          })
+
         }
       
         this.showSpinner = false;

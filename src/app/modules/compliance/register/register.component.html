@@ -261,11 +261,17 @@
 
 </div>
 
-<div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 4;">
-  <div style="background-color: white; padding: 10px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); border-radius: 10px;" *ngIf="isShownComponent">
+<div style="position: fixed; 
+top:130px; left: 390px; 
+width: 50%; z-index: 4; 
+max-height: 80vh; 
+background-color: white; 
+padding: 10px; 
+box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); 
+border-radius: 10px; overflow:scroll;" 
+*ngIf="isShownComponent">
     <h5>Relacionar con artículos.</h5>
     <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
-  </div>
 </div>
 
 <div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 4;">

@@ -406,6 +406,15 @@ export class ApiService {
     return this.http.get(url ,{headers:headers});
   }
 
+  public searchArticleInEndpointArticle(id: number, request: string): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id_documento=' + id + '&where=' + request;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url ,{headers:headers});
+  }
+
   updateGlobalTitle(globalTitle: string) {
     this.title.next(globalTitle);
   }
