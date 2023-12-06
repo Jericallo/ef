@@ -93,8 +93,8 @@
   background-color: #f1f1f1; /* Color del track del scrollbar */
 }
 
-html {
-  scrollbar-width: thin;
+body {
+  scrollbar-width: none;
   scrollbar-color: #afa74c #f1f1f1; /* thumb color, track color */
 }
 
