@@ -117,7 +117,7 @@
     <div class="container" style="flex-direction: column;">
       <div class="celdas" style="height: 3.75vh;">Correlación con otros sectores del escudo fiscal</div>
       <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
-        <div class="celdas" style="flex: 1;">Leyes</div>
+        <div class="celdas" style="flex: 2;">Leyes</div>
         <div class="celdas" style="flex: 1;">Temario</div>        
         <div class="celdas" style="flex: 1;">Búsqueda</div>   
         <div class="celdas" style="flex: 1;">Números</div>      
@@ -154,12 +154,12 @@
     </mat-header-cell>
     <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 20;">
     <div class="container" style="flex-direction: row;">
-      <div class="celdas internas" style="flex: 1; overflow: scroll;">
+      <div class="celdas internas" style="flex: 2; overflow: scroll;">
         <button (click)="openArticleRef(row)">
           <mat-icon>bookmark</mat-icon>
         </button>
         <br/>
-        <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)">Artículo {{a.articulo}} - {{a.nombre}} | </a><br/>
+        <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)"> / Art. {{a.articulo}} </a><br/>
       </div>  
       <div class="celdas internas" style="flex: 1; overflow: scroll;">
         <button (click)="openTopicsRef(row)">
@@ -271,7 +271,7 @@ box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 border-radius: 10px; overflow:scroll;" 
 *ngIf="isShownComponent">
     <h5>Relacionar con artículos.</h5>
-    <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
+  <app-search-document-and-paragraph (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document-and-paragraph> 
 </div>
 
 <div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 4;">

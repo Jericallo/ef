@@ -42,6 +42,7 @@ import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.compo
 import { SearchDocumentComponent } from 'src/app/shared/components/search-document/search-document.component';
 import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
 import { SearchCapacitationsComponent } from 'src/app/shared/components/search-capacitations/search-capacitations.component';
+import { SearchDocumentAndParagraphComponent } from 'src/app/shared/components/search-document-and-paragraph/search-document-and-paragraph.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { SearchCapacitationsComponent } from 'src/app/shared/components/search-c
     ComplianceCrudComponent,    
     SearchDocumentComponent,
     SearchDocumentationComponent,
-    SearchCapacitationsComponent
+    SearchCapacitationsComponent,
+    SearchDocumentAndParagraphComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
@@ -92,7 +94,8 @@ import { SearchCapacitationsComponent } from 'src/app/shared/components/search-c
   exports: [
     SearchDocumentComponent,
     SearchDocumentationComponent,
-    SearchCapacitationsComponent
+    SearchCapacitationsComponent,
+    SearchDocumentAndParagraphComponent
   ]
 })
 export class ConfigModule { }

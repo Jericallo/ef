@@ -118,3 +118,12 @@
 :hover::-webkit-scrollbar-thumb:horizontal {
   visibility:visible;
 }
+
+a {
+  color: #177cff !important;
+  text-decoration: underline !important;
+}
+
+a:hover{
+  cursor: pointer;
+}

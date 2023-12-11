@@ -203,7 +203,7 @@ export class RegisterComponent implements OnInit {
     this.displayedColumns = [];
     this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3','fixedColumn4', 'fixedColumn5'];
       
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 1; i++) {
       const row = { 
         fixedColumn: `${i}`,
         fixedColumn2: '',
