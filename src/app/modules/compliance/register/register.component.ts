@@ -45,6 +45,8 @@ export class RegisterComponent implements OnInit {
   sentDocumentations = null
   sentCapacitations = null
 
+  sending = ['hola','adios']
+
   constructor(private apiService:ApiService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -213,7 +215,7 @@ export class RegisterComponent implements OnInit {
           prioridad:'17'
         }, 
         fixedColumn4: {
-          leyes:'Codigo fiscal',
+          leyes:['Codigo fiscal'],
           temario:['Impuestos fiscales'],
           busqueda:'No aplica',
           numeros:'romanos',
@@ -367,15 +369,14 @@ export class RegisterComponent implements OnInit {
   //---------------------------------------FOR CORRELATION WITH ARTICLES--------------------------------------//
 
   openArticleRef(row:any){
+    this.universalRow = row
+    console.log(this.universalRow)
     if(this.isShownComponent == true){
       this.isShownComponent = false
     } else {
       this.isShownComponent = true
       this.extArticulos = 'cumplimiento_articulos'
     }
-
-    this.universalRow = row
-    console.log(this.isShownComponent)
   }
 
   openArticleFund(row:any){
@@ -425,6 +426,14 @@ export class RegisterComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  parRecieved(par:any[]){
+    console.log(par)
+  }
+
+  delArtRecieved(del:any[]){
+    console.log(del)
   }
 
   articleClicked(a:any){

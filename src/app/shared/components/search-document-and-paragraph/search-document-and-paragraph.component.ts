@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatListOption } from '@angular/material/list';
@@ -21,7 +21,10 @@ import { ArticleRelation } from '../../interfaces/article-relation-interface';
 export class SearchDocumentAndParagraphComponent implements OnInit {
 
   @Output() sendingArticles = new EventEmitter<string[]>();
+  @Output() sendingParagraphs = new EventEmitter<string[]>();
+  @Output() sendingDeleted = new EventEmitter<string[]>();
   @Output() closingPanel = new EventEmitter<boolean>();
+  @Input() articlesPrevRelated = [];
 
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
@@ -40,7 +43,8 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   btnPar = true;
 
   selectedArtOptions = [];
-  selectedParOptions =[];
+  selectedParOptions = [];
+  selectedDelOptions = [];
 
   searchInput: string = "";
   searchInputParrafo: string = '';
@@ -62,6 +66,8 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
         return name ? this._filterDoc(name as string) : this.optionsDocuments.slice();
       }),
     );
+
+    console.log('PREVIOUS',this.articlesPrevRelated)
   }
 
   ngAfterViewInit(){
@@ -193,7 +199,8 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
       error: err => {
         this.showSpinner = false;
         this.showResults = true;
-        console.log("Error: ", err);
+        console.log("Error: ", this.apiService.decrypt(err.error.message, 'private'));
+        
       }
     })
   }
@@ -210,8 +217,14 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
     this.selectedParOptions = Object.assign(options.map(o => o.value));
   }
 
+  onChangePrevious(options:MatListOption[]) {
+    this.selectedDelOptions = Object.assign(options.map(o => o.value));
+  }
+
   saveRelation(){
     this.sendingArticles.emit(this.selectedArtOptions);
+    this.sendingParagraphs.emit(this.selectedParOptions);
+    this.sendingDeleted.emit(this.selectedDelOptions);
     this.closingPanel.emit(true);
   }
 
@@ -228,8 +241,8 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   }
 
   isActiveRelation(){
-    if(this.selectedArtOptions.length != 0){
-      if(this.selectedArtOptions.length > 1){
+    if(this.selectedArtOptions.length != 0 || this.selectedDelOptions.length != 0){
+      if(this.selectedArtOptions.length > 1 || this.selectedArtOptions.length === 0){
         this.btnPar = true;
         return false
       }

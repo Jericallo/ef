@@ -41,8 +41,21 @@
                 </mat-card-content>
             </mat-card>
             
+            <mat-card *ngIf="articlesPrevRelated.length > 0">
+                <mat-card-content>
+                    <label >Ya relacionados</label>
+                    <mat-selection-list #prev (selectionChange)="onChangePrevious(prev.selectedOptions.selected)">
+                        <mat-list-option *ngFor="let prev of articlesPrevRelated" [value]="prev">
+                            <mat-label>Art. {{prev.articulo}}.- {{prev.nombre}} </mat-label>
+                            <br>
+                        </mat-list-option>
+                    </mat-selection-list>
+                    <br>
+                    <p>Párrafos seleccionados: {{prev.selectedOptions.selected.length}}</p>
+                </mat-card-content>
+            </mat-card>
         </mat-card-content>
-        <button mat-raised-button color="primary" style="margin: 22px;" (click)="saveRelation()" [disabled]="isActiveRelation()">Relacionar</button>&nbsp;
+        <button mat-raised-button color="primary" style="margin: 22px;" (click)="saveRelation()" [disabled]="isActiveRelation()">Guardar</button>&nbsp;
         <button mat-raised-button color="primary" style="margin: 22px;" (click)="verParrafos()" [disabled]="btnPar">Ver párrafos</button>&nbsp;
         <button mat-raised-button color="secondary" (click)="closePanel()">Cancelar</button>
 
@@ -76,6 +89,8 @@
                     <p>Párrafos seleccionados: {{par.selectedOptions.selected.length}}</p>
                 </mat-card-content>
             </mat-card>
+
+            
             
         </mat-card-content>
     </mat-card>

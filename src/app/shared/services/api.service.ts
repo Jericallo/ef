@@ -408,6 +408,7 @@ export class ApiService {
 
   public searchArticleInEndpointArticle(id: number, request: string): Observable<any> {
     const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id_documento=' + id + '&where=' + request;
+    console.log('URL', url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`

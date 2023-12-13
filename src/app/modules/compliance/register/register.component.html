@@ -159,7 +159,7 @@
           <mat-icon>bookmark</mat-icon>
         </button>
         <br/>
-        <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)"> / Art. {{a.articulo}} </a><br/>
+        <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)">{{a.abreviatura}} / Art. {{a.articulo}} <br/></a>
       </div>  
       <div class="celdas internas" style="flex: 1; overflow: scroll;">
         <button (click)="openTopicsRef(row)">
@@ -271,7 +271,12 @@ box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 border-radius: 10px; overflow:scroll;" 
 *ngIf="isShownComponent">
     <h5>Relacionar con artículos.</h5>
-  <app-search-document-and-paragraph (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document-and-paragraph> 
+  <app-search-document-and-paragraph
+  (sendingArticles)="artReceived($event)" 
+  (sendingParagraphs) = "parRecieved($event)"
+  (sendingDeleted) = "delArtRecieved($event)"
+  (closingPanel)="closePanel($event)" 
+  [articlesPrevRelated]="universalRow.fixedColumn4.leyes"></app-search-document-and-paragraph> 
 </div>
 
 <div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 4;">
