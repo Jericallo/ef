@@ -1,0 +1,23 @@
+<div class="mainDiv">
+    <mat-card class="mainCard">
+        <mat-card-content>
+            <!-- Documentos -->
+            <form>
+                <mat-form-field class="documents-full-width" appearance="fill">
+                <mat-label>Tema</mat-label>
+                <input type="text" matInput [formControl]="myControlTopics" [matAutocomplete]="auto" (change)="handleEmptyTopic($event)" required>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDocuments" (optionSelected)="selectedTopic($event)">
+                    <mat-option *ngFor="let option of filteredTopicOptions | async" [value]="option.nombre">
+                    {{option.nombre}}
+                    </mat-option>
+                </mat-autocomplete>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <button mat-raised-button color="primary" style="margin: 22px;" (click)="saveRelation()" [disabled]="isActiveRelation()">Relacionar</button>&nbsp;
+        <button mat-raised-button color="secondary" (click)="closePanel()">Cancelar</button>
+    </mat-card>
+</div>
+<div class="spinner" *ngIf="showMainSpinner">
+    <mat-spinner></mat-spinner>
+</div>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatListOption } from '@angular/material/list';
@@ -14,14 +14,17 @@ import { Documents } from '../../interfaces/documents-interface';
 import { ArticleRelation } from '../../interfaces/article-relation-interface';
 
 @Component({
-  selector: 'app-search-document',
-  templateUrl: './search-document.component.html',
-  styleUrls: ['./search-document.component.css']
+  selector: 'app-search-document-and-paragraph',
+  templateUrl: './search-document-and-paragraph.component.html',
+  styleUrls: ['./search-document-and-paragraph.component.scss']
 })
-export class SearchDocumentComponent implements OnInit {
+export class SearchDocumentAndParagraphComponent implements OnInit {
 
   @Output() sendingArticles = new EventEmitter<string[]>();
+  @Output() sendingParagraphs = new EventEmitter<string[]>();
+  @Output() sendingDeleted = new EventEmitter<string[]>();
   @Output() closingPanel = new EventEmitter<boolean>();
+  @Input() articlesPrevRelated = [];
 
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
@@ -30,15 +33,26 @@ export class SearchDocumentComponent implements OnInit {
   filteredDocOptions: Observable<Documents[]> | undefined;
 
   myControlSearch = new FormControl('');
+  myControlSearchParrafos = new FormControl('');
 
   selectedDocument = null;
   showSpinner = false;
+  showSpinnerParrafos = false;
   showMainSpinner = false;
   showResults = false;
+  btnPar = true;
+
   selectedArtOptions = [];
+  selectedParOptions = [];
+  selectedDelOptions = [];
+
   searchInput: string = "";
+  searchInputParrafo: string = '';
+
+  showParrafos = false;
 
   articles: ArticleRelation[] = [];
+  paragraphs = []
   documentId: any;
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private readonly cdRef: ChangeDetectorRef) {
@@ -51,7 +65,7 @@ export class SearchDocumentComponent implements OnInit {
         const name = typeof value === 'string' ? value : value?.titulo;
         return name ? this._filterDoc(name as string) : this.optionsDocuments.slice();
       }),
-    );
+    );  
   }
 
   ngAfterViewInit(){
@@ -101,7 +115,6 @@ export class SearchDocumentComponent implements OnInit {
     .subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        console.log(response)
         let articulosLimpios:ArticleRelation[] = []
 
         //Prepare yourself for the ugliest piece of code you'll ever see :)
@@ -183,17 +196,45 @@ export class SearchDocumentComponent implements OnInit {
       error: err => {
         this.showSpinner = false;
         this.showResults = true;
-        console.log("Error: ", err);
+        console.log("Error: ", this.apiService.decrypt(err.error.message, 'private'));
+        
       }
     })
+  }
+
+  validateSearchParagraph(){
+    console.log('hola')
   }
 
   onChange(options: MatListOption[]) {
     this.selectedArtOptions = Object.assign(options.map(o => o.value));
   }
 
+  onChangeParagraph(options:MatListOption[]) {
+    this.selectedParOptions = Object.assign(options.map(o => o.value));
+  }
+
+  onChangePrevious(options:MatListOption[]) {
+    this.selectedDelOptions = Object.assign(options.map(o => o.value));
+  }
+
   saveRelation(){
     this.sendingArticles.emit(this.selectedArtOptions);
+    this.sendingParagraphs.emit(this.selectedParOptions);
+    
+    let emitiing = []
+    this.articlesPrevRelated.forEach((element) => {
+      let bandera = false
+      this.selectedDelOptions.forEach((element2) => {
+        if(element.id === element2.id){
+          bandera = true;
+        }
+      })
+      if(!bandera){
+        emitiing.push(element.id)
+      }
+    })
+    this.sendingDeleted.emit(emitiing);
     this.closingPanel.emit(true);
   }
 
@@ -210,11 +251,20 @@ export class SearchDocumentComponent implements OnInit {
   }
 
   isActiveRelation(){
-    if(this.selectedArtOptions.length != 0){
+    if(this.selectedArtOptions.length != 0 || this.selectedDelOptions.length != 0){
+      if(this.selectedArtOptions.length > 1 || this.selectedArtOptions.length === 0){
+        this.btnPar = true;
+        return false
+      }
+      this.btnPar = false;
       return false;
     } else {
       return true;
     }
+  }
+
+  verParrafos(){
+    this.showParrafos = !this.showParrafos
   }
 
 }

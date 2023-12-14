@@ -7,6 +7,7 @@
 .page-content{
   padding: 0px !important;
   height: fit-content;
+  overflow: visible;
 }
 
 .button_month{
@@ -15,6 +16,114 @@
   margin-left: 20px;
 }
 
+.container {
+  display: flex;
+  padding: 0px !important;
+  height: 100% !important;
+  min-width: 100%;
+  min-height: 100%;
+}
 
-.fixed-column tr:first-child { background-color: yellow; }
-  
+.celdas {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #81660e;
+}
+
+.fixed-column {
+  height: 100% !important;
+}
+
+.internas{
+  height: 15vh;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e6e6e6;
+  overflow: scroll;
+  text-align: center;
+  scrollbar-width: none;
+}
+
+:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: #717171 ;
+}
+
+:host ::ng-deep .mat-slide-toggle:not(.mat-checked) .mat-slide-toggle-bar {
+  background-color: rgb(161, 255, 162)
+}
+
+:host ::ng-deep .mat-slide-toggle:not(.mat-checked) .mat-slide-toggle-thumb {
+  background-color: rgb(47, 231, 50)
+}
+
+:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #ffffff ;
+}
+
+.card_search {
+  position: fixed; 
+  top:130px; left: 390px; 
+  width: 50%; z-index: 4; 
+  max-height: 80vh; 
+  background-color: white; 
+  padding: 10px; 
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); 
+  border-radius: 10px; overflow:scroll;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #afa74c; /* Color del thumb del scrollbar */
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color del track del scrollbar */
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background-color: #afa74c; /* Color del thumb del scrollbar */
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track:horizontal {
+  background-color: #f1f1f1; /* Color del track del scrollbar */
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: white;
+}
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  visibility:hidden;
+}
+:hover::-webkit-scrollbar-thumb {
+  visibility:visible;
+}
+::-webkit-scrollbar-track:horizontal {
+  background: white;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  background: #ddd;
+  visibility:hidden;
+}
+:hover::-webkit-scrollbar-thumb:horizontal {
+  visibility:visible;
+}
+
+a {
+  color: #177cff !important;
+  text-decoration: underline !important;
+}
+
+a:hover{
+  cursor: pointer;
+}

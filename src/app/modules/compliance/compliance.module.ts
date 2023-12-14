@@ -12,8 +12,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NotificationComponent } from './index/notification/notification.component';
 import { NotificationService } from './index/notification.service';
 import { RegisterComponent } from './register/register.component';
-
-
+import { ConfigModule } from '../config/config.module';
+import { DisplayModalComponent } from './register/display-modal/display-modal.component';
+import { SearchTopicComponent } from 'src/app/shared/components/search-topic/search-topic.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,8 @@ import { RegisterComponent } from './register/register.component';
     CalendarDialogComponent,
     NotificationComponent,
     RegisterComponent,
+    DisplayModalComponent,
+    SearchTopicComponent
   ],
   imports: [
     CommonModule,
@@ -34,6 +37,7 @@ import { RegisterComponent } from './register/register.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    ConfigModule
   ],
   providers:[NotificationService]
 })

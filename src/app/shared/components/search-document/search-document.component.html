@@ -32,7 +32,7 @@
                     <label *ngIf="articles.length == 0">Sin coincidencias</label>
                     <mat-selection-list #art (selectionChange)="onChange(art.selectedOptions.selected)">
                         <mat-list-option style="height: 200%;" *ngFor="let art of articles" [value]="art">
-                            <mat-label>Art {{ art.articulo }}.- {{ art.nombre }}</mat-label>
+                            <mat-label>Art <span [innerHTML]="art.articulo"></span> .- <span [innerHTML]="art.nombre"></span></mat-label>
                             <br>
                         </mat-list-option>
                     </mat-selection-list>

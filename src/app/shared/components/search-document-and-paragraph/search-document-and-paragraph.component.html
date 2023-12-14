@@ -1,0 +1,100 @@
+<div class="mainDiv">
+    <mat-card class="mainCard">
+        <mat-card-content *ngIf="!showParrafos">
+            <!-- Documentos -->
+            <form>
+                <mat-form-field class="documents-full-width" appearance="fill">
+                <mat-label>Documento</mat-label>
+                <input type="text" matInput [formControl]="myControlDocuments" [matAutocomplete]="auto" (change)="handleEmptyDoc($event)" required>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDocuments" (optionSelected)="selectedDoc($event)">
+                    <mat-option *ngFor="let option of filteredDocOptions | async" [value]="option">
+                    {{option.titulo}}
+                    </mat-option>
+                </mat-autocomplete>
+                </mat-form-field>
+            </form>
+
+            <!-- Buscador de Articulos -->
+            <div class="article-search">
+                <form class="artlet-form">
+                    <mat-form-field class="artlet-full-width" appearance="fill">
+                        <mat-label>Buscador de Articulos</mat-label>
+                        <input type="text" placeholder="Ingresa la busqueda" [(ngModel)]="searchInput" matInput [formControl]="myControlSearch">
+                    </mat-form-field>
+                </form>
+                <button class="buttonSearch" mat-mini-fab color="primary" (click)="validateSearch()" [disabled]="isActiveSearch()"><mat-icon>search</mat-icon></button>
+            </div>
+            <div *ngIf="showSpinner">
+                <mat-spinner></mat-spinner>
+            </div>
+            <mat-card *ngIf="showResults">
+                <mat-card-content>
+                    <label *ngIf="articles.length == 0">Sin coincidencias</label>
+                    <mat-selection-list #art (selectionChange)="onChange(art.selectedOptions.selected)">
+                        <mat-list-option style="height: 200%;" *ngFor="let art of articles" [value]="art">
+                            <mat-label>Art <span [innerHTML]="art.articulo"></span> .- <span [innerHTML]="art.nombre"></span></mat-label>
+                            <br>
+                        </mat-list-option>
+                    </mat-selection-list>
+                    <br>
+                    <p>Articulos seleccionados: {{art.selectedOptions.selected.length}}</p>
+                </mat-card-content>
+            </mat-card>
+            
+            <mat-card *ngIf="articlesPrevRelated.length > 0">
+                <mat-card-content>
+                    <label >Ya relacionados</label>
+                    <mat-selection-list #prev (selectionChange)="onChangePrevious(prev.selectedOptions.selected)">
+                        <mat-list-option *ngFor="let prev of articlesPrevRelated" [value]="prev" [selected]="true">
+                            <mat-label>Art. {{prev.articulo}}.- {{prev.nombre}} </mat-label>
+                            <br>
+                        </mat-list-option>
+                    </mat-selection-list>
+                    <br>
+                    <p>Párrafos seleccionados: {{prev.selectedOptions.selected.length}}</p>
+                </mat-card-content>
+            </mat-card>
+        </mat-card-content>
+        <button mat-raised-button color="primary" style="margin: 22px;" (click)="saveRelation()" [disabled]="isActiveRelation()">Guardar</button>&nbsp;
+        <button mat-raised-button color="primary" style="margin: 22px;" (click)="verParrafos()" [disabled]="btnPar">Ver párrafos</button>&nbsp;
+        <button mat-raised-button color="secondary" (click)="closePanel()">Cancelar</button>
+
+        <mat-card-content *ngIf="showParrafos">
+            <!-- Documentos -->
+            <h6>Artículo {{selectedArtOptions[0].articulo}} - <span [innerHTML]="selectedArtOptions[0].nombre"></span></h6>
+
+            <!-- Buscador de Articulos -->
+            <div class="article-search">
+                <form class="artlet-form">
+                    <mat-form-field class="artlet-full-width" appearance="fill">
+                        <mat-label>Buscador de Párrafos</mat-label>
+                        <input type="text" placeholder="Ingresa la busqueda" [(ngModel)]="searchInputParrafo" matInput [formControl]="myControlSearchParrafos">
+                    </mat-form-field>
+                </form>
+                <button class="buttonSearch" mat-mini-fab color="primary" (click)="validateSearchParagraph()"><mat-icon>search</mat-icon></button>
+            </div>
+            <div *ngIf="showSpinnerParrafos">
+                <mat-spinner></mat-spinner>
+            </div>
+            <mat-card *ngIf="showResultsParrafos">
+                <mat-card-content>
+                    <label *ngIf="articles.length == 0">Sin coincidencias</label>
+                    <mat-selection-list #par (selectionChange)="onChangeParagraph(par.selectedOptions.selected)">
+                        <mat-list-option style="height: 200%;" *ngFor="let par of paragraphs" [value]="par">
+                            <mat-label>Par. <span [innerHTML]="par"></span> .- <span [innerHTML]="par"></span></mat-label>
+                            <br>
+                        </mat-list-option>
+                    </mat-selection-list>
+                    <br>
+                    <p>Párrafos seleccionados: {{par.selectedOptions.selected.length}}</p>
+                </mat-card-content>
+            </mat-card>
+
+            
+            
+        </mat-card-content>
+    </mat-card>
+</div>
+<div class="spinner" *ngIf="showMainSpinner">
+    <mat-spinner></mat-spinner>
+</div>

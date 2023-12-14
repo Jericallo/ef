@@ -7,7 +7,6 @@ import {
   AccordionLinkDirective,
   AccordionDirective
 } from './accordion';
-import { SearchDocumentationComponent } from './components/search-documentation/search-documentation.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +19,6 @@ import { SearchDocumentationComponent } from './components/search-documentation/
     AccordionLinkDirective,
     AccordionDirective
   ],
-  providers: [MenuItems, HorizontalMenuItems]
+  providers: [MenuItems, HorizontalMenuItems],
 })
 export class SharedModule {}

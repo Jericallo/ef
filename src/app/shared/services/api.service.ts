@@ -406,6 +406,16 @@ export class ApiService {
     return this.http.get(url ,{headers:headers});
   }
 
+  public searchArticleInEndpointArticle(id: number, request: string): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id_documento=' + id + '&where=' + request;
+    console.log('URL', url)
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url ,{headers:headers});
+  }
+
   updateGlobalTitle(globalTitle: string) {
     this.title.next(globalTitle);
   }
@@ -578,5 +588,93 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     return this.http.get(url ,{params:params,headers:headers});
+  }
+
+  public getCumplimientosControl(params?:HttpParams):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_control';
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url ,{params:params,headers:headers});
+  }
+
+  public relateCumplimientoArticulo(body, ext):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/' + ext
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public getArticleById(id):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id=' + id
+    return this.http.get(url, {headers:headers});  
+  }
+
+  public getTopics():Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/temario'
+    return this.http.get(url, {headers:headers});  
+  }
+
+  public relateCumplimientoTopics(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_temario'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public relateCumplimientoDocumentaciones(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/documentaciones_obligaciones'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public getCapacitationsSinId(): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/capacitaciones';
+    console.log(url)
+    return this.http.get(url, {headers:headers});
+  }
+
+  public relateCumplimientoCapacitaciones(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_capacitaciones'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public deleteCumplimientoArticulo(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_articulos'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.request('delete', url, {body:{text:encryptedBody}, headers:headers, observe:'response'}, );
+    //return this.http.delete(url, {data: {text:encryptedBody}}, headers: headers});  
   }
 }

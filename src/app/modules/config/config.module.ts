@@ -14,7 +14,6 @@ import { ConfigRoutes } from './config.routing';
 import { RouterModule } from '@angular/router';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { SearchDocumentComponent } from 'src/app/shared/components/search-document/search-document.component';
 import { UsersComponent } from './users/users.component';
 import { AddUserDialogComponent } from './users/add-user-dialog/add-user-dialog.component';
 import { RemoveUserDialogComponent } from './users/remove-user-dialog/remove-user-dialog.component';
@@ -40,6 +39,10 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { BrowserModule } from '@angular/platform-browser';
 import {VgStreamingModule} from '@videogular/ngx-videogular/streaming';
 import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
+import { SearchDocumentComponent } from 'src/app/shared/components/search-document/search-document.component';
+import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
+import { SearchCapacitationsComponent } from 'src/app/shared/components/search-capacitations/search-capacitations.component';
+import { SearchDocumentAndParagraphComponent } from 'src/app/shared/components/search-document-and-paragraph/search-document-and-paragraph.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,6 @@ import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.compo
     AddTitleComponent,
     AddSectionComponent,
     AddParagraphComponent,
-    SearchDocumentComponent,
     QuestionsComponent,
     UsersComponent,
     AddUserDialogComponent,
@@ -70,6 +72,10 @@ import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.compo
     AddPermissionDialogComponent,
     AnswerTemplate,
     ComplianceCrudComponent,    
+    SearchDocumentComponent,
+    SearchDocumentationComponent,
+    SearchCapacitationsComponent,
+    SearchDocumentAndParagraphComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
@@ -84,6 +90,12 @@ import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.compo
     VgOverlayPlayModule,
     VgBufferingModule,
     VgStreamingModule
+  ],
+  exports: [
+    SearchDocumentComponent,
+    SearchDocumentationComponent,
+    SearchCapacitationsComponent,
+    SearchDocumentAndParagraphComponent
   ]
 })
 export class ConfigModule { }

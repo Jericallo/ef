@@ -20,7 +20,6 @@ import {CourseService} from './topics/course.service';
 import { SearchComponent } from './search/search.component';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { ResponseComponent } from './response/response.component';
-import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
 
 import { MatTreeModule } from '@angular/material/tree';
 
@@ -40,7 +39,6 @@ import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal
     CourseDetailComponent,
     SearchComponent,
     ResponseComponent,
-    SearchDocumentationComponent,
     VideoIntroComponent,
     CountdownModalComponent,
   ],
@@ -59,6 +57,6 @@ import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal
     CdkTreeModule,
     MatTreeModule
   ],
-  providers:[CourseService]
+  providers:[CourseService],
 })
 export class MainModule { }
