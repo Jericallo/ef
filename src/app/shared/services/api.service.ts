@@ -666,4 +666,15 @@ export class ApiService {
     const encryptedBody = this.encrypt(body,'private')
     return this.http.post(url, {text:encryptedBody},{headers:headers});  
   }
+
+  public deleteCumplimientoArticulo(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_articulos'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.request('delete', url, {body:{text:encryptedBody}, headers:headers, observe:'response'}, );
+    //return this.http.delete(url, {data: {text:encryptedBody}}, headers: headers});  
+  }
 }

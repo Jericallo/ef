@@ -65,9 +65,7 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
         const name = typeof value === 'string' ? value : value?.titulo;
         return name ? this._filterDoc(name as string) : this.optionsDocuments.slice();
       }),
-    );
-
-    console.log('PREVIOUS',this.articlesPrevRelated)
+    );  
   }
 
   ngAfterViewInit(){
@@ -117,7 +115,6 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
     .subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        console.log(response)
         let articulosLimpios:ArticleRelation[] = []
 
         //Prepare yourself for the ugliest piece of code you'll ever see :)
@@ -224,7 +221,20 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   saveRelation(){
     this.sendingArticles.emit(this.selectedArtOptions);
     this.sendingParagraphs.emit(this.selectedParOptions);
-    this.sendingDeleted.emit(this.selectedDelOptions);
+    
+    let emitiing = []
+    this.articlesPrevRelated.forEach((element) => {
+      let bandera = false
+      this.selectedDelOptions.forEach((element2) => {
+        if(element.id === element2.id){
+          bandera = true;
+        }
+      })
+      if(!bandera){
+        emitiing.push(element.id)
+      }
+    })
+    this.sendingDeleted.emit(emitiing);
     this.closingPanel.emit(true);
   }
 

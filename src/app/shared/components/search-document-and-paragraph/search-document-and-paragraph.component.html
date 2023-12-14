@@ -45,7 +45,7 @@
                 <mat-card-content>
                     <label >Ya relacionados</label>
                     <mat-selection-list #prev (selectionChange)="onChangePrevious(prev.selectedOptions.selected)">
-                        <mat-list-option *ngFor="let prev of articlesPrevRelated" [value]="prev">
+                        <mat-list-option *ngFor="let prev of articlesPrevRelated" [value]="prev" [selected]="true">
                             <mat-label>Art. {{prev.articulo}}.- {{prev.nombre}} </mat-label>
                             <br>
                         </mat-list-option>

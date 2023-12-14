@@ -433,7 +433,23 @@ export class RegisterComponent implements OnInit {
   }
 
   delArtRecieved(del:any[]){
-    console.log(del)
+    console.log('DELETED',del)
+    const body = {
+      id_cumplimiento:this.universalRow.fixedColumn,
+      articulos: del
+    }
+    console.log('BODY', body)
+    this.apiService.deleteCumplimientoArticulo(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        console.log('RESPONSE',res.result)
+      },
+      error: err => {
+        err = JSON.parse(this.apiService.decrypt(err.error.message, 'private'));
+        console.log('ERROR',err);
+      }
+    });
+
   }
 
   articleClicked(a:any){

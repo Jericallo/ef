@@ -159,7 +159,14 @@
           <mat-icon>bookmark</mat-icon>
         </button>
         <br/>
-        <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)">{{a.abreviatura}} / Art. {{a.articulo}} <br/></a>
+        <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)">
+          <span *ngIf="!a.parrafos">
+            {{a.abreviatura}} / Art. {{a.articulo}} <br/>
+          </span>
+          <div *ngIf="a.parrafos">
+            <span *ngFor="let p of a.parrafos"> {{a.abreviatura}} / Art. {{a.articulo}} / Párr. {{p.numero}} <br/></span>
+          </div>
+        </a>
       </div>  
       <div class="celdas internas" style="flex: 1; overflow: scroll;">
         <button (click)="openTopicsRef(row)">
