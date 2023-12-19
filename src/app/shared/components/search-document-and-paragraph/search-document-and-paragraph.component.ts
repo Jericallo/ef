@@ -219,10 +219,16 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   }
 
   saveRelation(){
+    if(this.selectedParOptions.length > 0){
+      this.selectedArtOptions = []
+    }
     this.sendingArticles.emit(this.selectedArtOptions);
     this.sendingParagraphs.emit(this.selectedParOptions);
     
     let emitiing = []
+    if(this.articlesPrevRelated.length === 0 ){
+      
+    }
     this.articlesPrevRelated.forEach((element) => {
       let bandera = false
       this.selectedDelOptions.forEach((element2) => {
@@ -265,6 +271,18 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
 
   verParrafos(){
     this.showParrafos = !this.showParrafos
+    this.apiService.getParapgraphs(this.selectedArtOptions[0].id).subscribe({
+      next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
+        console.log('PARRAFOS', response)
+        this.paragraphs = response.result[0].parrafos
+        console.log('PARRAFO', this.paragraphs)
+      },
+      error: err => {
+        console.log("Error: ", this.apiService.decrypt(err.error.message, 'private'));
+        
+      }
+    })
   }
 
 }

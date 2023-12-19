@@ -26,8 +26,9 @@
 
 .celdas {
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #81660e;
+  font-size: small;
 }
 
 .fixed-column {
@@ -126,4 +127,25 @@ a {
 
 a:hover{
   cursor: pointer;
+}
+
+.custom-fab {
+  background-color: #8c6200;
+  color: #ffffff;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.circle{
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
+  margin: auto;
+  margin-top: 50px;
+
 }

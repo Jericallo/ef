@@ -677,4 +677,14 @@ export class ApiService {
     return this.http.request('delete', url, {body:{text:encryptedBody}, headers:headers, observe:'response'}, );
     //return this.http.delete(url, {data: {text:encryptedBody}}, headers: headers});  
   }
+
+  public getParapgraphs(id_articulo):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id='+id_articulo;
+    console.log(url)
+    return this.http.get(url, {headers:headers});
+  }
 }

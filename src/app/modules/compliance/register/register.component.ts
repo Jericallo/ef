@@ -8,6 +8,8 @@ import { SearchDocumentComponent } from 'src/app/shared/components/search-docume
 import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
 import { DisplayModalComponent } from './display-modal/display-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +19,9 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class RegisterComponent implements OnInit {
-  dataSource: any[];
+  @ViewChild(MatSort) sort: MatSort;
+
+  dataSource = new MatTableDataSource()
   displayedColumns: string[];
   fixedColumns: string[];
   offset = 0
@@ -50,8 +54,10 @@ export class RegisterComponent implements OnInit {
   constructor(private apiService:ApiService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    
     this.create_table()
     this.getObligations()
+    this.dataSource.sort = this.sort
     }
 
   getObligations(offset=0) {
@@ -64,7 +70,8 @@ export class RegisterComponent implements OnInit {
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         console.log(res.result)
-        this.dataSource = []
+        this.dataSource.data = []
+        let rows = []
         res.result.forEach((element) => {
           const row = { 
             fixedColumn: element.cumplimientos_obligacion.id_cumplimiento,
@@ -106,6 +113,15 @@ export class RegisterComponent implements OnInit {
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
               se_cumplio:element.cumplimientos_obligacion.completado,
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
+            },
+            fixedColumn6:{
+              color:''
+            },
+            fiedColumn7:{
+              ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
+              IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
+              NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
+              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro
             },
             switch:false ,
             obligacion:element.cumplimientos_obligacion.id_obligacion,
@@ -150,7 +166,17 @@ export class RegisterComponent implements OnInit {
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
               se_cumplio:element.cumplimientos_obligacion.completado,
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
-            },};
+            },
+            fixedColumn6Rec:{
+              color:''
+            },
+            fiedColumn7Rec:{
+              ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
+              IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
+              NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
+              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro
+            },
+          };
 
             const ahora = new Date()
             if(row.fixedColumn5.se_cumplio !== true){
@@ -173,15 +199,29 @@ export class RegisterComponent implements OnInit {
             if(row.fixedColumn5.fecha_cumplio != null)row.fixedColumn5.fecha_cumplio = new Date(row.fixedColumn5.fecha_cumplio).toDateString(); row.fixedColumnRec5.fecha_cumplio = row.fixedColumn5.fecha_cumplio
             */
 
+            const today = Date.now()
+            if(today > element.fecha_cumplimiento){
+              if(row.fixedColumn5.se_cumplio !== true){
+                row.fixedColumn6.color = '#e0e32b'
+              } else {
+                row.fixedColumn6.color = '#31e32b'
+              }
+            } else {
+              if(row.fixedColumn5.se_cumplio !== true){
+                row.fixedColumn6.color = '#e0e32b'
+              } else {
+                row.fixedColumn6.color = '#31e32b'
+              }
+            }
+            row.fixedColumn6Rec = row.fixedColumn6
+
             row.fixedColumn5.fundamento_legal.forEach(element => {
               element.fecha = new Date(element.fecha).toDateString();
             });
             row.fixedColumnRec5.fundamento_legal = row.fixedColumn5.fundamento_legal
-
-            
-
-            this.dataSource.push(row)
+            rows.push(row)
         })
+        this.dataSource.data = rows
         console.log(this.dataSource)
       },
       error: err => {
@@ -201,10 +241,10 @@ export class RegisterComponent implements OnInit {
   }
 
   create_table(){
-    this.dataSource = [];
+    this.dataSource.data = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3','fixedColumn4', 'fixedColumn5'];
-      
+    this.fixedColumns = ['fixedColumn','fixedColumn6', 'fixedColumn2','fixedColumn3', 'fixedColumn7', 'fixedColumn4', 'fixedColumn5', ];
+    let rows = []
     for (let i = 1; i <= 1; i++) {
       const row = { 
         fixedColumn: `${i}`,
@@ -247,6 +287,15 @@ export class RegisterComponent implements OnInit {
           se_cumplio:'si',
           fecha_cumplio:''
         },
+        fixedColumn6:{
+          color:'red'
+        },
+        fixedColumn7:{
+          ISR:1,
+          IVA:0,
+          NOMINAS:0,
+          OTROS:0
+        },
         switch:false ,
 
         fixedColumnRec: `${i}`,
@@ -288,11 +337,21 @@ export class RegisterComponent implements OnInit {
           actualizado:'2022',
           se_cumplio:'si',
           fecha_cumplio:'antier'
-        },};
+        },
+        fixedColumn6Rec:{
+          color:'red'
+        },
+        fixedColumn7Rec:{
+          ISR:1,
+          IVA:0,
+          NOMINAS:0,
+          OTROS:0
+        }
+      };
 
-      this.dataSource.push(row);
-      
+      rows.push(row);
     }
+    this.dataSource.data = rows
     
   }
 
@@ -353,7 +412,7 @@ export class RegisterComponent implements OnInit {
     //this.dataSource.forEach((element) => {
       //data.push(element)
     //})
-    this.dataSource = [];
+    this.dataSource.data = [];
     this.offset += 20
     this.getObligations(this.offset)
   }
@@ -375,7 +434,7 @@ export class RegisterComponent implements OnInit {
       this.isShownComponent = false
     } else {
       this.isShownComponent = true
-      this.extArticulos = 'cumplimiento_articulos'
+      this.extArticulos = 'temporal'
     }
   }
 
@@ -392,6 +451,10 @@ export class RegisterComponent implements OnInit {
   }
 
   artReceived(art: any[]) {
+    if(art.length === 0) {
+      console.log('vacio')
+      return
+    }
     console.log(art)
     console.log(this.universalRow.fixedColumn)
     art.length == 0 ? this.showResults = false : this.showResults = true;
@@ -402,10 +465,10 @@ export class RegisterComponent implements OnInit {
     })
     let body = {}
 
-    if(this.extArticulos == 'cumplimiento_articulos'){
+    if(this.extArticulos == 'temporal'){
       body = {data:{
-        articulos:ides,
-        id_cumplimiento:this.universalRow.fixedColumn
+        arr_articulos:ides,
+        id_obligacion:this.universalRow.obligacion
       }}
     } else {
       body = {data:{
@@ -430,9 +493,40 @@ export class RegisterComponent implements OnInit {
 
   parRecieved(par:any[]){
     console.log(par)
+    console.log(this.universalRow.fixedColumn)
+    let ides = []
+    par.forEach((element) => {
+      ides.push(element.id)
+    })
+    let body = {}
+
+    if(this.extArticulos == 'temporal'){
+      body = {data:{
+        arr_relacion_parrafos:ides,
+        id_obligacion:this.universalRow.obligacion
+      }}
+    } else {
+      return
+    }
+    
+    console.log('CUERPO', body)
+
+    this.apiService.relateCumplimientoArticulo(body, this.extArticulos).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        console.log('RESPONSE',res.result)
+      },
+      error: err => {
+        this.bandera = false
+        console.log(err);
+      }
+    });
   }
 
   delArtRecieved(del:any[]){
+    if(del.length <1){
+      return
+    }
     console.log('DELETED',del)
     const body = {
       id_cumplimiento:this.universalRow.fixedColumn,
@@ -449,7 +543,6 @@ export class RegisterComponent implements OnInit {
         console.log('ERROR',err);
       }
     });
-
   }
 
   articleClicked(a:any){

@@ -64,24 +64,12 @@
             <h6>Artículo {{selectedArtOptions[0].articulo}} - <span [innerHTML]="selectedArtOptions[0].nombre"></span></h6>
 
             <!-- Buscador de Articulos -->
-            <div class="article-search">
-                <form class="artlet-form">
-                    <mat-form-field class="artlet-full-width" appearance="fill">
-                        <mat-label>Buscador de Párrafos</mat-label>
-                        <input type="text" placeholder="Ingresa la busqueda" [(ngModel)]="searchInputParrafo" matInput [formControl]="myControlSearchParrafos">
-                    </mat-form-field>
-                </form>
-                <button class="buttonSearch" mat-mini-fab color="primary" (click)="validateSearchParagraph()"><mat-icon>search</mat-icon></button>
-            </div>
-            <div *ngIf="showSpinnerParrafos">
-                <mat-spinner></mat-spinner>
-            </div>
-            <mat-card *ngIf="showResultsParrafos">
+            
+            <mat-card>
                 <mat-card-content>
-                    <label *ngIf="articles.length == 0">Sin coincidencias</label>
                     <mat-selection-list #par (selectionChange)="onChangeParagraph(par.selectedOptions.selected)">
                         <mat-list-option style="height: 200%;" *ngFor="let par of paragraphs" [value]="par">
-                            <mat-label>Par. <span [innerHTML]="par"></span> .- <span [innerHTML]="par"></span></mat-label>
+                            <mat-label>Par. {{par.numero}}.- {{par.nombre}}</mat-label>
                             <br>
                         </mat-list-option>
                     </mat-selection-list>
