@@ -114,16 +114,16 @@
     <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 2.5;">
       <div class="container">
         <div class="celdas internas" style="flex: 1;">
-          <mat-icon *ngIf="row.fixedColumn7.ISR === 1">check_circle</mat-icon>
+          <mat-checkbox class="example-margin" (change)="updateISR($event, row)"[checked]= "row.fixedColumn7.ISR == 1"></mat-checkbox>
         </div>  
         <div class="celdas internas" style="flex: 1;">          
-          <mat-icon *ngIf="row.fixedColumn7.IVA === 1">check_circle</mat-icon>
+          <mat-checkbox class="example-margin" (change)="updateIVA($event, row)" [checked]= "row.fixedColumn7.IVA == 1"></mat-checkbox>
         </div>  
         <div class="celdas internas" style="flex: 1;">
-          <mat-icon *ngIf="row.fixedColumn7.NOMINA === 1">check_circle</mat-icon>
+          <mat-checkbox class="example-margin" (change)="updateNOM($event, row)" [checked]= "row.fixedColumn7.NOMINA == 1"></mat-checkbox>
         </div>  
         <div class="celdas internas" style="flex: 1;">
-          <mat-icon *ngIf="row.fixedColumn7.OTRO === 1">check_circle</mat-icon>
+          <mat-checkbox class="example-margin" (change)="updateOTHER($event, row)" [checked]= "row.fixedColumn7.OTRO == 1"></mat-checkbox>
         </div>  
       </div>
     </mat-cell>
@@ -154,7 +154,7 @@
       </div>  
 
       <div class="celdas internas" style="flex: 1;">
-        <button mat-button [matMenuTriggerFor]="menu">{{row.fixedColumn3.prioridad}}</button>
+        <button mat-button [matMenuTriggerFor]="menu">{{row.fixedColumn3.prioridad}} <mat-icon>keyboard_arrow_down</mat-icon> </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="modPrioridad(1, row)">Alta</button>
           <button mat-menu-item (click)="modPrioridad(3, row)">Baja</button>

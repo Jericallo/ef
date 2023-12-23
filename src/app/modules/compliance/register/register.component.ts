@@ -711,4 +711,116 @@ export class RegisterComponent implements OnInit {
       }
     })
   }
+
+  updateIVA(event:any, row:any){
+    let activo = 0
+    if(event.checked){
+      activo = 1
+    } else {
+      activo = 0
+    }
+    const body = {
+      data: {
+        id: row.id,
+        special: "true",
+        obligacion:{
+          impuesto_iva: activo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        row.fixedColumn7.IVA = activo
+        row.fixedColumn7Rec.IVA = activo
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  updateISR(event:any, row:any){
+    let activo = 0
+    if(event.checked){
+      activo = 1
+    } else {
+      activo = 0
+    }
+    const body = {
+      data: {
+        id: row.id,
+        special: "true",
+        obligacion:{
+          impuesto_isr: activo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        row.fixedColumn7.ISR = activo
+        row.fixedColumn7Rec.ISR = activo
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  updateNOM(event:any, row:any){
+    let activo = 0
+    if(event.checked){
+      activo = 1
+    } else {
+      activo = 0
+    }
+    const body = {
+      data: {
+        id: row.id,
+        special: "true",
+        obligacion:{
+          impuesto_nomina: activo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        row.fixedColumn7.NOMINA = activo
+        row.fixedColumn7Rec.NOMINA = activo
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  updateOTHER(event:any, row:any){
+    let activo = 0
+    if(event.checked){
+      activo = 1
+    } else {
+      activo = 0
+    }
+    const body = {
+      data: {
+        id: row.id,
+        special: "true",
+        obligacion:{
+          impuesto_otro: activo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        row.fixedColumn7.OTRO = activo
+        row.fixedColumn7Rec.OTRO = activo
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
 }
