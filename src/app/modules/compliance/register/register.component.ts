@@ -10,6 +10,8 @@ import { DisplayModalComponent } from './display-modal/display-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-register',
@@ -79,7 +81,7 @@ export class RegisterComponent implements OnInit {
             fixedColumn3: {
               si: element.aplica_punto.si,
               no: element.aplica_punto.no,
-              prioridad: element.aplica_punto.prioridad
+              prioridad: element.cumplimientos_obligacion.prioridad
             }, 
             fixedColumn4: {
               leyes:element.correlacion.leyes,
@@ -117,7 +119,7 @@ export class RegisterComponent implements OnInit {
             fixedColumn6:{
               color:''
             },
-            fiedColumn7:{
+            fixedColumn7:{
               ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
               IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
               NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
@@ -125,6 +127,7 @@ export class RegisterComponent implements OnInit {
             },
             switch:false ,
             obligacion:element.cumplimientos_obligacion.id_obligacion,
+            id:element.id_cumplimiento_mensual,
     
             fixedColumnRec: element.cumplimientos_obligacion.id_cumplimiento,
             fixedColumnRec2: element.fecha_cumplimiento,
@@ -170,7 +173,7 @@ export class RegisterComponent implements OnInit {
             fixedColumn6Rec:{
               color:''
             },
-            fiedColumn7Rec:{
+            fixedColumn7Rec:{
               ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
               IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
               NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
@@ -207,10 +210,10 @@ export class RegisterComponent implements OnInit {
                 row.fixedColumn6.color = '#31e32b'
               }
             } else {
-              if(row.fixedColumn5.se_cumplio !== true){
-                row.fixedColumn6.color = '#e0e32b'
+              if(row.fixedColumn3.prioridad === 1){
+                row.fixedColumn6.color = '#f29c3f'
               } else {
-                row.fixedColumn6.color = '#31e32b'
+                row.fixedColumn6.color = '#42f23f'
               }
             }
             row.fixedColumn6Rec = row.fixedColumn6
@@ -219,6 +222,17 @@ export class RegisterComponent implements OnInit {
               element.fecha = new Date(element.fecha).toDateString();
             });
             row.fixedColumnRec5.fundamento_legal = row.fixedColumn5.fundamento_legal
+
+            if(row.fixedColumn3.prioridad === 1){
+              row.fixedColumn3.prioridad = 'Alta';
+              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad;
+            } else if(row.fixedColumn3.prioridad === 3) {
+              row.fixedColumn3.prioridad = 'Baja';
+              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad
+            } else {
+              row.fixedColumn3.prioridad = 'Prioridad'
+              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad
+            }
             rows.push(row)
         })
         this.dataSource.data = rows
@@ -669,5 +683,32 @@ export class RegisterComponent implements OnInit {
 
   closeCapacitations(){
     this.isShownCapacitations = false
+  }
+
+  modPrioridad(modo, row){
+    const body = {
+      data: {
+        id: row.id,
+        special:"true",
+        obligacion:{
+          prioridad:modo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        if(modo === 1){
+          row.fixedColumn3.prioridad = 'Alta'
+          row.fixedColumnRec3.prioridad = 'Alta'
+        } else {
+          row.fixedColumn3.prioridad = 'Baja'
+          row.fixedColumnRec3.prioridad = 'Baja'
+        }
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
   }
 }

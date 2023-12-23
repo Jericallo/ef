@@ -687,4 +687,14 @@ export class ApiService {
     console.log(url)
     return this.http.get(url, {headers:headers});
   }
+
+  public editCumplimiento(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_control'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+  }
 }
