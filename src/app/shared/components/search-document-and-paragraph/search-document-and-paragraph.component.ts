@@ -44,7 +44,7 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
 
   selectedArtOptions = [];
   selectedParOptions = [];
-  selectedDelOptions = [];
+  selectedDelOptions:any = [1];
 
   searchInput: string = "";
   searchInputParrafo: string = '';
@@ -54,6 +54,8 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   articles: ArticleRelation[] = [];
   paragraphs = []
   documentId: any;
+
+  activador = false
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private readonly cdRef: ChangeDetectorRef) {
   }
@@ -216,6 +218,14 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
 
   onChangePrevious(options:MatListOption[]) {
     this.selectedDelOptions = Object.assign(options.map(o => o.value));
+
+    if(this.articlesPrevRelated.length != this.selectedDelOptions.length){
+      this.activador = true
+      console.log(this.articlesPrevRelated.length)
+      console.log(this.selectedDelOptions.length)
+    } else {
+      this.activador = false
+    }
   }
 
   saveRelation(){
@@ -257,7 +267,10 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   }
 
   isActiveRelation(){
-    if(this.selectedArtOptions.length != 0 || this.selectedDelOptions.length != 0){
+    if(this.activador){
+      return false
+    }
+    if(this.selectedArtOptions.length != 0 ){
       if(this.selectedArtOptions.length > 1 || this.selectedArtOptions.length === 0){
         this.btnPar = true;
         return false

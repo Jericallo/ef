@@ -508,8 +508,9 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = this.insert;
-    const body = {model:this.models.articulo_titulos,data:{nombre: request.nombre, id_documento:request.id_documento}};
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_titulo'
+    const body = {data:{nombre: request.nombre, id_documento:request.id_documento}};
+    console.log(body)
     const encryptedBody = this.encrypt(body, 'private');
     return this.http.post(url,{text:encryptedBody},{headers:headers});
   }
@@ -673,6 +674,7 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_articulos'
+    console.log('BODY', body)
     const encryptedBody = this.encrypt(body,'private')
     return this.http.request('delete', url, {body:{text:encryptedBody}, headers:headers, observe:'response'}, );
     //return this.http.delete(url, {data: {text:encryptedBody}}, headers: headers});  
@@ -697,4 +699,35 @@ export class ApiService {
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
+
+  public getAllDocuments():Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1';
+    return this.http.get(url, {headers:headers});
+  }
+
+  public editDoc(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/documentos'
+    const encryptedBody = this.encrypt(body,'private')
+    console.log(encryptedBody)
+    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public editTit(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_titulo'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.put(url, {text:encryptedBody},{headers:headers}); 
+  }
+
 }

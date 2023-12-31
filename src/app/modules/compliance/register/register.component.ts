@@ -62,8 +62,11 @@ export class RegisterComponent implements OnInit {
     this.dataSource.sort = this.sort
     }
 
-  getObligations(offset=0) {
+  getObligations(offset=0, orderby='') {
+    this.dataSource.data = []
+
     let params = new HttpParams().set("where", this.sendableDate.getTime())
+    if(orderby !== '') params = params.set('orderby', orderby)
     //params = params.set('id_usuario', this.apiService.getId())
     //params = params.set('limit',21)
     //params = params.set('offset',offset)
@@ -76,6 +79,8 @@ export class RegisterComponent implements OnInit {
         let rows = []
         res.result.forEach((element) => {
           const row = { 
+            nombre:element.nombre,
+            descripcion:element.descripcion,
             fixedColumn: element.cumplimientos_obligacion.id_cumplimiento,
             fixedColumn2: element.fecha_cumplimiento,
             fixedColumn3: {
@@ -203,6 +208,11 @@ export class RegisterComponent implements OnInit {
             */
 
             const today = Date.now()
+            if(row.fixedColumn5.fecha_ideal === null){
+              row.fixedColumn5.fecha_ideal = today
+              row.fixedColumnRec5.fecha_ideal = today
+            }
+
             if(today > element.fecha_cumplimiento){
               if(row.fixedColumn5.se_cumplio !== true){
                 row.fixedColumn6.color = '#e0e32b'
@@ -257,10 +267,12 @@ export class RegisterComponent implements OnInit {
   create_table(){
     this.dataSource.data = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn6', 'fixedColumn2','fixedColumn3', 'fixedColumn7', 'fixedColumn4', 'fixedColumn5', ];
+    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn7', 'fixedColumn3', 'fixedColumn4', 'fixedColumn5', ];
     let rows = []
     for (let i = 1; i <= 1; i++) {
       const row = { 
+        nombre:'',
+        descripcion:'',
         fixedColumn: `${i}`,
         fixedColumn2: '',
         fixedColumn3: {
@@ -312,6 +324,8 @@ export class RegisterComponent implements OnInit {
         },
         switch:false ,
 
+        nombreRec:'',
+        descripcionRec:'',
         fixedColumnRec: `${i}`,
         fixedColumn2Rec: `Enero - Diciembre 2023`,
         fixedColumn3Rec: {
@@ -822,5 +836,16 @@ export class RegisterComponent implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  reorderBy(campo){
+    let datos = this.dataSource.data
+    if(campo === 'id_cumplimiento'){
+      datos = datos.sort((a:any, b:any) => a.fixedColumn - b.fixedColumn);
+      this.dataSource.data = datos
+    } else if (campo === 'fecha_ideal'){
+      datos = datos.sort((a:any, b:any) => a.fixedColumn5.fecha_ideal - b.fixedColumn5.fecha_ideal)
+      this.dataSource.data = datos
+    }
   }
 }

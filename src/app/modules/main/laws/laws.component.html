@@ -141,14 +141,14 @@
         </mat-accordion>
     </div>
 
-    <div style="display: flex; flex: 1; width: 70vw; margin-left: 10px; flex-direction: column; height: 90vh;">
-    <mat-tab-group [(selectedIndex)]=indexado (selectedIndexChange)="onTabChange($event)" style="display: flex; flex: 1; background-color:white; width: 70vw; margin-left: 10px;" [style.height]="article && !articleRel ? '90vh' : (article && articleRel ? '55vh' : '')">
+    <div style="display: flex; flex: 1; width: 68vw; margin-left: 10px; flex-direction: column; height: 90vh;">
+    <mat-tab-group [(selectedIndex)]=indexado (selectedIndexChange)="onTabChange($event)" style="display: flex; flex: 1; background-color:white; width: 68vw; margin-left: 10px;" [style.height]="article && !articleRel ? '90vh' : (article && articleRel ? '55vh' : '')">
         <mat-tab *ngFor="let art of article; let index = index">
             <ng-template mat-tab-label>
                 <label class="titulo_tab">Artículo {{art. articulo}}.- {{ art.nombre }}</label>
                 <mat-icon class="ex" (click)="cerrarPestana(index)">close</mat-icon>
             </ng-template>
-            <div *ngIf="article" class="accordion-container" style="display: flex; flex-direction: column;" [ngClass]="{'col-md-4 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-4 col-lg-4 col-xxxl-4':article && articleRel}">
+            <div *ngIf="article" class="accordion-container" style="display: flex; flex-direction: column; padding-right: 30px;" [ngClass]="{'col-md-4 col-lg-6 col-xxxl-6':article && !articleRel, 'col-md-4 col-lg-4 col-xxxl-4':article && articleRel}">
                 <div class="example-action-buttons">
                   <!--<button mat-button (click)="accordion.openAll()">Mostrar Todo</button>
                   <button mat-button (click)="accordion.closeAll()">Esconder Todo</button>-->
@@ -157,7 +157,7 @@
                     <mat-expansion-panel
                     [expanded]="true"
                     [style.height]="article && !articleRel ? '90vh' : (article && articleRel ? '55vh' : '')"
-                    style="overflow: auto; width: 69vw;"
+                    style="overflow: auto; width: 66vw;"
                     hideToggle="true"
                     >
                         <mat-expansion-panel-header>
@@ -214,7 +214,7 @@
       
       <div *ngIf="articleRel" class="accordion-container" style="margin-top: 30px;">
         <mat-accordion class="example-headers-align"style="position: sticky; top:3.5vh; left: 1vh;" >
-            <mat-expansion-panel [expanded]="true" style="overflow: auto; height: 31.5vh; width: 70vw;">
+            <mat-expansion-panel [expanded]="true" style="overflow: auto; height: 31.5vh; width: 68vw;">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <mat-icon>auto_stories</mat-icon> &nbsp; Articulo {{articleRel.articulo}} {{articleRel.indicador || ''}}.-
@@ -222,7 +222,7 @@
                   
                 </mat-expansion-panel-header>
                 <h5 *ngIf="articleRel">{{articleRel.nombre || ''}}</h5>
-                <div *ngFor="let par of articleRel.parrafos" >
+                <div *ngFor="let par of articleRel.parrafos" style="padding: 20px;">
                     <label [id]="'par-'+par.id" for="" class="nombre_parrafo"><span *ngIf="par.tipo == 0 && par.numero">Párr. {{par.numero || ''}} -</span> {{par.nombre || ''}}</label>
                     <div *ngIf="par.tipo == 1" class="fraccion">
                         <b>{{par.indicador}}</b>.&nbsp;<span [innerHtml]="par.contenido || ''"></span>

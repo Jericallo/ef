@@ -104,12 +104,28 @@
   
       <div class="container">
         <div class="box" *ngFor="let ley of filterLeyes()">
-          <a [href]="'/config/' + ley.path">
+          <a [href]="'/config/' + ley.path" *ngIf="!ley.hasOwnProperty('path2')">
             <div class="option_container">
               <mat-icon class="icon">{{ ley.icon }}</mat-icon>
               <span>{{ ley.descripcion }}</span>
             </div>
           </a>
+
+          <div style="flex-direction: column;" *ngIf="ley.hasOwnProperty('path2')">
+            <div class="option_container" style="height: 122px;">
+              <mat-icon class="icon">{{ ley.icon }}</mat-icon>
+              <span>{{ ley.descripcion }}</span>
+            </div>
+            <div style="border-top-color: black; border-top-width: 1px; border-top-style: solid; display: flex; flex-direction: row;">
+              <div style="width: 50%; justify-content: center; align-items: center; border-right-style: solid; border-right-color: black; border-right-width: 1px;" class="selected-box">
+                <a class="highlight-text" [href]="'/config/' + ley.path1">Agregar</a>
+              </div>
+              <div style="width: 50%; justify-content: center; align-items: center;" class="selected-box">
+                <a class="highlight-text" [href]="'/config/' + ley.path2">Editar</a>
+              </div>
+            </div>
+          </div>
+            
         </div>
       </div>
 
