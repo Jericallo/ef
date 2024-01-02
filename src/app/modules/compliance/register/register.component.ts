@@ -66,8 +66,7 @@ export class RegisterComponent implements OnInit {
     this.dataSource.data = []
 
     let params = new HttpParams().set("where", this.sendableDate.getTime())
-    if(orderby !== '') params = params.set('orderby', orderby)
-    //params = params.set('id_usuario', this.apiService.getId())
+    if(orderby !== '') params = params.set('secOrderBy', orderby)
     //params = params.set('limit',21)
     //params = params.set('offset',offset)
     console.log(params)
@@ -250,7 +249,7 @@ export class RegisterComponent implements OnInit {
       },
       error: err => {
         this.bandera = false
-        console.log(err);
+        console.log(this.apiService.decrypt(err.error.message, 'private'));
       }
     });
 
