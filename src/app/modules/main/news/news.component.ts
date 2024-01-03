@@ -82,6 +82,8 @@ export class NewsComponent implements OnInit {
           console.log(this.mytimelines)
           if(this.mytimelines.length > 0) this.playNew(this.mytimelines[11]);
         }
+      }, error:(err)=>{
+        console.log(this.apiService.decrypt(err.error.message, 'private'))
       }
     });
   }

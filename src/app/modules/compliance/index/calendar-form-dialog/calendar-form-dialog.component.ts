@@ -409,8 +409,8 @@ export class CalendarFormDialogComponent implements OnInit {
       fecha_inicio:this.sendingObligation.fecha_cumplimiento
     }};
     console.log(body)
-    this.apiService.postObligations(body).subscribe(
-      response => {
+    this.apiService.postObligations(body).subscribe({
+      next: response => {
         const respuesta = JSON.parse(this.apiService.decrypt(response.message,"private"));
         if(respuesta.status === 'OK'){
           alert('Obligación agregada correctamente.')
@@ -419,12 +419,12 @@ export class CalendarFormDialogComponent implements OnInit {
         }
         alerts = []
       },
-      error => {
+      error: err => {
         alert('Ocurrió un error al agregar la obligación, intente de nuevo más tarde.')
-        console.error(this.apiService.decrypt(error.message, 'private'));
+        console.log(err);
         alerts = []
       }
-    );
+    });
     //this.resetFields();
   }
 

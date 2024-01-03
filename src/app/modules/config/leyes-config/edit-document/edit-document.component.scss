@@ -1,0 +1,45 @@
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-full-width {
+    width: 82vw;
+    margin-right: 10px;
+}
+
+.classification-full-width {
+    width: 26.9vw;
+    margin-right: 10px;
+}
+
+.year-full-width {
+    width: 26.9vw;
+    margin-right: 10px;
+}
+
+.abbreviation-full-width {
+    width: 26.9vw;
+    margin-right: 10px;
+}
+
+.editorial-full-width {
+    width: 40.6vw;
+    margin-right: 10px;
+}
+
+.articles-full-width {
+    width: 40.7vw;
+    margin-right: 10px;
+}
+
+.divider {
+    width: 100%;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(70, 70, 70);
+    border-bottom-width: 1px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+}

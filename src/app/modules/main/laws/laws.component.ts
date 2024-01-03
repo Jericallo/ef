@@ -124,7 +124,7 @@ export class LawsComponent implements OnInit {
 
   
   getTitles(id_documento){
-    this.apiService.getAll("articulo_titulos","","",-1,-1,{id_documento:id_documento}).subscribe({
+    this.apiService.getAll("articulo_titulo","","",-1,-1,{id_documento:id_documento}).subscribe({
       next:res=>{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         let findit = false; 

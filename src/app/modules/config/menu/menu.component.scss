@@ -11,7 +11,7 @@
   .box {
     background-color: white;
     border-radius: 20px;
-    padding: 20px;
+    padding: 0px;
     width: 250px;
     height: 150px;
     border: 1px solid black; 
@@ -26,6 +26,10 @@
     }
     span{
         color: white;
+    }
+
+    .highlight-text{
+        color: rgb(157, 157, 157);
     }
 }
   
@@ -63,6 +67,15 @@ span{
     align-items: center;
     height: 100%;
   }
-  
 
-  
+.highlight-text{
+    transition: ease-in-out 0.2s;
+}
+
+.selected-box{
+    background-color: transparent;
+}
+
+.highlight-text:hover {
+    color: white !important;
+}

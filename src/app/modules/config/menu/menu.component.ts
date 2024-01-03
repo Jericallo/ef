@@ -38,12 +38,14 @@ export class MenuComponent implements OnInit {
     {
       icon: 'insert_drive_file',
       descripcion: 'Documentos',
-      path: 'documents'
+      path1: 'documents',
+      path2: 'documents-edit'
     },
     {
       icon: 'text_fields',
       descripcion: 'Títulos',
-      path: 'titles'
+      path1: 'titles',
+      path2: 'titles-edit'
     },
     {
       icon: 'book',

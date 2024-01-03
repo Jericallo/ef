@@ -44,7 +44,7 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
 
   selectedArtOptions = [];
   selectedParOptions = [];
-  selectedDelOptions = [];
+  selectedDelOptions:any = [1];
 
   searchInput: string = "";
   searchInputParrafo: string = '';
@@ -54,6 +54,8 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   articles: ArticleRelation[] = [];
   paragraphs = []
   documentId: any;
+
+  activador = false
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private readonly cdRef: ChangeDetectorRef) {
   }
@@ -216,13 +218,27 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
 
   onChangePrevious(options:MatListOption[]) {
     this.selectedDelOptions = Object.assign(options.map(o => o.value));
+
+    if(this.articlesPrevRelated.length != this.selectedDelOptions.length){
+      this.activador = true
+      console.log(this.articlesPrevRelated.length)
+      console.log(this.selectedDelOptions.length)
+    } else {
+      this.activador = false
+    }
   }
 
   saveRelation(){
+    if(this.selectedParOptions.length > 0){
+      this.selectedArtOptions = []
+    }
     this.sendingArticles.emit(this.selectedArtOptions);
     this.sendingParagraphs.emit(this.selectedParOptions);
     
     let emitiing = []
+    if(this.articlesPrevRelated.length === 0 ){
+      
+    }
     this.articlesPrevRelated.forEach((element) => {
       let bandera = false
       this.selectedDelOptions.forEach((element2) => {
@@ -251,7 +267,10 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   }
 
   isActiveRelation(){
-    if(this.selectedArtOptions.length != 0 || this.selectedDelOptions.length != 0){
+    if(this.activador){
+      return false
+    }
+    if(this.selectedArtOptions.length != 0 ){
       if(this.selectedArtOptions.length > 1 || this.selectedArtOptions.length === 0){
         this.btnPar = true;
         return false
@@ -265,6 +284,18 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
 
   verParrafos(){
     this.showParrafos = !this.showParrafos
+    this.apiService.getParapgraphs(this.selectedArtOptions[0].id).subscribe({
+      next: response => {
+        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
+        console.log('PARRAFOS', response)
+        this.paragraphs = response.result[0].parrafos
+        console.log('PARRAFO', this.paragraphs)
+      },
+      error: err => {
+        console.log("Error: ", this.apiService.decrypt(err.error.message, 'private'));
+        
+      }
+    })
   }
 
 }

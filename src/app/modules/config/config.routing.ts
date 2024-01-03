@@ -4,6 +4,7 @@ import { AddArticleComponent } from './leyes-config/add-article/add-article.comp
 import { AddCategoryComponent } from './leyes-config/add-category/add-category.component';
 import { AddChapterComponent } from './leyes-config/add-chapter/add-chapter.component';
 import { AddDocumentComponent } from './leyes-config/add-document/add-document.component';
+import { EditDocumentComponent } from './leyes-config/edit-document/edit-document.component';
 import { AddParagraphComponent } from './leyes-config/add-paragraph/add-paragraph.component';
 import { AddSectionComponent } from './leyes-config/add-section/add-section.component';
 import { AddTitleComponent } from './leyes-config/add-title/add-title.component';
@@ -12,6 +13,7 @@ import { MenuComponent } from './menu/menu.component';
 import { ProfilesComponent } from './profiles/profiles.component';
 import { ModulesComponent } from './modules/modules.component';
 import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
+import { EditTitleComponent } from './leyes-config/edit-title/edit-title.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -76,6 +78,18 @@ export const ConfigRoutes: Routes = [
             
             },
             {
+                path:'documents-edit',
+                component:EditDocumentComponent,
+                data: {
+                    title:'Editar documento',
+                    urls:[
+                        {title:'Editar documento', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
                 path:'paragraphs',
                 component:AddParagraphComponent,
                 data: {
@@ -105,6 +119,17 @@ export const ConfigRoutes: Routes = [
                     title:'Agregar título',
                     urls:[
                         {title:'Agregar título', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            },
+            {
+                path:'titles-edit',
+                component:EditTitleComponent,
+                data: {
+                    title:'Editar título',
+                    urls: [
+                        {title:'Editar título', url:'/config'},
                         {title:'Leyes'}
                     ]
                 }

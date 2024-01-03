@@ -1,0 +1,91 @@
+<div class="mainDiv" *ngIf="showMain">
+    <mat-card class="mainCard">
+        <a href="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+        <div style="display: flex; align-items: center; justify-content: center;">
+        <p style="font-weight: 700;">{{ mainTitle }}</p>
+        </div>
+        <mat-card-content>
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <form>
+                    <mat-form-field class="title-full-width">
+                        <mat-label>Selecciona un documento</mat-label>
+                        <input
+                            type="text"
+                            placeholder="Buscar"
+                            matInput
+                            [formControl]="searchControl"
+                            [matAutocomplete]="auto"
+                        />
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let result of searchResults" [value]="result.titulo" (click)="setDoc(result)">
+                            {{ result.titulo }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="divider"></div>
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <form>
+                    <mat-form-field class="title-full-width">
+                        <mat-label>Titulo</mat-label>
+                        <input type="text" matInput [formControl]="myControlTitle" [(ngModel)]="title" required>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="flex-container">
+                <form>
+                    <mat-form-field class="classification-full-width">
+                      <mat-label>Clasificacion</mat-label>
+                      <input type="text" matInput [formControl]="myControlClassifications" [matAutocomplete]="auto2"> <!-- (change)="handleEmptyCla($event)" -->
+                    </mat-form-field>
+                    
+                    <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayClassifications"> <!-- (optionSelected)="selectedCla($event)" -->
+                        <mat-option *ngFor="let option of filteredClaOptions | async" [value]="selectedClassification">
+                            <div (click)="selectedCla($event, option)">
+                                <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)" (click)="$event.stopPropagation()">
+                                    {{ option.nombre }}
+                                </mat-checkbox>
+                            </div>
+                        </mat-option>
+                    </mat-autocomplete>
+                </form>
+                <form>
+                    <mat-form-field class="year-full-width" >
+                        <mat-label>Año</mat-label>
+                        <input inputmode="numeric" type="number" (keypress)="numberOnly($event)" maxlength="4" min="{{minYear}}" max="{{maxYear}}" matInput [formControl]="myControlYear" [(ngModel)]="year" (ngModelChange)="onChangeYear($event)" required>
+                    </mat-form-field>
+                </form>
+                <form>
+                    <mat-form-field class="abbreviation-full-width" >
+                        <mat-label>Abreviatura</mat-label>
+                        <input type="text" matInput [formControl]="myControlAbbreviation" [(ngModel)]="abbreviation">
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="flex-container">
+                <form>
+                    <mat-form-field class="editorial-full-width" >
+                        <mat-label>Editorial</mat-label>
+                        <input type="text" matInput [formControl]="myControlEditorial" [(ngModel)]="editorial">
+                    </mat-form-field>
+                </form>
+                <form>
+                    <mat-form-field class="articles-full-width" >
+                        <mat-label>Articulos</mat-label>
+                        <input type="number" (keypress)="numberOnly($event)" matInput [formControl]="myControlArticles" [(ngModel)]="articles" required>
+                    </mat-form-field>
+                </form>
+            </div>
+        </mat-card-content>
+
+        <div style="display: flex; align-items: center; justify-content: end; margin-right: 120px; margin-top:-20px; margin-bottom: 20px;">
+            <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="editDoc()">Editar</button>
+            <button mat-raised-button color="warn" [disabled]="checkValuesDel()" (click)="deleteDoc()" style="margin-left: 20px;">Eliminar</button>
+        </div>
+    </mat-card>
+</div>
+
+<div class="spinner" *ngIf="showSpinner">
+    <mat-spinner></mat-spinner>
+</div>

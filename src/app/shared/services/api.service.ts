@@ -282,7 +282,7 @@ export class ApiService {
     });
     return this.http.post(url, body, { headers: headers }).pipe(
       catchError((error) => {
-        console.error(error);
+        console.error(this.decrypt(error.error.message,'private'));
         return throwError('An error occurred while sending the post request.');
       })
     );
@@ -508,8 +508,9 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = this.insert;
-    const body = {model:this.models.articulo_titulos,data:{nombre: request.nombre, id_documento:request.id_documento}};
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_titulo'
+    const body = {data:{nombre: request.nombre, id_documento:request.id_documento}};
+    console.log(body)
     const encryptedBody = this.encrypt(body, 'private');
     return this.http.post(url,{text:encryptedBody},{headers:headers});
   }
@@ -673,8 +674,60 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_articulos'
+    console.log('BODY', body)
     const encryptedBody = this.encrypt(body,'private')
     return this.http.request('delete', url, {body:{text:encryptedBody}, headers:headers, observe:'response'}, );
     //return this.http.delete(url, {data: {text:encryptedBody}}, headers: headers});  
   }
+
+  public getParapgraphs(id_articulo):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id='+id_articulo;
+    console.log(url)
+    return this.http.get(url, {headers:headers});
+  }
+
+  public editCumplimiento(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_control'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public getAllDocuments():Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1';
+    return this.http.get(url, {headers:headers});
+  }
+
+  public editDoc(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/documentos'
+    const encryptedBody = this.encrypt(body,'private')
+    console.log(encryptedBody)
+    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public editTit(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_titulo'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.put(url, {text:encryptedBody},{headers:headers}); 
+  }
+
 }

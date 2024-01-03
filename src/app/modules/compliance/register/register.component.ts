@@ -8,6 +8,10 @@ import { SearchDocumentComponent } from 'src/app/shared/components/search-docume
 import { SearchDocumentationComponent } from 'src/app/shared/components/search-documentation/search-documentation.component';
 import { DisplayModalComponent } from './display-modal/display-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +21,9 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class RegisterComponent implements OnInit {
-  dataSource: any[];
+  @ViewChild(MatSort) sort: MatSort;
+
+  dataSource = new MatTableDataSource()
   displayedColumns: string[];
   fixedColumns: string[];
   offset = 0
@@ -50,13 +56,17 @@ export class RegisterComponent implements OnInit {
   constructor(private apiService:ApiService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    
     this.create_table()
     this.getObligations()
+    this.dataSource.sort = this.sort
     }
 
-  getObligations(offset=0) {
+  getObligations(offset=0, orderby='') {
+    this.dataSource.data = []
+
     let params = new HttpParams().set("where", this.sendableDate.getTime())
-    //params = params.set('id_usuario', this.apiService.getId())
+    if(orderby !== '') params = params.set('secOrderBy', orderby)
     //params = params.set('limit',21)
     //params = params.set('offset',offset)
     console.log(params)
@@ -64,15 +74,18 @@ export class RegisterComponent implements OnInit {
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         console.log(res.result)
-        this.dataSource = []
+        this.dataSource.data = []
+        let rows = []
         res.result.forEach((element) => {
           const row = { 
+            nombre:element.nombre,
+            descripcion:element.descripcion,
             fixedColumn: element.cumplimientos_obligacion.id_cumplimiento,
             fixedColumn2: element.fecha_cumplimiento,
             fixedColumn3: {
               si: element.aplica_punto.si,
               no: element.aplica_punto.no,
-              prioridad: element.aplica_punto.prioridad
+              prioridad: element.cumplimientos_obligacion.prioridad
             }, 
             fixedColumn4: {
               leyes:element.correlacion.leyes,
@@ -107,8 +120,18 @@ export class RegisterComponent implements OnInit {
               se_cumplio:element.cumplimientos_obligacion.completado,
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
             },
+            fixedColumn6:{
+              color:''
+            },
+            fixedColumn7:{
+              ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
+              IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
+              NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
+              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro
+            },
             switch:false ,
             obligacion:element.cumplimientos_obligacion.id_obligacion,
+            id:element.id_cumplimiento_mensual,
     
             fixedColumnRec: element.cumplimientos_obligacion.id_cumplimiento,
             fixedColumnRec2: element.fecha_cumplimiento,
@@ -150,7 +173,17 @@ export class RegisterComponent implements OnInit {
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
               se_cumplio:element.cumplimientos_obligacion.completado,
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
-            },};
+            },
+            fixedColumn6Rec:{
+              color:''
+            },
+            fixedColumn7Rec:{
+              ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
+              IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
+              NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
+              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro
+            },
+          };
 
             const ahora = new Date()
             if(row.fixedColumn5.se_cumplio !== true){
@@ -173,20 +206,50 @@ export class RegisterComponent implements OnInit {
             if(row.fixedColumn5.fecha_cumplio != null)row.fixedColumn5.fecha_cumplio = new Date(row.fixedColumn5.fecha_cumplio).toDateString(); row.fixedColumnRec5.fecha_cumplio = row.fixedColumn5.fecha_cumplio
             */
 
+            const today = Date.now()
+            if(row.fixedColumn5.fecha_ideal === null){
+              row.fixedColumn5.fecha_ideal = today
+              row.fixedColumnRec5.fecha_ideal = today
+            }
+
+            if(today > element.fecha_cumplimiento){
+              if(row.fixedColumn5.se_cumplio !== true){
+                row.fixedColumn6.color = '#e0e32b'
+              } else {
+                row.fixedColumn6.color = '#31e32b'
+              }
+            } else {
+              if(row.fixedColumn3.prioridad === 1){
+                row.fixedColumn6.color = '#f29c3f'
+              } else {
+                row.fixedColumn6.color = '#42f23f'
+              }
+            }
+            row.fixedColumn6Rec = row.fixedColumn6
+
             row.fixedColumn5.fundamento_legal.forEach(element => {
               element.fecha = new Date(element.fecha).toDateString();
             });
             row.fixedColumnRec5.fundamento_legal = row.fixedColumn5.fundamento_legal
 
-            
-
-            this.dataSource.push(row)
+            if(row.fixedColumn3.prioridad === 1){
+              row.fixedColumn3.prioridad = 'Alta';
+              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad;
+            } else if(row.fixedColumn3.prioridad === 3) {
+              row.fixedColumn3.prioridad = 'Baja';
+              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad
+            } else {
+              row.fixedColumn3.prioridad = 'Prioridad'
+              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad
+            }
+            rows.push(row)
         })
+        this.dataSource.data = rows
         console.log(this.dataSource)
       },
       error: err => {
         this.bandera = false
-        console.log(err);
+        console.log(this.apiService.decrypt(err.error.message, 'private'));
       }
     });
 
@@ -201,12 +264,14 @@ export class RegisterComponent implements OnInit {
   }
 
   create_table(){
-    this.dataSource = [];
+    this.dataSource.data = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2','fixedColumn3','fixedColumn4', 'fixedColumn5'];
-      
+    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn7', 'fixedColumn3', 'fixedColumn4', 'fixedColumn5', ];
+    let rows = []
     for (let i = 1; i <= 1; i++) {
       const row = { 
+        nombre:'',
+        descripcion:'',
         fixedColumn: `${i}`,
         fixedColumn2: '',
         fixedColumn3: {
@@ -247,8 +312,19 @@ export class RegisterComponent implements OnInit {
           se_cumplio:'si',
           fecha_cumplio:''
         },
+        fixedColumn6:{
+          color:'red'
+        },
+        fixedColumn7:{
+          ISR:1,
+          IVA:0,
+          NOMINAS:0,
+          OTROS:0
+        },
         switch:false ,
 
+        nombreRec:'',
+        descripcionRec:'',
         fixedColumnRec: `${i}`,
         fixedColumn2Rec: `Enero - Diciembre 2023`,
         fixedColumn3Rec: {
@@ -288,11 +364,21 @@ export class RegisterComponent implements OnInit {
           actualizado:'2022',
           se_cumplio:'si',
           fecha_cumplio:'antier'
-        },};
+        },
+        fixedColumn6Rec:{
+          color:'red'
+        },
+        fixedColumn7Rec:{
+          ISR:1,
+          IVA:0,
+          NOMINAS:0,
+          OTROS:0
+        }
+      };
 
-      this.dataSource.push(row);
-      
+      rows.push(row);
     }
+    this.dataSource.data = rows
     
   }
 
@@ -353,7 +439,7 @@ export class RegisterComponent implements OnInit {
     //this.dataSource.forEach((element) => {
       //data.push(element)
     //})
-    this.dataSource = [];
+    this.dataSource.data = [];
     this.offset += 20
     this.getObligations(this.offset)
   }
@@ -375,7 +461,7 @@ export class RegisterComponent implements OnInit {
       this.isShownComponent = false
     } else {
       this.isShownComponent = true
-      this.extArticulos = 'cumplimiento_articulos'
+      this.extArticulos = 'temporal'
     }
   }
 
@@ -392,6 +478,10 @@ export class RegisterComponent implements OnInit {
   }
 
   artReceived(art: any[]) {
+    if(art.length === 0) {
+      console.log('vacio')
+      return
+    }
     console.log(art)
     console.log(this.universalRow.fixedColumn)
     art.length == 0 ? this.showResults = false : this.showResults = true;
@@ -402,10 +492,10 @@ export class RegisterComponent implements OnInit {
     })
     let body = {}
 
-    if(this.extArticulos == 'cumplimiento_articulos'){
+    if(this.extArticulos == 'temporal'){
       body = {data:{
-        articulos:ides,
-        id_cumplimiento:this.universalRow.fixedColumn
+        arr_articulos:ides,
+        id_obligacion:this.universalRow.obligacion
       }}
     } else {
       body = {data:{
@@ -430,9 +520,40 @@ export class RegisterComponent implements OnInit {
 
   parRecieved(par:any[]){
     console.log(par)
+    console.log(this.universalRow.fixedColumn)
+    let ides = []
+    par.forEach((element) => {
+      ides.push(element.id)
+    })
+    let body = {}
+
+    if(this.extArticulos == 'temporal'){
+      body = {data:{
+        arr_relacion_parrafos:ides,
+        id_obligacion:this.universalRow.obligacion
+      }}
+    } else {
+      return
+    }
+    
+    console.log('CUERPO', body)
+
+    this.apiService.relateCumplimientoArticulo(body, this.extArticulos).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        console.log('RESPONSE',res.result)
+      },
+      error: err => {
+        this.bandera = false
+        console.log(err);
+      }
+    });
   }
 
   delArtRecieved(del:any[]){
+    if(del.length <1){
+      return
+    }
     console.log('DELETED',del)
     const body = {
       id_cumplimiento:this.universalRow.fixedColumn,
@@ -449,7 +570,6 @@ export class RegisterComponent implements OnInit {
         console.log('ERROR',err);
       }
     });
-
   }
 
   articleClicked(a:any){
@@ -576,5 +696,183 @@ export class RegisterComponent implements OnInit {
 
   closeCapacitations(){
     this.isShownCapacitations = false
+  }
+
+  modPrioridad(modo, row){
+    const body = {
+      data: {
+        id: row.id,
+        special:"true",
+        obligacion:{
+          prioridad:modo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        if(modo === 1){
+          row.fixedColumn3.prioridad = 'Alta'
+          row.fixedColumnRec3.prioridad = 'Alta'
+        } else {
+          row.fixedColumn3.prioridad = 'Baja'
+          row.fixedColumnRec3.prioridad = 'Baja'
+        }
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  updateIVA(event:any, row:any){
+    row.fixedColumn7.ISR = 0
+    row.fixedColumn7.OTRO = 0
+    row.fixedColumn7.NOMINA = 0
+    row.fixedColumn7Rec = row.fixedColumn7
+    let activo = 0
+    if(event.checked){
+      activo = 1
+    } else {
+      activo = 0
+    }
+    const body = {
+      data: {
+        id: row.id,
+        special: "true",
+        obligacion:{
+          impuesto_isr:0,
+          impuesto_otro:0,
+          impuesto_nomina:0,
+          impuesto_iva: activo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        row.fixedColumn7.IVA = activo
+        row.fixedColumn7Rec.IVA = activo
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  updateISR(event:any, row:any){
+    row.fixedColumn7.OTRO = 0
+    row.fixedColumn7.IVA = 0
+    row.fixedColumn7.NOMINA = 0
+    row.fixedColumn7Rec = row.fixedColumn7
+    let activo = 0
+    if(event.checked){
+      activo = 1
+    } else {
+      activo = 0
+    }
+    const body = {
+      data: {
+        id: row.id,
+        special: "true",
+        obligacion:{
+          impuesto_iva:0,
+          impuesto_otro:0,
+          impuesto_nomina:0,
+          impuesto_isr: activo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        row.fixedColumn7.ISR = activo
+        row.fixedColumn7Rec.ISR = activo
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  updateNOM(event:any, row:any){
+    row.fixedColumn7.ISR = 0
+    row.fixedColumn7.IVA = 0
+    row.fixedColumn7.OTRO = 0
+    row.fixedColumn7Rec = row.fixedColumn7
+    let activo = 0
+    if(event.checked){
+      activo = 1
+    } else {
+      activo = 0
+    }
+    const body = {
+      data: {
+        id: row.id,
+        special: "true",
+        obligacion:{
+          impuesto_isr:0,
+          impuesto_otro:0,
+          impuesto_iva:0,
+          impuesto_nomina: activo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        row.fixedColumn7.NOMINA = activo
+        row.fixedColumn7Rec.NOMINA = activo
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  updateOTHER(event:any, row:any){
+    row.fixedColumn7.ISR = 0
+    row.fixedColumn7.IVA = 0
+    row.fixedColumn7.NOMINA = 0
+    row.fixedColumn7Rec = row.fixedColumn7
+    let activo = 0
+    if(event.checked){
+      activo = 1
+    } else {
+      activo = 0
+    }
+    const body = {
+      data: {
+        id: row.id,
+        special: "true",
+        obligacion:{
+          impuesto_isr:0,
+          impuesto_iva:0,
+          impuesto_nomina:0,
+          impuesto_otro: activo
+        }
+      }
+    }
+    this.apiService.editCumplimiento(body).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
+        row.fixedColumn7.OTRO = activo
+        row.fixedColumn7Rec.OTRO = activo
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  reorderBy(campo){
+    let datos = this.dataSource.data
+    if(campo === 'id_cumplimiento'){
+      datos = datos.sort((a:any, b:any) => a.fixedColumn - b.fixedColumn);
+      this.dataSource.data = datos
+    } else if (campo === 'fecha_ideal'){
+      datos = datos.sort((a:any, b:any) => a.fixedColumn5.fecha_ideal - b.fixedColumn5.fecha_ideal)
+      this.dataSource.data = datos
+    }
   }
 }
