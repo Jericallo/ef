@@ -726,6 +726,10 @@ export class RegisterComponent implements OnInit {
   }
 
   updateIVA(event:any, row:any){
+    row.fixedColumn7.ISR = 0
+    row.fixedColumn7.OTRO = 0
+    row.fixedColumn7.NOMINA = 0
+    row.fixedColumn7Rec = row.fixedColumn7
     let activo = 0
     if(event.checked){
       activo = 1
@@ -737,6 +741,9 @@ export class RegisterComponent implements OnInit {
         id: row.id,
         special: "true",
         obligacion:{
+          impuesto_isr:0,
+          impuesto_otro:0,
+          impuesto_nomina:0,
           impuesto_iva: activo
         }
       }
@@ -754,6 +761,10 @@ export class RegisterComponent implements OnInit {
   }
 
   updateISR(event:any, row:any){
+    row.fixedColumn7.OTRO = 0
+    row.fixedColumn7.IVA = 0
+    row.fixedColumn7.NOMINA = 0
+    row.fixedColumn7Rec = row.fixedColumn7
     let activo = 0
     if(event.checked){
       activo = 1
@@ -765,6 +776,9 @@ export class RegisterComponent implements OnInit {
         id: row.id,
         special: "true",
         obligacion:{
+          impuesto_iva:0,
+          impuesto_otro:0,
+          impuesto_nomina:0,
           impuesto_isr: activo
         }
       }
@@ -782,6 +796,10 @@ export class RegisterComponent implements OnInit {
   }
 
   updateNOM(event:any, row:any){
+    row.fixedColumn7.ISR = 0
+    row.fixedColumn7.IVA = 0
+    row.fixedColumn7.OTRO = 0
+    row.fixedColumn7Rec = row.fixedColumn7
     let activo = 0
     if(event.checked){
       activo = 1
@@ -793,6 +811,9 @@ export class RegisterComponent implements OnInit {
         id: row.id,
         special: "true",
         obligacion:{
+          impuesto_isr:0,
+          impuesto_otro:0,
+          impuesto_iva:0,
           impuesto_nomina: activo
         }
       }
@@ -810,6 +831,10 @@ export class RegisterComponent implements OnInit {
   }
 
   updateOTHER(event:any, row:any){
+    row.fixedColumn7.ISR = 0
+    row.fixedColumn7.IVA = 0
+    row.fixedColumn7.NOMINA = 0
+    row.fixedColumn7Rec = row.fixedColumn7
     let activo = 0
     if(event.checked){
       activo = 1
@@ -821,6 +846,9 @@ export class RegisterComponent implements OnInit {
         id: row.id,
         special: "true",
         obligacion:{
+          impuesto_isr:0,
+          impuesto_iva:0,
+          impuesto_nomina:0,
           impuesto_otro: activo
         }
       }

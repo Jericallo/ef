@@ -282,7 +282,7 @@ export class ApiService {
     });
     return this.http.post(url, body, { headers: headers }).pipe(
       catchError((error) => {
-        console.error(error);
+        console.error(this.decrypt(error.error.message,'private'));
         return throwError('An error occurred while sending the post request.');
       })
     );

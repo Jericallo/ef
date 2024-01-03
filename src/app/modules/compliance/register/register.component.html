@@ -58,7 +58,7 @@
   <ng-container matColumnDef="fixedColumn" class="container" sticky >
     <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.2;">
       <div class="container" style="flex-direction: column;">
-        <div class="celdas" style="height: 8.55vh;">
+        <div class="celdas" style="height: 8.55vh; min-height: 80.37px;; ">
           
         </div>
         <div class="celdas" style="height: max-content; flex-direction: row; display: flex;">
@@ -80,7 +80,7 @@
   <ng-container matColumnDef="fixedColumn6" class="container" sticky >
     <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 0.1 !important;">
       <div class="container" style="flex-direction: column;">
-        <div class="celdas" style="height: 8.55vh;"></div>
+        <div class="celdas" style="height: 8.55vh; min-height: 80.37px;; "></div>
         <div class="celdas" style="height: max-content;">Indicador</div>
       </div>
     </mat-header-cell>
@@ -96,7 +96,7 @@
   <ng-container matColumnDef="fixedColumn2" class="container" sticky>
     <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 3;">
     <div class="container" style="flex-direction: column;">
-      <div class="celdas" style="height: 2vh; overflow: scroll;">
+      <div class="celdas" style="height: 4vh; min-height: 37.6px; overflow: scroll;">
         Las obligaciones se listan por <a (click)="reorderBy('id_cumplimiento')">General</a> / 
         <a (click)="reorderBy('fecha_ideal')">Fecha Ideal</a> / 
         <a (click)="getObligations(0, 'impuesto_isr')">ISR</a> / 
@@ -104,7 +104,7 @@
         <a (click)="getObligations(0, 'impuesto_nomina')">Nóminas</a> / 
         <a (click)="getObligations(0, 'impuesto_otro')">Otros</a> / 
       </div>
-      <div class="celdas" style="height: 6.55vh; text-align: center; padding-top:8%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
+      <div class="celdas" style="height: 4.55vh; min-height: 42.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
       <div class="celdas">Calendario:</div>
     </div>
     </mat-header-cell>
@@ -118,7 +118,7 @@
   <ng-container matColumnDef="fixedColumn7" class="container" sticky >
     <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.5;">
       <div class="container" style="flex-direction: column;">
-        <div class="celdas" style="height: 8.55vh;">Tipo de impuesto</div>
+        <div class="celdas" style="height: 8.55vh; min-height: 80.37px;; ">Tipo de impuesto</div>
         <div class="celdas" style="height: max-content; flex-direction: row; display: flex;">
           <div class="celdas" style="flex: 0.5;">ISR</div>
           <div class="celdas" style="flex: 0.5;">IVA</div>
@@ -148,7 +148,7 @@
   <ng-container matColumnDef="fixedColumn3" class="container" sticky>
     <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.3;">
     <div class="container" style="flex-direction: column;">
-      <div class="celdas" style="height: 8.15vh;">¿Aplica el Punto?</div>
+      <div class="celdas" style="height: 8.15vh; min-height: 76.61px;">¿Aplica el Punto?</div>
       <div class="celdas" style="flex-direction: row; display: flex;">
         <div class="celdas" style="flex: 0.5;">Si</div>
         <div class="celdas" style="flex: 0.5;">No</div>        
@@ -183,7 +183,7 @@
   <ng-container matColumnDef="fixedColumn4" class="container">
     <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 20;">
     <div class="container" style="flex-direction: column;">
-      <div class="celdas" style="height: 3.75vh;">Correlación con otros sectores del escudo fiscal</div>
+      <div class="celdas" style="height: 3.75vh; min-height: 35.25px;">Correlación con otros sectores del escudo fiscal</div>
       <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
         <div class="celdas" style="flex: 2;">Leyes</div>
         <div class="celdas" style="flex: 1;">Temario</div>        
@@ -289,13 +289,13 @@
   <ng-container matColumnDef="fixedColumn5" class="container">
     <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
     <div class="container" style="flex-direction: column; min-width: 100% !important; ">
-      <div class="celdas" style="height: 4.45vh;">Cumplimiento de obligación</div>
+      <div class="celdas" style="height: 4.45vh; min-height: 41.83px;">Cumplimiento de obligación</div>
       <div class="celdas" style="flex-direction: row; display: flex;">
         <div class="celdas" style="flex: 1;">Fecha desde la que se puedecumplir</div>
         <div class="celdas" style="flex: 1;"><a (click)="reorderBy('fecha_ideal')">Fecha ideal</a>></div>        
         <div class="celdas" style="flex: 1;">Fecha máxima</div>       
         <div  style="flex: 2; flex-direction: column; display: flex;">
-          <div class="celdas" style="height: 3vh;">Fundamento legal</div>
+          <div class="celdas" style="height: 3vh; min-height: 28.2px;">Fundamento legal</div>
           <div class="celdas" style="display: flex; flex-direction: row;">
             <div class="celdas" style="flex: 1;">Art.</div>
             <div class="celdas" style="flex: 1;">Actualizado al</div>
@@ -329,7 +329,7 @@
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="fixedColumns" style="background-color: #ffcc0c;" ></mat-header-row>
-  <mat-row class="row-table" style="height: 15vh;" *matRowDef="let row; columns: fixedColumns;"></mat-row>
+  <mat-row class="row-table" style="height: 15vh; min-height: 141px;" *matRowDef="let row; columns: fixedColumns;"></mat-row>
 </mat-table>
 
   
