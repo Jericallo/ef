@@ -16,8 +16,8 @@
                             [formControl]="searchControl"
                             [matAutocomplete]="auto"
                         />
-                        <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option *ngFor="let result of searchResultsDoc" [value]="result.titulo" (click)="setDoc(result)">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDocument" >
+                            <mat-option *ngFor="let result of filteredDocSearchOptions | async" [value]="result.titulo" (click)="setDoc(result)">
                             {{ result.titulo }}
                             </mat-option>
                         </mat-autocomplete>
@@ -33,7 +33,7 @@
                             [matAutocomplete]="autoT"
                         />
                         <mat-autocomplete #autoT="matAutocomplete">
-                            <mat-option *ngFor="let result of searchResultsTit" [value]="result.nombre" (click)="setTit(result)">
+                            <mat-option *ngFor="let result of filteredTitlesOptions | async" [value]="result.nombre" (click)="setTit(result)">
                             {{ result.nombre }}
                             </mat-option>
                         </mat-autocomplete>

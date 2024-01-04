@@ -16,6 +16,7 @@ import { of } from 'rxjs'; // Import 'of' from RxJS
   styleUrls: ['./edit-chapter.component.scss']
 })
 export class EditChapterComponent implements OnInit {
+  filteredChapters: Observable<any[]> | undefined;
 
   showMain = true;
   showSpinner = false;
@@ -60,22 +61,17 @@ export class EditChapterComponent implements OnInit {
   ngOnInit(): void {
     this.getChapters();
   
-    this.selectedChapter.valueChanges.pipe(
+    this.filteredChapters = this.selectedChapter.valueChanges.pipe(
       startWith(""),
       debounceTime(300),
       map(value => {
         const name = typeof value === "string" ? value : value?.nombre;
-        console.log(name);
-        return name !== undefined ? this._filterChapt(name as string) : this.chapters.slice();
+        return name ? this._filterChapt(name as string) : this.chapters.slice();
       })
-    ).subscribe(filteredChapters => {
-      this.chapters = filteredChapters;
-    });
+    )
   }
   
-  
-  
-  private _filterChapt(chapt: string): Article_Chapter[] {
+  private _filterChapt(chapt: string): any[] {
     return this.chapters.filter(option => option.nombre?.toLowerCase().includes(chapt.toLowerCase()));
   }
 

@@ -709,6 +709,15 @@ export class ApiService {
     return this.http.get(url, {headers:headers});
   }
 
+  public getAllDocuments2(params?):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = `https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1`;
+    return this.http.get(url, {headers:headers});
+  }
+
   public editDoc(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',

@@ -13,11 +13,11 @@
                         type="text"
                         placeholder="Buscar"
                         matInput
-                        [matAutocomplete]="auto"
                         [formControl]="selectedChapter"
+                        [matAutocomplete]="auto"
                       />
                       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayChapter" (optionSelected)="selectedChapt($event)">
-                        <mat-option *ngFor="let chapter of chapters" [value]="chapter">
+                        <mat-option *ngFor="let chapter of filteredChapters | async" [value]="chapter">
                           {{ chapter.nombre }}
                         </mat-option>
                       </mat-autocomplete>
