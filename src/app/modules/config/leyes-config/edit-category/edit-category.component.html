@@ -1,0 +1,45 @@
+<div class="mainDiv"  *ngIf="showMain">
+    <mat-card class="mainCard">
+        <a routerLink="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+        <div style="display: flex; align-items: center; justify-content: center;">
+        <p style="font-weight: 700;">Editar categoría</p>
+        </div>
+        <mat-card-content>
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <form>
+                    <mat-form-field class="title-full-width">
+                        <mat-label>Selecciona una clasificación</mat-label>
+                        <input
+                            type="text"
+                            placeholder="Buscar"
+                            matInput
+                            [matAutocomplete]="auto"
+                        />
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let classification of classifications" [value]="classification.nombre" (click)="setDoc(classification)">
+                                {{ classification.nombre }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="divider"></div>
+            <form style="display: flex;align-items: center; justify-content: center;">
+                <mat-form-field class="title-full-width">
+                    <mat-label>Clasificacion documento</mat-label>
+                    <input type="text" matInput required [(ngModel)]="selectedNombre" name="selectedNombre">
+                </mat-form-field>
+            </form>
+            
+                     
+        </mat-card-content>
+        <div style="display: flex; align-items: center; justify-content: end; margin-right: 95px; margin-top:-20px; margin-bottom: 20px;">
+        <button mat-raised-button color="primary"  (click)="saveCategory()">Editar</button>
+        <button mat-raised-button color="warn" style="margin-left: 10px;" (click)="deleteCategory()">Borrar</button>
+        </div>
+    </mat-card>
+</div>
+
+<div class="spinner" *ngIf="showSpinner">
+    <mat-spinner></mat-spinner>
+</div>

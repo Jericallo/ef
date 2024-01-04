@@ -730,4 +730,15 @@ export class ApiService {
     return this.http.put(url, {text:encryptedBody},{headers:headers}); 
   }
 
+  public editClassif(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/clasificaciones'
+    const encryptedBody = this.encrypt(body,'private')
+    console.log(encryptedBody)
+    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+  }
+
 }

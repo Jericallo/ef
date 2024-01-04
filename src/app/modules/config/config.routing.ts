@@ -14,6 +14,7 @@ import { ProfilesComponent } from './profiles/profiles.component';
 import { ModulesComponent } from './modules/modules.component';
 import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
 import { EditTitleComponent } from './leyes-config/edit-title/edit-title.component';
+import { EditCategoryComponent } from './leyes-config/edit-category/edit-category.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -48,6 +49,18 @@ export const ConfigRoutes: Routes = [
                     title:'Agregar categoría',
                     urls:[
                         {title:'Agregar categoría', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
+                path:'categories-edit',
+                component:EditCategoryComponent,
+                data: {
+                    title:'Editar categoría',
+                    urls:[
+                        {title:'Editar categoría', url:'/config'},
                         {title:'Leyes'}
                     ]
                 }

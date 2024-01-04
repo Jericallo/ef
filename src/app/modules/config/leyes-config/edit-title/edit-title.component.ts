@@ -144,7 +144,6 @@ export class EditTitleComponent implements OnInit {
     this.apiService.editTit({data:this.sendingData})
     .subscribe({
       next: response => {
-        
         this.showSpinner = false;
         console.log(response);
         this.snackBar.open('Titulo modificado correctamente', '', { 
@@ -175,7 +174,6 @@ export class EditTitleComponent implements OnInit {
     this.apiService.editTit({data:body})
     .subscribe({
       next: response => {
-        
         this.showSpinner = false;
         console.log(response);
         this.snackBar.open('Titulo eliminado correctamente', '', { 
