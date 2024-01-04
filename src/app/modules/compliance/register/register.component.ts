@@ -212,17 +212,17 @@ export class RegisterComponent implements OnInit {
               row.fixedColumnRec5.fecha_ideal = today
             }
 
-            if(today > element.fecha_cumplimiento){
+            if(today > element.cumplimientos_obligacion.fecha_maxima){
               if(row.fixedColumn5.se_cumplio !== true){
-                row.fixedColumn6.color = '#e0e32b'
+                row.fixedColumn6.color = '#e0e32b' // amarillo
               } else {
-                row.fixedColumn6.color = '#31e32b'
+                row.fixedColumn6.color = '#31e32b' // verde
               }
             } else {
               if(row.fixedColumn3.prioridad === 1){
-                row.fixedColumn6.color = '#f29c3f'
+                row.fixedColumn6.color = '#f23f3f' // rojo
               } else {
-                row.fixedColumn6.color = '#42f23f'
+                row.fixedColumn6.color = '#e0e32b' // amarillo
               }
             }
             row.fixedColumn6Rec = row.fixedColumn6

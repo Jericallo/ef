@@ -13,7 +13,8 @@ export interface Obligations {
     con_documento?: boolean,
 	texto_documentos?: string,
     documentaciones: number[],
-    fecha_final?: number | null
+    fecha_final?: number | null,
+    fecha_cumplimiento_ideal: number | null
 }
 
 export interface ObligationsAlert {
