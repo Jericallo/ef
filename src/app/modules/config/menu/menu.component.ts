@@ -53,7 +53,7 @@ export class MenuComponent implements OnInit {
       icon: 'book',
       descripcion: 'Capítulos',
       path1: 'chapters',
-      path2: 'chapters',
+      path2: 'chapters-edit',
       
     },
     {

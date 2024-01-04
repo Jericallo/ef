@@ -15,6 +15,7 @@ import { ModulesComponent } from './modules/modules.component';
 import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
 import { EditTitleComponent } from './leyes-config/edit-title/edit-title.component';
 import { EditCategoryComponent } from './leyes-config/edit-category/edit-category.component';
+import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -73,6 +74,18 @@ export const ConfigRoutes: Routes = [
                     title:'Agregar capítulo',
                     urls:[
                         {title:'Agregar capítulo', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
+                path:'chapters-edit',
+                component:EditChapterComponent,
+                data: {
+                    title:'Editar capítulo',
+                    urls:[
+                        {title:'Editar capítulo', url:'/config'},
                         {title:'Leyes'}
                     ]
                 }

@@ -23,7 +23,7 @@ export class ApiService {
   insert: string = 'https://api.escudofiscal.alphadev.io/v1/insert';
   update: string = 'https://api.escudofiscal.alphadev.io/v1/update';
   models = {clasificaciones:"clasificaciones",documentos:"documentos",documentaciones:"documentaciones",
-    articulo_titulos:"articulo_titulos",articulo_capitulos:"articulo_capitulos", 
+    articulo_titulos:"articulo_titulo",articulo_capitulos:"articulo_capitulos", 
     articulo_secciones:"articulo_secciones",articulos:"articulos",clientes:"clientes",obligaciones:"obligaciones",
     obligaciones_tipos:"obligaciones_tipos",regimen_fiscal:"regimen_fiscal"}
   
@@ -389,7 +389,7 @@ export class ApiService {
   }
 
   public getClassifications(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=clasificaciones'
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=clasificaciones&estatus=1'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -700,12 +700,12 @@ export class ApiService {
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
 
-  public getAllDocuments():Observable<any>{
+  public getAllDocuments(params?):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1';
+    const url = `https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1&id=${params}`;
     return this.http.get(url, {headers:headers});
   }
 

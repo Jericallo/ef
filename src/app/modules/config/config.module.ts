@@ -46,6 +46,7 @@ import { SearchDocumentAndParagraphComponent } from 'src/app/shared/components/s
 import { EditDocumentComponent } from './leyes-config/edit-document/edit-document.component';
 import { EditTitleComponent } from './leyes-config/edit-title/edit-title.component';
 import { EditCategoryComponent } from './leyes-config/edit-category/edit-category.component';
+import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { EditCategoryComponent } from './leyes-config/edit-category/edit-categor
     SearchDocumentAndParagraphComponent,
     EditDocumentComponent,
     EditTitleComponent,
-    EditCategoryComponent
+    EditCategoryComponent,
+    EditChapterComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [

@@ -1,4 +1,5 @@
 export interface Documents {
+  id: string,
   titulo: string;
   editorial?: string | null;
   clasificacion?: number[],
