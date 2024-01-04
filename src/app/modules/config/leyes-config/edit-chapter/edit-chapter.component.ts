@@ -143,14 +143,15 @@ export class EditChapterComponent implements OnInit {
   
   selectedChapt(opt: MatAutocompleteSelectedEvent) {
     console.log(opt)
+    if(opt.option.value.id_documento !== null){
     this.apiService.getAllDocuments(opt.option.value.id_documento).subscribe({
       next: (res) => {
         let docName = JSON.parse(this.apiService.decrypt(res.message, "private"))
         this.myControlDocuments.setValue(docName.result[0])
         this.sendingData.id_documento = docName.result[0].id
-        console.log(docName.result[0])
       }
     })
+  }
     if(opt.option.value.id_titulo !== null){
       this.apiService.getAllArticles(this.apiService.models.articulo_titulos,new HttpParams().set("id",opt.option.value.id_titulo))
       .subscribe({
@@ -158,7 +159,6 @@ export class EditChapterComponent implements OnInit {
           let titleName = JSON.parse(this.apiService.decrypt(res.message, "private"))
           this.myControlTitles.setValue(titleName.result[0])
           this.sendingData.id_titulo = titleName.result[0].id
-          console.log(titleName.result[0])
         }
       })
     }
@@ -188,9 +188,18 @@ export class EditChapterComponent implements OnInit {
 
 
   editChapter(){
-    console.log(this.selectedChapterId)
-    console.log("DOC",this.sendingData.id_documento)
-    console.log("TIT",this.sendingData.id_titulo)
+    const body = {
+      id: this.selectedChapterId,
+      nombre: this.name,
+      id_documento: this.sendingData.id_documento,
+      //id_titulo: this.sendingData.id_titulo
+    }
+    console.log(body)
+    this.apiService.editChapter({data:body}).subscribe({
+      next: res =>{
+        console.log(res)
+      }
+    })
 
   }
 

@@ -750,4 +750,15 @@ export class ApiService {
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
 
+  public editChapter(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_capitulo'
+    const encryptedBody = this.encrypt(body,'private')
+    console.log(encryptedBody)
+    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+  }
+
 }
