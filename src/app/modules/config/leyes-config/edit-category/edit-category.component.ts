@@ -62,11 +62,12 @@ export class EditCategoryComponent implements OnInit {
       console.log(body)
       this.apiService.editClassif({data:body}).subscribe({
         next: response => {
-          console.log(response);
+          this.getClassifications()
           this.snackBar.open('Clasificación actualizada.', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition
           });
+          this.resetInputs();
         },
         error: err => {
           this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
@@ -87,13 +88,14 @@ export class EditCategoryComponent implements OnInit {
       console.log(body)
       this.apiService.editClassif({data:body}).subscribe({
         next: response => {
-          console.log(response);
+          this.getClassifications()
         },
         error: err => {
           this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
             duration:3000,
             verticalPosition:this.verticalPosition
           })        
+          this.resetInputs(); 
         }
       });
     }else{
@@ -102,5 +104,10 @@ export class EditCategoryComponent implements OnInit {
         verticalPosition:this.verticalPosition
       })        
     }
+  }
+
+  resetInputs() {
+    this.selectedNombre = '';
+    this.selectedDocId = undefined;
   }
 }
