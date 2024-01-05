@@ -1,0 +1,69 @@
+<div class="mainDiv" *ngIf="showMain">
+    <mat-card class="mainCard">
+      <a routerLink="/config/menu" class="return"><mat-icon  style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <p style="font-weight: 700;">Editar sección</p>
+        </div>
+        <mat-card-content>
+            <form>
+                <mat-form-field class="half-width-mr" >
+                  <mat-label>Selecciona una sección</mat-label>
+                  <input type="text" matInput [formControl]="myControlSections" [matAutocomplete]="autoD" (change)="handleEmptyDoc($event)" required>
+                  <mat-autocomplete #autoD="matAutocomplete" [displayWith]="displaySection" (optionSelected)="selectedSect($event)">
+                    <mat-option *ngFor="let option of filteredSectionsOptions | async" [value]="option">
+                      {{option.nombre}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+            </form>
+            <div class="divider"></div>
+            <div class="flex-container">
+                <form>
+                    <mat-form-field class="half-width-mr10" >
+                      <mat-label>Documento</mat-label>
+                      <input type="text" matInput [formControl]="myControlDocuments" [matAutocomplete]="auto" (change)="handleEmptyDoc($event)" required>
+                      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDocument" (optionSelected)="selectedDoc($event)">
+                        <mat-option *ngFor="let option of filteredDocOptions | async" [value]="option">
+                          {{option.titulo}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+                <form>
+                    <mat-form-field class="half-width" >
+                      <mat-label>Titulo</mat-label>
+                      <input type="text" matInput [formControl]="myControlTitles" [matAutocomplete]="autoB">
+                      <mat-autocomplete #autoB="matAutocomplete" [displayWith]="displayTitle" (optionSelected)="selectedTit($event)">
+                        <mat-option *ngFor="let option of filteredTitOptions | async" [value]="option">
+                          {{option.nombre}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="flex-container">
+                <form>
+                    <mat-form-field class="half-width-mr" >
+                      <mat-label>Capitulo</mat-label>
+                      <input type="text" matInput [formControl]="myControlChapters" [matAutocomplete]="autoC">
+                      <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayTitle" (optionSelected)="selectedCha($event)">
+                        <mat-option *ngFor="let option of filteredChaOptions | async" [value]="option">
+                          {{option.nombre}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+                <mat-form-field class="half-width" >
+                    <mat-label>Nombre</mat-label>
+                    <input type="text" matInput [formControl]="myControlName" [(ngModel)]="name" required>
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+        <div style="display: flex; align-items: center; justify-content: end; margin-right: 25px; margin-top:-20px; margin-bottom: 20px;">
+        <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="saveAssignation()">Editar</button>
+      </div>
+    </mat-card>
+</div>
+<div class="spinner" *ngIf="showSpinner">
+    <mat-spinner></mat-spinner>
+</div>

@@ -378,6 +378,15 @@ export class ApiService {
     return this.http.get<Documents[]>(url,{headers:headers});
   }
 
+  public getSections(): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=articulo_secciones'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get<Documents[]>(url,{headers:headers});
+  }
+
   public getAllArticles(model:string,params?:HttpParams, queries:string = ''):Observable<any>{
     const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=' + model + queries
     console.log(url)

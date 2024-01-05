@@ -197,10 +197,58 @@ export class EditChapterComponent implements OnInit {
     console.log(body)
     this.apiService.editChapter({data:body}).subscribe({
       next: res =>{
-        console.log(res)
+        this.snackBar.open('Capítulo actualizado!', '', {
+          duration:3000,
+          verticalPosition:this.verticalPosition
+        }) 
+        this.resetInputs();  
+      },
+      error: err => {
+        this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
+          duration:3000,
+          verticalPosition:this.verticalPosition
+        })        
+        this.resetInputs(); 
       }
     })
+  }
 
+  deleteChapter() {
+    if (this.selectedChapterId) {
+      let body = {
+        id: this.selectedChapterId,
+        estatus: 0
+      }
+      console.log(body)
+      this.apiService.editChapter({data:body}).subscribe({
+        next: response => {
+          this.snackBar.open('Capítulo eliminado!', '', {
+            duration:3000,
+            verticalPosition:this.verticalPosition
+          })       
+          this.getChapters()
+          this.resetInputs(); 
+        },
+        error: err => {
+          this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
+            duration:3000,
+            verticalPosition:this.verticalPosition
+          })        
+          this.resetInputs(); 
+        }
+      });
+    }else{
+      this.snackBar.open('Debes seleccionar una clasificación', '', {
+        duration:3000,
+        verticalPosition:this.verticalPosition
+      })        
+    }
+  }
+
+  resetInputs() {
+    this.selectedChapter = null;
+    this.selectedDocument = null;
+    this.name = ''
   }
 
 }

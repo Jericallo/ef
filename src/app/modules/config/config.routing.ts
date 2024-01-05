@@ -16,6 +16,7 @@ import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.compo
 import { EditTitleComponent } from './leyes-config/edit-title/edit-title.component';
 import { EditCategoryComponent } from './leyes-config/edit-category/edit-category.component';
 import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.component';
+import { EditSectionComponent } from './leyes-config/edit-section/edit-section.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -134,6 +135,17 @@ export const ConfigRoutes: Routes = [
                     title:'Agregar sección',
                     urls:[
                         {title:'Agregar sección', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            },
+            {
+                path:'sections-edit',
+                component:EditSectionComponent,
+                data: {
+                    title:'Editar sección',
+                    urls:[
+                        {title:'Editar sección', url:'/config'},
                         {title:'Leyes'}
                     ]
                 }

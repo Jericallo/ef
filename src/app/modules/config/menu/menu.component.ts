@@ -60,7 +60,7 @@ export class MenuComponent implements OnInit {
       icon: 'bookmark',
       descripcion: 'Secciones',
       path1:'sections',
-      path2: 'sections',
+      path2: 'sections-edit',
     },
     {
       icon: 'description',
