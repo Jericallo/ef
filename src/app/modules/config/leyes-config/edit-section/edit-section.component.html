@@ -60,7 +60,8 @@
             </div>
         </mat-card-content>
         <div style="display: flex; align-items: center; justify-content: end; margin-right: 25px; margin-top:-20px; margin-bottom: 20px;">
-        <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="saveAssignation()">Editar</button>
+        <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="editSection()">Editar</button>
+        <button mat-raised-button color="warn" style="margin-left: 10px;" [disabled]="checkValues()" (click)="deleteSection()">Borrar</button>
       </div>
     </mat-card>
 </div>

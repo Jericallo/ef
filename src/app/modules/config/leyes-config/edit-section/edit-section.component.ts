@@ -65,9 +65,17 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
       },
       error: err => { this.errorHandling(err);}
     });
+ 
+  }
+
+  getSections(){
+    this.showSpinner= true
+    this.showMain = false
     this.apiService.getSections()
     .subscribe({
       next: response => {
+        this.showSpinner = false
+        this.showMain = true
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         this.showMain = true; this.showSpinner = false;
         this.optionsSections = response.result;
@@ -77,6 +85,7 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
+    this.getSections()
     this.filteredDocOptions = this.myControlDocuments.valueChanges.pipe(
       startWith(''),debounceTime(300),
       map(value => {
@@ -110,13 +119,44 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
 
   selectedDoc(opt: MatAutocompleteSelectedEvent) {
     this.myControlTitles.reset();
-    this.selectedDocument = opt.option.value.id;
+    this.selectedDocument = opt.option.value.id_documento;
     this.sendingData.id_documento = opt.option.value.id;
     this.getTitles(opt.option.value.id);
   }
 
 
   selectedSect(opt: MatAutocompleteSelectedEvent) {
+    console.log(opt.option.value.id_capitulo)
+    this.name = opt.option.value.nombre
+    if(opt.option.value.id_documento !== null){
+      this.apiService.getAllDocuments(opt.option.value.id_documento).subscribe({
+        next: (res) => {
+          let docName = JSON.parse(this.apiService.decrypt(res.message, "private"))
+          this.myControlDocuments.setValue(docName.result[0])
+          this.sendingData.id_documento = docName.result[0].id
+        }
+      })
+    }
+    if(opt.option.value.id_titulo !== null){
+      this.apiService.getAllArticles(this.apiService.models.articulo_titulos,new HttpParams().set("id",opt.option.value.id_titulo))
+      .subscribe({
+        next: (res) => {
+          let titleName = JSON.parse(this.apiService.decrypt(res.message, "private"))
+          this.myControlTitles.setValue(titleName.result[0])
+          this.sendingData.id_titulo = titleName.result[0].id
+        }
+      })
+    }
+    if(opt.option.value.id_capitulo !== null){
+      this.apiService.getAllChapters(opt.option.value.id_capitulom,new HttpParams().set("id",opt.option.value.id_capitulo))
+      .subscribe({
+        next: (res) => {
+          let chapterName = JSON.parse(this.apiService.decrypt(res.message, "private"))
+          this.myControlChapters.setValue(chapterName.result[0])
+          this.sendingData.id_capitulo = chapterName.result[0].id
+        }
+      })
+    }
     this.myControlTitles.reset();
     this.selectedSection = opt.option.value.id;
     this.sendingData.id_documento = opt.option.value.id;
@@ -132,7 +172,6 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
     .subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        console.log(response)
         this.showMain = true;this.showSpinner = false;
         this.optionsTitles = response.result;
         this.filteredTitOptions = this.myControlTitles.valueChanges.pipe(
@@ -229,7 +268,7 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
   /*Form to Save Functions*/
 
   checkValues() {
-    return !(this.selectedDocument !== 0 && this.selectedDocument !== undefined && this.myControlName.valid)
+    return (this.selectedDocument !== 0 && this.selectedDocument !== undefined && this.myControlName.valid)
   }
 
   saveAssignation() {
@@ -256,6 +295,7 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
     this.myControlTitles.reset();
     this.selectedTitle = 0;
     this.myControlChapters.reset();
+    this.myControlSections.reset();
     this.selectedChapter = 0;
     this.sendingData = {id_titulo:0,id_capitulo:0,id_documento:0,id:0,nombre:""}
     this.name = "";
@@ -268,6 +308,69 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
       this.snackBar.open('Error al cargar los Documentos', '', this.config_snack);
     }
     console.log(err);
+  }
+
+
+  editSection(){
+    this.showSpinner= true
+    const body = {
+      id: this.selectedSection,
+      nombre: this.name,
+      id_capitulo: this.sendingData.id_capitulo,
+      id_titulo: this.sendingData.id_titulo,
+      id_documento: this.sendingData.id_documento,
+    }
+    console.log(body)
+    
+    this.apiService.editSection({data:body}).subscribe({
+      next: res =>{
+        this.showSpinner= false
+        this.snackBar.open('Capítulo actualizado!', '', {
+          duration:3000,
+          verticalPosition:this.verticalPosition
+        }) 
+        this.resetFields();  
+      },
+      error: err => {
+        this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
+          duration:3000,
+          verticalPosition:this.verticalPosition
+        })        
+        this.resetFields(); 
+      }
+    })
+  }
+
+  deleteSection() {
+    if (this.selectedSection) {
+      let body = {
+        id: this.selectedSection,
+        estatus: 0
+      }
+      console.log(body)
+      this.apiService.editChapter({data:body}).subscribe({
+        next: response => {
+          this.snackBar.open('Capítulo eliminado!', '', {
+            duration:3000,
+            verticalPosition:this.verticalPosition
+          })       
+          this.getSections()
+          this.resetFields(); 
+        },
+        error: err => {
+          this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
+            duration:3000,
+            verticalPosition:this.verticalPosition
+          })        
+          this.resetFields(); 
+        }
+      });
+    }else{
+      this.snackBar.open('Debes seleccionar una clasificación', '', {
+        duration:3000,
+        verticalPosition:this.verticalPosition
+      })        
+    }
   }
 
 }
