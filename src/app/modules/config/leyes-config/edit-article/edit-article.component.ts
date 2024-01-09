@@ -621,6 +621,38 @@ export class EditArticleComponent implements OnInit {
       return false;
     }
     return true;
-
   }
+
+  deleteArticle() {
+    if (this.selectedArticle) {
+      let body = {
+        id: this.articleId,
+        estatus: 0
+      }
+      console.log(body)
+      this.apiService.editArticle({data:body}).subscribe({
+        next: response => {
+          this.snackBar.open('Artículo eliminado!', '', {
+            duration:3000,
+            verticalPosition:this.verticalPosition
+          })       
+          this.getArticles()
+          this.resetFields(); 
+        },
+        error: err => {
+          this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
+            duration:3000,
+            verticalPosition:this.verticalPosition
+          })        
+          this.resetFields(); 
+        }
+      });
+    }else{
+      this.snackBar.open('Debes seleccionar un artículo', '', {
+        duration:3000,
+        verticalPosition:this.verticalPosition
+      })        
+    }
+  }
+
 }

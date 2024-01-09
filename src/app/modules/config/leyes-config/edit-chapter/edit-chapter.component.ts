@@ -245,6 +245,10 @@ export class EditChapterComponent implements OnInit {
     }
   }
 
+  checkValues(){
+    return !(this.selectedChapt !== null && this.selectedDocument !== null && this.name)
+  }
+
   resetInputs() {
     this.selectedChapter.reset
     this.selectedDocument = null;

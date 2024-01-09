@@ -44,6 +44,10 @@ export class EditCategoryComponent implements OnInit {
     });
   }
 
+  checkValues() {
+    return !(this.selectedDocId !== 0 && this.selectedDocId !== undefined)
+  }
+
   saveCategory() {
     const expresionRegular = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/;
     const inputValue = this.selectedNombre; 

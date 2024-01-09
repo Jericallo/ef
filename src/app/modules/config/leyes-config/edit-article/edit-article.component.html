@@ -131,8 +131,9 @@
       <!-- Botones -->
       <div class="buttons-container" >
         <!--<button mat-raised-button color="basic" (click)="showSearchComponent()">Relaciones</button>&nbsp;-->
-        <div style="position: absolute; left: 45px; bottom: 30px;">
+        <div style="position: absolute; right: 45px; bottom: 30px;">
           <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="editArticle()">Guardar</button>
+          <button mat-raised-button color="warn" style="margin-left: 10px;" [disabled]="checkValues()" (click)="deleteArticle()">Eliminar</button>
         </div>
       </div>
     </mat-card>

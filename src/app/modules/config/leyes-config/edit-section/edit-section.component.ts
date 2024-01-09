@@ -268,7 +268,7 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
   /*Form to Save Functions*/
 
   checkValues() {
-    return (this.selectedDocument !== 0 && this.selectedDocument !== undefined && this.myControlName.valid)
+    return !(this.selectedSection !== 0 && this.selectedSection !== undefined && this.myControlName.valid)
   }
 
   saveAssignation() {

@@ -18,6 +18,7 @@ import { EditCategoryComponent } from './leyes-config/edit-category/edit-categor
 import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.component';
 import { EditSectionComponent } from './leyes-config/edit-section/edit-section.component';
 import { EditArticleComponent } from './leyes-config/edit-article/edit-article.component';
+import { EditParagraphComponent } from './leyes-config/edit-paragraph/edit-paragraph.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -134,6 +135,18 @@ export const ConfigRoutes: Routes = [
                     title:'Agregar párrafo',
                     urls:[
                         {title:'Agregar párrafo', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
+                path:'paragraphs-edit',
+                component:EditParagraphComponent,
+                data: {
+                    title:'Editar párrafo',
+                    urls:[
+                        {title:'Editar párrafo', url:'/config'},
                         {title:'Leyes'}
                     ]
                 }
