@@ -481,7 +481,7 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = this.insert
-    const body = {model:'articulo_parrafos',data:{indicador:request.indicador, orden:request.orden, id_articulo:request.id_articulo, contenido:request.contenido,tipo:request.tipo,numero:request.numero,nombre:request.nombre, relaciones:request.relaciones}};
+    const body = {model:'articulo_parafo',data:{indicador:request.indicador, orden:request.orden, id_articulo:request.id_articulo, contenido:request.contenido,tipo:request.tipo,numero:request.numero,nombre:request.nombre, relaciones:request.relaciones}};
     console.log(body)
     const encrybtedBody = this.encrypt(body,'private')
     return this.http.post(url,{text:encrybtedBody},{headers:headers});
@@ -699,6 +699,16 @@ export class ApiService {
     return this.http.get(url, {headers:headers});
   }
 
+  public getParrafo():Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_parafo';
+    console.log(url)
+    return this.http.get(url, {headers:headers});
+  }
+
   public editCumplimiento(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
@@ -805,6 +815,16 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = 'https://api.escudofiscal.alphadev.io/v1/articulos'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public editParagraph(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_parafo'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }

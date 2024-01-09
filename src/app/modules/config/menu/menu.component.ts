@@ -72,7 +72,7 @@ export class MenuComponent implements OnInit {
       icon: 'format_align_left',
       descripcion: 'Parrafos',
       path1:'paragraphs',
-      path2:'paragraphs'
+      path2:'paragraphs-edit'
     }
   ];
 
