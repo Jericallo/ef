@@ -17,6 +17,7 @@ import { EditTitleComponent } from './leyes-config/edit-title/edit-title.compone
 import { EditCategoryComponent } from './leyes-config/edit-category/edit-category.component';
 import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.component';
 import { EditSectionComponent } from './leyes-config/edit-section/edit-section.component';
+import { EditArticleComponent } from './leyes-config/edit-article/edit-article.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -42,7 +43,17 @@ export const ConfigRoutes: Routes = [
                         {title:'Leyes'}
                     ]
                 }
-            
+            },
+            {
+                path:'articles-edit',
+                component:EditArticleComponent,
+                data: {
+                    title:'Editar artículo',
+                    urls:[
+                        {title:'Editar artículo', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
             },
             {
                 path:'categories',

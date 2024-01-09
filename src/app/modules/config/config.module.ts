@@ -48,6 +48,7 @@ import { EditTitleComponent } from './leyes-config/edit-title/edit-title.compone
 import { EditCategoryComponent } from './leyes-config/edit-category/edit-category.component';
 import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.component';
 import { EditSectionComponent } from './leyes-config/edit-section/edit-section.component';
+import { EditArticleComponent } from './leyes-config/edit-article/edit-article.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { EditSectionComponent } from './leyes-config/edit-section/edit-section.c
     EditTitleComponent,
     EditCategoryComponent,
     EditChapterComponent,
-    EditSectionComponent
+    EditSectionComponent,
+    EditArticleComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [

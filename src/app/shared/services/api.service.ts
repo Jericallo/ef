@@ -728,6 +728,15 @@ export class ApiService {
     return this.http.get<any>(url,{params:params,headers:headers})
   }
 
+  public getAllSections(model:string,params?:HttpParams, id:string = ''):Observable<any>{
+    const url = `https://api.escudofiscal.alphadev.io/v1/getAll?model=articulo_secciones`
+    console.log(url)
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get<any>(url,{params:params,headers:headers})
+  }
 
   public getAllDocuments2(params?):Observable<any>{
     let headers = new HttpHeaders({
@@ -786,6 +795,16 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_secciones'
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+  }
+
+  public editArticle(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }

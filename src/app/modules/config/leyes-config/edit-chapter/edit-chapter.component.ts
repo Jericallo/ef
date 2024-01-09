@@ -246,7 +246,7 @@ export class EditChapterComponent implements OnInit {
   }
 
   resetInputs() {
-    this.selectedChapter = null;
+    this.selectedChapter.reset
     this.selectedDocument = null;
     this.name = ''
   }

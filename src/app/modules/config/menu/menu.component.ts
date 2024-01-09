@@ -66,7 +66,7 @@ export class MenuComponent implements OnInit {
       icon: 'description',
       descripcion: 'Artículos',
       path1:'articles',
-      path2:'articles'
+      path2:'articles-edit'
     },
     {
       icon: 'format_align_left',

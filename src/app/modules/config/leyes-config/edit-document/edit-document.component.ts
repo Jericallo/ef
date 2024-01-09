@@ -184,7 +184,7 @@ export class EditDocumentComponent implements OnInit {
     .subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        console.log(response);
+        this.getDocumentos()
         this.showSpinner = false;
         this.snackBar.open('Documento editado correctamente', '', { 
           duration: 3000,
@@ -216,7 +216,7 @@ export class EditDocumentComponent implements OnInit {
     .subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        console.log(response);
+        this.getDocumentos()
         this.showSpinner = false;
         this.snackBar.open('Documento eliminado correctamente', '', { 
           duration: 3000,
@@ -237,6 +237,7 @@ export class EditDocumentComponent implements OnInit {
   }
 
   resetFields() {
+    this.searchControl.reset()
     this.myControlTitle.reset();
     this.myControlClassifications.reset();
     this.myControlYear.reset();
@@ -270,7 +271,7 @@ export class EditDocumentComponent implements OnInit {
   }
 
   getDocumentos(){
-    this.apiService.getAllDocuments().subscribe({
+    this.apiService.getAllDocuments2().subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         console.log(response);

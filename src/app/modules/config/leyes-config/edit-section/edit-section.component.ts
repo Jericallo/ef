@@ -324,8 +324,9 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
     
     this.apiService.editSection({data:body}).subscribe({
       next: res =>{
+        this.getSections()
         this.showSpinner= false
-        this.snackBar.open('Capítulo actualizado!', '', {
+        this.snackBar.open('Seccion actualizada!', '', {
           duration:3000,
           verticalPosition:this.verticalPosition
         }) 
@@ -348,9 +349,9 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
         estatus: 0
       }
       console.log(body)
-      this.apiService.editChapter({data:body}).subscribe({
+      this.apiService.editSection({data:body}).subscribe({
         next: response => {
-          this.snackBar.open('Capítulo eliminado!', '', {
+          this.snackBar.open('Sección eliminada!', '', {
             duration:3000,
             verticalPosition:this.verticalPosition
           })       
@@ -366,7 +367,7 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
         }
       });
     }else{
-      this.snackBar.open('Debes seleccionar una clasificación', '', {
+      this.snackBar.open('Debes seleccionar una sección', '', {
         duration:3000,
         verticalPosition:this.verticalPosition
       })        
