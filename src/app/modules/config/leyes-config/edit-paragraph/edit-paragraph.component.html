@@ -35,7 +35,7 @@
             <mat-form-field  style="margin-right:10px; width: 500px;" >
               <mat-label>Articulo</mat-label>
               <input (keypress)="numberOnly($event)" type="text" matInput [formControl]="myControlArticle" [matAutocomplete]="autoA" (change)="handleEmptyArticle($event)" required>
-              <mat-autocomplete #autoA="matAutocomplete" [displayWith]="displayArticle" (optionSelected)="selectedArt($event)">
+              <mat-autocomplete [disabled]="!selectedPar" #autoA="matAutocomplete" [displayWith]="displayArticle" (optionSelected)="selectedArt($event)">
                 <mat-option *ngFor="let option of filteredArtOptions | async" [value]="option">
                   Articulo {{option.id_articulo}} | {{option.nombre}}
                 </mat-option>

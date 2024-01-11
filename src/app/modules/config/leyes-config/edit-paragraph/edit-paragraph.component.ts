@@ -215,10 +215,8 @@ export class EditParagraphComponent implements OnInit {
           this.showMain = true;
           this.showSpinner = false;
           this.optionsDocuments = response.result;
-          console.log(this.optionsDocuments)
         },
         error: er => {
-          console.log(er);
           this.showMain = true;
           this.showSpinner = false;
           this.snackBar.open('Error al cargar los documentos', '', this.config_snack);
@@ -230,6 +228,7 @@ export class EditParagraphComponent implements OnInit {
 
   ngOnInit(): void {
     this.getParagraphs()
+    this.getArticles()
     this.filteredOrdOptions = this.myControlNumber.valueChanges.pipe(
       startWith(''),
       debounceTime(300),
@@ -299,7 +298,7 @@ export class EditParagraphComponent implements OnInit {
       .subscribe({
         next: response => {
           response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-          console.log(response.result)
+          console.log("ARTICULOS",response.result)
           this.showMain = true;
           this.showSpinner = false;
           this.optionsArticle = response.result
@@ -508,10 +507,8 @@ export class EditParagraphComponent implements OnInit {
     
   }
 
-  
-
   displayArticle(art: Article_Parrafo): string {
-    return art && art.nombre.toString() ? art.nombre.toString() : '';
+    return art && art.abreviatura?.toString() ? art.abreviatura?.toString() : art.id_articulo.toString();
   }
   
   handleEmptyArticle(event: any) {
@@ -558,7 +555,6 @@ export class EditParagraphComponent implements OnInit {
     //this.sendingArticle.articulo = opt.option.value;
     this.sendingArticle.id_capitulo = opt.option.value.id;
     this.getSections(this.sendingArticle.id_documento,this.sendingArticle.id_titulo || 0,opt.option.value.id)
-    console.log(opt.option.value)
 
     this.paramsDoc = '&id_capitulo=' + opt.option.value.id
     this.getArticles()
@@ -620,7 +616,6 @@ export class EditParagraphComponent implements OnInit {
     //this.sendingArticle.articulo = opt.option.value;
     this.sendingArticle.id_titulo = opt.option.value.id;
     this.getChapters(0,opt.option.value.id)
-    console.log(opt.option.value)
     this.paramsTit = '&id_titulo=' + opt.option.value.id
     this.getArticles()
     this.myControlChapters.enable();
