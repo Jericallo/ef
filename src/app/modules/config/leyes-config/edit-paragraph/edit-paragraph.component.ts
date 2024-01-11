@@ -262,7 +262,6 @@ export class EditParagraphComponent implements OnInit {
     this.myControlTitles.disable();
     this.myControlChapters.disable();
     this.myControlSections.disable();
-    this.myControlArticle.disable();
 
   }
 
@@ -380,7 +379,6 @@ export class EditParagraphComponent implements OnInit {
   }
 
   displayOrder(nu: Number): string {
-    console.log(nu)
     return nu.toString() && nu.toString() ? nu.toString() : '';
   }
 
@@ -447,7 +445,9 @@ export class EditParagraphComponent implements OnInit {
       orden:this.myControlOrder.value,
       contenido: this.contenido,
       tipo: this.tipo,
-      nombre: this.nombre
+      nombre: this.nombre,
+      relaciones: this.relaciones,
+      special: 1
     }
   
     console.log(body)

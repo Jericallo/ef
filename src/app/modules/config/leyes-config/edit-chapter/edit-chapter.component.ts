@@ -192,7 +192,7 @@ export class EditChapterComponent implements OnInit {
       id: this.selectedChapterId,
       nombre: this.name,
       id_documento: this.sendingData.id_documento,
-      //id_titulo: this.sendingData.id_titulo
+      id_titulo: this.sendingData.id_titulo
     }
     console.log(body)
     this.apiService.editChapter({data:body}).subscribe({
@@ -202,6 +202,8 @@ export class EditChapterComponent implements OnInit {
           verticalPosition:this.verticalPosition
         }) 
         this.resetInputs();  
+        this.getChapters()
+      
       },
       error: err => {
         this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
@@ -250,7 +252,9 @@ export class EditChapterComponent implements OnInit {
   }
 
   resetInputs() {
-    this.selectedChapter.reset
+    this.selectedChapter.reset()
+    this.myControlDocuments.reset()
+    this.myControlTitles.reset()
     this.selectedDocument = null;
     this.name = ''
   }
