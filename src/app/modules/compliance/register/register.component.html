@@ -233,6 +233,7 @@
           </span>
           <div *ngIf="a.parrafos">
             <span *ngFor="let p of a.parrafos" matTooltip="{{a.nombre}} / Párr. {{p.numero}} - {{p.nombre}}"> {{a.abreviatura}} / Art. {{a.articulo}} / Párr. {{p.numero}} <br/></span>
+
           </div>
         </a>
       </div>  
@@ -291,8 +292,10 @@
     <div class="container" style="flex-direction: column; min-width: 100% !important; ">
       <div class="celdas" style="height: 4.45vh; min-height: 41.83px;">Cumplimiento de obligación</div>
       <div class="celdas" style="flex-direction: row; display: flex;">
+
         <div class="celdas" style="flex: 1;">Fecha desde la que se puede cumplir</div>
         <div class="celdas" style="flex: 1;">Fecha ideal</div>        
+
         <div class="celdas" style="flex: 1;">Fecha máxima</div>       
         <div  style="flex: 2; flex-direction: column; display: flex;">
           <div class="celdas" style="height: 3vh; min-height: 28.2px;">Fundamento legal</div>
