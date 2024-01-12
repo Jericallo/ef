@@ -265,7 +265,7 @@ export class RegisterComponent implements OnInit {
   create_table(){
     this.dataSource.data = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn7', 'fixedColumn3', 'fixedColumn4', 'fixedColumn5', ];
+    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn3', 'fixedColumn4', 'fixedColumn5', ];
     let rows = []
     for (let i = 1; i <= 1; i++) {
       const row = { 

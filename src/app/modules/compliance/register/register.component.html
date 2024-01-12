@@ -94,7 +94,7 @@
   </ng-container>
 
   <ng-container matColumnDef="fixedColumn2" class="container" sticky>
-    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 3;">
+    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 5.5;">
     <div class="container" style="flex-direction: column;">
       <div class="celdas" style="height: 4vh; min-height: 37.6px; overflow: scroll;">
         Las obligaciones se listan por <a (click)="reorderBy('id_cumplimiento')">General</a> / 
@@ -104,31 +104,31 @@
         <a (click)="getObligations(0, 'impuesto_nomina')">Nóminas</a> / 
         <a (click)="getObligations(0, 'impuesto_otro')">Otros</a> / 
       </div>
-      <div class="celdas" style="height: 4.55vh; min-height: 42.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
-      <div class="celdas">Calendario:</div>
-    </div>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 3;">
-    <div class="container">
-      <div class="celdas internas" style="flex: 1;">{{row.nombre}}</div>  
-    </div>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="fixedColumn7" class="container" sticky >
-    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.5;">
-      <div class="container" style="flex-direction: column;">
-        <div class="celdas" style="height: 8.55vh; min-height: 80.37px;; ">Tipo de impuesto</div>
-        <div class="celdas" style="height: max-content; flex-direction: row; display: flex;">
-          <div class="celdas" style="flex: 0.5;">ISR</div>
-          <div class="celdas" style="flex: 0.5;">IVA</div>
-          <div class="celdas" style="flex: 1;">Nóminas</div>
-          <div class="celdas" style="flex: 0.5;">Otros</div>
+      <div style="display: flex; flex-direction: row;">
+        <div style="flex: 2.8;">
+          <div class="celdas" style="height: 4.55vh; min-height: 42.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
+          <div class="celdas">Calendario:</div>
+        </div>
+        <div style="flex: 1.2;">
+          <div class="celdas" style="height: 4.55vh; min-height: 37.6px;; ">Tipo de impuesto</div>
+          <div class="celdas" style="height: max-content; flex-direction: row; display: flex;">
+            <div class="celdas" style="flex: 0.5;">ISR</div>
+            <div class="celdas" style="flex: 0.5;">IVA</div>
+            <div class="celdas" style="flex: 1;">Nóminas</div>
+            <div class="celdas" style="flex: 0.5;">Otros</div>
+          </div>
         </div>
       </div>
+      
+      
+    </div>
     </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 1.5;">
-      <div class="container">
+    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 5.5;">
+    <div class="container">
+      <div style="flex: 2.8;">
+        <div class="celdas internas" style="flex: 1;">{{row.nombre}}</div>  
+      </div>
+      <div style="flex: 1.2; display: flex; flex-direction: row;">
         <div class="celdas internas" style="flex: 0.5;">
           <mat-checkbox class="example-margin" (change)="updateISR($event, row)"[checked]= "row.fixedColumn7.ISR == 1"></mat-checkbox>
         </div>  
@@ -142,6 +142,11 @@
           <mat-checkbox class="example-margin" (change)="updateOTHER($event, row)" [checked]= "row.fixedColumn7.OTRO == 1"></mat-checkbox>
         </div>  
       </div>
+      
+        
+      
+      
+    </div>
     </mat-cell>
   </ng-container>
 
