@@ -33,7 +33,9 @@ export class MenuComponent implements OnInit {
     {
       icon: 'widgets',
       descripcion: 'Categorías',
-      path: 'categories'
+      path1: 'categories',
+      path2: 'categories-edit'
+
     },
     {
       icon: 'insert_drive_file',
@@ -50,22 +52,27 @@ export class MenuComponent implements OnInit {
     {
       icon: 'book',
       descripcion: 'Capítulos',
-      path: 'chapters'
+      path1: 'chapters',
+      path2: 'chapters-edit',
+      
     },
     {
       icon: 'bookmark',
       descripcion: 'Secciones',
-      path:'sections'
+      path1:'sections',
+      path2: 'sections-edit',
     },
     {
       icon: 'description',
       descripcion: 'Artículos',
-      path:'articles'
+      path1:'articles',
+      path2:'articles-edit'
     },
     {
       icon: 'format_align_left',
       descripcion: 'Parrafos',
-      path:'paragraphs'
+      path1:'paragraphs',
+      path2:'paragraphs-edit'
     }
   ];
 

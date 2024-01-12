@@ -14,6 +14,11 @@ import { ProfilesComponent } from './profiles/profiles.component';
 import { ModulesComponent } from './modules/modules.component';
 import { ComplianceCrudComponent } from './compliance-crud/compliance-crud.component';
 import { EditTitleComponent } from './leyes-config/edit-title/edit-title.component';
+import { EditCategoryComponent } from './leyes-config/edit-category/edit-category.component';
+import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.component';
+import { EditSectionComponent } from './leyes-config/edit-section/edit-section.component';
+import { EditArticleComponent } from './leyes-config/edit-article/edit-article.component';
+import { EditParagraphComponent } from './leyes-config/edit-paragraph/edit-paragraph.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -39,7 +44,17 @@ export const ConfigRoutes: Routes = [
                         {title:'Leyes'}
                     ]
                 }
-            
+            },
+            {
+                path:'articles-edit',
+                component:EditArticleComponent,
+                data: {
+                    title:'Editar artículo',
+                    urls:[
+                        {title:'Editar artículo', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
             },
             {
                 path:'categories',
@@ -54,12 +69,36 @@ export const ConfigRoutes: Routes = [
             
             },
             {
+                path:'categories-edit',
+                component:EditCategoryComponent,
+                data: {
+                    title:'Editar categoría',
+                    urls:[
+                        {title:'Editar categoría', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
                 path:'chapters',
                 component:AddChapterComponent,
                 data: {
                     title:'Agregar capítulo',
                     urls:[
                         {title:'Agregar capítulo', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
+                path:'chapters-edit',
+                component:EditChapterComponent,
+                data: {
+                    title:'Editar capítulo',
+                    urls:[
+                        {title:'Editar capítulo', url:'/config'},
                         {title:'Leyes'}
                     ]
                 }
@@ -102,12 +141,35 @@ export const ConfigRoutes: Routes = [
             
             },
             {
+                path:'paragraphs-edit',
+                component:EditParagraphComponent,
+                data: {
+                    title:'Editar párrafo',
+                    urls:[
+                        {title:'Editar párrafo', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            
+            },
+            {
                 path:'sections',
                 component:AddSectionComponent,
                 data: {
                     title:'Agregar sección',
                     urls:[
                         {title:'Agregar sección', url:'/config'},
+                        {title:'Leyes'}
+                    ]
+                }
+            },
+            {
+                path:'sections-edit',
+                component:EditSectionComponent,
+                data: {
+                    title:'Editar sección',
+                    urls:[
+                        {title:'Editar sección', url:'/config'},
                         {title:'Leyes'}
                     ]
                 }

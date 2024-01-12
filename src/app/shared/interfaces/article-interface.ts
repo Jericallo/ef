@@ -46,6 +46,7 @@ export interface Article_Section{
 
 export interface Article_Parrafo{
     id?:number,
+    abreviatura: string | null,
     indicador?:string | null,
     orden:number | null,
     id_articulo:number,

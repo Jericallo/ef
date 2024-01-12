@@ -20,6 +20,8 @@ export class EditTitleComponent implements OnInit {
   myControlDocuments= new FormControl();
   optionsDocuments: Documents[] = [];
   filteredDocOptions: Observable<Documents[]> | undefined;
+  filteredDocSearchOptions: Observable<Documents[]> | undefined;
+  filteredTitlesOptions: Observable<any[]> | undefined;
 
   /*Name Control */
   myControlName = new FormControl('');
@@ -75,12 +77,12 @@ export class EditTitleComponent implements OnInit {
 
     this.getDocumentos()
 
-    this.searchControl.valueChanges.pipe(
+    this.filteredDocSearchOptions = this.searchControl.valueChanges.pipe(
       startWith(''),
       debounceTime(300),
       map(value => {
         const name = typeof value === 'string' ? value : value?.nombre;
-        return name ? this._filterDoc(name as string) : this.searchResultsDoc.slice();
+        return name ? this._filterDocSearch(name as string) : this.searchResultsDoc.slice();
       })
       );
   }
@@ -89,8 +91,12 @@ export class EditTitleComponent implements OnInit {
     return this.optionsDocuments.filter(option => option.titulo?.toLowerCase().includes(tit.toLowerCase()));
   }
 
-  private _filterTit(tit: string): Documents[] {
-    return this.optionsDocuments.filter(option => option.nombre?.toLowerCase().includes(tit.toLowerCase()));
+  private _filterDocSearch(tit: string): Documents[] {
+    return this.searchResultsDoc.filter(option => option.titulo?.toLowerCase().includes(tit.toLowerCase()));
+  }
+
+  private _filterTit(tit: string): any[] {
+    return this.searchResultsTit.filter(option => option.nombre?.toLowerCase().includes(tit.toLowerCase()));
   }
 
   errorHandling(err: any) {
@@ -119,6 +125,7 @@ export class EditTitleComponent implements OnInit {
   displayDocument(doc: Documents): string {
     return doc && doc.titulo ? doc.titulo : '';
   }
+  
 
   /**
    * Funciones para Formulario completo
@@ -211,6 +218,7 @@ export class EditTitleComponent implements OnInit {
     this.sendingData.id_documento = doc.id;
 
     this.myControlDocuments.setValue(doc)
+    this.searchControl.setValue(doc)
   }
 
   setTit(doc){
@@ -221,7 +229,7 @@ export class EditTitleComponent implements OnInit {
   }
 
   getDocumentos(){
-    this.apiService.getAllDocuments().subscribe({
+    this.apiService.getAllDocuments2().subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message,"private"));
         console.log(response);
@@ -244,7 +252,7 @@ export class EditTitleComponent implements OnInit {
         response = JSON.parse(this.apiService.decrypt(response.message, 'private'));
         this.searchResultsTit = response.result
         console.log(response.result)
-        this.searchControlTitle.valueChanges.pipe(
+        this.filteredTitlesOptions = this.searchControlTitle.valueChanges.pipe(
           startWith(''),
           debounceTime(300),
           map(value => {
