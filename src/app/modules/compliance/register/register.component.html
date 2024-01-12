@@ -328,7 +328,7 @@
     </mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="fixedColumns" style="background-color: #ffcc0c;" ></mat-header-row>
+  <mat-header-row *matHeaderRowDef="fixedColumns; sticky: true" style="background-color: #ffcc0c;" ></mat-header-row>
   <mat-row class="row-table" style="height: 15vh; min-height: 141px;" *matRowDef="let row; columns: fixedColumns;"></mat-row>
 </mat-table>
 

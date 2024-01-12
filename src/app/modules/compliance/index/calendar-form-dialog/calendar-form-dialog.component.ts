@@ -431,8 +431,10 @@ export class CalendarFormDialogComponent implements OnInit {
         impuesto_isr:isr,
         impuesto_otro:otr,
         impuesto_nomina:nom,
-        impuesto_iva: iva
+        impuesto_iva: iva,
       //}
+      tipo_cumplimiento: 1,
+      fecha_temporal:this.sendingObligation.fecha_cumplimiento
     }};
     console.log(body)
     this.apiService.postObligations(body).subscribe({
