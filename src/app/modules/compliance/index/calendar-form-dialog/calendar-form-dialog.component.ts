@@ -216,6 +216,7 @@ export class CalendarFormDialogComponent implements OnInit {
   description = null;
   date: string = '';
   dateS: any;
+  dateSI: any;
   dateF: any;
   dateNow:any;
   selectType = null;
@@ -240,6 +241,7 @@ export class CalendarFormDialogComponent implements OnInit {
     prioridad: 3,
     nombre: null,
     fecha_cumplimiento: null,
+    fecha_cumplimiento_ideal:null,
     indicador_riesgo:1,
     alertas: [],
     con_documento: false,
@@ -247,6 +249,11 @@ export class CalendarFormDialogComponent implements OnInit {
     documentaciones: [],
     fecha_final:null
   }
+
+  isr = false;
+  iva = false;
+  nom = false;
+  otr = false
   
   sentDocumentations = null
 
@@ -379,6 +386,11 @@ export class CalendarFormDialogComponent implements OnInit {
     alertDate = fecha
   }
 
+  selectedDateIdeal() {
+    const fechaAhora = moment.duration(this.dateSI).asMilliseconds();
+    this.sendingObligation.fecha_cumplimiento_ideal = fechaAhora
+  }
+
   selectedFinalDate() {
     const fechaAhora = moment.duration(this.dateF).asMilliseconds();
     console.log(fechaAhora)
@@ -391,6 +403,14 @@ export class CalendarFormDialogComponent implements OnInit {
     if(chicken3) { alerts.push(sendAlert3) }
     var a = new Date(this.sendingObligation.fecha_cumplimiento * 1000);
     var dayOfMonth = a.getDate()
+    let isr = 0; let iva = 0; let nom = 0; let otr = 0;
+    if(this.isr) isr = 1
+    if(this.iva) iva = 1
+    if(this.nom) nom = 1
+    if(this.otr) otr = 1
+
+    console.log(this.showFinal)
+    console.log(this.isr)
     
     const body = {model:"obligaciones", data: {
       fecha_cumplimiento: this.sendingObligation.fecha_final,
@@ -406,7 +426,15 @@ export class CalendarFormDialogComponent implements OnInit {
       id_usuario: 2,
       alertas: alerts,
       dia_del_mes:dayOfMonth,
-      fecha_inicio:this.sendingObligation.fecha_cumplimiento
+      fecha_inicio:this.sendingObligation.fecha_cumplimiento,
+      //obligacion:{
+        impuesto_isr:isr,
+        impuesto_otro:otr,
+        impuesto_nomina:nom,
+        impuesto_iva: iva,
+      //}
+      tipo_cumplimiento: 1,
+      fecha_temporal:this.sendingObligation.fecha_cumplimiento
     }};
     console.log(body)
     this.apiService.postObligations(body).subscribe({

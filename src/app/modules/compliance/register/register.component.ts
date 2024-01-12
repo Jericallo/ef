@@ -117,7 +117,7 @@ export class RegisterComponent implements OnInit {
               fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
-              se_cumplio:element.cumplimientos_obligacion.completado,
+              se_cumplio:'',
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
             },
             fixedColumn6:{
@@ -171,7 +171,7 @@ export class RegisterComponent implements OnInit {
               fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
-              se_cumplio:element.cumplimientos_obligacion.completado,
+              se_cumplio:'',
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
             },
             fixedColumn6Rec:{
@@ -185,14 +185,14 @@ export class RegisterComponent implements OnInit {
             },
           };
 
-            const ahora = new Date()
-            if(row.fixedColumn5.se_cumplio !== true){
-              if(ahora <= row.fixedColumn5.fecha_maxima) {
+            const today = Date.now()
+            if(element.cumplimientos_obligacion.completado !== true){
+              row.fixedColumn5.se_cumplio = null
+              row.fixedColumnRec5.se_cumplio = null
+              if(today >= row.fixedColumn5.fecha_maxima) {
                 row.fixedColumn5.se_cumplio = 'No se cumplió'
                 row.fixedColumnRec5.se_cumplio = 'No se cumplió'
               }
-              row.fixedColumn5.se_cumplio = null
-              row.fixedColumnRec5.se_cumplio = null
             } else {
               row.fixedColumn5.se_cumplio = 'Se cumplió'
               row.fixedColumnRec5.se_cumplio = 'Se cumplió'
@@ -206,23 +206,22 @@ export class RegisterComponent implements OnInit {
             if(row.fixedColumn5.fecha_cumplio != null)row.fixedColumn5.fecha_cumplio = new Date(row.fixedColumn5.fecha_cumplio).toDateString(); row.fixedColumnRec5.fecha_cumplio = row.fixedColumn5.fecha_cumplio
             */
 
-            const today = Date.now()
             if(row.fixedColumn5.fecha_ideal === null){
               row.fixedColumn5.fecha_ideal = today
               row.fixedColumnRec5.fecha_ideal = today
             }
 
-            if(today > element.fecha_cumplimiento){
-              if(row.fixedColumn5.se_cumplio !== true){
-                row.fixedColumn6.color = '#e0e32b'
+            if(today > element.cumplimientos_obligacion.fecha_maxima){
+              if(element.cumplimientos_obligacion.completado !== true){
+                row.fixedColumn6.color = '#f23f3f' // rojo
               } else {
-                row.fixedColumn6.color = '#31e32b'
+                row.fixedColumn6.color = '#31e32b' // verde
               }
             } else {
-              if(row.fixedColumn3.prioridad === 1){
-                row.fixedColumn6.color = '#f29c3f'
+              if(row.fixedColumn5.se_cumplio === 'Se cumplió'){
+                row.fixedColumn6.color = '#31e32b' // verde
               } else {
-                row.fixedColumn6.color = '#42f23f'
+                row.fixedColumn6.color = '#e0e32b' // amarillo
               }
             }
             row.fixedColumn6Rec = row.fixedColumn6
@@ -309,7 +308,7 @@ export class RegisterComponent implements OnInit {
           fundamento_legal:[],
           art:'14',
           actualizado:'2022',
-          se_cumplio:'si',
+          se_cumplio:['si'],
           fecha_cumplio:''
         },
         fixedColumn6:{
@@ -362,7 +361,7 @@ export class RegisterComponent implements OnInit {
           fundamento_legal:[],
           art:'14',
           actualizado:'2022',
-          se_cumplio:'si',
+          se_cumplio:['si'],
           fecha_cumplio:'antier'
         },
         fixedColumn6Rec:{

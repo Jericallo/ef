@@ -46,19 +46,42 @@
           </div>
   
           <div class="form-container">
+
+            <form>
+              <mat-form-field class="date-full-width" appearance="fill">
+                  <mat-label>Fecha ideal de cumplimiento:</mat-label>
+                  <input matInput [matDatepicker]="picker" [(ngModel)]="dateSI" name="fecha_cumplimiento_ideal" (dateChange)="selectedDateIdeal()" required>
+                  <mat-hint>Mes/Dia/Año</mat-hint>
+                  <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              </form>
             
             <form>
             <mat-form-field class="date-full-width" appearance="fill">
                 <mat-label>Fecha máxima de cumplimiento:</mat-label>
-                <input matInput [matDatepicker]="picker" [(ngModel)]="dateS" name="fecha_cumplimiento" (dateChange)="selectedDate()" required>
+                <input matInput [matDatepicker]="picker2" [(ngModel)]="dateS" name="fecha_cumplimiento" (dateChange)="selectedDate()" required>
                 <mat-hint>Mes/Dia/Año</mat-hint>
-                <mat-datepicker #picker></mat-datepicker>
+                <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
             </form>
 
             <form>
-                <mat-checkbox [(ngModel)]="showFinal" name="checkbox">Repetir</mat-checkbox>
+              <mat-checkbox [(ngModel)]="isr" name="checkboxISR">Impuesto ISR</mat-checkbox>
+            </form>
+            <form>
+              <mat-checkbox [(ngModel)]="iva" name="checkboxIVA">Impuesto IVA</mat-checkbox>
+            </form>
+            <form>
+              <mat-checkbox [(ngModel)]="nom" name="checkboxNOM">Impuesto Nómina</mat-checkbox>
+            </form>
+            <form>
+              <mat-checkbox [(ngModel)]="otr" name="checkboxOTR">Impuesto Otros</mat-checkbox>
+            </form>
+
+            <form>
+              <mat-checkbox [(ngModel)]="showFinal" name="checkbox">Repetir</mat-checkbox>
             </form>
           </div>
 

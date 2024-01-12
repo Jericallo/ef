@@ -292,8 +292,10 @@
     <div class="container" style="flex-direction: column; min-width: 100% !important; ">
       <div class="celdas" style="height: 4.45vh; min-height: 41.83px;">Cumplimiento de obligación</div>
       <div class="celdas" style="flex-direction: row; display: flex;">
-        <div class="celdas" style="flex: 1;">Fecha desde la que se puedecumplir</div>
-        <div class="celdas" style="flex: 1;"><a (click)="reorderBy('fecha_ideal')">Fecha ideal</a></div>        
+
+        <div class="celdas" style="flex: 1;">Fecha desde la que se puede cumplir</div>
+        <div class="celdas" style="flex: 1;">Fecha ideal</div>        
+
         <div class="celdas" style="flex: 1;">Fecha máxima</div>       
         <div  style="flex: 2; flex-direction: column; display: flex;">
           <div class="celdas" style="height: 3vh; min-height: 28.2px;">Fundamento legal</div>
@@ -329,7 +331,7 @@
     </mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="fixedColumns" style="background-color: #ffcc0c;" ></mat-header-row>
+  <mat-header-row *matHeaderRowDef="fixedColumns; sticky: true" style="background-color: #ffcc0c;" ></mat-header-row>
   <mat-row class="row-table" style="height: 15vh; min-height: 141px;" *matRowDef="let row; columns: fixedColumns;"></mat-row>
 </mat-table>
 
