@@ -17,7 +17,7 @@ import {MatButtonModule} from '@angular/material/button';
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  providers: [{ provide: LOCALE_ID, useValue: 'es-ES' }] // Establece el idioma como español
+  providers: [{ provide: LOCALE_ID, useValue: 'es-ES' }] 
 })
 
 export class RegisterComponent implements OnInit {
