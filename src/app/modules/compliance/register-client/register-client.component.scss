@@ -1,5 +1,5 @@
 .table-container {
-    max-height: 80vh;
+    max-height: 90vh;
     max-width: 160vw;
     overflow-y: auto;
 }
@@ -32,15 +32,17 @@ mat-header-row, mat-row {
     width: 100%;
 }
 
-.mat-header-cell:first-of-type, td.mat-cell:first-of-type {
-    padding-left: 0px;
 
+.borde{
+  border: solid 1px red;
 }
+
 
 .mat-column-nombre {
     text-align: center;
     width: 600px !important;
     overflow: scroll;
+    padding: 10px;
     white-space: nowrap;
     background: white !important;
 }

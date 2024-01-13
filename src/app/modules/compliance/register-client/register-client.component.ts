@@ -23,13 +23,16 @@ export class RegisterClientComponent implements OnInit {
 
   generateDateRange(): void {
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); 
+    currentDate.setDate(1); // Establecer el día al 1 del mes actual
+    currentDate.setHours(0, 0, 0, 0);
   
-    const endDate = addDays(addMonths(currentDate, 1), 0);
+    // Obtener el último día del mes actual
+    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    lastDayOfMonth.setHours(0,0,0,0);
   
     let current = currentDate;
   
-    while (current <= endDate) {
+    while (current <= lastDayOfMonth) {
       this.dateRange.push(current.getTime());
       current = addDays(current, 1);
     }

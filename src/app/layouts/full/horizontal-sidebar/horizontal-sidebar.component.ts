@@ -42,7 +42,6 @@ export class HorizontalAppSidebarComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     let a = document.getElementsByClassName('mat-list-item')//.addEventListener('mouseover',(event) => {console.log('hola')})
-    console.log(a)
   }
 
   subitem = null
