@@ -1,204 +1,263 @@
 <div class="page-content" #tableContainer>
 
-<mat-toolbar-row style="background-color: #ffcc0c; width: 100%; position: fixed; z-index: 3; top: 30px;" >
+  <mat-toolbar-row style="background-color: #ffcc0c; width: 100%; position: fixed; z-index: 3; top: 30px;" >
     <div style=" margin-left: auto; margin-right: auto;">
-
+      <button mat-icon-button mwlCalendarPreviousView class="button_month" (click)="monthPrevious()">
+          <mat-icon>chevron_left</mat-icon><span>Anterior</span>
+      </button>
+      <span >
+          {{mesMostrar}}
+      </span>
+      <button mat-icon-button mwlCalendarNextView class="button_month" (click)="monthNext()">
+          <span>Siguiente</span><mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar-row>
+<!--LA FUCKING TABLA DEL DIABLO-->
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 50px; height: 70%; width: 6800px; border-top-width: 5px;" >
     
-    <button mat-icon-button mwlCalendarPreviousView class="button_month" (click)="monthPrevious()">
-        <mat-icon>chevron_left</mat-icon><span>Anterior</span>
-    </button>
-    <span >
-        {{mesMostrar}}
-    </span>
-    <button mat-icon-button mwlCalendarNextView class="button_month" (click)="monthNext()">
-        <span>Siguiente</span><mat-icon>chevron_right</mat-icon>
-    </button>
-</div>
-</mat-toolbar-row>
-
-<!--
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="overflow: hidden; width: 40vh; margin-top: 50px; height: 70%;" >
-    
-
-    <ng-container matColumnDef="fixedColumn" sticky>
-      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Fixed Column' }}</mat-header-cell>
-      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: 8vh ; padding: 5px; margin: 0px;">{{ row.fixedColumn }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="fixedColumn2" sticky>
-        <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Fixed Column' }}</mat-header-cell>
-        <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: 8vh; padding: 5px; margin: 0px;">{{ row.fixedColumn2 }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="fixedColumn3" sticky>
-        <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Fixed Column' }}</mat-header-cell>
-        <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: 8vh; padding: 5px; margin: 0px;">{{ row.fixedColumn3 }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="fixedColumn4" sticky>
-        <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c;">{{ 'Last Column' }}</mat-header-cell>
-        <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffcc0c; height: 8vh; padding: 5px; margin: 0px;">
-            <mat-slide-toggle [(ngModel)]="row.switch" (change)="onSwitchChange(row)"></mat-slide-toggle>
-        </mat-cell>
-    </ng-container>
-
-    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-      <mat-header-cell *matHeaderCellDef style="width: 150px;">{{ column }}</mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.textColor" style="width: 40vh;">{{ row[column] }}</mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="fixedColumns" style="background-color: #ffcc0c;"></mat-header-row>
-
-    <mat-row class="row-table" *matRowDef="let row; columns: fixedColumns;"></mat-row>
-  </mat-table>
--->
-
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 50px; height: 70%; width: 4000px; border-top-width: 5px;" >
-  
-  <ng-container matColumnDef="fixedColumn" class="container" sticky >
-    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.2;">
-      <div class="container" style="flex-direction: column;">
-        <div class="celdas" style="height: 8.55vh; min-height: 80.37px;; ">
-          
-        </div>
-        <div class="celdas" style="height: max-content; flex-direction: row; display: flex;">
-          <div class="celdas" style="flex: 1;">Números</div>
-          <div class="celdas" style="flex: 1;">Indicador</div>
-        </div>
-      </div>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 1.2;">
-      <div class="container">
-        <div class="celdas internas" style="flex: 1;">{{row.fixedColumn}}</div>  
-        <div class="celdas internas" style="flex: 1;">
-          <div class="circle" [ngStyle]="{'background-color':row.fixedColumn6.color}"></div>
-        </div>
-      </div>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="fixedColumn6" class="container" sticky >
-    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 0.1 !important;">
-      <div class="container" style="flex-direction: column;">
-        <div class="celdas" style="height: 8.55vh; min-height: 80.37px;; "></div>
-        <div class="celdas" style="height: max-content;">Indicador</div>
-      </div>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 0.1 !important;">
-      <div class="container">
-        <div class="celdas internas" style="flex: 1;">
-          <div class="circle" [ngStyle]="{'background-color':row.fixedColumn6.color}"></div>
-        </div>  
-      </div>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="fixedColumn2" class="container" sticky>
-    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 5.5;">
-    <div class="container" style="flex-direction: column;">
-      <div class="celdas" style="height: 4vh; min-height: 37.6px; overflow: scroll;">
-        Las obligaciones se listan por <a (click)="reorderBy('id_cumplimiento')">General</a> / 
-        <a (click)="reorderBy('fecha_ideal')">Fecha Ideal</a> / 
-        <a (click)="getObligations(0, 'impuesto_isr')">ISR</a> / 
-        <a (click)="getObligations(0, 'impuesto_iva')">IVA</a> / 
-        <a (click)="getObligations(0, 'impuesto_nomina')">Nóminas</a> / 
-        <a (click)="getObligations(0, 'impuesto_otro')">Otros</a> / 
-      </div>
-      <div style="display: flex; flex-direction: row;">
-        <div style="flex: 2.8;">
-          <div class="celdas" style="height: 4.55vh; min-height: 42.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
-          <div class="celdas">Calendario:</div>
-        </div>
-        <div style="flex: 1.2;">
-          <div class="celdas" style="height: 4.55vh; min-height: 37.6px;; ">Tipo de impuesto</div>
+    <ng-container matColumnDef="fixedColumn" class="container" sticky>
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.2;">
+        <div class="container" style="flex-direction: column;">
+          <div class="celdas" style="height: 8.55vh; min-height: 80.37px; "></div>
           <div class="celdas" style="height: max-content; flex-direction: row; display: flex;">
-            <div class="celdas" style="flex: 0.5;">ISR</div>
-            <div class="celdas" style="flex: 0.5;">IVA</div>
-            <div class="celdas" style="flex: 1;">Nóminas</div>
-            <div class="celdas" style="flex: 0.5;">Otros</div>
+            <div class="celdas" style="flex: 1;">Números</div>
+            <div class="celdas" style="flex: 1;">Indicador</div>
           </div>
         </div>
-      </div>
-      
-      
-    </div>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 5.5;">
-    <div class="container">
-      <div style="flex: 2.8;">
-        <div class="celdas internas" style="flex: 1;">{{row.nombre}}</div>  
-      </div>
-      <div style="flex: 1.2; display: flex; flex-direction: row;">
-        <div class="celdas internas" style="flex: 0.5;">
-          <mat-checkbox class="example-margin" (change)="updateISR($event, row)"[checked]= "row.fixedColumn7.ISR == 1"></mat-checkbox>
-        </div>  
-        <div class="celdas internas" style="flex: 0.5;">          
-          <mat-checkbox class="example-margin" (change)="updateIVA($event, row)" [checked]= "row.fixedColumn7.IVA == 1"></mat-checkbox>
-        </div>  
-        <div class="celdas internas" style="flex: 1;">
-          <mat-checkbox class="example-margin" (change)="updateNOM($event, row)" [checked]= "row.fixedColumn7.NOMINA == 1"></mat-checkbox>
-        </div>  
-        <div class="celdas internas" style="flex: 0.5;">
-          <mat-checkbox class="example-margin" (change)="updateOTHER($event, row)" [checked]= "row.fixedColumn7.OTRO == 1"></mat-checkbox>
-        </div>  
-      </div>
-      
-        
-      
-      
-    </div>
-    </mat-cell>
-  </ng-container>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 1.2;">
+        <div class="container">
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn}}</div>  
+          <div class="celdas internas" style="flex: 1;">
+            <div class="circle" [ngStyle]="{'background-color':row.fixedColumn6.color}"></div>
+          </div>
+        </div>
+      </mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="fixedColumn3" class="container" sticky>
-    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.3;">
-    <div class="container" style="flex-direction: column;">
-      <div class="celdas" style="height: 8.15vh; min-height: 76.61px;">¿Aplica el Punto?</div>
-      <div class="celdas" style="flex-direction: row; display: flex;">
-        <div class="celdas" style="flex: 0.5;">Si</div>
-        <div class="celdas" style="flex: 0.5;">No</div>        
-        <div class="celdas" style="flex: 1;">Prioridad</div>      
+    <ng-container matColumnDef="fixedColumn2" class="container" sticky>
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 5.5;">
+        <div class="container" style="flex-direction: column;">
+          <div class="celdas" style="height: 4vh; min-height: 37.6px; overflow: scroll;">
+            Las obligaciones se listan por <a (click)="reorderBy('id_cumplimiento')">General</a> / 
+            <a (click)="reorderBy('fecha_ideal')">Fecha Ideal</a> / 
+            <a (click)="getObligations(0, 'impuesto_isr')">ISR</a> / 
+            <a (click)="getObligations(0, 'impuesto_iva')">IVA</a> / 
+            <a (click)="getObligations(0, 'impuesto_nomina')">Nóminas</a> / 
+            <a (click)="getObligations(0, 'impuesto_otro')">Otros</a> / 
+          </div>
+          <div style="display: flex; flex-direction: row;">
+            <div style="flex: 2.8;">
+              <div class="celdas" style="height: 4.55vh; min-height: 42.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
+              <div class="celdas">Calendario:</div>
+            </div>
+            <div style="flex: 1.2;">
+              <div class="celdas" style="height: 4.55vh; min-height: 37.6px;; ">Tipo de impuesto</div>
+              <div class="celdas" style="height: max-content; flex-direction: row; display: flex;">
+                <div class="celdas" style="flex: 0.5;">ISR</div>
+                <div class="celdas" style="flex: 0.5;">IVA</div>
+                <div class="celdas" style="flex: 1;">Nóminas</div>
+                <div class="celdas" style="flex: 0.5;">Otros</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 5.5;">
+      <div class="container">
+        <div style="flex: 2.8;">
+          <div class="celdas internas" style="flex: 1;">{{row.nombre}}</div>  
+        </div>
+        <div style="flex: 1.2; display: flex; flex-direction: row;">
+          <div class="celdas internas" style="flex: 0.5;">
+            <mat-checkbox class="example-margin" (change)="updateISR($event, row)"[checked]= "row.fixedColumn7.ISR == 1"></mat-checkbox>
+          </div>  
+          <div class="celdas internas" style="flex: 0.5;">          
+            <mat-checkbox class="example-margin" (change)="updateIVA($event, row)" [checked]= "row.fixedColumn7.IVA == 1"></mat-checkbox>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">
+            <mat-checkbox class="example-margin" (change)="updateNOM($event, row)" [checked]= "row.fixedColumn7.NOMINA == 1"></mat-checkbox>
+          </div>  
+          <div class="celdas internas" style="flex: 0.5;">
+            <mat-checkbox class="example-margin" (change)="updateOTHER($event, row)" [checked]= "row.fixedColumn7.OTRO == 1"></mat-checkbox>
+          </div>  
+        </div> 
       </div>
-    </div>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 1.3;">
-    <div class="container">
+      </mat-cell>
+    </ng-container>
 
-      <div class="celdas internas" style="flex: 1; align-items: center; align-content: center; text-align: center; padding-top: 10px;">
-        <mat-slide-toggle [(ngModel)]="row.switch" 
-        (change)="onSwitchChange(row)" 
-        color="warn"   
-        thumbColor="accent"
-        trackColor="warn"
-        [checked]="false">
-        </mat-slide-toggle>
-      </div>  
+    <ng-container matColumnDef="fixedColumn3" class="container" sticky>
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.3;">
+        <div class="container" style="flex-direction: column;">
+          <div class="celdas" style="height: 8.15vh; min-height: 76.61px;">¿Aplica el Punto?</div>
+          <div class="celdas" style="flex-direction: row; display: flex;">
+            <div class="celdas" style="flex: 0.5;">Si</div>
+            <div class="celdas" style="flex: 0.5;">No</div>        
+            <div class="celdas" style="flex: 1;">Prioridad</div>      
+          </div>
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 1.3;">
+        <div class="container">
+          <div class="celdas internas" style="flex: 1; align-items: center; align-content: center; text-align: center; padding-top: 10px;">
+            <mat-slide-toggle [(ngModel)]="row.switch" 
+            (change)="onSwitchChange(row)" 
+            color="warn"   
+            thumbColor="accent"
+            trackColor="warn"
+            [checked]="false">
+            </mat-slide-toggle>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">
+            <button mat-button [matMenuTriggerFor]="menu">{{row.fixedColumn3.prioridad}} <mat-icon>keyboard_arrow_down</mat-icon> </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="modPrioridad(1, row)">Alta</button>
+              <button mat-menu-item (click)="modPrioridad(3, row)">Baja</button>
+            </mat-menu>
+          </div> 
+        </div>
+      </mat-cell>
+    </ng-container>
 
-      <div class="celdas internas" style="flex: 1;">
-        <button mat-button [matMenuTriggerFor]="menu">{{row.fixedColumn3.prioridad}} <mat-icon>keyboard_arrow_down</mat-icon> </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="modPrioridad(1, row)">Alta</button>
-          <button mat-menu-item (click)="modPrioridad(3, row)">Baja</button>
-        </mat-menu>
-      </div> 
-    </div>
-    </mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="fixedColumn4" class="container">
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
+        <div class="container" style="flex-direction: column; min-width: 100% !important; ">
+          <div class="celdas" style="height: 4.45vh; min-height: 41.83px;">Cumplimiento de obligación</div>
+          <div class="celdas" style="flex-direction: row; display: flex;">
+            <div class="celdas" style="flex: 1;">Fecha desde la que se puede cumplir</div>
+            <div class="celdas" style="flex: 1;">Fecha ideal para iniciarlo</div>
+            <div class="celdas" style="flex: 1;">Fecha ideal para finalizarlo</div>        
+            <div class="celdas" style="flex: 1;">Fecha máxima legal</div>       
+            <div  style="flex: 2; flex-direction: column; display: flex;">
+              <div class="celdas" style="height: 3vh; min-height: 28.2px;">Fundamento legal</div>
+              <div class="celdas" style="display: flex; flex-direction: row;">
+                <div class="celdas" style="flex: 1;">Art.</div>
+                <div class="celdas" style="flex: 1;">Actualizado al</div>
+              </div>
+            </div>      
+            <div class="celdas" style="flex: 1;">¿Se cumplió con la obligación?</div>        
+            <div class="celdas" style="flex: 1;">Fecha en la que se cumplió</div>        
+          </div>
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
+        <div class="container" style="min-width: 100%;">
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_cumplir  | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_cumplir  | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_ideal  | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_maxima | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">
+            <button (click)="openArticleFund(row)" mat-fab color="primary" class="custom-fab">
+              <mat-icon style="font-size:22px;">bookmark</mat-icon>
+            </button>
+            <div *ngFor="let fundamento of row.fixedColumn5.fundamento_legal">
+              <a (click)="articleClicked(fundamento)">Artículo {{fundamento.art.articulo}} </a><br/>
+            </div>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">
+            <p *ngFor="let fundamento of row.fixedColumn5.fundamento_legal">{{fundamento.fecha | date:'d-MMM-y'}}</p>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.se_cumplio}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_cumplio | date:'d-MMM-y'}}</div>  
+        </div>
+      </mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="fixedColumn5" class="container">
-    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 20;">
-    <div class="container" style="flex-direction: column;">
-      <div class="celdas" style="height: 3.75vh; min-height: 35.25px;">Correlación con otros sectores del escudo fiscal</div>
-      <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
-        <div class="celdas" style="flex: 2;">Leyes</div>
-        <div class="celdas" style="flex: 1;">Temario</div>        
-        <div class="celdas" style="flex: 1;">Búsqueda</div>   
-        <div class="celdas" style="flex: 1;">Números</div>      
-        <div class="celdas" style="flex: 1;">Impuestos</div>      
-        <div class="celdas" style="flex: 1;">Documentación</div>      
-        <div  style="flex: 9; flex-direction: column; display: flex;">
-          <div class="celdas">Correlación a capacitaciones</div>
-          <div class="celdas" style="display: flex; flex-direction: row;">
+    <ng-container matColumnDef="fixedColumn5" class="container">
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
+        <div class="container" style="flex-direction: column;">
+          <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Envío de Documentación de Evidencia</div>
+          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
+            <div class="celdas" style="flex: 2;">Documentación que debe enviarse (declara, pagos, actas, hojas de trabajo, etc)</div>
+            <div class="celdas" style="flex: 1;">Fecha ideal para enviarla</div>
+            <div class="celdas" style="flex: 1;">Fecha máxima para enviarla</div>
+            <div class="celdas" style="flex: 1;">Recibida a tiempo</div>
+            <div class="celdas" style="flex: 1;">Documentación suficiente</div>
+            <div class="celdas" style="flex: 1;">Documentación insuficiente</div>
+            <div class="celdas" style="flex: 1;">Notas / Chat / Bitácora</div>
+          </div>
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
+        <div class="container" style="flex-direction: row;">
+          <div class="celdas internas" style="flex: 2;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fixedColumn6" class="container">
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
+        <div class="container" style="flex-direction: column;">
+          <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Envío de Documentación de Evidencia</div>
+          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
+            <div class="celdas" style="flex: 1;">Prioridad</div>
+            <div class="celdas" style="flex: 4;">Recordatorios previos al cumplimiento</div>
+            <div class="celdas" style="flex: 2;">Alertas</div>
+          </div>
+          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
+            <div class="celdas" style="flex: 1;">Nivel</div>
+            <div class="celdas" style="flex: 1;">Recordatorio 1</div>
+            <div class="celdas" style="flex: 1;">Recordatorio 2</div>
+            <div class="celdas" style="flex: 1;">Recordatorio 3</div>
+            <div class="celdas" style="flex: 1;">Recordatorio 4</div>
+            <div class="celdas" style="flex: 1;">Por incumplimiento</div>
+            <div class="celdas" style="flex: 1;">Reporte en 1 día vía semáforo</div>
+          </div>
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
+        <div class="container" style="flex-direction: row;">
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fixedColumn7" class="container">
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 20;">
+        <div class="container" style="flex-direction: column;">
+          <div class="celdas" style="height: 2.50vh; min-height: 23.5px;">Correlación con otros sectores del escudo fiscal</div>
+          <div class="celdas" style="height: 2vh; min-height: 18.8px; display: flex; flex-direction: row;">
+            <div class="celdas" style="flex: 5;">Correlación con inicio</div>
+            <div class="celdas" style="flex: 2;">... con cumplimiento</div>
+            <div class="celdas" style="flex: 9;">... con control / capacitación</div>
+            <div class="celdas" style="flex: 2;">... con control</div>
+            <div class="celdas" style="flex: 4;">... con precaución</div>
+          </div>
+          
+          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
+            <div class="celdas" style="flex: 2;">Leyes</div>
+            <div class="celdas" style="flex: 1;">Temario</div>        
+            <div class="celdas" style="flex: 1;">Búsqueda</div>   
+            <div class="celdas" style="flex: 1;">Números</div>      
+            <div class="celdas" style="flex: 1;">Impuestos</div>      
+            <div class="celdas" style="flex: 1;">Documentación</div>      
+           
             <div class="celdas" style="flex: 1;">Caso práctico</div>
             <div class="celdas" style="flex: 1;">Textos</div>
             <div class="celdas" style="flex: 1;">Preguntas frecuentes</div>
@@ -208,139 +267,124 @@
             <div class="celdas" style="flex: 1;">15 Minuto</div>
             <div class="celdas" style="flex: 1;">30 Minuto</div>
             <div class="celdas" style="flex: 1;">60 Minuto</div>
-          </div>
-        </div>      
-        <div class="celdas" style="flex: 1;">Dictamen</div>        
-        <div class="celdas" style="flex: 1;">Semáforo</div>        
-        <div class="celdas" style="flex: 1;">Inconsistencias</div>        
-        <div class="celdas" style="flex: 1;">Sanciones generales importantes</div>     
+    
+            <div class="celdas" style="flex: 1;">Dictamen</div>        
+            <div class="celdas" style="flex: 1;">Semáforo</div>   
 
-        <div style="flex: 2; flex-direction: column; display: flex;">
-          <div class="celdas" style="min-height: 60%;">Sanciones penales</div>
-          <div class="celdas" style="display: flex; flex-direction: row;">
-            <div class="celdas" style="flex: 1;">Empresa</div>
-            <div class="celdas" style="flex: 1;">Persona</div>
-          </div>
-        </div> 
-      </div>
-    </div>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 20;">
-    <div class="container" style="flex-direction: row;">
-      <div class="celdas internas" style="flex: 2; overflow: scroll;">
-        <button (click)="openArticleRef(row)" mat-fab color="primary" class="custom-fab">
-          <mat-icon style="font-size:22px;">bookmark</mat-icon>
-        </button>        
-        <br/>
-        <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)" >
-          <span *ngIf="!a.parrafos" matTooltip="{{a.nombre_documento}} / {{a.nombre}}">
-            {{a.abreviatura}} / Art. {{a.articulo}} <br/>
-          </span>
-          <div *ngIf="a.parrafos">
-            <span *ngFor="let p of a.parrafos" matTooltip="{{a.nombre}} / Párr. {{p.numero}} - {{p.nombre}}"> {{a.abreviatura}} / Art. {{a.articulo}} / Párr. {{p.numero}} <br/></span>
+            <div class="celdas" style="flex: 1;">Inconsistencias</div>        
+            <div class="celdas" style="flex: 1;">Sanciones generales importantes</div>     
+            <div class="celdas" style="flex: 1;">Sanción penal "Empresa"</div>
+            <div class="celdas" style="flex: 1;">Sanción penal "Persona"</div>
 
           </div>
-        </a>
-      </div>  
-      <div class="celdas internas" style="flex: 1; overflow: scroll;">
-        <button (click)="openTopicsRef(row)"  mat-fab color="primary" class="custom-fab">
-          <mat-icon style="font-size:22px;">assignment</mat-icon>
-        </button>
-        <span *ngFor="let b of row.fixedColumn4.temario">{{b.nombre}}, </span>
-      </div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.busqueda}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.numeros}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.impuestos}}</div>  
-      <div class="celdas internas" style="flex: 1;">
-        <button (click)="openDocumentationsRef(row)"  mat-fab color="primary" class="custom-fab">
-          <mat-icon style="font-size:22px;">insert_drive_file</mat-icon>
-        </button>
-        <p *ngFor="let b of row.fixedColumn4.documentacion">{{b.nombre}}</p>
-      </div>  
-      <div class="celdas internas" style="flex: 1;">
-        <button (click)="openCapacitationsRef(row)" mat-fab color="primary" class="custom-fab">
-          <mat-icon style="font-size:22px;">video_library</mat-icon>
-        </button>
-        {{row.fixedColumn4.caso_practico}}
-      
-      </div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.textos}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.preguntas_frecuentes}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.mejores_practicas}}</div>  
-      <div class="celdas internas" style="flex: 1;">
-        <a  *ngFor="link of row.fixedColumn4.un_minuto" href={{link}} >Da clic para ir al video</a>
-      </div>  
-      <div class="celdas internas" style="flex: 1;">
-        <a  *ngFor="link of row.fixedColumn4.cinco_minutos" href={{link}} >Da clic para ir al video</a>
-      </div>  
-      <div class="celdas internas" style="flex: 1;">
-        <a  *ngFor="link of row.fixedColumn4.quince_minutos" href={{link}} >Da clic para ir al video</a>
-      </div>  
-      <div class="celdas internas" style="flex: 1;">
-        <a  *ngFor="link of row.fixedColumn4.treinta_minutos" href={{link}} >Da clic para ir al video</a>
-      </div>   
-      <div class="celdas internas" style="flex: 1;">
-        <a  *ngFor="link of row.fixedColumn4.sesenta_minutos" href={{link}} >Da clic para ir al video</a>
-      </div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.dictamen}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.semaforo}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.inconsistencias}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.sanciones_generales}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.empresa}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.persona}}</div>  
-    </div>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="fixedColumn4" class="container">
-    <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
-    <div class="container" style="flex-direction: column; min-width: 100% !important; ">
-      <div class="celdas" style="height: 4.45vh; min-height: 41.83px;">Cumplimiento de obligación</div>
-      <div class="celdas" style="flex-direction: row; display: flex;">
-
-        <div class="celdas" style="flex: 1;">Fecha desde la que se puede cumplir</div>
-        <div class="celdas" style="flex: 1;">Fecha ideal</div>        
-
-        <div class="celdas" style="flex: 1;">Fecha máxima</div>       
-        <div  style="flex: 2; flex-direction: column; display: flex;">
-          <div class="celdas" style="height: 3vh; min-height: 28.2px;">Fundamento legal</div>
-          <div class="celdas" style="display: flex; flex-direction: row;">
-            <div class="celdas" style="flex: 1;">Art.</div>
-            <div class="celdas" style="flex: 1;">Actualizado al</div>
-          </div>
-        </div>      
-        <div class="celdas" style="flex: 1;">¿Se cumplió con la obligación?</div>        
-        <div class="celdas" style="flex: 1;">Fecha en la que se cumplió</div>        
-      </div>
-    </div>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
-    <div class="container" style="min-width: 100%;">
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_cumplir  | date:'d-MMM-y'}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_ideal  | date:'d-MMM-y'}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_maxima | date:'d-MMM-y'}}</div>  
-      <div class="celdas internas" style="flex: 1;">
-        <button (click)="openArticleFund(row)" mat-fab color="primary" class="custom-fab">
-          <mat-icon style="font-size:22px;">bookmark</mat-icon>
-        </button>
-        <div *ngFor="let fundamento of row.fixedColumn5.fundamento_legal">
-          <a (click)="articleClicked(fundamento)">Artículo {{fundamento.art.articulo}} </a><br/>
         </div>
-      </div>  
-      <div class="celdas internas" style="flex: 1;">
-        <p *ngFor="let fundamento of row.fixedColumn5.fundamento_legal">{{fundamento.fecha | date:'d-MMM-y'}}</p>
-      </div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.se_cumplio}}</div>  
-      <div class="celdas internas" style="flex: 1;">{{row.fixedColumn5.fecha_cumplio | date:'d-MMM-y'}}</div>  
-    </div>
-    </mat-cell>
-  </ng-container>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 20;">
+        <div class="container" style="flex-direction: row;">
+          <div class="celdas internas" style="flex: 2; overflow: scroll;">
+            <button (click)="openArticleRef(row)" mat-fab color="primary" class="custom-fab">
+              <mat-icon style="font-size:22px;">bookmark</mat-icon>
+            </button>        
+            <br/>
+            <a *ngFor="let a of row.fixedColumn4.leyes" (click)="articleClicked(a)" >
+              <span *ngIf="!a.parrafos" matTooltip="{{a.nombre_documento}} / {{a.nombre}}">
+                {{a.abreviatura}} / Art. {{a.articulo}} <br/>
+              </span>
+              <div *ngIf="a.parrafos">
+                <span *ngFor="let p of a.parrafos" matTooltip="{{a.nombre}} / Párr. {{p.numero}} - {{p.nombre}}"> {{a.abreviatura}} / Art. {{a.articulo}} / Párr. {{p.numero}} <br/></span>
 
-  <mat-header-row *matHeaderRowDef="fixedColumns; sticky: true" style="background-color: #ffcc0c;" ></mat-header-row>
-  <mat-row class="row-table" style="height: 15vh; min-height: 141px;" *matRowDef="let row; columns: fixedColumns;"></mat-row>
-</mat-table>
+              </div>
+            </a>
+          </div>  
+          <div class="celdas internas" style="flex: 1; overflow: scroll;">
+            <button (click)="openTopicsRef(row)"  mat-fab color="primary" class="custom-fab">
+              <mat-icon style="font-size:22px;">assignment</mat-icon>
+            </button>
+            <span *ngFor="let b of row.fixedColumn4.temario">{{b.nombre}}, </span>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.busqueda}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.numeros}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.impuestos}}</div>  
+          <div class="celdas internas" style="flex: 1;">
+            <button (click)="openDocumentationsRef(row)"  mat-fab color="primary" class="custom-fab">
+              <mat-icon style="font-size:22px;">insert_drive_file</mat-icon>
+            </button>
+            <p *ngFor="let b of row.fixedColumn4.documentacion">{{b.nombre}}</p>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">
+            <button (click)="openCapacitationsRef(row)" mat-fab color="primary" class="custom-fab">
+              <mat-icon style="font-size:22px;">video_library</mat-icon>
+            </button>
+            {{row.fixedColumn4.caso_practico}}
+          
+          </div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.textos}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.preguntas_frecuentes}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.mejores_practicas}}</div>  
+          <div class="celdas internas" style="flex: 1;">
+            <a  *ngFor="link of row.fixedColumn4.un_minuto" href={{link}} >Da clic para ir al video</a>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">
+            <a  *ngFor="link of row.fixedColumn4.cinco_minutos" href={{link}} >Da clic para ir al video</a>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">
+            <a  *ngFor="link of row.fixedColumn4.quince_minutos" href={{link}} >Da clic para ir al video</a>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">
+            <a  *ngFor="link of row.fixedColumn4.treinta_minutos" href={{link}} >Da clic para ir al video</a>
+          </div>   
+          <div class="celdas internas" style="flex: 1;">
+            <a  *ngFor="link of row.fixedColumn4.sesenta_minutos" href={{link}} >Da clic para ir al video</a>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.dictamen}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.semaforo}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.inconsistencias}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.sanciones_generales}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.empresa}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.fixedColumn4.persona}}</div>  
+        </div>
+      </mat-cell>
+    </ng-container>
 
-  
+    <ng-container matColumnDef="fixedColumn8" class="container">
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 10;">
+        <div class="container" style="flex-direction: column;">
+          <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Interacción con Personas</div>
+          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
+            <div class="celdas" style="flex: 1;">Usuario 1 (responsable)</div>
+            <div class="celdas" style="flex: 1;">Usuario 2 (segundo)</div>
+            <div class="celdas" style="flex: 1;">Usuario 3 (supervisor)</div>
+            <div class="celdas" style="flex: 1;">Usuario 4 (director)</div>
+            <div class="celdas" style="flex: 1;">Usuario 5 (GB)</div>
+          </div>
+          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
+            <div class="celdas" style="flex: 1;">Tiempo de capacitación que lleva, y qeu con tiempo le hace falta...</div>
+            <div class="celdas" style="flex: 1;">... y calificación en Capacitación, Cumplimiento, etc.</div>
+            <div class="celdas" style="flex: 1;">Que debe verificar el supervisor, de aquel cumplimiento</div>
+            <div class="celdas" style="flex: 1;">Semáforos a enviarle</div>
+            <div class="celdas" style="flex: 1;">Indica si la Documentación es suficiente y está razonable</div>
+          </div>
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 10;">
+        <div class="container" style="flex-direction: row;">
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="fixedColumns; sticky: true" style="background-color: #ffcc0c;" ></mat-header-row>
+    <mat-row class="row-table" style="height: 15vh; min-height: 141px;" *matRowDef="let row; columns: fixedColumns;"></mat-row>
+  </mat-table>
 
 </div>
 
