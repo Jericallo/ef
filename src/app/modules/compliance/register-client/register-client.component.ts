@@ -77,14 +77,31 @@ export class RegisterClientComponent implements OnInit {
     });
   }
 
-  isFechaMaxima(element: any, column: number): boolean {
+  isFechaMaxima(element: any, column: number): string {
     if (column === 0) {
-      return false;
+      return 'transparent';
     }
-
     let fechaColumna = column;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
-  
-    return fechaMaxima.toString() === fechaColumna.toString();
+    const fechaHoy = Date.now()
+
+    if(fechaMaxima.toString() >= fechaColumna.toString()) {
+      if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
+      if(element.cumplimientos_obligacion.completado === false) return 'yellow'
+      else return 'transparent'
+    } else if(fechaMaxima.toString() === fechaColumna.toString()) {
+      if(element.cumplimientos_obligacion.completado === true) return 'green'
+      else return 'yellow'
+    } else if(fechaMaxima.toString() <= fechaColumna.toString()) {
+      if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
+      if(element.cumplimientos_obligacion.completado === false) return 'red'
+      else return 'transparent'
+    }
+  }
+
+  isColumn(column : any){
+    console.log(column)
+    if(column === 'nombre') return '#ffcc0c'
+    else return 'transparent'
   }
 }
