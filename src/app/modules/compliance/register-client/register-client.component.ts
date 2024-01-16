@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { addDays, addMonths, format, isSameMonth } from 'date-fns';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { es } from 'date-fns/locale';  
+import { MatDialog} from '@angular/material/dialog';
+import { DetailDayComponent } from './detail-day/detail-day.component';
 
 @Component({
   selector: 'app-register-client',
@@ -14,7 +16,7 @@ export class RegisterClientComponent implements OnInit {
   displayedColumns: any[] = ['nombre'];
   currentMonth: Date;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, public dialogRef: MatDialog) {}
 
   ngOnInit(): void {
     this.generateDateRange();
@@ -100,8 +102,15 @@ export class RegisterClientComponent implements OnInit {
   }
 
   isColumn(column : any){
-    console.log(column)
     if(column === 'nombre') return '#ffcc0c'
     else return 'transparent'
+  }
+
+  openDayDialog(column:any){
+    const dialogRef = this.dialogRef.open(DetailDayComponent, {
+      width: '1000px',
+      height: '720px',
+      data: {date: column, data:this.tableData} // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
+    });
   }
 }

@@ -13,7 +13,7 @@
                 </ng-container>
         
                 <ng-template #dateColumn>
-                    {{ column | date:'dd/MM/yy' }}
+                    <a (click)="openDayDialog(column)">{{ column | date:'dd/MM/yy' }}</a>
                 </ng-template>
             </th>
             <td mat-cell *matCellDef="let element" class="date-column" [ngClass]="{'sticky-column': i === 0, 'cumplimiento-cell': column === 'nombre'}"
