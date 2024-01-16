@@ -78,22 +78,41 @@ export class RegisterComponent implements OnInit {
         let rows = []
         res.result.forEach((element) => {
           const row = { 
-            nombre:element.nombre,
-            descripcion:element.descripcion,
-            fixedColumn: element.cumplimientos_obligacion.id_cumplimiento,
-            fixedColumn2: element.fecha_cumplimiento,
-            fixedColumn3: {
+            content:{
+              id_cumplimiento:element.cumplimientos_obligacion.id_cumplimiento,
+              color:'',
+
+              descripcion:element.descripcion,
+              nombre:element.nombre,
+              fecha_cumplimiento: element.fecha_cumplimiento,
+              switch:false ,
+
+              ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
+              IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
+              NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
+              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro,
+
               si: element.aplica_punto.si,
               no: element.aplica_punto.no,
-              prioridad: element.cumplimientos_obligacion.prioridad
-            }, 
-            fixedColumn4: {
+              prioridad: element.cumplimientos_obligacion.prioridad,
+
+              fecha_inicio_cumplimiento: element.cumplimientos_obligacion.fecha_inicio_cumplimiento,
+              fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
+              fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
+              fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
+              fecha_habilitacion: element.cumplimientos_obligacion.fecha_habilitacion,
+              fecha_inicio_ideal: element.cumplimientos_obligacion.fecha_inicio_ideal,
+
+              se_cumplio:'',
+              fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento,
+
               leyes:element.correlacion.leyes,
               temario:element.correlacion.temario,
               busqueda:element.correlacion.busqueda,
               numeros:element.correlacion.numeros,
               impuestos:element.correlacion.impuestos,
               documentacion:element.correlacion.documentacion,
+              
               caso_practico:element.correlacion.capacitaciones.caso_practico,
               textos:element.correlacion.capacitaciones.textos,
               preguntas_frecuentes:element.correlacion.capacitaciones.preguntas_frecuentes,
@@ -103,51 +122,62 @@ export class RegisterComponent implements OnInit {
               quince_minutos:element.correlacion.capacitaciones.min15,
               treinta_minutos:element.correlacion.capacitaciones.min30,
               sesenta_minutos:element.correlacion.capacitaciones.min60,
+
               dictamen:element.correlacion.dictamen,
               semaforo:element.correlacion.semaforo,
               inconsistencias:element.correlacion.inconsistencias,
+              
               sanciones_generales:element.correlacion.sanciones_generales_importantes,
               empresa:element.correlacion.sanciones_penales.empresa,
-              persona:element.correlacion.sanciones_penales.persona
-            }, 
-            fixedColumn5: {
-              fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
-              fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
-              fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
+              persona:element.correlacion.sanciones_penales.persona,
+
               fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
-              se_cumplio:'',
-              fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
+
+
+
+              por_incumplimiento: element.aporte_semaforo.por_incumplimiento,
+              reporte_en_1_dia: element.aporte_semaforo.reporte_en_1_dia,
+              
+              obligacion:element.cumplimientos_obligacion.id_obligacion,
+              id:element.id_cumplimiento_mensual,
             },
-            fixedColumn6:{
-              color:''
-            },
-            fixedColumn7:{
+            backup:{
+              id_cumplimiento:element.cumplimientos_obligacion.id_cumplimiento,
+              color:'',
+
+              descripcion:element.descripcion,
+              nombre:element.nombre,
+              fecha_cumplimiento: element.fecha_cumplimiento,
+              switch:false ,
+
               ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
               IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
               NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
-              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro
-            },
-            switch:false ,
-            obligacion:element.cumplimientos_obligacion.id_obligacion,
-            id:element.id_cumplimiento_mensual,
-    
-            fixedColumnRec: element.cumplimientos_obligacion.id_cumplimiento,
-            fixedColumnRec2: element.fecha_cumplimiento,
-            fixedColumnRec3: {
+              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro,
+
               si: element.aplica_punto.si,
               no: element.aplica_punto.no,
-              prioridad: element.aplica_punto.prioridad
-            }, 
-            fixedColumnRec4: {
+              prioridad: element.cumplimientos_obligacion.prioridad,
+
+              fecha_inicio_cumplimiento: element.cumplimientos_obligacion.fecha_inicio_cumplimiento,
+              fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
+              fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
+              fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
+              fecha_habilitacion: element.cumplimientos_obligacion.fecha_habilitacion,
+              fecha_inicio_ideal: element.cumplimientos_obligacion.fecha_inicio_ideal,
+
+              se_cumplio:'',
+              fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento,
+
               leyes:element.correlacion.leyes,
-              leyesComp:element.correlacion.leyes,
               temario:element.correlacion.temario,
               busqueda:element.correlacion.busqueda,
               numeros:element.correlacion.numeros,
               impuestos:element.correlacion.impuestos,
               documentacion:element.correlacion.documentacion,
+              
               caso_practico:element.correlacion.capacitaciones.caso_practico,
               textos:element.correlacion.capacitaciones.textos,
               preguntas_frecuentes:element.correlacion.capacitaciones.preguntas_frecuentes,
@@ -157,89 +187,84 @@ export class RegisterComponent implements OnInit {
               quince_minutos:element.correlacion.capacitaciones.min15,
               treinta_minutos:element.correlacion.capacitaciones.min30,
               sesenta_minutos:element.correlacion.capacitaciones.min60,
+
               dictamen:element.correlacion.dictamen,
               semaforo:element.correlacion.semaforo,
               inconsistencias:element.correlacion.inconsistencias,
+              
               sanciones_generales:element.correlacion.sanciones_generales_importantes,
               empresa:element.correlacion.sanciones_penales.empresa,
-              persona:element.correlacion.sanciones_penales.persona
-            }, 
-            fixedColumnRec5: {
-              fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
-              fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
-              fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
+              persona:element.correlacion.sanciones_penales.persona,
+
               fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
-              se_cumplio:'',
-              fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento
-            },
-            fixedColumn6Rec:{
-              color:''
-            },
-            fixedColumn7Rec:{
-              ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
-              IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
-              NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
-              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro
-            },
+
+
+
+              por_incumplimiento: element.aporte_semaforo.por_incumplimiento,
+              reporte_en_1_dia: element.aporte_semaforo.reporte_en_1_dia,
+              
+              obligacion:element.cumplimientos_obligacion.id_obligacion,
+              id:element.id_cumplimiento_mensual,
+            }
           };
 
             const today = Date.now()
             if(element.cumplimientos_obligacion.completado !== true){
-              row.fixedColumn5.se_cumplio = null
-              row.fixedColumnRec5.se_cumplio = null
-              if(today >= row.fixedColumn5.fecha_maxima) {
-                row.fixedColumn5.se_cumplio = 'No se cumplió'
-                row.fixedColumnRec5.se_cumplio = 'No se cumplió'
+              row.content.se_cumplio = null
+              row.backup.se_cumplio = null
+              if(today >= row.content.fecha_maxima) {
+                row.content.se_cumplio = 'No se cumplió'
+                row.backup.se_cumplio = 'No se cumplió'
               }
             } else {
-              row.fixedColumn5.se_cumplio = 'Se cumplió'
-              row.fixedColumnRec5.se_cumplio = 'Se cumplió'
+              row.content.se_cumplio = 'Se cumplió'
+              row.backup.se_cumplio = 'Se cumplió'
             }
             
             /*
-            row.fixedColumn2 = new Date(row.fixedColumn2).toDateString(); row.fixedColumnRec2 = row.fixedColumn2
-            if(row.fixedColumn5.fecha_cumplir != null)row.fixedColumn5.fecha_cumplir = new Date(row.fixedColumn5.fecha_cumplir).toDateString(); row.fixedColumnRec5.fecha_cumplir = row.fixedColumn5.fecha_cumplir
-            if(row.fixedColumn5.fecha_ideal != null)row.fixedColumn5.fecha_ideal = new Date(row.fixedColumn5.fecha_ideal).toDateString(); row.fixedColumnRec5.fecha_ideal = row.fixedColumn5.fecha_ideal
-            if(row.fixedColumn5.fecha_maxima != null)row.fixedColumn5.fecha_maxima = new Date(row.fixedColumn5.fecha_maxima).toDateString(); row.fixedColumnRec5.fecha_maxima = row.fixedColumn5.fecha_maxima
-            if(row.fixedColumn5.fecha_cumplio != null)row.fixedColumn5.fecha_cumplio = new Date(row.fixedColumn5.fecha_cumplio).toDateString(); row.fixedColumnRec5.fecha_cumplio = row.fixedColumn5.fecha_cumplio
+            row.content = new Date(row.content).toDateString(); row.backup = row.content
+            if(row.content.fecha_cumplir != null)row.content.fecha_cumplir = new Date(row.content.fecha_cumplir).toDateString(); row.backup.fecha_cumplir = row.content.fecha_cumplir
+            if(row.content.fecha_ideal != null)row.content.fecha_ideal = new Date(row.content.fecha_ideal).toDateString(); row.backup.fecha_ideal = row.content.fecha_ideal
+            if(row.content.fecha_maxima != null)row.content.fecha_maxima = new Date(row.content.fecha_maxima).toDateString(); row.backup.fecha_maxima = row.content.fecha_maxima
+            if(row.content.fecha_cumplio != null)row.content.fecha_cumplio = new Date(row.content.fecha_cumplio).toDateString(); row.backup.fecha_cumplio = row.content.fecha_cumplio
             */
 
-            if(row.fixedColumn5.fecha_ideal === null){
-              row.fixedColumn5.fecha_ideal = today
-              row.fixedColumnRec5.fecha_ideal = today
+            if(row.content.fecha_ideal === null){
+              row.content.fecha_ideal = today
+              row.backup.fecha_ideal = today
             }
 
             if(today > element.cumplimientos_obligacion.fecha_maxima){
               if(element.cumplimientos_obligacion.completado !== true){
-                row.fixedColumn6.color = '#f23f3f' // rojo
+                row.content.color = '#f23f3f' // rojo
               } else {
-                row.fixedColumn6.color = '#31e32b' // verde
+                row.content.color = '#31e32b' // verde
               }
             } else {
-              if(row.fixedColumn5.se_cumplio === 'Se cumplió'){
-                row.fixedColumn6.color = '#31e32b' // verde
+              if(row.content.se_cumplio === 'Se cumplió'){
+                row.content.color = '#31e32b' // verde
               } else {
-                row.fixedColumn6.color = '#e0e32b' // amarillo
+                row.content.color = '#e0e32b' // amarillo
               }
             }
-            row.fixedColumn6Rec = row.fixedColumn6
+            row.backup = row.content
 
-            row.fixedColumn5.fundamento_legal.forEach(element => {
+            row.content.fundamento_legal.forEach(element => {
               element.fecha = new Date(element.fecha).toDateString();
             });
-            row.fixedColumnRec5.fundamento_legal = row.fixedColumn5.fundamento_legal
+            row.backup.fundamento_legal = row.content.fundamento_legal
 
-            if(row.fixedColumn3.prioridad === 1){
-              row.fixedColumn3.prioridad = 'Alta';
-              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad;
-            } else if(row.fixedColumn3.prioridad === 3) {
-              row.fixedColumn3.prioridad = 'Baja';
-              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad
+            if(row.content.prioridad === 1){
+              row.content.prioridad = 'Alta';
+              row.backup.prioridad = row.content.prioridad;
+            } else if(row.content.prioridad === 3) {
+              row.content.prioridad = 'Baja';
+              row.backup.prioridad = row.content.prioridad
             } else {
-              row.fixedColumn3.prioridad = 'Prioridad'
-              row.fixedColumnRec3.prioridad = row.fixedColumn3.prioridad
+              row.content.prioridad = 'Prioridad'
+              row.backup.prioridad = row.content.prioridad
             }
             rows.push(row)
         })
@@ -265,7 +290,7 @@ export class RegisterComponent implements OnInit {
   create_table(){
     this.dataSource.data = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn3', 'fixedColumn4', 'fixedColumn5', 'fixedColumn6', 'fixedColumn7', 'fixedColumn8'];
+    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn3', 'fixedColumn4', 'fixedColumn5', 'fixedColumn6', 'fixedColumn7'];
     let rows = []
     for (let i = 1; i <= 1; i++) {
       const row = { 
@@ -383,21 +408,21 @@ export class RegisterComponent implements OnInit {
 
   onSwitchChange(row: any) {
     console.log(row.switch)
-    console.log(row.fixedColumn3)
-    console.log(row.fixedColumnRec3)
+    console.log(row.content)
+    console.log(row.backup)
     row.switch
     if (row.switch) {
       row.fixedColumn = ''
-      row.fixedColumn2 = ''
-      row.fixedColumn3 = ''
-      row.fixedColumn4 = ''
-      row.fixedColumn5 = ''
+      row.content = ''
+      row.content = ''
+      row.content = ''
+      row.content = ''
     } else {
       row.fixedColumn = row.fixedColumnRec
-      row.fixedColumn2 = row.fixedColumnRec2
-      row.fixedColumn3 = row.fixedColumnRec3
-      row.fixedColumn4 = row.fixedColumnRec4
-      row.fixedColumn5 = row.fixedColumnRec5
+      row.content = row.backup
+      row.content = row.backup
+      row.content = row.backup
+      row.content = row.backup
     }
   }
 
@@ -700,7 +725,7 @@ export class RegisterComponent implements OnInit {
   modPrioridad(modo, row){
     const body = {
       data: {
-        id: row.id,
+        id: row.content.id,
         special:"true",
         obligacion:{
           prioridad:modo
@@ -711,11 +736,11 @@ export class RegisterComponent implements OnInit {
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
         if(modo === 1){
-          row.fixedColumn3.prioridad = 'Alta'
-          row.fixedColumnRec3.prioridad = 'Alta'
+          row.content.prioridad = 'Alta'
+          row.backup.prioridad = 'Alta'
         } else {
-          row.fixedColumn3.prioridad = 'Baja'
-          row.fixedColumnRec3.prioridad = 'Baja'
+          row.content.prioridad = 'Baja'
+          row.backup.prioridad = 'Baja'
         }
       },
       error: err => {
@@ -725,10 +750,10 @@ export class RegisterComponent implements OnInit {
   }
 
   updateIVA(event:any, row:any){
-    row.fixedColumn7.ISR = 0
-    row.fixedColumn7.OTRO = 0
-    row.fixedColumn7.NOMINA = 0
-    row.fixedColumn7Rec = row.fixedColumn7
+    row.content.ISR = 0
+    row.content.OTRO = 0
+    row.content.NOMINA = 0
+    row.contentRec = row.content
     let activo = 0
     if(event.checked){
       activo = 1
@@ -737,7 +762,7 @@ export class RegisterComponent implements OnInit {
     }
     const body = {
       data: {
-        id: row.id,
+        id: row.content.id,
         special: "true",
         obligacion:{
           impuesto_isr:0,
@@ -750,8 +775,8 @@ export class RegisterComponent implements OnInit {
     this.apiService.editCumplimiento(body).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
-        row.fixedColumn7.IVA = activo
-        row.fixedColumn7Rec.IVA = activo
+        row.content.IVA = activo
+        row.contentRec.IVA = activo
       },
       error: err => {
         console.log(err);
@@ -760,10 +785,10 @@ export class RegisterComponent implements OnInit {
   }
 
   updateISR(event:any, row:any){
-    row.fixedColumn7.OTRO = 0
-    row.fixedColumn7.IVA = 0
-    row.fixedColumn7.NOMINA = 0
-    row.fixedColumn7Rec = row.fixedColumn7
+    row.content.OTRO = 0
+    row.content.IVA = 0
+    row.content.NOMINA = 0
+    row.respaldo = row.content
     let activo = 0
     if(event.checked){
       activo = 1
@@ -772,7 +797,7 @@ export class RegisterComponent implements OnInit {
     }
     const body = {
       data: {
-        id: row.id,
+        id: row.content.id,
         special: "true",
         obligacion:{
           impuesto_iva:0,
@@ -785,8 +810,8 @@ export class RegisterComponent implements OnInit {
     this.apiService.editCumplimiento(body).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
-        row.fixedColumn7.ISR = activo
-        row.fixedColumn7Rec.ISR = activo
+        row.content.ISR = activo
+        row.contentRec.ISR = activo
       },
       error: err => {
         console.log(err);
@@ -795,10 +820,10 @@ export class RegisterComponent implements OnInit {
   }
 
   updateNOM(event:any, row:any){
-    row.fixedColumn7.ISR = 0
-    row.fixedColumn7.IVA = 0
-    row.fixedColumn7.OTRO = 0
-    row.fixedColumn7Rec = row.fixedColumn7
+    row.content.ISR = 0
+    row.content.IVA = 0
+    row.content.OTRO = 0
+    row.contentRec = row.content
     let activo = 0
     if(event.checked){
       activo = 1
@@ -807,7 +832,7 @@ export class RegisterComponent implements OnInit {
     }
     const body = {
       data: {
-        id: row.id,
+        id: row.content.id,
         special: "true",
         obligacion:{
           impuesto_isr:0,
@@ -820,8 +845,8 @@ export class RegisterComponent implements OnInit {
     this.apiService.editCumplimiento(body).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
-        row.fixedColumn7.NOMINA = activo
-        row.fixedColumn7Rec.NOMINA = activo
+        row.content.NOMINA = activo
+        row.contentRec.NOMINA = activo
       },
       error: err => {
         console.log(err);
@@ -830,10 +855,10 @@ export class RegisterComponent implements OnInit {
   }
 
   updateOTHER(event:any, row:any){
-    row.fixedColumn7.ISR = 0
-    row.fixedColumn7.IVA = 0
-    row.fixedColumn7.NOMINA = 0
-    row.fixedColumn7Rec = row.fixedColumn7
+    row.content.ISR = 0
+    row.content.IVA = 0
+    row.content.NOMINA = 0
+    row.contentRec = row.content
     let activo = 0
     if(event.checked){
       activo = 1
@@ -842,7 +867,7 @@ export class RegisterComponent implements OnInit {
     }
     const body = {
       data: {
-        id: row.id,
+        id: row.content.id,
         special: "true",
         obligacion:{
           impuesto_isr:0,
@@ -855,8 +880,8 @@ export class RegisterComponent implements OnInit {
     this.apiService.editCumplimiento(body).subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
-        row.fixedColumn7.OTRO = activo
-        row.fixedColumn7Rec.OTRO = activo
+        row.content.OTRO = activo
+        row.contentRec.OTRO = activo
       },
       error: err => {
         console.log(err);
