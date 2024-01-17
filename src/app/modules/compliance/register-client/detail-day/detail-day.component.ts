@@ -27,24 +27,24 @@ export class DetailDayComponent implements OnInit {
     const fechaHoy = Date.now()
     if(fechaHoy < this.data.date) return
     this.cumplimientos = this.data.data.filter(cumplimiento => {
-      return (cumplimiento.cumplimientos_obligacion.completado == false || (cumplimiento.cumplimientos_obligacion.completado === true && cumplimiento.cumplimientos_obligacion.fecha_maxima === this.data.date))
+      return (cumplimiento.cumplimientos_obligacion.completado == false || 
+        (cumplimiento.cumplimientos_obligacion.completado === true && cumplimiento.cumplimientos_obligacion.fecha_cumplimiento >= this.data.date))
     })
   }
 
-  isFechaMaxima(element: any): string {
-    let fechaColumna = this.data.date;
+  isFechaMaxima(element: any, column: number): string {
+    let fechaColumna = this.data.date;;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
-    console.log(element, fechaMaxima)
     const fechaHoy = Date.now()
 
-    if(fechaMaxima.toString() >= fechaColumna.toString()) {
+    if(fechaMaxima.toString() > fechaColumna.toString()) {
       if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
-      if(element.cumplimientos_obligacion.completado === false) return 'yellow'
-      else return 'transparent'
+      else return '#ffcc0c'
     } else if(fechaMaxima.toString() === fechaColumna.toString()) {
       if(element.cumplimientos_obligacion.completado === true) return 'green'
-      else return 'yellow'
-    } else if(fechaMaxima.toString() <= fechaColumna.toString()) {
+      if(fechaHoy < fechaColumna) return 'transparent'
+      else return '#ffcc0c'
+    } else if(fechaMaxima.toString() < fechaColumna.toString()) {
       if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
       if(element.cumplimientos_obligacion.completado === false) return 'red'
       else return 'transparent'

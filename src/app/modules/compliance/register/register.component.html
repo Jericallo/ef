@@ -192,13 +192,17 @@
       <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
         <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 2;">contenido</div>  
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 2;">
+            <span *ngFor="let doc of row.content.documentos_faltantes">{{doc}} <br/></span>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_fecha_ideal | date}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_fecha_maxima | date}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_en_tiempo}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_documentacion_suficiente}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_documentacion_suficiente}}</div>
+          <div class="celdas internas" style="flex: 1;">
+            <span *ngFor="let reg of row.content.registro_general">{{reg}} <br/></span>
+          </div>
         </div>
       </mat-cell>
     </ng-container>
@@ -227,13 +231,13 @@
       <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
         <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 1;">contenido</div>  
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.por_incumplimiento}}</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.reporte_en_1_dia}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.nivel}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.recordatorios[0]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.recordatorios[1]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.recordatorios[2]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.recordatorios[4]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.alertas[0]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.reporte_via_semaforo[0]?.mensaje}}</div>
         </div>
       </mat-cell>
     </ng-container>
@@ -372,11 +376,11 @@
       <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 10;">
         <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 1;">contenido</div>  
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario1}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario2}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario3}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario4}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario5}}</div>
         </div>
       </mat-cell>
     </ng-container>

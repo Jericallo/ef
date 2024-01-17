@@ -87,14 +87,14 @@ export class RegisterClientComponent implements OnInit {
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
     const fechaHoy = Date.now()
 
-    if(fechaMaxima.toString() >= fechaColumna.toString()) {
+    if(fechaMaxima.toString() > fechaColumna.toString()) {
       if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
-      if(element.cumplimientos_obligacion.completado === false) return 'yellow'
-      else return 'transparent'
+      else return '#ffcc0c'
     } else if(fechaMaxima.toString() === fechaColumna.toString()) {
       if(element.cumplimientos_obligacion.completado === true) return 'green'
-      else return 'yellow'
-    } else if(fechaMaxima.toString() <= fechaColumna.toString()) {
+      if(fechaHoy < fechaColumna) return 'transparent'
+      else return '#ffcc0c'
+    } else if(fechaMaxima.toString() < fechaColumna.toString()) {
       if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
       if(element.cumplimientos_obligacion.completado === false) return 'red'
       else return 'transparent'
