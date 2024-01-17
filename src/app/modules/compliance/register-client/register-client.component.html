@@ -23,7 +23,7 @@
                 </ng-container>
                 <ng-template #dateCell>
                     {{ element[column]?.fecha_maxima | date:'dd MMMM' }}
-                    <div class="indicador indicador-lento" [ngStyle]="{'background-color': isFechaMaxima(element, column)}"></div>
+                    <div class="indicador " [ngStyle]="{'background-color': isFechaMaxima(element, column)}"></div>
                 </ng-template>
             </td>            
         </ng-container>
