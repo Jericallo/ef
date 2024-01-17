@@ -1,0 +1,128 @@
+.table-container {
+    max-height: 85vh;
+    max-width: 160vw;
+    overflow-y: auto;
+}
+
+.month-navigation{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    padding: 10px;
+    background: #ffcc0c;
+    border-bottom: .5px solid #81660e;
+}
+
+.button-next{
+    background: none ;
+    border: none;
+    padding-left: 30px;
+    padding-top: 10px;
+    font-weight: 500;
+    padding-bottom: 10px;
+}
+
+.button-prev{
+    background: none ;
+    border: none;
+    padding-right: 30px;
+    font-weight: 500;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.mat-elevation-z8 {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: center;
+    border-right: 1px solid #81660e;
+    border-bottom: 1px solid #81660e;
+    border-left: 1px solid #81660e;
+    border-top: 1px solid #81660e;
+
+}
+
+th.date-column, td.date-column {
+    min-width: 120px;
+    text-align: center;
+    //background: #ffcc0c;
+    flex: 1;
+    background-color: transparent;
+}
+
+mat-header-row, mat-row {
+    display: flex;
+    box-sizing: border-box;
+    border-bottom: solid 2px #81660e !important;
+    width: 100%;
+}
+
+
+.borde{
+  border: solid 1px red;
+}
+
+
+.mat-column-nombre {
+    text-align: center;
+    width: 600px !important;
+    overflow: scroll;
+    padding: 10px;
+    white-space: nowrap;
+    //background: white !important;
+}
+
+th.mat-column-nombre {
+    background: #ffcc0c !important;
+}
+
+
+
+.sticky-column {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+.indicador {
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    margin: auto;
+    //margin-top: 50px;
+}
+
+.indicador-lento{
+    animation: parpadeo 3s infinite;
+}
+
+.indicador-rapido{
+    animation: parpadeo 1s infinite;
+}
+
+@keyframes parpadeo {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes parpadeo-rapido {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+a:hover{
+    cursor: pointer;
+}

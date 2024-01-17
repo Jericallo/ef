@@ -15,6 +15,8 @@ import { RegisterComponent } from './register/register.component';
 import { ConfigModule } from '../config/config.module';
 import { DisplayModalComponent } from './register/display-modal/display-modal.component';
 import { SearchTopicComponent } from 'src/app/shared/components/search-topic/search-topic.component';
+import { RegisterClientComponent } from './register-client/register-client.component';
+import { DetailDayComponent } from './register-client/detail-day/detail-day.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { SearchTopicComponent } from 'src/app/shared/components/search-topic/sea
     NotificationComponent,
     RegisterComponent,
     DisplayModalComponent,
-    SearchTopicComponent
+    SearchTopicComponent,
+    RegisterClientComponent,
+    DetailDayComponent
   ],
   imports: [
     CommonModule,

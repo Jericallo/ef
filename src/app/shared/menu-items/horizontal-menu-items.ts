@@ -67,6 +67,7 @@ const MENUITEMS = [
         children:[
             {state:'index', name:'Calendario',type:'link', icon:'event'},
             {state:'register', name:'Registra',type:'link', icon:'input'},
+            {state:'register-client', name:'Registra Cliente',type:'link', icon:'input'},
             {state:'', name:'Impuestos',type:'link',icon:'monetization_on'},
             {state:'', name:'Informativas',type:'link',icon:'inbox'},
             {state:'', name:'P.L.D.',type:'link',icon:'security'},

@@ -1,0 +1,15 @@
+<div class="mainDiv">
+    <h4>Cumplimientos para el día {{data.date | date}}</h4>
+    <mat-card class="mainCard">
+        <mat-card-content>
+            <div *ngFor="let cum of cumplimientos" style="display: flex; flex-direction: row;">
+                <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima(cum)}"></div>
+                <p>{{cum.nombre}}</p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<div class="spinner" *ngIf="showMainSpinner">
+    <mat-spinner></mat-spinner>
+</div>
+
