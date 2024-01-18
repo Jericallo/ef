@@ -17,13 +17,14 @@
                 </ng-template>
             </th>
             <td mat-cell *matCellDef="let element" class="date-column" [ngClass]="{'sticky-column': i === 0, 'cumplimiento-cell': column === 'nombre'}"
-            #currentDayCell [ngStyle]="{'background-color': isColumn(column)}">
+            #currentDayCell [ngStyle]="{'background-color': isColumn(column, element)}">
                 <ng-container *ngIf="column === 'nombre'; else dateCell">
                     {{ element[column] }}
                 </ng-container>
                 <ng-template #dateCell>
                     {{ element[column]?.fecha_maxima | date:'dd MMMM' }}
-                    <div class="indicador " [ngStyle]="{'background-color': isFechaMaxima(element, column)}"></div>
+                    <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima(element, column)}" 
+                    [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"></div>
                 </ng-template>
             </td>            
         </ng-container>

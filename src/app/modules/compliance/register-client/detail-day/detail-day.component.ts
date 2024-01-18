@@ -35,19 +35,18 @@ export class DetailDayComponent implements OnInit {
   isFechaMaxima(element: any, column: number): string {
     let fechaColumna = this.data.date;;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
+
     const fechaHoy = Date.now()
 
+    
+
+    if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
+
     if(fechaMaxima.toString() > fechaColumna.toString()) {
-      if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
+      if(fechaColumna.toString() >= (fechaMaxima - (86400000 * 11)).toString()) return 'red'
       else return '#ffcc0c'
-    } else if(fechaMaxima.toString() === fechaColumna.toString()) {
-      if(element.cumplimientos_obligacion.completado === true) return 'green'
-      if(fechaHoy < fechaColumna) return 'transparent'
-      else return '#ffcc0c'
-    } else if(fechaMaxima.toString() < fechaColumna.toString()) {
-      if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
-      if(element.cumplimientos_obligacion.completado === false) return 'red'
-      else return 'transparent'
-    }
+    } else if(fechaMaxima.toString() === fechaColumna.toString()) return 'red'
+     else if(fechaMaxima.toString() < fechaColumna.toString()) return 'transparent'
   }
 }

@@ -79,38 +79,72 @@ export class RegisterClientComponent implements OnInit {
     });
   }
 
+  //86,400,000
+
   isFechaMaxima(element: any, column: number): string {
     if (column === 0) {
       return 'transparent';
     }
     let fechaColumna = column;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
     const fechaHoy = Date.now()
 
+    if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
+
     if(fechaMaxima.toString() > fechaColumna.toString()) {
-      if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
+      if(fechaColumna.toString() >= (fechaMaxima - (86400000 * 11)).toString()) return 'red'
       else return '#ffcc0c'
-    } else if(fechaMaxima.toString() === fechaColumna.toString()) {
-      if(element.cumplimientos_obligacion.completado === true) return 'green'
-      if(fechaHoy < fechaColumna) return 'transparent'
-      else return '#ffcc0c'
-    } else if(fechaMaxima.toString() < fechaColumna.toString()) {
-      if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
-      if(element.cumplimientos_obligacion.completado === false) return 'red'
-      else return 'transparent'
-    }
+    } else if(fechaMaxima.toString() === fechaColumna.toString()) return 'red'
+     else if(fechaMaxima.toString() < fechaColumna.toString()) return 'transparent'
   }
 
-  isColumn(column : any){
+  isColumn(column : any, element : any){
     if(column === 'nombre') return '#ffcc0c'
+
+    let date = new Date(parseInt(column))
+    let today = new Date()
+
+    console.log(date, today)
+    if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) return '#fff1bd'
     else return 'transparent'
   }
 
   openDayDialog(column:any){
-    const dialogRef = this.dialogRef.open(DetailDayComponent, {
+    const dialogRef = this.dialogRef.open(DetailDayComponent, { 
       width: '1000px',
       height: '720px',
       data: {date: column, data:this.tableData} // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
     });
+  }
+
+  isIndicadorLento(element: any, column: any){
+    if(column === 0) return false
+    let fechaColumna = column;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+
+    const fechaHoy = Date.now()
+
+    if(fechaColumna.toString() < fechaMaxima.toString() && fechaColumna.toString() >= fechaHoy.toString()){
+      if((fechaMaxima - (86400000 * 7)).toString() > fechaColumna.toString()) return true
+    }
+
+    return false
+  }
+
+  isIndicadorRapido(element: any, column: number){
+    if(column === 0) return false
+    let fechaColumna = column;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+
+    const fechaHoy = Date.now()
+
+    if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false && fechaColumna.toString() >= fechaHoy.toString()) return true
+
+    if(fechaColumna.toString() < fechaMaxima.toString() && fechaColumna.toString() > fechaHoy.toString()){
+      if((fechaMaxima - (86400000 * 8)).toString() < fechaColumna.toString()) return true
+    }
+
+    return false
   }
 }
