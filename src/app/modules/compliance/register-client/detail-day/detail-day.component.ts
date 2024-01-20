@@ -27,7 +27,7 @@ export class DetailDayComponent implements OnInit {
     const fechaHoy = Date.now()
     if(fechaHoy < this.data.date) return
     this.cumplimientos = this.data.data.filter(cumplimiento => {
-      return (cumplimiento.cumplimientos_obligacion.completado == false || 
+      return ((cumplimiento.cumplimientos_obligacion.completado === false && cumplimiento.cumplimientos_obligacion.fecha_maxima >= this.data.date) || 
         (cumplimiento.cumplimientos_obligacion.completado === true && cumplimiento.cumplimientos_obligacion.fecha_cumplimiento >= this.data.date))
     })
   }

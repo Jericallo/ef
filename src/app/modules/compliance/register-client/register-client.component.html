@@ -24,7 +24,9 @@
                 <ng-template #dateCell>
                     {{ element[column]?.fecha_maxima | date:'dd MMMM' }}
                     <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima(element, column)}" 
-                    [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"></div>
+                    [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
+                    (click)="openCumplimientoDialog(element)"
+                    ></div>
                 </ng-template>
             </td>            
         </ng-container>

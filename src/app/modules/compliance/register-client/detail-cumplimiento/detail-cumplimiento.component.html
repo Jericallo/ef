@@ -1,0 +1,39 @@
+<div class="container">
+    <h4>{{data.nombre}}</h4>
+    <h6>{{data.descripcion}}</h6>
+
+    <div class="divisor"></div>
+    <div *ngIf="data.cumplimientos_obligacion.completado">
+        <h6>¡Cumplimiento cumplido!</h6>
+        <ul>
+            <li>Fecha en que se cumplió: {{data.cumplimientos_obligacion.fecha_cumplimiento | date}}</li>
+        </ul>
+        <div class="divisor"></div>
+    </div>
+    <div>
+        <ul>
+            <li>Fecha de inicio del cumplimiento: {{data.cumplimientos_obligacion.fecha_inicio_cumplimiento | date}}</li>
+            <li>Fecha de inicio ideal del cumplimiento: {{data.cumplimientos_obligacion.fecha_inicio_ideal | date}}</li>
+            <li>Fecha de inicio ideal del cumplimiento: {{data.cumplimientos_obligacion.fecha_inicio_ideal | date}}</li>
+            <li>Fecha ideal de cumplimiento: {{data.cumplimientos_obligacion.fecha_ideal | date}}</li>
+            <li>Fecha máxima de cumplimiento: {{data.cumplimientos_obligacion.fecha_maxima | date}}</li>
+        </ul>
+        Impuesto: <span *ngIf="data.cumplimientos_obligacion.impuestos.impuesto_isr == 1"><strong>ISR</strong></span>
+        <span *ngIf="data.cumplimientos_obligacion.impuestos.impuesto_iva == 1"><strong>IVA</strong></span>
+        <span *ngIf="data.cumplimientos_obligacion.impuestos.impuesto_nomina == 1"><strong>Nómina</strong></span>
+        <span *ngIf="data.cumplimientos_obligacion.impuestos.impuesto_otro == 1"><strong>Otro</strong></span>
+        <br/>
+        Fundamento Legal:
+        <ul>
+            <li *ngFor="let fund of data.cumplimientos_obligacion.fundamento_legal">Art. {{fund.art.articulo}} .- {{fund.art.nombre}}</li>
+        </ul>
+        <div class="divisor"></div>
+    </div>
+    <div>
+        <h6>Envío de documentación de evidencia</h6>
+        Documentación faltante:
+        <ul>
+            <li *ngFor="let doc of data.documentos_evidencia.documentacion_faltante">{{doc}}</li>
+        </ul>
+    </div>
+</div>

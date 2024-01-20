@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 import { es } from 'date-fns/locale';  
 import { MatDialog} from '@angular/material/dialog';
 import { DetailDayComponent } from './detail-day/detail-day.component';
+import { DetailCumplimientoComponent } from './detail-cumplimiento/detail-cumplimiento.component';
 
 @Component({
   selector: 'app-register-client',
@@ -74,7 +75,6 @@ export class RegisterClientComponent implements OnInit {
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         this.tableData = res.result;
-        console.log(this.tableData)
       }
     });
   }
@@ -105,7 +105,6 @@ export class RegisterClientComponent implements OnInit {
     let date = new Date(parseInt(column))
     let today = new Date()
 
-    console.log(date, today)
     if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) return '#fff1bd'
     else return 'transparent'
   }
@@ -115,6 +114,14 @@ export class RegisterClientComponent implements OnInit {
       width: '1000px',
       height: '720px',
       data: {date: column, data:this.tableData} // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
+    });
+  }
+
+  openCumplimientoDialog(cumplimiento:any){
+    const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
+      width: '1000px',
+      height: '720px',
+      data: cumplimiento // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
     });
   }
 

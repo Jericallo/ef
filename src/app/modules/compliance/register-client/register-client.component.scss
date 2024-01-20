@@ -97,12 +97,16 @@ th.mat-column-nombre {
     //margin-top: 50px;
 }
 
+.indicador:hover {
+    cursor: pointer;
+}
+
 .indicador-lento{
     animation: parpadeo 3s infinite;
 }
 
 .indicador-rapido{
-    animation: parpadeo 1s infinite;
+    animation: parpadeo 0.3s infinite;
 }
 
 @keyframes parpadeo {
