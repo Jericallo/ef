@@ -6,6 +6,11 @@
                 <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima(cum)}"></div>
                 <p>{{cum.nombre}}</p>
             </div>
+            <div class="separator"></div>
+            <div *ngFor="let cum of cumplimientosCumplidosADia" style="display: flex; flex-direction: row;">
+                <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima(cum)}"></div>
+                <p>{{cum.nombre}}</p>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>

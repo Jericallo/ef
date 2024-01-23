@@ -17,6 +17,7 @@ export class DetailDayComponent implements OnInit {
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
   cumplimientos = []
+  cumplimientosCumplidosADia = []
 
   ngOnInit(): void {
     console.log(this.data)
@@ -25,10 +26,10 @@ export class DetailDayComponent implements OnInit {
 
   filterDays(){
     const fechaHoy = Date.now()
-    if(fechaHoy < this.data.date) return
+   
     this.cumplimientos = this.data.data.filter(cumplimiento => {
-      return ((cumplimiento.cumplimientos_obligacion.completado === false && cumplimiento.cumplimientos_obligacion.fecha_maxima >= this.data.date) || 
-        (cumplimiento.cumplimientos_obligacion.completado === true && cumplimiento.cumplimientos_obligacion.fecha_cumplimiento >= this.data.date))
+      if(cumplimiento.cumplimientos_obligacion.fecha_cumplimiento === this.data.date) this.cumplimientosCumplidosADia.push(cumplimiento)
+      return (cumplimiento.cumplimientos_obligacion.fecha_maxima >= this.data.date && cumplimiento.cumplimientos_obligacion.fecha_cumplimiento !== this.data.date)
     })
   }
 
