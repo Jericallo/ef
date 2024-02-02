@@ -284,6 +284,7 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
       error: err => {
         this.showSpinner = false;
         this.snackBar.open("Error: " + JSON.stringify(err.error.message), '', this.config_snack);
+        console.log(JSON.stringify(err.error.message))
         this.resetFields();
       }
     });
@@ -359,6 +360,7 @@ constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
           this.resetFields(); 
         },
         error: err => {
+          console.log(JSON.stringify(err.error.message))
           this.snackBar.open('Error: ' + JSON.stringify(err.error.message), '', {
             duration:3000,
             verticalPosition:this.verticalPosition
