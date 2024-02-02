@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { addDays, addMonths, format, isSameMonth } from 'date-fns';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { es } from 'date-fns/locale';  
 import { MatDialog} from '@angular/material/dialog';
 import { DetailDayComponent } from './detail-day/detail-day.component';
 import { DetailCumplimientoComponent } from './detail-cumplimiento/detail-cumplimiento.component';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-register-client',
@@ -16,6 +17,7 @@ export class RegisterClientComponent implements OnInit {
   tableData: any[] = [];
   displayedColumns: any[] = ['nombre'];
   currentMonth: Date;
+  cumplimientos_faltantes = false
 
   constructor(private apiService: ApiService, public dialogRef: MatDialog) {}
 
@@ -30,6 +32,21 @@ export class RegisterClientComponent implements OnInit {
     this.currentMonth.setHours(0, 0, 0, 0);
 
     this.updateDateRange();
+    this.cumplimientos_faltantes = this.updateCumplimientosFaltantes()
+  }
+
+  updateCumplimientosFaltantes():boolean{
+    let params = new HttpParams().set('where',this.currentMonth.getTime())
+    this.apiService.getCumplimientosControl(params).subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
+        res.result.forEach((element)=>{
+          if(element.cumplimientos_obligacion.completado === false) return true
+          console.log('a')
+        })
+      }
+    });
+    return true
   }
 
   updateDateRange(): void {
@@ -48,11 +65,11 @@ export class RegisterClientComponent implements OnInit {
   }
 
   getCurrentMonthText(): string {
-    const currentMonthText = format(this.currentMonth, 'MMMM yyyy', { locale: es });
+    const currentMonthText = format(this.currentMonth, 'MMMM / yy', { locale: es });
     const today = new Date();
 
     if (isSameMonth(this.currentMonth, today)) {
-      return 'Mes actual'; // or any other customized text
+      //return 'Mes actual'; // or any other customized text
     }
 
     return currentMonthText.charAt(0).toUpperCase() + currentMonthText.slice(1);
@@ -62,9 +79,8 @@ export class RegisterClientComponent implements OnInit {
     this.currentMonth = addMonths(this.currentMonth, offset);
     this.updateDateRange();
     this.getCompliance();
+    this.cumplimientos_faltantes = this.updateCumplimientosFaltantes()
   }
-  
-  
 
   formatDateInSpanish(date: number): string {
     return date.toString()
@@ -91,6 +107,7 @@ export class RegisterClientComponent implements OnInit {
     const fechaHoy = Date.now()
 
     if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
+    if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
 
     if(fechaMaxima.toString() > fechaColumna.toString()) {
       if(fechaColumna.toString() >= (fechaMaxima - (86400000 * 11)).toString()) return 'red'
@@ -117,11 +134,15 @@ export class RegisterClientComponent implements OnInit {
     });
   }
 
-  openCumplimientoDialog(cumplimiento:any){
+  openCumplimientoDialog(cumplimiento:any, day:any){
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
       width: '1000px',
       height: '720px',
-      data: cumplimiento // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
+      data: {cumplimiento:cumplimiento, fecha:day} // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getCompliance()
     });
   }
 
@@ -132,8 +153,8 @@ export class RegisterClientComponent implements OnInit {
 
     const fechaHoy = Date.now()
 
-    if(fechaColumna.toString() < fechaMaxima.toString() && fechaColumna.toString() >= fechaHoy.toString()){
-      if((fechaMaxima - (86400000 * 7)).toString() > fechaColumna.toString()) return true
+    if(fechaColumna.toString() <= fechaMaxima.toString() && fechaColumna.toString() >= fechaHoy.toString()){
+      if((fechaMaxima - (86400000 * 7)).toString() >= fechaColumna.toString()) return true
     }
 
     return false
@@ -148,8 +169,8 @@ export class RegisterClientComponent implements OnInit {
 
     if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false && fechaColumna.toString() >= fechaHoy.toString()) return true
 
-    if(fechaColumna.toString() < fechaMaxima.toString() && fechaColumna.toString() > fechaHoy.toString()){
-      if((fechaMaxima - (86400000 * 8)).toString() < fechaColumna.toString()) return true
+    if(fechaColumna.toString() <= fechaMaxima.toString() && fechaColumna.toString() >= fechaHoy.toString()){
+      if((fechaMaxima - (86400000 * 8)).toString() <= fechaColumna.toString()) return true
     }
 
     return false

@@ -29,7 +29,7 @@ import { DetailCumplimientoComponent } from './register-client/detail-cumplimien
     SearchTopicComponent,
     RegisterClientComponent,
     DetailDayComponent,
-    DetailCumplimientoComponent
+    DetailCumplimientoComponent,
   ],
   imports: [
     CommonModule,
