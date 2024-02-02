@@ -111,8 +111,10 @@ export class AddDocumentComponent implements OnInit {
   toggleSelection(op: Classifications) {
     op.selected = !op.selected;
     if(op.selected) {
+      console.log(op)
       this.selectedClassification.push(op);
-      this.sendingDocument.clasificacion?.push(op.id);
+      this.sendingDocument.clasificacion = this.selectedClassification
+      console.log(this.sendingDocument.clasificacion)
     }else{
       const i = this.selectedClassification.findIndex(value => value.id === op.id && value.nombre === op.nombre);
       this.selectedClassification.splice(i, 1);
@@ -152,8 +154,9 @@ export class AddDocumentComponent implements OnInit {
     this.validateInputs();
     this.showSpinner = true;
     console.log(this.sendingDocument)
-    //this.sendingDocument.clasificacion = this.sendingDocument.clasificacion[0]
-    this.sendingDocument.clasificacion = 6
+    this.sendingDocument.clasificacion = this.sendingDocument.clasificacion[0].id
+    //this.sendingDocument.clasificacion = 6
+    console.log(this.sendingDocument)
     this.apiService.saveDocument(this.sendingDocument)
     .subscribe({
       next: response => {

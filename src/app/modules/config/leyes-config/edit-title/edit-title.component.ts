@@ -6,6 +6,7 @@ import { debounceTime, map, Observable, startWith } from 'rxjs';
 import { Documents } from 'src/app/shared/interfaces/documents-interface';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { Article_Title } from 'src/app/shared/interfaces/article-interface';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-title',
@@ -247,6 +248,7 @@ export class EditTitleComponent implements OnInit {
   }
 
   getTitulos(){
+    const httpParams = new HttpParams().set('estatus', '1');
     this.apiService.getAll('articulo_titulo').subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message, 'private'));

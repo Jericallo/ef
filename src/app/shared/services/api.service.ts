@@ -370,7 +370,7 @@ export class ApiService {
   }
 
   public getDocuments(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=documentos'
+    const url = 'https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
