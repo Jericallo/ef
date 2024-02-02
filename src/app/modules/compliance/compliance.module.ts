@@ -17,6 +17,7 @@ import { DisplayModalComponent } from './register/display-modal/display-modal.co
 import { SearchTopicComponent } from 'src/app/shared/components/search-topic/search-topic.component';
 import { RegisterClientComponent } from './register-client/register-client.component';
 import { DetailDayComponent } from './register-client/detail-day/detail-day.component';
+import { DetailCumplimientoComponent } from './register-client/detail-cumplimiento/detail-cumplimiento.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { DetailDayComponent } from './register-client/detail-day/detail-day.comp
     DisplayModalComponent,
     SearchTopicComponent,
     RegisterClientComponent,
-    DetailDayComponent
+    DetailDayComponent,
+    DetailCumplimientoComponent,
   ],
   imports: [
     CommonModule,

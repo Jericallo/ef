@@ -17,6 +17,7 @@ export class DetailDayComponent implements OnInit {
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
   cumplimientos = []
+  cumplimientosCumplidosADia = []
 
   ngOnInit(): void {
     console.log(this.data)
@@ -25,29 +26,28 @@ export class DetailDayComponent implements OnInit {
 
   filterDays(){
     const fechaHoy = Date.now()
-    if(fechaHoy < this.data.date) return
+   
     this.cumplimientos = this.data.data.filter(cumplimiento => {
-      return (cumplimiento.cumplimientos_obligacion.completado == false || (cumplimiento.cumplimientos_obligacion.completado === true && cumplimiento.cumplimientos_obligacion.fecha_maxima === this.data.date))
+      if(cumplimiento.cumplimientos_obligacion.fecha_cumplimiento === this.data.date) this.cumplimientosCumplidosADia.push(cumplimiento)
+      return (cumplimiento.cumplimientos_obligacion.fecha_maxima >= this.data.date && cumplimiento.cumplimientos_obligacion.fecha_cumplimiento !== this.data.date)
     })
   }
 
-  isFechaMaxima(element: any): string {
-    let fechaColumna = this.data.date;
+  isFechaMaxima(element: any, column: number): string {
+    let fechaColumna = this.data.date;;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
-    console.log(element, fechaMaxima)
+    let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
+
     const fechaHoy = Date.now()
 
-    if(fechaMaxima.toString() >= fechaColumna.toString()) {
-      if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
-      if(element.cumplimientos_obligacion.completado === false) return 'yellow'
-      else return 'transparent'
-    } else if(fechaMaxima.toString() === fechaColumna.toString()) {
-      if(element.cumplimientos_obligacion.completado === true) return 'green'
-      else return 'yellow'
-    } else if(fechaMaxima.toString() <= fechaColumna.toString()) {
-      if(fechaColumna.toString() > fechaHoy.toString()) return 'transparent'
-      if(element.cumplimientos_obligacion.completado === false) return 'red'
-      else return 'transparent'
-    }
+    
+
+    if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
+
+    if(fechaMaxima.toString() > fechaColumna.toString()) {
+      if(fechaColumna.toString() >= (fechaMaxima - (86400000 * 11)).toString()) return 'red'
+      else return '#ffcc0c'
+    } else if(fechaMaxima.toString() === fechaColumna.toString()) return 'red'
+     else if(fechaMaxima.toString() < fechaColumna.toString()) return 'transparent'
   }
 }

@@ -44,11 +44,11 @@ th, td {
     border-bottom: 1px solid #81660e;
     border-left: 1px solid #81660e;
     border-top: 1px solid #81660e;
-
+    padding-right: 0px !important; 
 }
 
 th.date-column, td.date-column {
-    min-width: 120px;
+    min-width: 40px;
     text-align: center;
     //background: #ffcc0c;
     flex: 1;
@@ -70,7 +70,7 @@ mat-header-row, mat-row {
 
 .mat-column-nombre {
     text-align: center;
-    width: 600px !important;
+    width: 400px !important;
     overflow: scroll;
     padding: 10px;
     white-space: nowrap;
@@ -97,12 +97,16 @@ th.mat-column-nombre {
     //margin-top: 50px;
 }
 
+.indicador:hover {
+    cursor: pointer;
+}
+
 .indicador-lento{
     animation: parpadeo 3s infinite;
 }
 
 .indicador-rapido{
-    animation: parpadeo 1s infinite;
+    animation: parpadeo 0.3s infinite;
 }
 
 @keyframes parpadeo {
@@ -125,4 +129,13 @@ th.mat-column-nombre {
 
 a:hover{
     cursor: pointer;
+}
+
+.pasado-faltante{
+    position: absolute;
+    top: 50px;
+    color: red;
+    font-weight: bold;
+    left: 35vw;
+    font-size: x-small;
 }

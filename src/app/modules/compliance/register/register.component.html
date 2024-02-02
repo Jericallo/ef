@@ -14,7 +14,7 @@
     </div>
   </mat-toolbar-row>
 <!--LA FUCKING TABLA DEL DIABLO-->
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 50px; height: 70%; width: 6800px; border-top-width: 5px;" >
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 50px; height: 70%; width: 7600px; border-top-width: 5px;" >
     
     <ng-container matColumnDef="fixedColumn" class="container" sticky>
       <!--HEADER-->
@@ -96,7 +96,7 @@
       <!--HEADER-->
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.3;">
         <div class="container" style="flex-direction: column;">
-          <div class="celdas" style="height: 8.15vh; min-height: 76.61px;">¿Aplica el Punto?</div>
+          <div class="celdas" style=" min-height: 86.61px;">¿Aplica el Punto?</div>
           <div class="celdas" style="flex-direction: row; display: flex;">
             <div class="celdas" style="flex: 0.5;">Si</div>
             <div class="celdas" style="flex: 0.5;">No</div>        
@@ -129,33 +129,52 @@
 
     <ng-container matColumnDef="fixedColumn4" class="container">
       <!--HEADER-->
-      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 16;">
         <div class="container" style="flex-direction: column; min-width: 100% !important; ">
-          <div class="celdas" style="height: 4.45vh; min-height: 41.83px;">Cumplimiento de obligación</div>
+          <div class="celdas" style=" min-height: 21.83px;">Cumplimiento de obligación</div>
           <div class="celdas" style="flex-direction: row; display: flex;">
-            <div class="celdas" style="flex: 1;">Fecha desde la que se puede cumplir</div>
-            <div class="celdas" style="flex: 1;">Fecha ideal para iniciarlo</div>
-            <div class="celdas" style="flex: 1;">Fecha ideal para finalizarlo</div>        
-            <div class="celdas" style="flex: 1;">Fecha máxima legal</div>       
-            <div  style="flex: 2; flex-direction: column; display: flex;">
+            <div style="flex: 4; flex-direction: column; display: flex;">
+              <div class="celdas" style="min-height: 20.2px;">Fundamento legal</div>
+              <div class="celdas" style="display: flex; flex-direction: row;">
+                <div class="celdas" style="flex: 1;">Periodo ideal para iniciar el cumplimiento</div>
+                <div class="celdas" style="flex: 1;">Periodo ideal para terminar el cumplimiento</div>
+                <div class="celdas" style="flex: 1;">Periodo para cumplirlo con vencimiento próximo</div>
+                <div class="celdas" style="flex: 1;">Periodo para cumplirlo muy urgente</div>
+              </div>
+            </div>
+           
+            <div  style="flex: 3; flex-direction: column; display: flex;">
               <div class="celdas" style="height: 3vh; min-height: 28.2px;">Fundamento legal</div>
               <div class="celdas" style="display: flex; flex-direction: row;">
+                <div class="celdas" style="flex: 1; height: 53px;">Fecha máxima legal</div>
                 <div class="celdas" style="flex: 1;">Art.</div>
                 <div class="celdas" style="flex: 1;">Actualizado al</div>
               </div>
-            </div>      
+            </div>  
+
             <div class="celdas" style="flex: 1;">¿Se cumplió con la obligación?</div>        
-            <div class="celdas" style="flex: 1;">Fecha en la que se cumplió</div>        
+            <div class="celdas" style="flex: 1;">Fecha en la que se cumplió</div>   
+            
+            <div  style="flex: 3; flex-direction: column; display: flex;">
+              <div class="celdas" style="height: 3vh; min-height: 28.2px;">Alerta de lo ocurrido</div>
+              <div class="celdas" style="display: flex; flex-direction: row;">
+                <div class="celdas" style="flex: 1; height: 53px;">Cumplimiento completo</div>
+                <div class="celdas" style="flex: 1;">Falta VoBo del supervisor</div>
+                <div class="celdas" style="flex: 1;">Incumplimiento 24 hrs</div>
+              </div>
+            </div>  
+
           </div>
         </div>
       </mat-header-cell>
       <!--BODY-->
-      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 16;">
         <div class="container" style="min-width: 100%;">
-          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_inicio_cumplimiento  | date:'d-MMM-y'}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_inicio_ideal  | date:'d-MMM-y'}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_ideal  | date:'d-MMM-y'}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_maxima | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_inicio_ideal  | date:'d-MMM-y'}} / {{row.content.fecha_inicio_ideal_fin  | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_inicio_cumplimiento  | date:'d-MMM-y'}}  / {{row.content.fecha_inicio_cumplimiento_fin  | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_ideal  | date:'d-MMM-y'}} / {{row.content.fecha_ideal_fin  | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_maxima | date:'d-MMM-y'}} / {{row.content.fecha_maxima_fin | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
           <div class="celdas internas" style="flex: 1;">
             <button (click)="openArticleFund(row)" mat-fab color="primary" class="custom-fab">
               <mat-icon style="font-size:22px;">bookmark</mat-icon>
@@ -169,19 +188,24 @@
           </div>  
           <div class="celdas internas" style="flex: 1;">{{row.content.se_cumplio}}</div>  
           <div class="celdas internas" style="flex: 1;">{{row.content.fecha_cumplio | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+
         </div>
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="fixedColumn5" class="container">
       <!--HEADER-->
-      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 8;">
         <div class="container" style="flex-direction: column;">
           <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Envío de Documentación de Evidencia</div>
           <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
             <div class="celdas" style="flex: 2;">Documentación que debe enviarse (declara, pagos, actas, hojas de trabajo, etc)</div>
             <div class="celdas" style="flex: 1;">Fecha ideal para enviarla</div>
             <div class="celdas" style="flex: 1;">Fecha máxima para enviarla</div>
+            <div class="celdas" style="flex: 1;">Fecha en la que se envió</div>
             <div class="celdas" style="flex: 1;">Recibida a tiempo</div>
             <div class="celdas" style="flex: 1;">Documentación suficiente</div>
             <div class="celdas" style="flex: 1;">Documentación insuficiente</div>
@@ -190,15 +214,20 @@
         </div>
       </mat-header-cell>
       <!--BODY-->
-      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 8;">
         <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 2;">contenido</div>  
+          <div class="celdas internas" style="flex: 2;">
+            <span *ngFor="let doc of row.content.documentos_faltantes">{{doc}} <br/></span>
+          </div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_fecha_ideal | date}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_fecha_maxima | date}}</div>
           <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_en_tiempo}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_documentacion_suficiente}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_documentacion_suficiente}}</div>
+          <div class="celdas internas" style="flex: 1;">
+            <span *ngFor="let reg of row.content.registro_general">{{reg}} <br/></span>
+          </div>
         </div>
       </mat-cell>
     </ng-container>
@@ -207,11 +236,11 @@
       <!--HEADER-->
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
         <div class="container" style="flex-direction: column;">
-          <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Envío de Documentación de Evidencia</div>
+          <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Recordatorios / Alertas x incumplimiento / Reportes a semáforo</div>
           <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
             <div class="celdas" style="flex: 1;">Prioridad</div>
             <div class="celdas" style="flex: 4;">Recordatorios previos al cumplimiento</div>
-            <div class="celdas" style="flex: 2;">Alertas</div>
+            <div class="celdas" style="flex: 2;">Alertas posteriores</div>
           </div>
           <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
             <div class="celdas" style="flex: 1;">Nivel</div>
@@ -227,13 +256,13 @@
       <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
         <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 1;">contenido</div>  
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.por_incumplimiento}}</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.reporte_en_1_dia}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.nivel}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.recordatorios[0]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.recordatorios[1]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.recordatorios[2]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.recordatorios[4]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.alertas[0]?.mensaje}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.reporte_via_semaforo[0]?.mensaje}}</div>
         </div>
       </mat-cell>
     </ng-container>
@@ -273,7 +302,7 @@
             <div class="celdas" style="flex: 1;">Semáforo</div>   
 
             <div class="celdas" style="flex: 1;">Inconsistencias</div>        
-            <div class="celdas" style="flex: 1;">Sanciones generales importantes</div>     
+            <div class="celdas" style="flex: 1;">Sanciones genéricas importantes</div>     
             <div class="celdas" style="flex: 1;">Sanción penal "Empresa"</div>
             <div class="celdas" style="flex: 1;">Sanción penal "Persona"</div>
 
@@ -352,7 +381,7 @@
       <!--HEADER-->
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 10;">
         <div class="container" style="flex-direction: column;">
-          <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Interacción con Personas</div>
+          <div class="celdas" style=" min-height: 10.55px;">Interacción con Personas</div>
           <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
             <div class="celdas" style="flex: 1;">Usuario 1 (responsable)</div>
             <div class="celdas" style="flex: 1;">Usuario 2 (segundo)</div>
@@ -372,11 +401,11 @@
       <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 10;">
         <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 1;">contenido</div>  
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario1}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario2}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario3}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario4}}</div>
+          <div class="celdas internas" style="flex: 1;">{{row.content.usuario5}}</div>
         </div>
       </mat-cell>
     </ng-container>

@@ -97,14 +97,30 @@ export class RegisterComponent implements OnInit {
               prioridad: element.cumplimientos_obligacion.prioridad,
 
               fecha_inicio_cumplimiento: element.cumplimientos_obligacion.fecha_inicio_cumplimiento,
+              fecha_inicio_cumplimiento_fin: element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin,
               fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
               fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
+              fecha_ideal_fin:element.cumplimientos_obligacion.fecha_ideal_fin,
               fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
+              fecha_maxima_fin:element.cumplimientos_obligacion.fecha_maxima_fin,
               fecha_habilitacion: element.cumplimientos_obligacion.fecha_habilitacion,
               fecha_inicio_ideal: element.cumplimientos_obligacion.fecha_inicio_ideal,
+              fecha_inicio_ideal_fin: element.cumplimientos_obligacion.fecha_inicio_ideal,
 
               se_cumplio:'',
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento,
+
+              documentos_faltantes:element.documentos_evidencia.documentacion_faltante,
+              documentos_fecha_ideal:element.documentos_evidencia.fecha_ideal,
+              documentos_fecha_maxima:element.documentos_evidencia.fecha_maxima,
+              documentos_en_tiempo:element.documentos_evidencia.en_tiempo,
+              documentos_documentacion_suficiente:element.documentos_evidencia.documentación_suficiente,
+              registro_general:element.documentos_evidencia.registro_general,
+
+              nivel:element.documentacion_evidencia.prioridad,
+              recordatorios:element.documentacion_evidencia.recordatorios,
+              alertas:element.documentacion_evidencia.alertas_incumplimiento,
+              reporte_via_semaforo:element.documentacion_evidencia.reporte_via_semaforo,
 
               leyes:element.correlacion.leyes,
               temario:element.correlacion.temario,
@@ -135,10 +151,14 @@ export class RegisterComponent implements OnInit {
               art:element.cumplimientos_obligacion.fundamento_legal.articulo,
               actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
 
-
-
               por_incumplimiento: element.aporte_semaforo.por_incumplimiento,
               reporte_en_1_dia: element.aporte_semaforo.reporte_en_1_dia,
+
+              usuario1:element.interaccion_usuarios.responsable,
+              usuario2:element.interaccion_usuarios.segundo,
+              usuario3:element.interaccion_usuarios.supervisor,
+              usuario4:element.interaccion_usuarios.director,
+              usuario5:element.interaccion_usuarios.GB,
               
               obligacion:element.cumplimientos_obligacion.id_obligacion,
               id:element.id_cumplimiento_mensual,
@@ -266,6 +286,7 @@ export class RegisterComponent implements OnInit {
               row.content.prioridad = 'Prioridad'
               row.backup.prioridad = row.content.prioridad
             }
+            console.log('ROW', row)
             rows.push(row)
         })
         this.dataSource.data = rows
@@ -290,7 +311,7 @@ export class RegisterComponent implements OnInit {
   create_table(){
     this.dataSource.data = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn3', 'fixedColumn4', 'fixedColumn5', 'fixedColumn6', 'fixedColumn7'];
+    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn3', 'fixedColumn4', 'fixedColumn5', 'fixedColumn6', 'fixedColumn7', 'fixedColumn8'];
     let rows = []
     for (let i = 1; i <= 1; i++) {
       const row = { 
