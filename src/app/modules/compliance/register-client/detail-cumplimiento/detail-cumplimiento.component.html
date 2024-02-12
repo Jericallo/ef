@@ -1,6 +1,7 @@
 <div class="container">
     <h4>{{data.cumplimiento.nombre}}</h4>
-    <h6>{{data.cumplimiento.descripcion}}</h6>
+    <!--<h6>{{data.cumplimiento.descripcion}}</h6>-->
+    <span class="leyenda">Clic para marcar como cumplido</span><br/>
     <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c;" 
     (click)="changeStatus()" [disabled]="disabled">{{texto}}</button>
 
