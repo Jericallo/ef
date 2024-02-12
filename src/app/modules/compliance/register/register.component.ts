@@ -105,7 +105,7 @@ export class RegisterComponent implements OnInit {
               fecha_maxima_fin:element.cumplimientos_obligacion.fecha_maxima_fin,
               fecha_habilitacion: element.cumplimientos_obligacion.fecha_habilitacion,
               fecha_inicio_ideal: element.cumplimientos_obligacion.fecha_inicio_ideal,
-              fecha_inicio_ideal_fin: element.cumplimientos_obligacion.fecha_inicio_ideal,
+              fecha_inicio_ideal_fin: element.cumplimientos_obligacion.fecha_inicio_ideal_fin,
 
               se_cumplio:'',
               fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento,

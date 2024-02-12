@@ -155,7 +155,6 @@ export class AddDocumentComponent implements OnInit {
     this.showSpinner = true;
     console.log(this.sendingDocument)
     this.sendingDocument.clasificacion = this.sendingDocument.clasificacion[0].id
-    //this.sendingDocument.clasificacion = 6
     console.log(this.sendingDocument)
     this.apiService.saveDocument(this.sendingDocument)
     .subscribe({

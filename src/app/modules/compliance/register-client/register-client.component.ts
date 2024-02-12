@@ -69,7 +69,6 @@ export class RegisterClientComponent implements OnInit {
     const today = new Date();
 
     if (isSameMonth(this.currentMonth, today)) {
-      //return 'Mes actual'; // or any other customized text
     }
 
     return currentMonthText.charAt(0).toUpperCase() + currentMonthText.slice(1);
@@ -90,6 +89,7 @@ export class RegisterClientComponent implements OnInit {
     this.apiService.getCumplimientosControl().subscribe({
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
+        console.log(res.result)
         this.tableData = res.result;
       }
     });
@@ -102,15 +102,18 @@ export class RegisterClientComponent implements OnInit {
       return 'transparent';
     }
     let fechaColumna = column;
-    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima_fin;
     let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
+    let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+    let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
     const fechaHoy = Date.now()
 
     if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
     if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
 
     if(fechaMaxima.toString() > fechaColumna.toString()) {
-      if(fechaColumna.toString() >= (fechaMaxima - (86400000 * 11)).toString()) return 'red'
+      if(fechaColumna.toString() >= (fechaIdeal).toString()) return 'red'
       else return '#ffcc0c'
     } else if(fechaMaxima.toString() === fechaColumna.toString()) return 'red'
      else if(fechaMaxima.toString() < fechaColumna.toString()) return 'transparent'
@@ -130,7 +133,7 @@ export class RegisterClientComponent implements OnInit {
     const dialogRef = this.dialogRef.open(DetailDayComponent, { 
       width: '1000px',
       height: '720px',
-      data: {date: column, data:this.tableData} // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
+      data: {date: column, data:this.tableData}
     });
   }
 
@@ -138,7 +141,7 @@ export class RegisterClientComponent implements OnInit {
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
       width: '1000px',
       height: '720px',
-      data: {cumplimiento:cumplimiento, fecha:day} // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
+      data: {cumplimiento:cumplimiento, fecha:day} 
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -146,32 +149,51 @@ export class RegisterClientComponent implements OnInit {
     });
   }
 
-  isIndicadorLento(element: any, column: any){
-    if(column === 0) return false
+  isIndicadorLento(element: any, column: any) {
+    if (column === 0) return false;
+
     let fechaColumna = column;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaInicioIdeal = element.cumplimientos_obligacion.fecha_inicio_ideal;
+    let fechaInicioIdealFin = element.cumplimientos_obligacion.fecha_inicio_ideal_fin;
+    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
+    let fechaIdealFin = element.cumplimientos_obligacion.fecha_ideal_fin
 
-    const fechaHoy = Date.now()
-
-    if(fechaColumna.toString() <= fechaMaxima.toString() && fechaColumna.toString() >= fechaHoy.toString()){
-      if((fechaMaxima - (86400000 * 7)).toString() >= fechaColumna.toString()) return true
+    const fechaHoy = Date.now();
+    
+    if (
+        fechaColumna.toString() <= fechaMaxima.toString() &&
+        fechaColumna.toString() >= fechaHoy.toString() &&
+        (fechaColumna >= fechaInicioIdeal && fechaColumna <= fechaInicioIdealFin) ||
+        (fechaColumna >= fechaIdeal && fechaColumna <= fechaIdealFin)
+    ) {
+        return true;
     }
 
-    return false
-  }
+    return false;
+}
+
+
 
   isIndicadorRapido(element: any, column: number){
     if(column === 0) return false
     let fechaColumna = column;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaMaximaFin = element.cumplimientos_obligacion.fecha_maxima_fin
+    let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+    let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
 
     const fechaHoy = Date.now()
 
     if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false && fechaColumna.toString() >= fechaHoy.toString()) return true
 
-    if(fechaColumna.toString() <= fechaMaxima.toString() && fechaColumna.toString() >= fechaHoy.toString()){
-      if((fechaMaxima - (86400000 * 8)).toString() <= fechaColumna.toString()) return true
+    if(fechaColumna.toString() <= fechaMaximaFin.toString() && fechaColumna.toString() >= fechaHoy.toString()){
+     if(fechaColumna >= fechaInicioCumplimiento && fechaColumna <= fechaInicioCumplimientoFin) return true
+      if(fechaColumna >= fechaMaxima && fechaColumna <= fechaMaximaFin) return true
     }
+
+
+
 
     return false
   }
