@@ -5,7 +5,7 @@
     <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c;" 
     (click)="changeStatus()" [disabled]="disabled">{{texto}}</button>
 
-    <div class="divisor"></div>
+    
     <div *ngIf="data.cumplimiento.cumplimientos_obligacion.completado">
         <h6>¡Cumplimiento cumplido!</h6>
         <ul>
@@ -13,6 +13,7 @@
         </ul>
         <div class="divisor"></div>
     </div>
+    <!--
     <div>
         <ul>
             <li>Fecha de inicio del cumplimiento: {{data.cumplimiento.cumplimientos_obligacion.fecha_inicio_cumplimiento | date}}</li>
@@ -39,6 +40,7 @@
             <li *ngFor="let doc of data.cumplimiento.documentos_evidencia.documentacion_faltante">{{doc}}</li>
         </ul>
     </div>
+    -->
 
    
 </div>

@@ -10,8 +10,6 @@ import { DisplayModalComponent } from './display-modal/display-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-register',
@@ -52,6 +50,8 @@ export class RegisterComponent implements OnInit {
   sentCapacitations = null
 
   sending = ['hola','adios']
+
+  selectedDate:Date
 
   constructor(private apiService:ApiService, public dialog: MatDialog) {}
 
@@ -919,5 +919,32 @@ export class RegisterComponent implements OnInit {
       datos = datos.sort((a:any, b:any) => a.fixedColumn5.fecha_ideal - b.fixedColumn5.fecha_ideal)
       this.dataSource.data = datos
     }
+  }
+
+  //---------------------------------------FOR MODIFICATIONS OF DATE--------------------------------------//
+
+  onDateSelected(event: any, tipo:number, id:number) {
+    const time = event.value.getTime()
+    console.log(time)
+    let body;
+    console.log(tipo)
+    if(tipo === 1) body = {fecha_inicio_ideal:time} //no jala
+    if(tipo === 2) body = {fecha_inicio_ideal_fin:time} // no jala
+    if(tipo === 3) body = {fecha_inicio:(time/60000)}
+    if(tipo === 4) body = {fecha_inicio_fin:time}
+    if(tipo === 5) body = {periodo_fecha_ideal:time}
+    if(tipo === 6) body = {fecha_ideal_fin:time}
+    if(tipo === 7) body = {fecha_maxima:time} // no jala
+    if(tipo === 8) body = {periodo_fecha_maxima:time}
+    body.id_cumplimiento = id
+    console.log(body)
+
+    this.apiService.editDates(body).subscribe({
+      next: res => {
+        console.log(res)
+      }, error: err => {
+        console.log(err)
+      }
+    })
   }
 }
