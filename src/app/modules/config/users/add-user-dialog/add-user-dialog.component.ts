@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from 'src/app/shared/services/api.service';
+import Swal from 'sweetalert2';
 
 interface Usuario {
   id_perfil: number;
   correo: string;
   nombre: string;
-  telefono: number; 
+  telefono: string; 
   contra: string;
   estatus: number; 
 }
@@ -23,7 +24,7 @@ export class AddUserDialogComponent implements OnInit {
     id_perfil: 1, 
     correo: '',
     nombre: '',
-    telefono:null, 
+    telefono:'', 
     contra: '',
     estatus: 1 
   };
@@ -50,6 +51,15 @@ export class AddUserDialogComponent implements OnInit {
       this.apiService.postUser(body).subscribe(
         (response) => {
           console.log('Usuario agregado exitosamente', response);
+          Swal.fire({
+            title: 'Usuario agregado exitosamente!',
+            icon: 'success',
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton:true,
+            confirmButtonText:"Aceptar",
+            confirmButtonColor: "#109ff5"
+          })
           this.dialogRef.close()
         },
         (error) => {

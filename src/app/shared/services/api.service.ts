@@ -170,6 +170,15 @@ export class ApiService {
     return this.http.post(environment.baseUrl + 'setNewPassword', { text: encryptedData }, { headers: headers });
   }
 
+  public getUsers():Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/users'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
   public deleteUser(userId: number): Observable<any> {
     const url = environment.baseUrl + 'delete'; 
     const headers = new HttpHeaders({

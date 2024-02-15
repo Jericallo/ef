@@ -112,6 +112,8 @@ export class RegisterClientComponent implements OnInit {
     if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
     if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
 
+  
+
     if(fechaMaxima.toString() > fechaColumna.toString()) {
       if(fechaColumna.toString() >= (fechaIdeal).toString()) return 'red'
       else return '#ffcc0c'
