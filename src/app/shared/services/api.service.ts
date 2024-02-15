@@ -829,4 +829,12 @@ export class ApiService {
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
 
+  public editDates(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v2/cumplimiento_control'
+    return this.http.put(url, body,{headers:headers});  
+  }
 }

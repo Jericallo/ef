@@ -44,7 +44,7 @@ import { DetailCumplimientoComponent } from './register-client/detail-cumplimien
     ReactiveFormsModule,
     FlexLayoutModule,
     ConfigModule
-  ],
+    ],
   providers:[NotificationService]
 })
 export class ComplianceModule { }

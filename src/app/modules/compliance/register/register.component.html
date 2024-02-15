@@ -170,10 +170,49 @@
       <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 16;">
         <div class="container" style="min-width: 100%;">
-          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_inicio_ideal  | date:'d-MMM-y'}} / {{row.content.fecha_inicio_ideal_fin  | date:'d-MMM-y'}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_inicio_cumplimiento  | date:'d-MMM-y'}}  / {{row.content.fecha_inicio_cumplimiento_fin  | date:'d-MMM-y'}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_ideal  | date:'d-MMM-y'}} / {{row.content.fecha_ideal_fin  | date:'d-MMM-y'}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.fecha_maxima | date:'d-MMM-y'}} / {{row.content.fecha_maxima_fin | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">
+            
+            <input matInput [matDatepicker]="picker" [value]="row.content.fecha_inicio_ideal | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 1, row.content.obligacion)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker ></mat-datepicker> / 
+
+            <input matInput [matDatepicker]="picker2" [value]="row.content.fecha_inicio_ideal_fin | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 2, row.content.obligacion)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+
+          </div>
+          <div class="celdas internas" style="flex: 1;">
+
+            <input matInput [matDatepicker]="picker3" [value]="row.content.fecha_inicio_cumplimiento  | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 3, row.content.obligacion)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker> / 
+
+            <input matInput [matDatepicker]="picker4" [value]="row.content.fecha_inicio_cumplimiento_fin  | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 4, row.content.obligacion)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
+            <mat-datepicker #picker4></mat-datepicker>
+
+          </div>
+          <div class="celdas internas" style="flex: 1;">
+
+            <input matInput [matDatepicker]="picker5" [value]="row.content.fecha_ideal  | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 5, row.content.obligacion)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker5"></mat-datepicker-toggle>
+            <mat-datepicker #picker5></mat-datepicker> / 
+
+            <input matInput [matDatepicker]="picker6" [value]="row.content.fecha_ideal_fin  | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 6, row.content.obligacion)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker6"></mat-datepicker-toggle>
+            <mat-datepicker #picker6></mat-datepicker>
+
+          </div>  
+          <div class="celdas internas" style="flex: 1;">
+
+            <input matInput [matDatepicker]="picker7" [value]="row.content.fecha_maxima | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 7, row.content.obligacion)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker7"></mat-datepicker-toggle>
+            <mat-datepicker #picker7></mat-datepicker> / 
+
+            <input matInput [matDatepicker]="picker8" [value]="row.content.fecha_maxima_fin | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 8, row.content.obligacion)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker8"></mat-datepicker-toggle>
+            <mat-datepicker #picker8></mat-datepicker>
+          </div>  
           <div class="celdas internas" style="flex: 1;">contenido</div>  
           <div class="celdas internas" style="flex: 1;">
             <button (click)="openArticleFund(row)" mat-fab color="primary" class="custom-fab">

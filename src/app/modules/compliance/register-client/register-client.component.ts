@@ -104,13 +104,17 @@ export class RegisterClientComponent implements OnInit {
     let fechaColumna = column;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima_fin;
     let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
+    let fechaMinima = element.cumplimientos_obligacion.fecha_inicio_ideal
     let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
     let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
     let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
     const fechaHoy = Date.now()
 
+
+
     if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
     if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
+    if(fechaMinima.toString() > fechaColumna.toString()) return 'transparent'
 
     if(fechaMaxima.toString() > fechaColumna.toString()) {
       if(fechaColumna.toString() >= (fechaIdeal).toString()) return 'red'
@@ -139,8 +143,8 @@ export class RegisterClientComponent implements OnInit {
 
   openCumplimientoDialog(cumplimiento:any, day:any){
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
-      width: '1000px',
-      height: '720px',
+      width: '800px',
+      height: '170px',
       data: {cumplimiento:cumplimiento, fecha:day} 
     });
 
