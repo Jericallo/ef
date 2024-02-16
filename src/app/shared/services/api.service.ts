@@ -170,8 +170,17 @@ export class ApiService {
     return this.http.post(environment.baseUrl + 'setNewPassword', { text: encryptedData }, { headers: headers });
   }
 
+  public getModules():Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/module'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
   public getUsers():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/users'
+    const url = 'https://api.escudofiscal.alphadev.io/v2/user'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -180,15 +189,15 @@ export class ApiService {
   }
 
   public deleteUser(userId: number): Observable<any> {
-    const url = environment.baseUrl + 'delete'; 
+    const url = `https://api.escudofiscal.alphadev.io/v2/user/delete`; 
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
     });  
-         
-    let params = new HttpParams().set('model', 'usuarios');
-    params = params.append('id', userId.toString());
-    return this.http.delete(url, { headers, params });
+    const body = {
+      id: userId
+    }
+    return this.http.put(url, body);
   }
 
   public deleteProfile(userId: number): Observable<any> {
@@ -264,6 +273,16 @@ export class ApiService {
     let params = new HttpParams().set('model', 'modulos');
     params = params.append('id', moduleId);
     return this.http.delete(url, { headers, params });
+  }
+
+  public postModule(data: any): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/module'; 
+    console.log(data)
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, data, { headers });
   }
 
 

@@ -72,9 +72,8 @@ export class UsersComponent implements OnInit {
   }
 
   getUsers(){
-    this.apiService.getAll("usuarios").subscribe({
+    this.apiService.getUsers().subscribe({
       next:res => {
-        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         this.usersList = res.result;
         this.dataSource = new MatTableDataSource<any>(this.usersList);
         console.log(res.result)

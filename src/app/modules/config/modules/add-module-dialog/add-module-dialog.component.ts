@@ -34,8 +34,6 @@ export class AddModuleDialogComponent implements OnInit {
   }
 
   createModule() {
-
-
     const newModule = {
       nombre: this.newModuleName,
       orden: this.newOrder.toString() || "0",
