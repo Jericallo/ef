@@ -112,8 +112,16 @@ export class RegisterClientComponent implements OnInit {
 
 
 
-    if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
-    if(element.cumplimientos_obligacion.completado === true && fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
+    if(element.cumplimientos_obligacion.completado === 1 && fechaCumplimiento !== null) {
+      if(fechaCumplimiento.toString() === fechaColumna.toString()) return '#ffcc0c'
+      if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
+    } 
+
+    if(element.cumplimientos_obligacion.completado === 2 && fechaCumplimiento !== null) {
+      if(fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
+      if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
+    } 
+    
     if(fechaMinima.toString() > fechaColumna.toString()) return 'transparent'
 
   
@@ -157,6 +165,7 @@ export class RegisterClientComponent implements OnInit {
 
   isIndicadorLento(element: any, column: any) {
     if (column === 0) return false;
+    if(element.cumplimientos_obligacion.completado !== 0) return false 
 
     let fechaColumna = column;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
@@ -183,6 +192,8 @@ export class RegisterClientComponent implements OnInit {
 
   isIndicadorRapido(element: any, column: number){
     if(column === 0) return false
+    if(element.cumplimientos_obligacion.completado !== 0) return false 
+
     let fechaColumna = column;
     let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
     let fechaMaximaFin = element.cumplimientos_obligacion.fecha_maxima_fin

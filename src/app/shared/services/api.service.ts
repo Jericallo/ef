@@ -323,6 +323,13 @@ export class ApiService {
     }
   }
 
+  public getWholeUser(){
+    if(localStorage[this.TOKEN]){
+      let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
+      return res
+    }
+  }
+
   public getPrivateKey(){
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
@@ -719,13 +726,14 @@ export class ApiService {
   }
 
   public editCumplimiento(body):Observable<any>{
+    console.log('BODY', body)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_control'
-    const encryptedBody = this.encrypt(body,'private')
-    return this.http.put(url, {text:encryptedBody},{headers:headers});  
+    const url = 'https://api.escudofiscal.alphadev.io/v2/cumplimiento_control'
+    //const encryptedBody = this.encrypt(body,'private')
+    return this.http.put(url, {body},{headers:headers});  
   }
 
   public getAllDocuments(params?):Observable<any>{
