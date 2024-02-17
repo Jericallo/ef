@@ -40,10 +40,10 @@ export class ProfilesComponent implements OnInit {
 
 
   getProfiles(){
-    this.apiService.getAll("perfiles").subscribe({
+    this.apiService.getProfiles().subscribe({
       next:res => {
-        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
-        this.profileList = res.result;
+        console.log(res)
+        this.profileList = res;
         this.profileList.forEach(profile => {
           profile.fecha_creacion = this.datePipe.transform(profile.fecha_creacion, 'dd/MM/yy');
         });
@@ -79,8 +79,9 @@ export class ProfilesComponent implements OnInit {
   
 
   getModuleNames(profile: any): string {
-    if (profile.modulos && profile.modulos.length > 0) {
-      return profile.modulos.map(modulo => modulo.nombre).join(', ');
+    console.log(profile)
+    if (profile.perfiles_modulos && profile.perfiles_modulos.length > 0) {
+      return profile.perfiles_modulos.map(modulo => modulo.modulos.nombre).join(', ');
     }
     return '---';
   }

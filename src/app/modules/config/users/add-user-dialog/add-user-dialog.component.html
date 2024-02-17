@@ -4,8 +4,7 @@
     <div class="grid-item">
       <mat-form-field>
         <mat-select matInput placeholder="Perfil" required (selectionChange)="onPerfilChange($event)">
-          <mat-option value="1">Administrador</mat-option>
-          <mat-option value="2">Capturista</mat-option>
+          <mat-option *ngFor="let perfil of perfiles" value="{{perfil.id}}">{{perfil.nombre}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

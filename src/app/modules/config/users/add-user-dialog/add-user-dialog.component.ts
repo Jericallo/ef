@@ -29,6 +29,8 @@ export class AddUserDialogComponent implements OnInit {
     estatus: 1 
   };
 
+  perfiles = []
+
   camposInvalidos: boolean = false;
   passwordPattern: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   emailPattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -39,10 +41,23 @@ export class AddUserDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, private apiService: ApiService) { }
 
   ngOnInit(): void {
+    this.getProfiles()
   }
 
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  getProfiles(){
+    this.apiService.getProfiles().subscribe(
+      (response) => {
+        console.log('Perfiles', response);
+        this.perfiles = response
+      },
+      (error) => {
+        console.error('Error al agregar el usuario', error);
+      }
+    );
   }
 
   saveUser() {

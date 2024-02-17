@@ -60,8 +60,6 @@ export class DetailCumplimientoComponent implements OnInit {
       }
     }
     
-
-
     console.log(body)
     this.apiService.editDates(body).subscribe({
       next: res => {

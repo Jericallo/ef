@@ -170,15 +170,6 @@ export class ApiService {
     return this.http.post(environment.baseUrl + 'setNewPassword', { text: encryptedData }, { headers: headers });
   }
 
-  public getModules():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/module'
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
-    });
-    return this.http.get(url,{headers:headers})
-  }
-
   public getUsers():Observable<any>{
     const url = 'https://api.escudofiscal.alphadev.io/v2/user'
     let headers = new HttpHeaders({
@@ -864,6 +855,41 @@ export class ApiService {
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
+
+  //-------ENDPOINTS DE LA VERSION 2-------//
+
+  //ENDPOINTS PARA PERFILES
+
+  public getProfiles():Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/profile'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public createProfile(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v2/profile'
+    return this.http.post(url, body,{headers:headers}); 
+  }
+
+  //ENDPOINTS PARA MÓDULOS
+
+  public getModules():Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/module'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  //ENDPOINTS PARA CUMPLIMIENTO CONTROL
 
   public editDates(body):Observable<any>{
     let headers = new HttpHeaders({

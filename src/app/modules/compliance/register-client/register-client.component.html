@@ -1,6 +1,6 @@
 <div class="month-navigation">
     <mat-icon>chevron_left</mat-icon> <button (click)="navigateMonth(-1)"class="button-prev">Anterior</button>
-    <span class="pasado-faltante" *ngIf="cumplimientos_faltantes">*PENDIENTES EN EL PASADO, VERIFICAR*</span>
+    <span class="pasado-faltante" *ngIf="false">*PENDIENTES EN EL PASADO, VERIFICAR*</span>
     <span>{{ getCurrentMonthText() }}</span>
     <button (click)="navigateMonth(1)" class="button-next">Siguiente</button><mat-icon>chevron_right</mat-icon>
   </div>
