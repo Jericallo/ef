@@ -39,9 +39,9 @@ export class AddProfileDialogComponent implements OnInit {
       modulos: selectedModuleIds.map(id => ({ id, permisos: null }))
     };
 
-    const body = { model: "perfiles", data: newProfile };
+    const body = newProfile;
 
-    this.apiService.post(body).subscribe({
+    this.apiService.createProfile(body).subscribe({
       next: (response) => {
         console.log('Perfil creado exitosamente:', response);
         this.dialogRef.close(); 

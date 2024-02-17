@@ -1,18 +1,22 @@
 <div class="container">
     <h4>{{data.cumplimiento.nombre}}</h4>
     <!--<h6>{{data.cumplimiento.descripcion}}</h6>-->
-    <span class="leyenda">Clic para marcar como cumplido</span><br/>
-    <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c;" 
-    (click)="changeStatus()" [disabled]="disabled">{{texto}}</button>
+    <div *ngIf="data.cumplimiento.cumplimientos_obligacion.completado !== 2">
+        <span class="leyenda">Clic para marcar como cumplido</span><br/>
+        <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c;" 
+        (click)="changeStatus()" [disabled]="disabled">{{texto}}</button>
+    </div>
+    
 
-    <div class="divisor"></div>
-    <div *ngIf="data.cumplimiento.cumplimientos_obligacion.completado">
+    
+    <div *ngIf="data.cumplimiento.cumplimientos_obligacion.completado === 2">
         <h6>¡Cumplimiento cumplido!</h6>
         <ul>
             <li>Fecha en que se cumplió: {{data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento | date}}</li>
         </ul>
         <div class="divisor"></div>
     </div>
+    <!--
     <div>
         <ul>
             <li>Fecha de inicio del cumplimiento: {{data.cumplimiento.cumplimientos_obligacion.fecha_inicio_cumplimiento | date}}</li>
@@ -39,6 +43,7 @@
             <li *ngFor="let doc of data.cumplimiento.documentos_evidencia.documentacion_faltante">{{doc}}</li>
         </ul>
     </div>
+    -->
 
    
 </div>

@@ -34,10 +34,11 @@ export class ModulesComponent implements OnInit {
 
 
   getModules(){
-    this.apiService.getAll("modulos").subscribe({
+    this.apiService.getModules().subscribe({
       next:res => {
-        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
-        this.modulesList = res.result;
+        console.log(res)
+        //res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+        this.modulesList = res;
         this.dataSource = new MatTableDataSource<any>(this.modulesList);
         console.log(this.modulesList)
       }

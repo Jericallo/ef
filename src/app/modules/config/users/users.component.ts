@@ -39,12 +39,15 @@ export class UsersComponent implements OnInit {
     this.getUsers()
   }
 
-  openAdd(){
-     this.dialog.open(AddUserDialogComponent, {
+  openAdd() {
+    const dialogRef = this.dialog.open(AddUserDialogComponent, {
       width: '1000px',
     });
+    dialogRef.afterClosed().subscribe(() => {
+      this.getUsers();
+    });
   }
-
+  
   openRemove(user: any) {
     const dialogRef = this.dialog.open(RemoveUserDialogComponent, {
       width: '600px',
@@ -69,12 +72,11 @@ export class UsersComponent implements OnInit {
   }
 
   getUsers(){
-    this.apiService.getAll("usuarios").subscribe({
+    this.apiService.getUsers().subscribe({
       next:res => {
-        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         this.usersList = res.result;
         this.dataSource = new MatTableDataSource<any>(this.usersList);
-
+        console.log(res.result)
       }
     })
   }
