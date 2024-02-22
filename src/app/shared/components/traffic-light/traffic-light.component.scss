@@ -1,0 +1,25 @@
+.contenedor {
+    position: fixed;
+    top: 10px;
+    right: 50px;
+    display: flex;
+}
+
+.semaforo {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    margin-left: 20px;
+}
+
+span{
+    margin-left: 20px;
+}
+
+.amarillo {
+    background-color: yellow;
+}
+
+.rojo {
+    background-color: red;
+}

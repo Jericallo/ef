@@ -15,6 +15,8 @@ registerLocaleData(localeEs, "es");
 export class DetailCumplimientoComponent implements OnInit {
   disabled = false
   texto = "Marcar como cumplido"
+  showButton = true
+  mostrarLeyenda = false
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
@@ -28,18 +30,30 @@ export class DetailCumplimientoComponent implements OnInit {
       this.texto = "Esperando confirmación del supervisor"
     } else if (user.nombre_perfil === "Supervisor" && this.data.cumplimiento.cumplimientos_obligacion.completado === 1){
       this.disabled = false;
-      this.texto = "Confirmar como cumplido"
+      this.texto = "Comenzar a revisar como cumplido"
+    } else if (user.nombre_perfil === "Supervisor" && this.data.cumplimiento.cumplimientos_obligacion.completado === 2){
+      this.disabled = false;
+      this.texto = "Terminar revisión"
     }
 
     if(this.data.cumplimiento.cumplimientos_obligacion.completado === true){
       this.disabled = true;
       this.texto = "Esperando confirmación del supervisor"
     }
+    const today = Date.now()
+    const fechaHoy = new Date();
+    fechaHoy.setHours(0, 0, 0, 0);
+    fechaHoy.setTime(fechaHoy.getTime() - 1);
+    
+
+    if(this.data.cumplimiento.cumplimientos_obligacion.completado === 3 || this.data.fecha > today) this.showButton = false
+    if(this.data.fecha < fechaHoy.getTime()) this.mostrarLeyenda = true
+    
   }
 
   changeStatus(){
     const user = this.apiService.getWholeUser()
-    let body = {}
+    let body
     if(user.nombre_perfil === "Administrador") {
       body = {
         obligation:{
@@ -50,14 +64,26 @@ export class DetailCumplimientoComponent implements OnInit {
         cumplimientoMensual:null
       }
     } else if (user.nombre_perfil === "Supervisor"){
-      body = {
-        obligation:{
-          id: this.data.cumplimiento.cumplimientos_obligacion.id_obligacion,
-          fecha_completado:parseInt(this.data.fecha),
-          completado:2
-        },
-        cumplimientoMensual:null
+      if(this.data.cumplimiento.cumplimientos_obligacion.completado === 1) {
+        body = {
+          obligation:{
+            id: this.data.cumplimiento.cumplimientos_obligacion.id_obligacion,
+            fecha_completado:parseInt(this.data.fecha),
+            completado:2
+          },
+          cumplimientoMensual:null
+        }
+      } else {
+        body = {
+          obligation:{
+            id: this.data.cumplimiento.cumplimientos_obligacion.id_obligacion,
+            fecha_completado:parseInt(this.data.fecha),
+            completado:3
+          },
+          cumplimientoMensual:null
+        }
       }
+      
     }
     
     console.log(body)
@@ -65,7 +91,17 @@ export class DetailCumplimientoComponent implements OnInit {
       next: res => {
         console.log(res)
         this.disabled = true;
-      this.texto = "Esperando confirmación del supervisor"
+        if(user.nombre_perfil === "Supervisor" || body.obligation.completado === 2){
+          this.data.cumplimiento.cumplimientos_obligacion.completado = 2;
+          //this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento = this.data.fecha
+          this.texto = "Terminar revisión..."
+          this.disabled = false;
+          return
+        } else if(user.nombre_perfil === "Supervisor" || body.obligation.completado === 3){
+          this.data.cumplimiento.cumplimientos_obligacion.completado = 3;
+          this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento = this.data.fecha
+        }
+        this.texto = "Esperando confirmación del supervisor"
       },
       error: err => {
         console.log(err);

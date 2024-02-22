@@ -7,17 +7,20 @@ import {
   AccordionLinkDirective,
   AccordionDirective
 } from './accordion';
+import { TrafficLightComponent } from './components/traffic-light/traffic-light.component';
 
 @NgModule({
   declarations: [
     AccordionAnchorDirective,
     AccordionLinkDirective,
     AccordionDirective,
+    TrafficLightComponent,
   ],
   exports: [
     AccordionAnchorDirective,
     AccordionLinkDirective,
-    AccordionDirective
+    AccordionDirective,
+    TrafficLightComponent
   ],
   providers: [MenuItems, HorizontalMenuItems],
 })

@@ -13,12 +13,14 @@ import { ControlRoutes } from './control.routing';
 import { RouterModule } from '@angular/router';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
 import { DatePipe } from '@angular/common';
+import { QuestionarieComponent } from './questionarie/questionarie.component';
 
 @NgModule({
   declarations: [
     CapacitationsComponent,
     EndedVideoComponent,
     VideosComponent,
+    QuestionarieComponent,
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
