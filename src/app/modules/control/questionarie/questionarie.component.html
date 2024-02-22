@@ -1,1 +1,38 @@
-<p>questionarie works!</p>
+<div class="mainDiv">
+    <mat-card class="mainCard">
+        <div class="content">
+            <p>{{ title }}</p>
+            <div *ngFor="let question of questions; let i = index">
+                <label class="main-label">{{i + 1}}.- {{ question.contenido }}</label>
+                <mat-radio-group class="example-radio-group">
+                    <mat-radio-button class="example-radio-button" *ngFor="let ans of question.respuestas" [value]="ans" (change)="selectedOpt(ans)">
+                        <label class="second-label">{{ ans.respuesta }}</label>
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <br>
+            <button mat-raised-button color="primary" (click)="sendQuestionnaire()" [disabled]="isSendDisabled()">Enviar</button>
+        </div>
+    </mat-card>
+</div>
+<div class="timer" *ngIf="limitTime <= (questionsLimitTime/2)">
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <div class="text-center">{{hoursToShow}}</div>
+                <div class="text-center timerText">Horas</div> 
+            </div>
+            <div class="col-4">
+                <div class="text-center">{{minutesToShow}}</div>
+                <div class="text-center timerText">Minutos</div> 
+            </div>
+            <div class="col-4">
+                <div class="text-center">{{secondsToShow}}</div>
+                <div class="text-center timerText">Segundos</div> 
+            </div>
+        </div>
+    </div>
+</div>
+<div class="spinner" *ngIf="showSpinner">
+    <mat-spinner></mat-spinner>
+</div>
