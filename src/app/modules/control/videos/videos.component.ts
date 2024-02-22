@@ -172,8 +172,9 @@ export class VideosComponent implements OnInit {
   }
 
   goToQuestions() {
+    console.log(this.state)
     const navigationExtras: NavigationExtras = { state: this.state }
-    this._router.navigate(['control/capacitaciones'], navigationExtras);
+    this._router.navigate(['control/cuestionario'], navigationExtras);
   }
 
   prevCapacitation() {

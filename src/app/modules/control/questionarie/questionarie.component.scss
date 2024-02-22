@@ -1,0 +1,38 @@
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+}
+  
+.example-radio-button {
+    margin: 5px;
+}
+
+.main-label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.second-label {
+    font-size: 15px;
+}
+
+.timer{
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    background-color: beige;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 0.5em;
+    box-shadow: 2px 2px 5px #222;
+}
+
+.timerText{
+    font-size: .5rem;
+}
+
+.content{
+    padding: 15px;
+}

@@ -98,7 +98,7 @@ export class DocumentsService {
   }
 
   public getCapacitations(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=capacitaciones&id_usuario=1';
+    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=capacitaciones&id_usuario=2';
     return this.http.get<Capacitations[]>(url);
   }
 
