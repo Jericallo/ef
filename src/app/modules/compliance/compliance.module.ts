@@ -18,6 +18,7 @@ import { SearchTopicComponent } from 'src/app/shared/components/search-topic/sea
 import { RegisterClientComponent } from './register-client/register-client.component';
 import { DetailDayComponent } from './register-client/detail-day/detail-day.component';
 import { DetailCumplimientoComponent } from './register-client/detail-cumplimiento/detail-cumplimiento.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { DetailCumplimientoComponent } from './register-client/detail-cumplimien
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    ConfigModule
+    ConfigModule,
+    SharedModule
     ],
   providers:[NotificationService]
 })

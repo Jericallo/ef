@@ -931,7 +931,7 @@ export class RegisterComponent implements OnInit {
     if(tipo === 2) body.obligation = {fecha_inicio_ideal_fin:time}
     if(tipo === 3) body.obligation = {fecha_inicio:(time/60000)}
     if(tipo === 4) body.obligation = {fecha_inicio_fin:time}
-    if(tipo === 5) body.obligation = {periodo_fecha_ideal:time}
+    if(tipo === 5) body.obligation = {fecha_ideal:time}
     if(tipo === 6) body.obligation = {fecha_ideal_fin:time}
     if(tipo === 7) body.obligation = {fecha_maxima:time}
     if(tipo === 8) body.obligation = {periodo_fecha_maxima:time}

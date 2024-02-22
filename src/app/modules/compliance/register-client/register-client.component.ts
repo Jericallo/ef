@@ -95,7 +95,12 @@ export class RegisterClientComponent implements OnInit {
     });
   }
 
-  //86,400,000
+  //ORDEN DE LAS FECHAS
+
+  //1.- FECHA INICIO IDEAL / FECHA INICIO IDEAL FIN
+  //2.- FECHA INICIO CUMPLIMIENTO / FECHA INICIO CUMPLIMIENTO FIN
+  //3.- FECHA IDEAL / FECHA IDEAL FIN
+  //4.- FECHA MÁXIMA / FECHA MÁXIMA FIN
 
   isFechaMaxima(element: any, column: number): string {
     if (column === 0) {
@@ -112,19 +117,17 @@ export class RegisterClientComponent implements OnInit {
 
 
 
-    if(element.cumplimientos_obligacion.completado === 1 && fechaCumplimiento !== null) {
+    if((element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2) && fechaCumplimiento !== null) {
       if(fechaCumplimiento.toString() === fechaColumna.toString()) return '#ffcc0c'
       if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
     } 
 
-    if(element.cumplimientos_obligacion.completado === 2 && fechaCumplimiento !== null) {
+    if(element.cumplimientos_obligacion.completado === 3 && fechaCumplimiento !== null) {
       if(fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
       if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
     } 
     
     if(fechaMinima.toString() > fechaColumna.toString()) return 'transparent'
-
-  
 
     if(fechaMaxima.toString() > fechaColumna.toString()) {
       if(fechaColumna.toString() >= (fechaIdeal).toString()) return 'red'
@@ -174,13 +177,16 @@ export class RegisterClientComponent implements OnInit {
     let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
     let fechaIdealFin = element.cumplimientos_obligacion.fecha_ideal_fin
 
-    const fechaHoy = Date.now();
+    const DateToday = new Date();
+    DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
+    DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
+
+    const fechaHoy = DateToday.getTime();
     
     if (
         fechaColumna.toString() <= fechaMaxima.toString() &&
-        fechaColumna.toString() >= fechaHoy.toString() &&
-        (fechaColumna >= fechaInicioIdeal && fechaColumna <= fechaInicioIdealFin) ||
-        (fechaColumna >= fechaIdeal && fechaColumna <= fechaIdealFin)
+        //fechaColumna.toString() >= fechaHoy.toString() &&
+        (fechaColumna >= fechaInicioIdeal && fechaColumna <= fechaIdealFin)
     ) {
         return true;
     }
@@ -200,18 +206,18 @@ export class RegisterClientComponent implements OnInit {
     let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
     let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
 
-    const fechaHoy = Date.now()
+    const DateToday = new Date();
+    DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
+    DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
 
-    if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false && fechaColumna.toString() >= fechaHoy.toString()) return true
+    const fechaHoy = DateToday.getTime();
 
-    if(fechaColumna.toString() <= fechaMaximaFin.toString() && fechaColumna.toString() >= fechaHoy.toString()){
+    if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false) return true
+
+    if(fechaColumna.toString() <= fechaMaximaFin.toString() ){
      if(fechaColumna >= fechaInicioCumplimiento && fechaColumna <= fechaInicioCumplimientoFin) return true
       if(fechaColumna >= fechaMaxima && fechaColumna <= fechaMaximaFin) return true
     }
-
-
-
-
     return false
   }
 }
