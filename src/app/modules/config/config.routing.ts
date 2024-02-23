@@ -19,6 +19,7 @@ import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.c
 import { EditSectionComponent } from './leyes-config/edit-section/edit-section.component';
 import { EditArticleComponent } from './leyes-config/edit-article/edit-article.component';
 import { EditParagraphComponent } from './leyes-config/edit-paragraph/edit-paragraph.component';
+import { FestiveDaysComponent } from './festive-days/festive-days.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -244,6 +245,17 @@ export const ConfigRoutes: Routes = [
                     urls: [
                         { title: 'Configuración', url: '/config' },
                         { title: 'Cumplimiento' }
+                    ]
+                }
+            },
+            {
+                path: 'festive-days',
+                component: FestiveDaysComponent,
+                data: {
+                    title: 'Días festivos',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'Días Festivos' }
                     ]
                 }
             },

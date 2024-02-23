@@ -910,4 +910,33 @@ export class ApiService {
     const url = 'https://api.escudofiscal.alphadev.io/v2/cumplimiento_control'
     return this.http.put(url, body,{headers:headers});  
   }
+
+  //ENDPOINTS PARA LOS DÍAS FESTIVOS
+
+  public getDiasFestivos():Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/dia_festivo'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public postDiasFestivos(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v2/dia_festivo'
+    return this.http.post(url, body,{headers:headers});  
+  }
+
+  public deleteDiaFestivo(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v2/dia_festivo/delete'
+    return this.http.put(url, body,{headers:headers});  
+  }
 }

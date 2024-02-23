@@ -82,6 +82,11 @@ export class MenuComponent implements OnInit {
       descripcion: 'Ver todos',
       path: 'compliance'
     },
+    {
+      icon: 'calendar_today',
+      descripcion: 'Días Festivos',
+      path: 'festive-days'
+    },
 
   ];
 
