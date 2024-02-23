@@ -26,12 +26,7 @@ export class MenuComponent implements OnInit {
       icon: 'view_module',
       descripcion: 'Módulos',
       path: 'modules'
-    },
-    {
-      icon: 'calendar_today',
-      descripcion: 'Días Festivos',
-      path: 'festive-days'
-    },
+    }
   ];
 
   leyes: any[] = [
@@ -86,6 +81,11 @@ export class MenuComponent implements OnInit {
       icon: 'widgets',
       descripcion: 'Ver todos',
       path: 'compliance'
+    },
+    {
+      icon: 'calendar_today',
+      descripcion: 'Días Festivos',
+      path: 'festive-days'
     },
 
   ];
