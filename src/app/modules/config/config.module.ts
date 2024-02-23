@@ -50,6 +50,7 @@ import { EditChapterComponent } from './leyes-config/edit-chapter/edit-chapter.c
 import { EditSectionComponent } from './leyes-config/edit-section/edit-section.component';
 import { EditArticleComponent } from './leyes-config/edit-article/edit-article.component';
 import { EditParagraphComponent } from './leyes-config/edit-paragraph/edit-paragraph.component';
+import { FestiveDaysComponent } from './festive-days/festive-days.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { EditParagraphComponent } from './leyes-config/edit-paragraph/edit-parag
     EditChapterComponent,
     EditSectionComponent,
     EditArticleComponent,
-    EditParagraphComponent
+    EditParagraphComponent,
+    FestiveDaysComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [

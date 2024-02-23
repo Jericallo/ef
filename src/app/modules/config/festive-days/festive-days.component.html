@@ -1,0 +1,43 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+       <mat-card class="container">
+            <section class="section-formular">
+                <mat-label>Fecha del día festivo:</mat-label>
+                <input matInput required placeholder="Nombre del día" [(ngModel)]="name">
+                <mat-form-field style="margin-top: 30px;">
+                    <mat-label>Fecha del día festivo:</mat-label>
+                    <input matInput [matDatepicker]="picker" name="fecha_cumplimiento_ideal" required [(ngModel)]="day">
+                    <mat-hint>Mes/Dia/Año</mat-hint>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>        
+                <button mat-raised-button color="primary" (click)="submitDay()">Guardar</button>        
+            </section>
+
+            <section class="section-table">
+
+                <mat-table [dataSource]="dataSource">
+                    <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
+                        <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
+                        <mat-cell *matCellDef="let element; let i = index" class="table-element">
+                            <ng-container [ngSwitch]="column">
+                                <ng-container *ngSwitchCase="'dia'">{{ element.fecha | date}}</ng-container>
+                                <ng-container *ngSwitchCase="'nombre'">{{ element.nombre }}</ng-container>
+                                <ng-container *ngSwitchCase="'acciones'">
+                                    <button mat-icon-button color="warn" >
+                                        <mat-icon (click)="deleteDay(element)">delete</mat-icon>
+                                    </button>
+                                </ng-container>
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+        
+                    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+        
+                    <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+                </mat-table>
+
+            </section>
+        </mat-card>
+    </div>
+</div>
