@@ -1,0 +1,38 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+        <div style="display: flex; align-items: center;">
+            <a routerLink="/config/menu" class="return"><mat-icon  style="font-weight: 700; font-size: 40px; overflow: visible; margin-left: 20px;">arrow_back</mat-icon></a>
+            <button mat-raised-button color="primary" style="margin-left: 30px;" (click)="openAdd()">Agregar compañía</button> 
+        </div>
+       <mat-card>
+            <mat-table [dataSource]="dataSource">
+                <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
+                    <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" class="table-element">
+                        <ng-container [ngSwitch]="column">
+                            <ng-container *ngSwitchCase="'id'">{{ element.id }}</ng-container>
+                            <ng-container *ngSwitchCase="'nombre'">{{ element.nombre }}</ng-container>
+                            <ng-container *ngSwitchCase="'razon_social'">  {{ element.razon_social }}</ng-container>
+                            <ng-container *ngSwitchCase="'rfc'">{{ element.rfc }}</ng-container>
+                            <ng-container *ngSwitchCase="'codigo_postal'">{{ element.codigo_postal }}</ng-container>
+                            <ng-container *ngSwitchCase="'regimen_fiscal'">{{ element.regimen_fiscal }}</ng-container>
+                            <ng-container *ngSwitchCase="'direccion'">{{ element.direccion }}</ng-container>
+                            <ng-container *ngSwitchCase="'correo'">{{ element.correo }}</ng-container>
+                            <ng-container *ngSwitchCase="'telefono'">{{ element.telefono }}</ng-container>
+                            <ng-container *ngSwitchCase="'sabado'">{{ element.sabado }}</ng-container>
+                            <ng-container *ngSwitchCase="'acciones'">
+                                <button mat-icon-button color="warn" (click)="openRemove(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </ng-container>
+                        </ng-container>
+                    </mat-cell>
+                </ng-container>
+    
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    
+                <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+            </mat-table>
+        </mat-card>
+    </div>
+</div>

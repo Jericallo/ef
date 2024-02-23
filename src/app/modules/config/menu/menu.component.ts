@@ -26,6 +26,11 @@ export class MenuComponent implements OnInit {
       icon: 'view_module',
       descripcion: 'Módulos',
       path: 'modules'
+    },
+    {
+      icon: 'store',
+      descripcion: 'Compañías',
+      path: 'companies'
     }
   ];
 

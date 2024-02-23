@@ -51,6 +51,9 @@ import { EditSectionComponent } from './leyes-config/edit-section/edit-section.c
 import { EditArticleComponent } from './leyes-config/edit-article/edit-article.component';
 import { EditParagraphComponent } from './leyes-config/edit-paragraph/edit-paragraph.component';
 import { FestiveDaysComponent } from './festive-days/festive-days.component';
+import { CompaniesComponent } from './companies/companies.component';
+import { AddCompanyDialogComponent } from './companies/add-company-dialog/add-company-dialog.component';
+import { EditCompaniesDialogComponent } from './companies/edit-companies-dialog/edit-companies-dialog.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +94,10 @@ import { FestiveDaysComponent } from './festive-days/festive-days.component';
     EditSectionComponent,
     EditArticleComponent,
     EditParagraphComponent,
-    FestiveDaysComponent
+    FestiveDaysComponent,
+    CompaniesComponent,
+    AddCompanyDialogComponent,
+    EditCompaniesDialogComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
