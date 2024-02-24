@@ -54,6 +54,7 @@ import { FestiveDaysComponent } from './festive-days/festive-days.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { AddCompanyDialogComponent } from './companies/add-company-dialog/add-company-dialog.component';
 import { EditCompaniesDialogComponent } from './companies/edit-companies-dialog/edit-companies-dialog.component';
+import { EditCompanyDialogComponent } from './companies/edit-company-dialog/edit-company-dialog.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { EditCompaniesDialogComponent } from './companies/edit-companies-dialog/
     FestiveDaysComponent,
     CompaniesComponent,
     AddCompanyDialogComponent,
-    EditCompaniesDialogComponent
+    EditCompaniesDialogComponent,
+    EditCompanyDialogComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [

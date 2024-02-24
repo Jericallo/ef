@@ -16,12 +16,12 @@
                             <ng-container *ngSwitchCase="'rfc'">{{ element.rfc }}</ng-container>
                             <ng-container *ngSwitchCase="'codigo_postal'">{{ element.codigo_postal }}</ng-container>
                             <ng-container *ngSwitchCase="'regimen_fiscal'">{{ element.regimen_fiscal }}</ng-container>
-                            <ng-container *ngSwitchCase="'direccion'">{{ element.direccion }}</ng-container>
-                            <ng-container *ngSwitchCase="'correo'">{{ element.correo }}</ng-container>
-                            <ng-container *ngSwitchCase="'telefono'">{{ element.telefono }}</ng-container>
-                            <ng-container *ngSwitchCase="'sabado'">{{ element.sabado }}</ng-container>
+                            <ng-container *ngSwitchCase="'sabado'">{{ sabadazo(element.trabaja_sabados) }}</ng-container>
                             <ng-container *ngSwitchCase="'acciones'">
-                                <button mat-icon-button color="warn" (click)="openRemove(element)">
+                                <button mat-icon-button  (click)="openEdit(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-icon-button color="warn" (click)="deleteCompany(element.id)">
                                     <mat-icon>delete</mat-icon>
                                 </button>
                             </ng-container>

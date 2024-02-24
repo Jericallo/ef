@@ -9,7 +9,7 @@
                 <input matInput required placeholder="Razón social" [(ngModel)]="social_reason">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder="RFC" [(ngModel)]="rfc">
+                <input matInput required placeholder="RFC" [(ngModel)]="rfc" (input)="formatRFC()" >
             </mat-form-field>
             <mat-form-field>
                 <input matInput required placeholder="Código postal" [(ngModel)]="codigo_postal">
@@ -17,20 +17,10 @@
             <mat-form-field>
                 <input matInput required placeholder="Regímen fiscal" [(ngModel)]="regimen_fiscal">
             </mat-form-field>
-            <mat-form-field>
-                <input matInput required placeholder="Dirección" [(ngModel)]="direccion">
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput required placeholder="Correo electrónico" [(ngModel)]="correo">
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput required placeholder="Teléfono" [(ngModel)]="telefono">
-            </mat-form-field>
-            <mat-divider></mat-divider>
-            <h4>Opciones</h4>
 
-            <mat-checkbox [(ngModel)]="sabado"> ¿Trabajan los sábados?
-          </mat-checkbox>
+            <!-- <mat-divider></mat-divider>
+            <h4>Opciones</h4>
+            <mat-checkbox [(ngModel)]="sabado"> ¿Trabajan los sábados?</mat-checkbox> -->
         </div>
         
     </div>
