@@ -70,7 +70,7 @@ export class NewsComponent implements OnInit {
   }
 
   get(){
-    this.apiService.getAll(this.apiService.MODELS.news).subscribe({
+    this.apiService.getAll(this.apiService.MODELS.news,'','',12).subscribe({
       next:(res)=>{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         if(res.status == "OK"){

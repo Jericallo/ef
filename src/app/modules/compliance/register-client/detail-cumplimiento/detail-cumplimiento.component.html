@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="blanco">
     <h4>{{data.cumplimiento.nombre}}</h4>
     <!--<h6>{{data.cumplimiento.descripcion}}</h6>-->
     <div *ngIf="showButton">
@@ -45,6 +45,8 @@
         </ul>
     </div>
     -->
+</div>
 
-   
+<div class="container" *ngIf="!blanco">
+    <h4>{{mensaje_blanco}}</h4>
 </div>
