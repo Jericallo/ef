@@ -939,4 +939,42 @@ export class ApiService {
     const url = 'https://api.escudofiscal.alphadev.io/v2/dia_festivo/delete'
     return this.http.put(url, body,{headers:headers});  
   }
+
+  //ENDPOINTS PARA LAS EMPRESAS
+
+  public getEmpresas():Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/empresa'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public postEmpresas(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v2/empresa'
+    return this.http.post(url, body,{headers:headers});  
+  }
+
+  public putEmpresas(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v2/empresa'
+    return this.http.put(url, body,{headers:headers});  
+  }
+
+  public deleteEmpresas(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v2/empresa/delete'
+    return this.http.put(url, body,{headers:headers});  
+  }
 }

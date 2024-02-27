@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
 import { DatePipe } from '@angular/common';
 import { QuestionarieComponent } from './questionarie/questionarie.component';
+import { MainModule } from '../main/main.module';
 
 @NgModule({
   declarations: [
@@ -33,8 +34,8 @@ import { QuestionarieComponent } from './questionarie/questionarie.component';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    VgStreamingModule
-
+    VgStreamingModule,
+    MainModule
   ]
 })
 export class ControlModule { }

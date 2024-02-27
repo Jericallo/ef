@@ -139,3 +139,34 @@ a:hover{
     left: 35vw;
     font-size: x-small;
 }
+
+.custom-tooltip {
+    max-width: 200px; /* ajusta el ancho máximo del tooltip */
+    background-color: #ffffff; /* color de fondo */
+    color: #333333; /* color del texto */
+    border: 1px solid #cccccc; /* borde */
+    padding: 10px; /* espacio interno */
+    border-radius: 4px; /* borde redondeado */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* sombra */
+  }
+  
+  .custom-tooltip div {
+    /* estilos específicos para el div dentro del tooltip */
+    /* por ejemplo: */
+    margin-bottom: 5px;
+  }
+  
+  .custom-tooltip button {
+    /* estilos específicos para los botones dentro del tooltip */
+    /* por ejemplo: */
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+  
+  .custom-tooltip button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -58,5 +58,6 @@ import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal
     MatTreeModule
   ],
   providers:[CourseService],
+  exports:[UserIconComponent]
 })
 export class MainModule { }

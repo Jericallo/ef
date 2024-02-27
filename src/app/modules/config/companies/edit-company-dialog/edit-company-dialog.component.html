@@ -1,0 +1,25 @@
+<mat-dialog-content>
+    <div class="grid-container">
+        <div class="grid-item">
+            <mat-form-field>
+                <input matInput required placeholder="Nombre" [(ngModel)]="company.nombre">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="Razón social" [(ngModel)]="company.razon_social">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="RFC" [(ngModel)]="company.rfc" (input)="formatRFC()" >
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="Código postal" [(ngModel)]="company.codigo_postal">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="Regímen fiscal" [(ngModel)]="company.regimen_fiscal">
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button mat-button color="primary" (click)="updateProfile()">Actualizar</button>
+</mat-dialog-actions>

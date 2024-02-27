@@ -19,6 +19,11 @@ export class RegisterClientComponent implements OnInit {
   currentMonth: Date;
   cumplimientos_faltantes = false
 
+  hoverTimer: any;
+
+
+
+
   constructor(private apiService: ApiService, public dialogRef: MatDialog) {}
 
   ngOnInit(): void {
@@ -155,6 +160,14 @@ export class RegisterClientComponent implements OnInit {
   }
 
   openCumplimientoDialog(cumplimiento:any, day:any){
+    this.clearHoverTimer()
+    const user = this.apiService.getWholeUser()
+
+    if(user.nombre_perfil !== 'Supervisor'){
+      if(cumplimiento.cumplimientos_obligacion.completado !== 0) return
+      if(day > cumplimiento.cumplimientos_obligacion.fecha_maxima_fin || day < cumplimiento.cumplimientos_obligacion.fecha_inicio_ideal) return
+    }
+
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
       width: '800px',
       height: '170px',
@@ -194,8 +207,6 @@ export class RegisterClientComponent implements OnInit {
     return false;
 }
 
-
-
   isIndicadorRapido(element: any, column: number){
     if(column === 0) return false
     if(element.cumplimientos_obligacion.completado !== 0) return false 
@@ -219,5 +230,53 @@ export class RegisterClientComponent implements OnInit {
       if(fechaColumna >= fechaMaxima && fechaColumna <= fechaMaximaFin) return true
     }
     return false
+  }
+
+  messageTooltip(element:any, column:number){
+    let fechaColumna = column;
+    
+    let fechaInicioCumplimientoIdeal = element.cumplimientos_obligacion.fecha_inicio_ideal;
+    let fechaInicioCumplimientoIdealFin = element.cumplimientos_obligacion.fecha_inicio_ideal_fin;
+
+    let fechaInicio = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+    let fechaInicioFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+
+    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal;
+    let fechaIdealFin = element.cumplimientos_obligacion.fecha_ideal_fin;
+
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaMaximaFin = element.cumplimientos_obligacion.fecha_maxima_fin;
+    
+    if(fechaColumna < fechaInicioCumplimientoIdeal) return 'Nada que revisar'
+
+    if(element.cumplimientos_obligacion.fecha_cumplimiento !== null){
+      let fecha_completado = element.cumplimientos_obligacion.fecha_cumplimiento
+      if(fechaColumna > fecha_completado) return 'Nada que revisar'
+
+      if(element.cumplimientos_obligacion.completado === 3)return 'Cumplimiento totalmente realizado. El supervisor ya dio el visto bueno a la evidencia del cumplimiento.'
+      if(element.cumplimientos_obligacion.completado === 2 || element.cumplimientos_obligacion.completado === 1){
+        if(parseInt(fecha_completado) + 86400000 < Date.now()) return 'El usuario indico que ya realizo el cumplimiento. El supervisor aún no contesta, favor de contactarlo de inmediato.'
+        else return 'El usuario indico que ya realizo el cumplimiento. Pendiente que el supervisor reciba y de su visto bueno a la evidencia del cumplimiento.'
+      }
+      
+    }
+
+
+    if(fechaColumna > fechaMaximaFin && element.cumplimientos_obligacion.completado === 0)return 'Cumplimiento pendiente'
+    
+    if(fechaColumna >= fechaInicioCumplimientoIdeal && fechaColumna < fechaInicioCumplimientoIdealFin) return 'Fecha ideal de inicio'
+    if(fechaColumna >= fechaInicio && fechaColumna < fechaInicioFin) return 'Fecha de inicio'
+    if(fechaColumna >= fechaIdeal && fechaColumna < fechaIdealFin) return 'Fecha de finalización'
+    if(fechaColumna >= fechaMaxima && fechaColumna < fechaMaximaFin) return 'Fecha de máxima'
+  }
+
+  startHoverTimer(element: any, column: number) {
+    this.hoverTimer = setTimeout(() => {
+        this.openCumplimientoDialog(element, column);
+    }, 2500); // 2500 ms = 2.5 segundos
+  }
+
+  clearHoverTimer() {
+      clearTimeout(this.hoverTimer);
   }
 }
