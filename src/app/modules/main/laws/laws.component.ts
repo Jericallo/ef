@@ -19,6 +19,7 @@ export class LawsComponent implements OnInit {
   article=[];
   articles=[];
   articleRel = null;
+  isAdmin: boolean = false;
 
   rowTable:number=0;
   subRowTable:number=-1;
@@ -31,6 +32,12 @@ export class LawsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getClasifications();
+    const tokenEscudo = JSON.parse(localStorage.getItem('token_escudo'));
+    if (tokenEscudo && tokenEscudo.nombre_perfil === 'Administrador') {
+      this.isAdmin = true;
+    }else{
+      this.isAdmin = false
+    }
   }
 
 
