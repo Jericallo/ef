@@ -9,21 +9,21 @@
                     <mat-panel-title>
                         <mat-icon class="icono">menu_book</mat-icon> &nbsp; {{cla.nombre}}
                     </mat-panel-title>
-                    <mat-icon class="icono" (click)="deleteS(cla.id,'clasificaciones')">delete</mat-icon>
+                    <mat-icon *ngIf="isAdmin" class="icono" (click)="deleteS(cla.id,'clasificaciones')">delete</mat-icon>
                     <!--<mat-panel-description>Type your name and age<mat-icon>account_circle</mat-icon></mat-panel-description>-->
                 </mat-expansion-panel-header>
                 <mat-accordion  multi>
                     <mat-expansion-panel class="custom-panel" *ngFor="let doc of cla.documents" hideToggle="true">
                         
-                        <mat-expansion-panel-header style="flex-direction: row;">
-                            <div style="position: absolute; left: 0px; top: 0px; height: 100%; width: 10px; flex-direction: column;">
+                        <mat-expansion-panel-header style="flex-direction: row; align-items: center;">
+                            <div style="position: absolute; left: 0px; top: 0px; height: 100%; width: 5px; flex-direction: column;">
                                 <div style="width: 100%; height: 50%; border-bottom: 1px; border-bottom-color: black; border-bottom-style: solid;"></div><div></div>
                             </div>
-                            <mat-icon style="align-self: flex-start;">book</mat-icon> 
-                            <div class="title">
-                                {{doc.titulo}}
+                            <mat-icon style="position: absolute; left: 0px; top: 15px;">book</mat-icon> 
+                            <div class="title" style="position: absolute; left: 20px; top: 15px; line-height: 1.5; padding-right: 40px;">
+                               {{doc.titulo}}
                             </div>
-                            <mat-icon (click)="deleteS(doc.id,'documentos')">delete</mat-icon>
+                            <mat-icon *ngIf="isAdmin" style="position: absolute; right: 0px; top: 15px;" (click)="deleteS(doc.id,'documentos')">delete</mat-icon>
                         </mat-expansion-panel-header>
                         <div *ngIf="doc.titles">
                             <!--<mat-list role="list" >
@@ -31,28 +31,28 @@
                                         TITULO {{tit.nombre || '--'}}
                                     </mat-list-item>
                                 </mat-list>-->
-                            <mat-accordion class="mat-elevation-z0" multi>
+                            <mat-accordion class="mat-elevation-z2" multi>
                                 <mat-expansion-panel class="custom-panel" style="border-left-color: gray !important;" *ngFor="let tit of doc.titles" hideToggle="true">
-                                    <mat-expansion-panel-header style="display: flex; align-items: center;">
-                                        <div style="position: absolute; left: 0px; top: 0px; height: 100%; width: 10px; flex-direction: column;">
+                                    <mat-expansion-panel-header style="display: flex; align-items: center; padding-top: -20px;">
+                                        <div style="position: absolute; left: 0px; top: 0px; height: 100%; width: 5px; flex-direction: column;">
                                             <div style="width: 100%; height: 50%; border-bottom: 1px; border-bottom-color: gray; border-bottom-style: solid;"></div><div></div>
                                         </div>
-                                        <mat-panel-title>TITULO {{tit.nombre}}</mat-panel-title>
-                                        <mat-icon (click)="deleteS(tit.id,'articulo_titulos')">delete</mat-icon>
-                                        <mat-panel-description *ngIf="tit.articles">Artículos del {{tit.articles[0].articulo}} al {{tit.articles[tit.articles.length - 1].articulo}}</mat-panel-description>
+                                        <mat-panel-title style="position: absolute; left: 5px; top: 15px; line-height: 1.5; padding-right: 40px;" >TITULO {{tit.nombre}}</mat-panel-title>
+                                        <mat-icon *ngIf="isAdmin" style="position: absolute; right: 0px; top: 10px;" (click)="deleteS(tit.id,'articulo_titulos')">delete</mat-icon>
+                                        <mat-panel-description style="position: absolute; left: 55px; top: 30px; line-height: 1.5; padding-right: 40px;"  *ngIf="tit.articles">Artículos del {{tit.articles[0].articulo}} al {{tit.articles[tit.articles.length - 1].articulo}}</mat-panel-description>
                                     </mat-expansion-panel-header>
                                     <!--<div *ngIf="!tit.chapters">-->
-                                    <div *ngIf="tit.articles">
+                                    <div  *ngIf="tit.articles">
                                         <mat-accordion>
-                                            <mat-expansion-panel  class="custom-panel" *ngFor="let art of tit.articles" hideToggle="true">
+                                            <mat-expansion-panel   class="custom-panel" *ngFor="let art of tit.articles" hideToggle="true">
                                                 <mat-expansion-panel-header >
                                                     <div style="position: absolute; left: 0px; top: 0px; height: 100%; width: 10px; flex-direction: column;">
                                                         <div style="width: 100%; height: 50%; border-bottom: 1px; border-bottom-color: black; border-bottom-style: solid;"></div><div></div>
                                                     </div>
-                                                    <mat-panel-title (click)="articleClick(art, null, doc, tit)">
+                                                    <mat-panel-title style="position: absolute; left: 2px; top: 10px; line-height: 1.5;" (click)="articleClick(art, null, doc, tit)">
                                                         <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                                     </mat-panel-title>
-                                                    <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
+                                                    <mat-icon  *ngIf="isAdmin" style="position: absolute; right: 0; top: 10px;" (click)="deleteS(art.id,'articulos')">delete</mat-icon>
                                                 </mat-expansion-panel-header>
                                                 <div *ngIf="art.parrafos">
                                                     <mat-list role="list">
@@ -60,7 +60,7 @@
                                                             <div style="position: absolute; left: 0px; top: 0px; height: 100%; width: 10px; flex-direction: column;">
                                                                 <div style="width: 100%; height: 50%; border-bottom: 1px; border-bottom-color: black; border-bottom-style: solid;"></div><div></div>
                                                             </div>
-                                                            Párr. {{par.numero || ''}} <span style="font-size: 14px;">{{par.nombre || ''}}</span>
+                                                            Párr. -  {{ par.numero || '' }} <span style="font-size: 10px;"> {{ par.nombre || '' }} </span>
                                                         </mat-list-item>
                                                     </mat-list>
                                                 </div>
@@ -75,7 +75,7 @@
                                                         <div style="width: 100%; height: 50%; border-bottom: 1px; border-bottom-color: black; border-bottom-style: solid;"></div><div></div>
                                                     </div>
                                                     <mat-panel-title>CAPITULO {{cha.nombre}}</mat-panel-title>
-                                                    <mat-icon (click)="deleteS(cha.id,'articulo_capitulos')">delete</mat-icon>
+                                                    <mat-icon *ngIf="isAdmin" (click)="deleteS(cha.id,'articulo_capitulos')">delete</mat-icon>
                                                     <mat-panel-description *ngIf="cha.articles">Artículos del {{cha.articles[0].articulo}} al {{cha.articles[cha.articles.length - 1].articulo}}</mat-panel-description>
                                                 </mat-expansion-panel-header>
                                                 <div *ngIf="cha.articles">
@@ -88,7 +88,7 @@
                                                                 <mat-panel-title (click)="articleClick(art, null, doc, tit, cha)">
                                                                     <mat-icon>bookmark</mat-icon> &nbsp; Artículo {{art.articulo}} {{art.indicador || ''}}.- {{art.nombre || '--'}}
                                                                 </mat-panel-title>
-                                                                <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
+                                                                <mat-icon *ngIf="isAdmin" (click)="deleteS(art.id,'articulos')">delete</mat-icon>
                                                             </mat-expansion-panel-header>
                                                             <div *ngIf="art.parrafos" class="parrafos">
                                                                 <mat-list role="list" >
@@ -117,7 +117,7 @@
                                             <div style="width: 100%; height: 50%; border-bottom: 1px; border-bottom-color: black; border-bottom-style: solid;"></div><div></div>
                                         </div>
                                         <mat-panel-title>CAPITULO {{cha.nombre}}</mat-panel-title>
-                                        <mat-icon (click)="deleteS(cha.id,'articulo_capitulos')">delete</mat-icon>
+                                        <mat-icon *ngIf="isAdmin" (click)="deleteS(cha.id,'articulo_capitulos')">delete</mat-icon>
                                         <mat-panel-description *ngIf="cha.articles">Artículos del {{cha.articles[0].articulo}} al {{cha.articles[cha.articles.length - 1].articulo}}</mat-panel-description>
                                     </mat-expansion-panel-header>
                                     <div *ngIf="cha.articles">
@@ -128,7 +128,7 @@
                                                 </div>
                                                 Párr. {{par.numero || ''}} <span style="font-size: 14px;">{{par.nombre || ''}}</span>
                                             </mat-list-item>
-                                            <mat-icon (click)="deleteS(art.id,'articulos')">delete</mat-icon>
+                                            <mat-icon *ngIf="isAdmin" (click)="deleteS(art.id,'articulos')">delete</mat-icon>
                                         </mat-list>
                                     </div>
                                 </mat-expansion-panel>
@@ -208,7 +208,7 @@
 
       </mat-tab-group>
       <button mat-icon-button (click)="cerrarTodasPestanas()" style="position: absolute; top: 10px; right: 10px;" [style.z-index]="5">
-        <mat-icon>delete</mat-icon>
+        <mat-icon>close</mat-icon>
     </button>  
       
       <div *ngIf="articleRel" class="accordion-container" style="margin-top: 30px;">
