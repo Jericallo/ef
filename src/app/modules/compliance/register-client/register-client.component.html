@@ -1,4 +1,5 @@
 <app-traffic-light></app-traffic-light>
+<app-user-icon></app-user-icon>
 
 <div class="month-navigation">
     <mat-icon>chevron_left</mat-icon> <button (click)="navigateMonth(-1)"class="button-prev">Anterior</button>
@@ -29,6 +30,9 @@
                     <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima(element, column)}" 
                     [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
                     (click)="openCumplimientoDialog(element, column)"
+                    matTooltip="{{messageTooltip(element, column)}}"
+                    (mouseenter)="startHoverTimer(element, column)"
+                    (mouseleave)="clearHoverTimer()"
                     ></div>
                 </ng-template>
             </td>            

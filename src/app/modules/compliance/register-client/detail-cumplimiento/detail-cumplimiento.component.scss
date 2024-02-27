@@ -11,3 +11,24 @@
 .leyenda {
     font-size: small;
 }
+
+.indicador {
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-top: 5px;
+    //margin-top: 50px;
+}
+
+.indicador:hover {
+    cursor: pointer;
+}
+
+.indicador-lento{
+    animation: parpadeo 3s infinite;
+}
+
+.indicador-rapido{
+    animation: parpadeo 0.3s infinite;
+}

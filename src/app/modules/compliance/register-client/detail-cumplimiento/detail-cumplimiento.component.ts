@@ -21,6 +21,8 @@ export class DetailCumplimientoComponent implements OnInit {
   blanco = true;
   mensaje_blanco = "Nada por revisar este día."
 
+  color = 'transparent'
+
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
   ngOnInit(): void {
@@ -33,6 +35,13 @@ export class DetailCumplimientoComponent implements OnInit {
       this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento < this.data.fecha && 
       this.data.cumplimiento.cumplimientos_obligacion.completado !== 3) ||
       this.data.cumplimiento.cumplimientos_obligacion.fecha_maxima_fin < this.data.fecha) this.mensaje_blanco = "Cumplimieto aún no realizado"
+
+    if( this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento !== null ){ //Si ya fue completado el cumplimiento
+      if(this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento <= this.data.fecha && this.data.cumplimiento.cumplimientos_obligacion.completado === 1) {
+        if(parseInt(this.data.fecha) >= parseInt(this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento) + 86400000 ) this.mensaje_blanco = "Cumplimiento pendiente de revisión retrasado 24 horas. Favor de contactar al supervisor"
+        else this.mensaje_blanco = "Cumplimiento pendiente de revisión";
+      }
+    }
 
     console.log(this.data)
 
@@ -121,5 +130,14 @@ export class DetailCumplimientoComponent implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  isFechaMaxima(element = this.data.cumplimiento, column = this.data.fecha): string {
+    if (column === 0) {
+      return 'transparent';
+    }
+    if(element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2) return '#ffcc0c'
+    else if(element.cumplimientos_obligacion.completado === 3) return 'green'
+    else return 'transparent'
   }
 }

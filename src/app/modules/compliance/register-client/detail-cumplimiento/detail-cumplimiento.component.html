@@ -1,5 +1,11 @@
 <div class="container" *ngIf="blanco">
-    <h4>{{data.cumplimiento.nombre}}</h4>
+    <div style="display: flex; flex-direction: row;">
+        
+        <h4>{{data.cumplimiento.nombre}}</h4>
+        <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima()}" 
+        ></div>
+    </div>
+    
     <!--<h6>{{data.cumplimiento.descripcion}}</h6>-->
     <div *ngIf="showButton">
         <span class="leyenda">Clic para marcar como cumplido</span><br/>
@@ -8,10 +14,9 @@
         <br/><span class="leyenda" *ngIf="mostrarLeyenda"><strong>Precaución:</strong> al dar clic se marcará como cumplido un día en el <strong>pasado</strong></span>
     </div>
     
-
-    
     <div *ngIf="data.cumplimiento.cumplimientos_obligacion.completado === 3">
-        <h6>¡Cumplimiento cumplido!</h6>
+        <h6>¡Cumplimiento totalmente realizado!</h6>
+        <span>El supervisor ya dio el visto bueno a la evidencia del cumplimiento.</span>
         <ul>
             <li>Fecha en que se cumplió: {{data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento | date}}</li>
         </ul>

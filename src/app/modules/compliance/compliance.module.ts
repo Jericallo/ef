@@ -19,6 +19,7 @@ import { RegisterClientComponent } from './register-client/register-client.compo
 import { DetailDayComponent } from './register-client/detail-day/detail-day.component';
 import { DetailCumplimientoComponent } from './register-client/detail-cumplimiento/detail-cumplimiento.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MainModule } from '../main/main.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   ],
   imports: [
     CommonModule,
+    MainModule,
     DemoMaterialModule,
     AutocompleteLibModule,
     RouterModule.forChild(CompilanceRoutes),
