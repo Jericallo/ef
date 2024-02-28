@@ -83,7 +83,7 @@ const MENUITEMS = [
         class: 'control-menu',
         children:[
             {state:'capacitaciones', name:'Capacitación',type:'link',icon:'local_library'},
-            {state:'', name:'Ayuda',type:'link',icon:'help_center'},
+            {state:'ayuda', name:'Ayuda',type:'link',icon:'help_center'},
             {state:'', name:'Supervisión',type:'link',icon:'supervisor_account'},
             {state:'', name:'Semaforo',type:'link',icon:'traffic'},
             {state:'', name:'Dictámen',type:'link', icon:'book'},

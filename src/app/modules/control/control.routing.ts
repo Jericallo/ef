@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 import { CapacitationsComponent } from './capacitations/capacitations.component';
 import { VideosComponent } from "./videos/videos.component";
 import { QuestionarieComponent } from "./questionarie/questionarie.component";
+import { ChatComponent } from "./chat/chat.component";
 
 export const ControlRoutes: Routes = [
     {
@@ -30,7 +31,22 @@ export const ControlRoutes: Routes = [
                     ]
                 }
             },
-            { path: 'videos', component: VideosComponent, pathMatch: 'full' },
+
+            { path: 'videos', 
+            component: VideosComponent, 
+            pathMatch: 'full' },
+
+            {
+                path:'ayuda',
+                component:ChatComponent,
+                data: {
+                    title:'Ayuda',
+                    urls:[
+                        {title:'Ayuda', url:'/control'},
+                        {title:'Ayuda'}
+                    ]
+                }
+            },
         ]
     }
 ];

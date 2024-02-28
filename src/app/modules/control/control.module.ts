@@ -15,6 +15,7 @@ import { DemoMaterialModule } from 'src/app/demo-material-module';
 import { DatePipe } from '@angular/common';
 import { QuestionarieComponent } from './questionarie/questionarie.component';
 import { MainModule } from '../main/main.module';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MainModule } from '../main/main.module';
     EndedVideoComponent,
     VideosComponent,
     QuestionarieComponent,
+    ChatComponent,
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
