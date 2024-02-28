@@ -251,7 +251,9 @@ export class RegisterClientComponent implements OnInit {
 
     if(element.cumplimientos_obligacion.fecha_cumplimiento !== null){
       let fecha_completado = element.cumplimientos_obligacion.fecha_cumplimiento
-      if(fechaColumna > fecha_completado) return 'Nada que revisar'
+
+      if(fechaColumna > fecha_completado && element.cumplimientos_obligacion.completado === 3) return 'Cumplimiento realizado.'
+      if(fechaColumna > fecha_completado && (element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2))return 'Cumplimiento aun no realizado'
 
       if(element.cumplimientos_obligacion.completado === 3)return 'Cumplimiento totalmente realizado. El supervisor ya dio el visto bueno a la evidencia del cumplimiento.'
       if(element.cumplimientos_obligacion.completado === 2 || element.cumplimientos_obligacion.completado === 1){
@@ -262,7 +264,7 @@ export class RegisterClientComponent implements OnInit {
     }
 
 
-    if(fechaColumna > fechaMaximaFin && element.cumplimientos_obligacion.completado === 0)return 'Cumplimiento pendiente'
+    if(fechaColumna > fechaMaximaFin && element.cumplimientos_obligacion.completado === 0)return 'Cumplimiento aun no realizado'
     
     if(fechaColumna >= fechaInicioCumplimientoIdeal && fechaColumna < fechaInicioCumplimientoIdealFin) return 'Fecha ideal de inicio'
     if(fechaColumna >= fechaInicio && fechaColumna < fechaInicioFin) return 'Fecha de inicio'

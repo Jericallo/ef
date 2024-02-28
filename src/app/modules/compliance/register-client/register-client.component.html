@@ -31,6 +31,7 @@
                     [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
                     (click)="openCumplimientoDialog(element, column)"
                     matTooltip="{{messageTooltip(element, column)}}"
+                    [matTooltipShowDelay]="2500"
                     (mouseenter)="startHoverTimer(element, column)"
                     (mouseleave)="clearHoverTimer()"
                     ></div>
