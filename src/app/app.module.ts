@@ -37,6 +37,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PushNotificationService } from './shared/services/push-notification.service';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 //import { PasswordModalComponent } from './login/password-modal/password-modal.component';
 //import { ResetComponent } from './login/reset-component/reset/reset.component';
 
@@ -44,6 +45,8 @@ import { PushNotificationService } from './shared/services/push-notification.ser
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+const config: SocketIoConfig = { url: 'wss://api.escudofiscal.alphadev.io', options: {} };
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -70,6 +73,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BrowserModule,
     BrowserAnimationsModule,
     DemoMaterialModule,
+    SocketIoModule.forRoot(config),
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
