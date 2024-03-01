@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
-
+import { io, Socket } from 'socket.io-client';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -8,15 +7,18 @@ import { Socket } from 'ngx-socket-io';
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   newMessageText: string = '';
-  sentMessages: { text: string }[] = [];  // Arreglo para mensajes enviados
-  receivedMessages: { text: string }[] = [];  // Arreglo para mensajes recibidos
+  sentMessages: { text: string }[] = [];
+  receivedMessages: { text: string }[] = [];
   @ViewChild('messageContainer') private messageContainer: ElementRef;
+  private socket: Socket; 
 
-  constructor(private socket: Socket) {
-    this.socket.connect();
-
-    this.socket.on('message', (message: string) => {
-      this.receivedMessages.push({ text: message });
+  constructor() {
+    this.socket = io('wss://api.escudofiscal.alphadev.io', {
+      transports: ['websocket'],
+    });    
+    this.socket.on('message', (data) => {
+      console.log(data)
+      this.receivedMessages.push(data);
       this.scrollToBottom();
     });
   }
@@ -30,9 +32,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   sendMessage() {
     if (this.newMessageText.trim() !== '') {
-      // Envía el mensaje al servidor y agrégalo a los mensajes enviados
-      this.socket.emit('message', this.newMessageText.trim());
+      const messagePayload = {
+        username: 'App',  
+        message: this.newMessageText.trim()
+      };
+  
+      this.socket.emit('message', messagePayload);
       this.sentMessages.push({ text: this.newMessageText.trim() });
+      
       this.newMessageText = '';
     }
   }

@@ -1,40 +1,39 @@
 <mat-card style="height: 90vh; display: flex;">
 
-  <!-- CHAT LIST -->
-  <section class="chatList-section">
-    <div style="display: flex; align-items: start; justify-content: start; flex-direction: column; padding: 20px;">
-      <h3>Chats</h3>
-      <mat-form-field>
-        <input matInput placeholder="Buscar chat">
-      </mat-form-field>
-    </div>
-  </section>
-
-  <!-- OPEN CHAT -->
-  <section class="chat-section" style="position: relative; width: 100%;">
-
-    <div class="chat-contact-container">
-      <span>David de la Cerda</span>
-    </div>
-
-    <!-- SENT MESSAGES -->
-    <div class="message-container" #messageContainer>
-      <div *ngFor="let message of sentMessages" class="message sent-message">
-        {{ message.text }}
+    <!-- CHAT LIST -->
+    <section class="chatList-section">
+      <div style="display: flex; align-items: start; justify-content: start; flex-direction: column; padding: 20px;">
+        <h3>Chats</h3>
+        <mat-form-field>
+          <input matInput placeholder="Buscar chat">
+        </mat-form-field>
       </div>
-    </div>
-
-    <!-- RECEIVED MESSAGES -->
-    <div class="message-container received-messages" #messageContainer>
-      <div *ngFor="let message of receivedMessages" class="message received-message">
-        {{ message.text }}
+    </section>
+  
+    <!-- OPEN CHAT -->
+    <section class="chat-section" style="position: relative; width: 100%;">
+  
+      <div class="chat-contact-container">
+        <span>David de la Cerda</span>
       </div>
-    </div>
-
-    <div class="message-input-container" style="position: absolute; bottom: 0; width: 100%;">
-      <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText" (keyup.enter)="sendMessage()">
-    </div>
-
-  </section>
-
+  
+      <div class="message-container sent-messages" #messageContainer>
+        <div *ngFor="let message of sentMessages" class="message sent-message">
+          {{ message.text }}
+        </div>
+      </div>
+  
+      <!-- RECEIVED MESSAGES -->
+      <div class="message-container received-messages" #messageContainer>
+        <div *ngFor="let message of receivedMessages" class="message received-message">
+          {{ message }}
+        </div>
+      </div>
+  
+      <div class="message-input-container" style="position: absolute; bottom: 0; width: 100%;">
+        <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText" (keyup.enter)="sendMessage()">
+      </div>
+  
+    </section>
+  
 </mat-card>
