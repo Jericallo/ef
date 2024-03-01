@@ -17,18 +17,12 @@
         <span>David de la Cerda</span>
       </div>
   
-      <div class="message-container sent-messages" #messageContainer>
-        <div *ngFor="let message of sentMessages" class="message sent-message">
+      <div #messageContainer class="message-container">
+        <div *ngFor="let message of messages" [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
           {{ message.text }}
         </div>
       </div>
-  
-      <!-- RECEIVED MESSAGES -->
-      <div class="message-container received-messages" #messageContainer>
-        <div *ngFor="let message of receivedMessages" class="message received-message">
-          {{ message }}
-        </div>
-      </div>
+      
   
       <div class="message-input-container" style="position: absolute; bottom: 0; width: 100%;">
         <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText" (keyup.enter)="sendMessage()">

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -7,8 +8,7 @@ import { io, Socket } from 'socket.io-client';
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   newMessageText: string = '';
-  sentMessages: { text: string }[] = [];
-  receivedMessages: { text: string }[] = [];
+  messages: { text: string, type: 'sent' | 'received' }[] = [];
   @ViewChild('messageContainer') private messageContainer: ElementRef;
   private socket: Socket; 
 
@@ -17,8 +17,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       transports: ['websocket'],
     });    
     this.socket.on('message', (data) => {
-      console.log(data)
-      this.receivedMessages.push(data);
+      console.log(data);
+      this.messages.push({ text: data, type: 'received' });
       this.scrollToBottom();
     });
   }
@@ -38,7 +38,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       };
   
       this.socket.emit('message', messagePayload);
-      this.sentMessages.push({ text: this.newMessageText.trim() });
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent' });
       
       this.newMessageText = '';
     }
