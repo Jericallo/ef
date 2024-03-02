@@ -1,19 +1,23 @@
 .chatList-section {
     flex: 0 0 25%; 
-    background-color: rgb(234, 234, 234);
+    height: 90vh;
+    overflow: auto;
+    color: white;
   }
 
   .chat-section {
     flex: 0 0 75%; 
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(228, 255, 234);
     width: 100%;
-    position: relative; /* Agregado */
+    height: 90vh;   
+     position: relative; /* Agregado */
   }
 
   .chat-contact-container {
     display: flex;
     align-items: center;
-    background: rgba(211, 211, 211, 0.421);
+    color: white;
+    background-color: rgb(0, 181, 39);
     padding: 20px;
     height: 10%;
   }
@@ -80,3 +84,16 @@
     align-self: flex-start; /* Alinea a la izquierda */
   }
   
+
+  .user-container{
+    padding: 20px;
+    background: white;
+    width: 100%;
+    color: black;
+    border-bottom: solid 1px gray;
+  }
+
+  .user-container:hover{
+    background: rgb(206, 206, 206);
+    cursor: pointer;
+  }

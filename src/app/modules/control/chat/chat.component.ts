@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
+import { ApiService } from 'src/app/shared/services/api.service';
 
 @Component({
   selector: 'app-chat',
@@ -11,8 +12,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   messages: { text: string, type: 'sent' | 'received' }[] = [];
   @ViewChild('messageContainer') private messageContainer: ElementRef;
   private socket: Socket; 
+  searchTerm: string = '';
+  users: any[] = []; 
+  filteredUsers: any[] = []; 
+  selectedUser: any | null = null;
 
-  constructor() {
+  constructor(private apiService: ApiService) {
     this.socket = io('wss://api.escudofiscal.alphadev.io', {
       transports: ['websocket'],
     });    
@@ -24,6 +29,24 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    this.getUsers()
+  }
+
+  getUsers() {
+    this.apiService.getUsers().subscribe(
+      (data: any) => {
+        this.users = data.result;
+        this.filteredUsers = this.users; 
+        console.log(this.users);
+      },
+      (error) => {
+        console.error('Error al obtener usuarios:', error);
+      }
+    );
+  }
+
+  selectUser(user: any) {
+    this.selectedUser = user;
   }
 
   ngAfterViewChecked(): void {
@@ -33,7 +56,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   sendMessage() {
     if (this.newMessageText.trim() !== '') {
       const messagePayload = {
-        username: 'App',  
+        username: this.selectedUser.id,  
         message: this.newMessageText.trim()
       };
   
@@ -42,6 +65,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       
       this.newMessageText = '';
     }
+  }
+
+  filterUsers() {
+    this.filteredUsers = this.users.filter(user => user.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()));
   }
 
   private scrollToBottom(): void {
