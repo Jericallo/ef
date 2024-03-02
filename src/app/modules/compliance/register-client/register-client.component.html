@@ -26,15 +26,21 @@
                     {{ element[column] }}
                 </ng-container>
                 <ng-template #dateCell>
-                    {{ element[column]?.fecha_maxima | date:'dd MMMM' }}
-                    <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima(element, column)}" 
-                    [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
-                    (click)="openCumplimientoDialog(element, column)"
-                    matTooltip="{{messageTooltip(element, column)}}"
-                    (mouseenter)="startHoverTimer(element, column)"
-                    (mouseleave)="clearHoverTimer()"
-                    ></div>
+                    <div style="position: relative;"> <!-- Agregar style="position: relative;" al div padre -->
+                        {{ element[column]?.fecha_maxima | date:'dd MMMM' }}
+                        <div class="indicador"
+                             [ngStyle]="{'background-color': isFechaMaxima(element, column)}"
+                             [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
+                             (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)">
+                        </div>
+                        <div class="custom-tooltip" [id]="'tooltip-'+element.cumplimientos_obligacion.id_obligacion+'-'+column">
+                            <span>{{messageTooltip(element, column)}} </span>
+                            <button *ngIf="showChatButton" class="chat-button">Ir al chat</button>
+                        </div>
+                    </div>
                 </ng-template>
+                
+                
             </td>            
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>

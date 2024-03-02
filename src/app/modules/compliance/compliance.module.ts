@@ -20,6 +20,7 @@ import { DetailDayComponent } from './register-client/detail-day/detail-day.comp
 import { DetailCumplimientoComponent } from './register-client/detail-cumplimiento/detail-cumplimiento.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MainModule } from '../main/main.module';
+import { CustomTooltipComponent } from './register-client/custom-tooltip/custom-tooltip.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MainModule } from '../main/main.module';
     RegisterClientComponent,
     DetailDayComponent,
     DetailCumplimientoComponent,
+    CustomTooltipComponent,
   ],
   imports: [
     CommonModule,
