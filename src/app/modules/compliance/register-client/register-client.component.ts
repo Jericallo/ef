@@ -20,15 +20,17 @@ export class RegisterClientComponent implements OnInit {
   cumplimientos_faltantes = false
 
   hoverTimer: any;
-
-
-
+  unhoverTimer:any;
+  showTooltip = false
+  showChatButton = false
 
   constructor(private apiService: ApiService, public dialogRef: MatDialog) {}
 
   ngOnInit(): void {
     this.generateDateRange();
     this.getCompliance();
+
+    
   }
 
   generateDateRange(): void {
@@ -233,6 +235,7 @@ export class RegisterClientComponent implements OnInit {
   }
 
   messageTooltip(element:any, column:number){
+    this.showChatButton = false
     let fechaColumna = column;
     
     let fechaInicioCumplimientoIdeal = element.cumplimientos_obligacion.fecha_inicio_ideal;
@@ -253,32 +256,66 @@ export class RegisterClientComponent implements OnInit {
       let fecha_completado = element.cumplimientos_obligacion.fecha_cumplimiento
 
       if(fechaColumna > fecha_completado && element.cumplimientos_obligacion.completado === 3) return 'Cumplimiento realizado.'
-      if(fechaColumna > fecha_completado && (element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2))return 'Cumplimiento aun no realizado'
+      
 
       if(element.cumplimientos_obligacion.completado === 3)return 'Cumplimiento totalmente realizado. El supervisor ya dio el visto bueno a la evidencia del cumplimiento.'
       if(element.cumplimientos_obligacion.completado === 2 || element.cumplimientos_obligacion.completado === 1){
-        if(parseInt(fecha_completado) + 86400000 < Date.now()) return 'El usuario indico que ya realizo el cumplimiento. El supervisor aún no contesta, favor de contactarlo de inmediato.'
+        if(parseInt(fecha_completado) + 86400000 < Date.now()){ 
+          this.showChatButton = true
+          return 'El usuario indico que ya realizo el cumplimiento. El supervisor aún no contesta, favor de contactarlo de inmediato.'; 
+        } 
         else return 'El usuario indico que ya realizo el cumplimiento. Pendiente que el supervisor reciba y de su visto bueno a la evidencia del cumplimiento.'
       }
+      if(fechaColumna > fecha_completado && (element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2))return 'Cumplimiento aun no realizado'
       
     }
 
 
     if(fechaColumna > fechaMaximaFin && element.cumplimientos_obligacion.completado === 0)return 'Cumplimiento aun no realizado'
     
-    if(fechaColumna >= fechaInicioCumplimientoIdeal && fechaColumna < fechaInicioCumplimientoIdealFin) return 'Fecha ideal de inicio'
-    if(fechaColumna >= fechaInicio && fechaColumna < fechaInicioFin) return 'Fecha de inicio'
-    if(fechaColumna >= fechaIdeal && fechaColumna < fechaIdealFin) return 'Fecha de finalización'
-    if(fechaColumna >= fechaMaxima && fechaColumna < fechaMaximaFin) return 'Fecha de máxima'
+    if(fechaColumna >= fechaInicioCumplimientoIdeal && fechaColumna < fechaInicioCumplimientoIdealFin) return 'Periodo ideal para iniciar el cumplimiento'
+    if(fechaColumna >= fechaInicio && fechaColumna < fechaInicioFin) return 'Periodo ideal para terminar el cumplimiento'
+    if(fechaColumna >= fechaIdeal && fechaColumna < fechaIdealFin) return 'Periodo para cumplirlo con vencimiento próximo'
+    if(fechaColumna >= fechaMaxima && fechaColumna < fechaMaximaFin) return 'Periodo para cumplirlo muy urgente'
   }
 
   startHoverTimer(element: any, column: number) {
     this.hoverTimer = setTimeout(() => {
-        this.openCumplimientoDialog(element, column);
+        this.prueba(element, column);
     }, 2500); // 2500 ms = 2.5 segundos
   }
 
   clearHoverTimer() {
+    console.log(this.showTooltip)
+    if(this.showTooltip){
+      this.clearAll()
+    } else {
       clearTimeout(this.hoverTimer);
+      clearTimeout(this.unhoverTimer);
+    }
+  }
+
+  prueba(element:any, column:number) {
+    clearTimeout(this.hoverTimer);
+    clearTimeout(this.unhoverTimer);
+    const id = element.cumplimientos_obligacion.id_obligacion
+    var sections = document.querySelectorAll('.custom-tooltip');
+    for (let i = 0; i < sections.length; i++){
+      sections[i].classList.remove('show');
+    }
+    document.querySelector(`#tooltip-${id}-${column}`).classList.add('show');
+    this.showTooltip = true
+  }
+
+  clearAll() {
+    console.log('Clearing...')
+    this.unhoverTimer = setTimeout(() => {
+      console.log('Cleared')
+      var sections = document.querySelectorAll('.custom-tooltip');
+      for (let i = 0; i < sections.length; i++){
+        sections[i].classList.remove('show');
+      }
+      this.showTooltip = false
+    }, 2500); // 2500 ms = 2.5 segundos
   }
 }
