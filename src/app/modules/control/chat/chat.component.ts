@@ -18,18 +18,36 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   selectedUser: any | null = null;
 
   constructor(private apiService: ApiService) {
+    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
+    
+    if(userId !== null){
     this.socket = io('wss://api.escudofiscal.alphadev.io', {
-      transports: ['websocket'],
+     extraHeaders: {
+         id: userId
+      }
     });    
-    this.socket.on('message', (data) => {
-      console.log(data);
-      this.messages.push({ text: data, type: 'received' });
-      this.scrollToBottom();
+    this.socket.on('connect', () => {
+      console.log('Conectado al servidor de sockets con ID:', userId);
+      });
+  
+    this.socket.on('disconnect', () => {
+      console.log('Desconectado del servidor de sockets');
     });
+  
+    this.socket.on('message', (data) => {
+      console.log(data)
+      this.messages.push({ text: data.content.mensaje, type: 'received' });
+      this.scrollToBottom();
+    });     
   }
+  }
+  
 
   ngOnInit(): void {
     this.getUsers()
+    if (this.users.length > 0) {
+      this.selectUser(this.users[0]);
+    }
   }
 
   getUsers() {
@@ -37,32 +55,57 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       (data: any) => {
         this.users = data.result;
         this.filteredUsers = this.users; 
-        console.log(this.users);
       },
       (error) => {
         console.error('Error al obtener usuarios:', error);
       }
     );
   }
-
+  
   selectUser(user: any) {
+    this.messages = [];
     this.selectedUser = user;
+    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
+  
+    // Desuscribirse del evento 'conversation' antes de suscribirse nuevamente
+    this.socket.off('conversation');
+  
+    const conversationBody = {
+      to: this.selectedUser.id
+    };
+  
+    console.log(conversationBody);
+    this.socket.emit('conversation', conversationBody);
+  
+    this.socket.on('conversation', (messageData) => {
+      console.log(messageData);
+  
+      messageData.forEach((message) => {
+        const messageType = message.from === userId ? 'sent' : 'received';
+        this.messages.push({ text: message.message, type: messageType });
+      });
+  
+      this.scrollToBottom();
+    });
   }
+  
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
 
   sendMessage() {
-    if (this.newMessageText.trim() !== '') {
+    if (this.newMessageText.trim() !== ''  && this.selectedUser) {
+      console.log(this.selectedUser.id)
       const messagePayload = {
-        username: this.selectedUser.id,  
-        message: this.newMessageText.trim()
+        to: this.selectedUser.id,  
+        content: {
+          mensaje: this.newMessageText.trim(),
+          fecha_envio: Date.now()
+        }
       };
-  
       this.socket.emit('message', messagePayload);
       this.messages.push({ text: this.newMessageText.trim(), type: 'sent' });
-      
       this.newMessageText = '';
     }
   }
