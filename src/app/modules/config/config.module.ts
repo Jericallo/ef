@@ -56,6 +56,7 @@ import { AddCompanyDialogComponent } from './companies/add-company-dialog/add-co
 import { EditCompaniesDialogComponent } from './companies/edit-companies-dialog/edit-companies-dialog.component';
 import { EditCompanyDialogComponent } from './companies/edit-company-dialog/edit-company-dialog.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { PasswordChangeComponent } from './user-profile/password-change/password-change.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     AddCompanyDialogComponent,
     EditCompaniesDialogComponent,
     EditCompanyDialogComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    PasswordChangeComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [

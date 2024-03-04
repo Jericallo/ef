@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from 'src/app/shared/services/api.service';
 import Swal from 'sweetalert2';
+import { PasswordChangeComponent } from './password-change/password-change.component';
 
 interface Usuario {
   correo: string;
@@ -30,7 +32,7 @@ export class UserProfileComponent implements OnInit {
   emailPattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   phonePattern: RegExp = /^\d{8}$|^\d{10}$/;
 
-  constructor( private apiService: ApiService ) { }
+  constructor( private apiService: ApiService, public dialog: MatDialog ) { }
 
   ngOnInit(): void {
     //let id = this.apiService.getWholeUser()
@@ -79,5 +81,12 @@ export class UserProfileComponent implements OnInit {
         this.editedUser = res.result[0]
       }
     })
+  }
+
+  changePassword(user:any){
+    const dialogRef = this.dialog.open(PasswordChangeComponent, {
+      width: '600px',
+      data: { user }
+    });
   }
 }

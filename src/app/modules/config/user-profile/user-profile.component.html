@@ -23,6 +23,9 @@
             </mat-error>
         </div>
         <mat-error *ngIf="camposInvalidos" class="error-message">Por favor, complete todos los campos.</mat-error>
+
+        <a (click)="changePassword(editedUser)">Cambiar contraseña</a><br/>
+        <br/>
         <button mat-raised-button color="primary" (click)="saveUser()">Editar</button>
     </div>
 </div>
