@@ -2,7 +2,8 @@
     <i class="material-icons user-icon">person</i>
     <div class="menu-container" [ngStyle]="{ 'display': isMenuOpen ? 'flex' : 'none' }">
       <ul>
-        <li><a id="config" routerLink="/config/menu">Configuraciones</a></li>
+        <li *ngIf="user.nombre_perfil === 'Administrador'"><a id="config" routerLink="/config/menu">Configuraciones</a></li>
+        <li><a id="profile" routerLink="/config/user-profile">Perfil</a></li>
         <li><a id="logOut" (click)="logOut()">Salir</a></li>
       </ul>
     </div>

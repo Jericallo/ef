@@ -180,6 +180,15 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
+  public getUserById(id:number):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v1/usuarios?id=' + id
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
   public deleteUser(userId: number): Observable<any> {
     const url = `https://api.escudofiscal.alphadev.io/v2/user/delete`; 
     const headers = new HttpHeaders({
@@ -866,6 +875,34 @@ export class ApiService {
     console.log(url)
     return this.http.get<Questionnaire[]>(url,{headers:headers});
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //-------ENDPOINTS DE LA VERSION 2-------//
 

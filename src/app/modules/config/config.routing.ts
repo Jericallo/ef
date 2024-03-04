@@ -21,6 +21,7 @@ import { EditArticleComponent } from './leyes-config/edit-article/edit-article.c
 import { EditParagraphComponent } from './leyes-config/edit-paragraph/edit-paragraph.component';
 import { FestiveDaysComponent } from './festive-days/festive-days.component';
 import { CompaniesComponent } from './companies/companies.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -268,6 +269,17 @@ export const ConfigRoutes: Routes = [
                     urls: [
                         { title: 'Configuración', url: '/config' },
                         { title: 'Compañías' }
+                    ]
+                }
+            },
+            {
+                path: 'user-profile',
+                component: UserProfileComponent,
+                data: {
+                    title: 'Perfil del Usuario',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
                     ]
                 }
             },

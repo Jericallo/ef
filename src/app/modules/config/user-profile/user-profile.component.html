@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="grid-container">
+        <h2 mat-dialog-title>Mi Perfil</h2>
+        <div class="grid-item">
+            <mat-form-field>
+            <input matInput [(ngModel)]="editedUser.correo" required placeholder="Correo">
+            </mat-form-field>
+            <mat-error *ngIf="camposInvalidos && !emailPattern.test(editedUser.correo.trim())">
+                Por favor, ingrese un correo electrónico válido.
+            </mat-error>
+        </div>
+        <div class="grid-item">
+            <mat-form-field>
+            <input matInput [(ngModel)]="editedUser.nombre" required placeholder="Nombre">
+            </mat-form-field>
+        </div>
+        <div class="grid-item">
+            <mat-form-field>
+            <input matInput [(ngModel)]="editedUser.telefono" placeholder="Teléfono" type="number" required>
+            </mat-form-field>
+            <mat-error *ngIf="camposInvalidos && !phonePattern.test(editedUser.telefono.toString())">
+            Por favor, ingrese un número de teléfono válido (8 o 10 dígitos).
+            </mat-error>
+        </div>
+        <mat-error *ngIf="camposInvalidos" class="error-message">Por favor, complete todos los campos.</mat-error>
+
+        <a (click)="changePassword(editedUser)">Cambiar contraseña</a><br/>
+        <br/>
+        <button mat-raised-button color="primary" (click)="saveUser()">Editar</button>
+    </div>
+</div>
