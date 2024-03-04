@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/shared/services/api.service';
 
 
 @Component({
@@ -9,9 +10,13 @@ import { Router } from '@angular/router';
 })
 export class UserIconComponent implements OnInit {
 
-  constructor( private routes: Router) { }
+  user:any
+
+  constructor( private routes: Router, public apiService: ApiService) { }
 
   ngOnInit(): void {
+    this.user = this.apiService.getWholeUser()
+    console.log('USER',this.user)
   }
 
   isMenuOpen = false;

@@ -55,6 +55,7 @@ import { CompaniesComponent } from './companies/companies.component';
 import { AddCompanyDialogComponent } from './companies/add-company-dialog/add-company-dialog.component';
 import { EditCompaniesDialogComponent } from './companies/edit-companies-dialog/edit-companies-dialog.component';
 import { EditCompanyDialogComponent } from './companies/edit-company-dialog/edit-company-dialog.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { EditCompanyDialogComponent } from './companies/edit-company-dialog/edit
     CompaniesComponent,
     AddCompanyDialogComponent,
     EditCompaniesDialogComponent,
-    EditCompanyDialogComponent
+    EditCompanyDialogComponent,
+    UserProfileComponent
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
