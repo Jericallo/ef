@@ -67,19 +67,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.selectedUser = user;
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
   
-    // Desuscribirse del evento 'conversation' antes de suscribirse nuevamente
     this.socket.off('conversation');
   
     const conversationBody = {
       to: this.selectedUser.id
     };
-  
-    console.log(conversationBody);
     this.socket.emit('conversation', conversationBody);
   
-    this.socket.on('conversation', (messageData) => {
-      console.log(messageData);
-  
+    this.socket.on('conversation', (messageData) => {  
       messageData.forEach((message) => {
         const messageType = message.from === userId ? 'sent' : 'received';
         this.messages.push({ text: message.message, type: messageType });
