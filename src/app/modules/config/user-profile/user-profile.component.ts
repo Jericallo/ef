@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { PasswordChangeComponent } from './password-change/password-change.component';
 
 interface Usuario {
-  correo: string;
   nombre: string;
   telefono: number; 
   contra: string;
@@ -19,8 +18,9 @@ interface Usuario {
 })
 export class UserProfileComponent implements OnInit {
 
+  userMail:string = ''
+
   editedUser: Usuario = {
-    correo: '',
     nombre: '',
     telefono:null, 
     contra: '',
@@ -67,7 +67,6 @@ export class UserProfileComponent implements OnInit {
 
   camposSonValidos(): boolean {
     return (
-      this.emailPattern.test(this.editedUser.correo.trim()) &&
       this.editedUser.nombre.trim() !== '' &&
       this.phonePattern.test(this.editedUser.telefono.toString()));
   }
@@ -79,6 +78,7 @@ export class UserProfileComponent implements OnInit {
         res = JSON.parse(this.apiService.decrypt(res.message, 'private'))
         console.log(res)
         this.editedUser = res.result[0]
+        this.userMail = res.result[0].correo
       }
     })
   }

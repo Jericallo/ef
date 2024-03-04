@@ -3,11 +3,8 @@
         <h2 mat-dialog-title>Mi Perfil</h2>
         <div class="grid-item">
             <mat-form-field>
-            <input matInput [(ngModel)]="editedUser.correo" required placeholder="Correo">
+            <input matInput [(ngModel)]="userMail" required placeholder="Correo" readonly>
             </mat-form-field>
-            <mat-error *ngIf="camposInvalidos && !emailPattern.test(editedUser.correo.trim())">
-                Por favor, ingrese un correo electrónico válido.
-            </mat-error>
         </div>
         <div class="grid-item">
             <mat-form-field>
