@@ -46,6 +46,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.29.4",
     "ng-apexcharts": "^1.2.1",
+    "ng2-file-upload": "^5.0.0",
     "ngx-perfect-scrollbar": "^8.0.0",
     "ngx-socket-io": "^4.6.1",
     "rxjs": "~7.5.0",
