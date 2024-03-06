@@ -1,0 +1,27 @@
+<div class="bubble-container" *ngIf="!openChat" (click)="toggleChat()">
+
+</div>
+<div class="chat-container" *ngIf="openChat">
+    
+
+    <section class="chat-section" style="position: relative; width: 100%;">
+
+        <div class="chat-contact-container">
+          <span>{{ selectedUser?.nombre }}</span>
+        </div>
+    
+        <div #messageContainer class="message-container">
+          <div *ngFor="let message of messages" [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
+            {{ message.text }}
+          </div>
+        </div>
+    
+        <div class="message-input-container" style="position: absolute; bottom: 0; width: 100%;">
+            <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText" (keyup.enter)="sendMessage($event)">
+        </div>
+          
+    
+    </section>
+
+
+</div>

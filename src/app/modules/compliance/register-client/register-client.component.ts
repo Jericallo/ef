@@ -24,6 +24,8 @@ export class RegisterClientComponent implements OnInit {
   showTooltip = false
   showChatButton = false
 
+  openChat = false;
+
   constructor(private apiService: ApiService, public dialogRef: MatDialog) {}
 
   ngOnInit(): void {
@@ -317,5 +319,9 @@ export class RegisterClientComponent implements OnInit {
       }
       this.showTooltip = false
     }, 2500); // 2500 ms = 2.5 segundos
+  }
+
+  openChatDirective(){
+    this.openChat = true
   }
 }
