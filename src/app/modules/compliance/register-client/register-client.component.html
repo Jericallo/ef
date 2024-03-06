@@ -1,5 +1,6 @@
 <app-traffic-light></app-traffic-light>
 <app-user-icon></app-user-icon>
+<app-chat-bubble [openChat]="openChat"></app-chat-bubble>
 
 <div class="month-navigation">
     <mat-icon>chevron_left</mat-icon> <button (click)="navigateMonth(-1)"class="button-prev">Anterior</button>
@@ -35,7 +36,7 @@
                         </div>
                         <div class="custom-tooltip" [id]="'tooltip-'+element.cumplimientos_obligacion.id_obligacion+'-'+column">
                             <span>{{messageTooltip(element, column)}} </span>
-                            <button *ngIf="showChatButton" class="chat-button">Ir al chat</button>
+                            <button *ngIf="showChatButton" class="chat-button" (click)="openChatDirective()">Ir al chat</button>
                         </div>
                     </div>
                 </ng-template>
