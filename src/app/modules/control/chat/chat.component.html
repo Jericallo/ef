@@ -2,15 +2,17 @@
 
   <!-- CHAT LIST -->
   <section class="chatList-section">
-    <div style="display: flex; align-items: start; justify-content: start; flex-direction: column; background-color: rgb(0, 199, 43); padding-left: 20px; padding-right: 20px; padding-top: 10px; height: 10%;">
+    <div
+      style="display: flex; align-items: start; justify-content: start; flex-direction: column; background-color: rgb(0, 199, 43); padding-left: 20px; padding-right: 20px; padding-top: 10px; height: 10%;">
       <h5>Chats</h5>
-        <input placeholder="Buscar chat" [(ngModel)]="searchTerm" (ngModelChange)="filterUsers()" style="margin-top: 5px; color: white; background: none; border-bottom:  2px solid white; 
+      <input placeholder="Buscar chat" [(ngModel)]="searchTerm" (ngModelChange)="filterUsers()" style="margin-top: 5px; color: white; background: none; border-bottom:  2px solid white; 
         border-top: none; border-left: none;border-right: none; width: 100%;">
     </div>
 
     <div *ngFor="let user of filteredUsers" (click)="selectUser(user)">
       <div class="user-container">
         {{ user.nombre }}
+        <span *ngIf="user.isTyping">Escribiendo...</span>
       </div>
     </div>
   </section>
@@ -20,16 +22,28 @@
 
     <div class="chat-contact-container">
       <span>{{ selectedUser?.nombre }}</span>
+      <span *ngIf="selectedUser?.isTyping">Escribiendo...</span>
     </div>
 
     <div #messageContainer class="message-container">
-      <div *ngFor="let message of messages" [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
+      <div *ngFor="let message of messages"
+        [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
         {{ message.text }}
       </div>
     </div>
 
     <div class="message-input-container" style="position: absolute; bottom: 0; width: 100%;">
-      <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText" (keyup.enter)="sendMessage()">
+      <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText"
+        (keyup.enter)="sendMessage()" (keyup)="checkIsTyping()">
+      <button mat-icon-button class="sendButton">
+        <mat-icon style="color: white; width: 3em; height: 3em; display: flex;
+        align-items: center;
+        justify-content: center;" (click)="sendMessage()">send</mat-icon>
+      </button>
+        <input type="file" (change)="handleFileInput($event)" accept=".txt,.pdf" id="actual-btn" style="display: none;"/> 
+        <label for="actual-btn"  class="fileButton">
+            <mat-icon style="color: white; display: flex; align-items: center; justify-content: center;">attach_file</mat-icon>
+        </label>     
     </div>
 
   </section>
