@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 import { QuestionarieComponent } from './questionarie/questionarie.component';
 import { MainModule } from '../main/main.module';
 import { ChatComponent } from './chat/chat.component';
+import { PdfViewerModalComponent } from './chat/pdf-viewer-modal/pdf-viewer-modal.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ChatComponent } from './chat/chat.component';
     VideosComponent,
     QuestionarieComponent,
     ChatComponent,
+    PdfViewerModalComponent,
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [

@@ -1,3 +1,5 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 .chatList-section {
     flex: 0 0 25%; 
     height: 90vh;
@@ -83,6 +85,7 @@
     align-self: flex-end; /* Alinea a la derecha */
     margin-left: auto; /* Empuja el elemento a la derecha */
 }
+
 
 .received-message {
     background: white;

@@ -2,6 +2,8 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { ApiService } from 'src/app/shared/services/api.service';
+import { PdfViewerModalComponent } from './pdf-viewer-modal/pdf-viewer-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +23,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   profile: any
   me_user: ''
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private dialog: MatDialog) {
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     const me = apiService.getWholeUser()
     this.me_user = me.nombre
@@ -137,6 +139,22 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }
     );
   }
+
+  openModal(pdfUrl: string): void {
+    const dialogRef = this.dialog.open(PdfViewerModalComponent, {
+      width: '1400px',
+      height: '80%',
+      position: {
+          top: '',
+          left: '20%'
+      },
+      data: { pdfUrl: pdfUrl },
+    });  
+
+  }
+  
+  
+
   
   selectUser(user: any) {
     this.apiService.getProfiles().subscribe(
