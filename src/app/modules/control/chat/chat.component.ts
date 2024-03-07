@@ -89,6 +89,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
+    console.log(file)
     if (file) {
       const fileNameParts = file.name.split('.');
       const extension = fileNameParts[fileNameParts.length - 1];
@@ -119,10 +120,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   
   getUsers() {
+    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     this.apiService.getUsers().subscribe(
       (data: any) => {
         this.users = data.result.map(user => ({ ...user, isTyping: false }));
+        this.users = this.users.filter(user => user.id !== userId);
         this.filteredUsers = this.users;
+
         if (this.users.length > 0 && !this.selectedUser) {
           this.selectedUser = this.users[0];
           this.selectUser(this.selectedUser);
@@ -218,18 +222,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         const fechaNueva = new Date(message.date);
         const fechaAnterior = new Date(this.messages[fechaNuevaIndex - 1].date);
 
-        // Convertir las fechas a cadenas de texto solo con la fecha (YYYY-MM-DD)
         const fechaNuevaStr = fechaNueva.toISOString().split('T')[0];
         const fechaAnteriorStr = fechaAnterior.toISOString().split('T')[0];
 
-        // Comparar solo las fechas
         if (fechaNuevaStr > fechaAnteriorStr) {
             return true;
         } else {
             return false;
         }
     } else {
-        return false; // Si no se encuentra la fecha en el array, retornar falso
+        return false; 
     }
 }
 
