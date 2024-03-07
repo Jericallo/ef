@@ -10,7 +10,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   newMessageText: string = '';
-  messages: { text: string, type: 'sent' | 'received' }[] = [];
+  messages: { text: string, type: 'sent' | 'received', date:number }[] = [];
   @ViewChild('messageContainer') private messageContainer: ElementRef;
   private socket: Socket; 
   searchTerm: string = '';
@@ -18,9 +18,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   filteredUsers: any[] = []; 
   selectedUser: any | null = null;
   isTyping: boolean = false;
+  profile: any
+  me_user: ''
 
   constructor(private apiService: ApiService) {
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
+    const me = apiService.getWholeUser()
+    this.me_user = me.nombre
     
     if(userId !== null){
     this.socket = io('wss://api.escudofiscal.alphadev.io', {
@@ -37,7 +41,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   
     this.socket.on('message', (data) => {  
-      this.messages.push({ text: data.content.mensaje, type: 'received' });
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio });
       this.scrollToBottom();
     });  
     
@@ -104,7 +108,18 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
   
   selectUser(user: any) {
+    this.apiService.getProfiles().subscribe(
+      (data:any) => {
+        this.profile = data.find((element) => element.id === user.id_perfil)
+        console.log(data)
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
+
     this.messages = [];
+    console.log(user)
     this.selectedUser = user;
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
   
@@ -118,11 +133,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.socket.on('conversation', (messageData) => {  
       messageData.forEach((message) => {
         const messageType = message.from === userId ? 'sent' : 'received';
-        this.messages.push({ text: message.message, type: messageType });
+        this.messages.push({ text: message.message, type: messageType, date: message.sent_date });
       });
   
       this.scrollToBottom();
     });
+
+    
   }
   
 
@@ -133,14 +150,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   sendMessage() {
     if (this.newMessageText.trim() !== ''  && this.selectedUser) {
       const messagePayload = {
-        to: this.selectedUser.id,  
+        file:null,
         content: {
+          to: this.selectedUser.id,  
           mensaje: this.newMessageText.trim(),
           fecha_envio: Date.now()
         }
       };
       this.socket.emit('message', messagePayload);
-      this.messages.push({ text: this.newMessageText.trim(), type: 'sent' });
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now() });
       this.newMessageText = '';
     }
   }
@@ -165,4 +183,27 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
     } catch(err) { }
   }
+
+  isFechaNueva(message: any) {
+    const fechaNuevaIndex = this.messages.findIndex((element) => element === message);
+
+    if (fechaNuevaIndex > 0) {
+        const fechaNueva = new Date(message.date);
+        const fechaAnterior = new Date(this.messages[fechaNuevaIndex - 1].date);
+
+        // Convertir las fechas a cadenas de texto solo con la fecha (YYYY-MM-DD)
+        const fechaNuevaStr = fechaNueva.toISOString().split('T')[0];
+        const fechaAnteriorStr = fechaAnterior.toISOString().split('T')[0];
+
+        // Comparar solo las fechas
+        if (fechaNuevaStr > fechaAnteriorStr) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false; // Si no se encuentra la fecha en el array, retornar falso
+    }
+}
+
 }

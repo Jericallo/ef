@@ -1,3 +1,5 @@
+<app-user-icon></app-user-icon>
+
 <mat-card style="display: flex;">
 
   <!-- CHAT LIST -->
@@ -12,7 +14,7 @@
     <div *ngFor="let user of filteredUsers" (click)="selectUser(user)">
       <div class="user-container">
         {{ user.nombre }}
-        <span *ngIf="user.isTyping">Escribiendo...</span>
+        <span *ngIf="user.isTyping" style="font-size: x-small;">Escribiendo...</span>
       </div>
     </div>
   </section>
@@ -21,14 +23,24 @@
   <section class="chat-section" style="position: relative; width: 100%;">
 
     <div class="chat-contact-container">
-      <span>{{ selectedUser?.nombre }}</span>
+      <span>{{profile?.nombre}} {{ selectedUser?.nombre }}</span>
       <span *ngIf="selectedUser?.isTyping">Escribiendo...</span>
+      <span class="yo">{{me_user}}</span>
     </div>
 
     <div #messageContainer class="message-container">
-      <div *ngFor="let message of messages"
-        [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
-        {{ message.text }}
+      <div *ngFor="let message of messages" class="all-message">
+        <div *ngIf="isFechaNueva(message)" class="fecha-nueva">
+          <span >
+            {{message.date | date: 'dd/MM/yyyy'}}
+          </span>
+        </div>
+        <div 
+          [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
+          {{ message.text }} <br/>
+          <span class="message-date">{{ message.date | date: 'hh:mm a' }}</span>
+
+        </div>
       </div>
     </div>
 

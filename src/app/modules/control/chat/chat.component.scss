@@ -22,6 +22,7 @@
     background-color: rgb(0, 181, 39);
     padding: 20px;
     height: 10%;
+    position: relative;
   }
 
   .message-input-container {
@@ -49,6 +50,10 @@
     flex-direction: column;
   }
   
+  .message-container span {
+    text-align: end;
+  }
+
   .message.sent-message {
     margin-left: auto;
     
@@ -73,9 +78,10 @@
     margin: 10px;
     word-wrap: break-word;
     align-self: flex-end; /* Alinea a la derecha */
-  }
-  
-  .received-message {
+    margin-left: auto; /* Empuja el elemento a la derecha */
+}
+
+.received-message {
     background: white;
     max-width: 600px;
     width: fit-content;
@@ -84,7 +90,24 @@
     margin: 10px;
     word-wrap: break-word;
     align-self: flex-start; /* Alinea a la izquierda */
-  }
+    margin-right: auto; /* Empuja el elemento a la izquierda */
+}
+
+.all-message {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.fecha-nueva {
+  margin:auto;
+  background-color: rgba(152, 152, 152, 0.599);
+  padding: 7px;
+  border-radius: 20px;
+  font-size: small;
+  color: white;
+}
   
 
   .user-container{
@@ -127,4 +150,19 @@
   margin-left: 10px;
   margin-top: 10px;
   margin-bottom: 5px;
+}
+
+.message-date {
+  color: rgb(97, 97, 97);
+  font-size: x-small;
+  width: 100%;
+  text-align: end;
+  align-self: flex-end;
+}
+
+.yo {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  text-align: end;
 }
