@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { ApiService } from 'src/app/shared/services/api.service';
@@ -16,6 +17,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   users: any[] = []; 
   filteredUsers: any[] = []; 
   selectedUser: any | null = null;
+  isTyping: boolean = false;
 
   constructor(private apiService: ApiService) {
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
@@ -31,17 +33,49 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       });
   
     this.socket.on('disconnect', () => {
-      console.log('Desconectado del servidor de sockets');
+      this.socket.off('typing')
     });
   
-    this.socket.on('message', (data) => {
-      console.log(data)
+    this.socket.on('message', (data) => {  
       this.messages.push({ text: data.content.mensaje, type: 'received' });
       this.scrollToBottom();
-    });     
+    });  
+    
+    this.socket.on('typing', (data) => {
+      const typingUserId = data.message[0];  
+      let typingUserIndex = -1;
+      this.filteredUsers.forEach((element, index) => {
+        if (element.id === parseInt(typingUserId)) {
+          typingUserIndex = index;
+        }
+      });
+      if (typingUserIndex !== -1) {
+        this.filteredUsers[typingUserIndex].isTyping = true;
+      }    
+      if (this.selectedUser && this.selectedUser.id === typingUserId) {
+        this.isTyping = true;
+      }    
+    });    
+
+    this.socket.on('stoptyping', (data) => {
+      console.log(data)
+      const typingUserId = data.message[0];  
+      let typingUserIndex = -1;
+      this.filteredUsers.forEach((element, index) => {
+        if (element.id === parseInt(typingUserId)) {
+          typingUserIndex = index;
+        }
+      });
+      if (typingUserIndex !== -1) {
+        this.filteredUsers[typingUserIndex].isTyping = false;
+      }   
+      if (this.selectedUser && this.selectedUser.id === typingUserId.toString()) {
+        this.isTyping = true;
+      }    
+    });    
   }
   }
-  
+
 
   ngOnInit(): void {
     this.getUsers()
@@ -50,11 +84,18 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
   }
 
+
+  handleFileInput(event: any): void {
+    const file = event.target.files[0];
+    // Aquí puedes realizar cualquier lógica que desees con el archivo seleccionado
+    console.log('Archivo seleccionado:', file);
+  }
+  
   getUsers() {
     this.apiService.getUsers().subscribe(
       (data: any) => {
-        this.users = data.result;
-        this.filteredUsers = this.users; 
+        this.users = data.result.map(user => ({ ...user, isTyping: false }));
+        this.filteredUsers = this.users;
       },
       (error) => {
         console.error('Error al obtener usuarios:', error);
@@ -91,7 +132,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   sendMessage() {
     if (this.newMessageText.trim() !== ''  && this.selectedUser) {
-      console.log(this.selectedUser.id)
       const messagePayload = {
         to: this.selectedUser.id,  
         content: {
@@ -108,6 +148,17 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   filterUsers() {
     this.filteredUsers = this.users.filter(user => user.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()));
   }
+
+  checkIsTyping() {
+    this.isTyping = this.newMessageText.trim() !== '';    
+    if (this.isTyping) {
+      console.log("prendido")
+      this.socket.emit('typing', { to: this.selectedUser.id });
+    } else {
+      this.socket.emit('stoptyping', { to: this.selectedUser.id });
+    }
+  }
+  
 
   private scrollToBottom(): void {
     try {
