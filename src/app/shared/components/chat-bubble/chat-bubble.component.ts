@@ -173,14 +173,9 @@ export class ChatBubbleComponent implements OnInit {
         this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
       });
   
-      this.scrollToBottom();
     });
   }
   
-
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
-  }
 
   sendMessage() {
     if (this.newMessageText.trim() !== ''  && this.selectedUser) {

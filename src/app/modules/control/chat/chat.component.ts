@@ -43,6 +43,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.socket.on('message', (data) => {  
       this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });
       this.scrollToBottom();
+      
     });  
     
     this.socket.on('typing', (data) => {
@@ -83,19 +84,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.getUsers()
-    if (this.users.length > 0) {
-      this.selectUser(this.users[0]);
-    }
   }
 
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
-    // Aquí puedes realizar cualquier lógica que desees con el archivo seleccionado
-    console.log('Archivo seleccionado:', file);
-
     if (file) {
-      // Obtener la extensión del archivo
       const fileNameParts = file.name.split('.');
       const extension = fileNameParts[fileNameParts.length - 1];
 
@@ -106,20 +100,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
           mensaje: '',
           fecha_envio: Date.now(),
           type: 'file',
-          extension: extension // Añadir la extensión al payload del mensaje
+          extension: extension 
         }
       };
 
-      // Detectar el navegador y obtener la ruta local del archivo seleccionado
       let fileURL = '';
       if (navigator.userAgent.includes('WebKit')) {
-        // Navegador basado en WebKit (Safari, Chrome, etc.)
         fileURL = file.getWebkitRelativePath() || '';
       } else if (navigator.userAgent.includes('Firefox')) {
-        // Navegador Mozilla (Firefox)
         fileURL = file.mozFullPath || '';
       }
-      console.log(fileURL)
       this.socket.emit('message', messagePayload);
       this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'file', fileURL: fileURL });
       this.newMessageText = '';
@@ -133,6 +123,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       (data: any) => {
         this.users = data.result.map(user => ({ ...user, isTyping: false }));
         this.filteredUsers = this.users;
+        if (this.users.length > 0 && !this.selectedUser) {
+          this.selectedUser = this.users[0];
+          this.selectUser(this.selectedUser);
+        }
       },
       (error) => {
         console.error('Error al obtener usuarios:', error);
@@ -152,7 +146,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     )
 
     this.messages = [];
-    console.log(user)
     this.selectedUser = user;
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
   

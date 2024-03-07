@@ -23,8 +23,8 @@
           [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
           {{ message.text }} <br/>
           <div *ngIf="message.isFile === 'file'">
-            <a href="{{message.fileURL}}" target="_blank">
-              <mat-icon>insert_drive_file</mat-icon>
+            <a href="{{message.fileURL}}" style="text-decoration: none; display: flex; align-items: center; justify-content: center;" target="_blank">
+              Archivo <mat-icon>insert_drive_file</mat-icon>
             </a>
           </div>
           <span class="message-date">{{ message.date | date: 'hh:mm a' }}</span>
