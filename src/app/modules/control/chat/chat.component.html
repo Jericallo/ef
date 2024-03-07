@@ -38,6 +38,11 @@
         <div 
           [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
           {{ message.text }} <br/>
+          <div *ngIf="message.isFile === 'file'">
+            <a href="{{message.fileURL}}" target="_blank">
+              <mat-icon>insert_drive_file</mat-icon>
+            </a>
+          </div>
           <span class="message-date">{{ message.date | date: 'hh:mm a' }}</span>
 
         </div>
@@ -52,7 +57,7 @@
         align-items: center;
         justify-content: center;" (click)="sendMessage()">send</mat-icon>
       </button>
-        <input type="file" (change)="handleFileInput($event)" accept=".txt,.pdf" id="actual-btn" style="display: none;"/> 
+        <input type="file" (change)="handleFileInput($event)" accept=".txt,.pdf, .xslx, .docx, .obj" id="actual-btn" style="display: none;"/> 
         <label for="actual-btn"  class="fileButton">
             <mat-icon style="color: white; display: flex; align-items: center; justify-content: center;">attach_file</mat-icon>
         </label>     

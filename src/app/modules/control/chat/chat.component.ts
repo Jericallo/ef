@@ -10,7 +10,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   newMessageText: string = '';
-  messages: { text: string, type: 'sent' | 'received', date:number }[] = [];
+  messages: { text: string, type: 'sent' | 'received', date:number, isFile:string, fileURL?:string }[] = [];
   @ViewChild('messageContainer') private messageContainer: ElementRef;
   private socket: Socket; 
   searchTerm: string = '';
@@ -41,7 +41,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   
     this.socket.on('message', (data) => {  
-      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio });
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });
       this.scrollToBottom();
     });  
     
@@ -93,7 +93,40 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     const file = event.target.files[0];
     // Aquí puedes realizar cualquier lógica que desees con el archivo seleccionado
     console.log('Archivo seleccionado:', file);
-  }
+
+    if (file) {
+      // Obtener la extensión del archivo
+      const fileNameParts = file.name.split('.');
+      const extension = fileNameParts[fileNameParts.length - 1];
+
+      const messagePayload = {
+        file: file,
+        content: {
+          to: this.selectedUser.id,  
+          mensaje: '',
+          fecha_envio: Date.now(),
+          type: 'file',
+          extension: extension // Añadir la extensión al payload del mensaje
+        }
+      };
+
+      // Detectar el navegador y obtener la ruta local del archivo seleccionado
+      let fileURL = '';
+      if (navigator.userAgent.includes('WebKit')) {
+        // Navegador basado en WebKit (Safari, Chrome, etc.)
+        fileURL = file.getWebkitRelativePath() || '';
+      } else if (navigator.userAgent.includes('Firefox')) {
+        // Navegador Mozilla (Firefox)
+        fileURL = file.mozFullPath || '';
+      }
+      console.log(fileURL)
+      this.socket.emit('message', messagePayload);
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'file', fileURL: fileURL });
+      this.newMessageText = '';
+    }
+}
+
+
   
   getUsers() {
     this.apiService.getUsers().subscribe(
@@ -131,9 +164,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.socket.emit('conversation', conversationBody);
   
     this.socket.on('conversation', (messageData) => {  
+      console.log(messageData)
       messageData.forEach((message) => {
         const messageType = message.from === userId ? 'sent' : 'received';
-        this.messages.push({ text: message.message, type: messageType, date: message.sent_date });
+        this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
       });
   
       this.scrollToBottom();
@@ -158,7 +192,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         }
       };
       this.socket.emit('message', messagePayload);
-      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now() });
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'text' });
       this.newMessageText = '';
     }
   }
