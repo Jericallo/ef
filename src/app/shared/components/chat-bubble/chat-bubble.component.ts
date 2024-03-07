@@ -102,8 +102,8 @@ export class ChatBubbleComponent implements OnInit {
     this.scrollToBottom();
   }
 
-  sendMessage(event: any) {
-    const inputValue = event.target.value;
+  sendMessage(message: string) {
+    const inputValue = message;
     console.log('sending', inputValue, this.selectedUser)
     if (inputValue.trim() !== ''  && this.selectedUser) {
       console.log(this.selectedUser.id)

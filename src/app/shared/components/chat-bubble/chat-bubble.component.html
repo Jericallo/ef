@@ -17,7 +17,12 @@
         </div>
     
         <div class="message-input-container" style="position: absolute; bottom: 0; width: 100%;">
-            <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText" (keyup.enter)="sendMessage($event)">
+            <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText" (keyup.enter)="sendMessage(newMessageText)">
+            <button mat-icon-button class="eyeButton">
+              <mat-icon style="color: white; z-index: 600; width: 3em; height: 3em; display: flex;
+              align-items: center;
+              justify-content: center;" (click)="sendMessage(newMessageText)">send</mat-icon>
+            </button>    
         </div>
           
     

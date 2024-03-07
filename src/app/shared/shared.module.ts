@@ -10,6 +10,9 @@ import {
 import { TrafficLightComponent } from './components/traffic-light/traffic-light.component';
 import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.component';
 import { CommonModule } from '@angular/common';
+import { AppModule } from '../app.module';
+import { DemoMaterialModule } from '../demo-material-module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,9 @@ import { CommonModule } from '@angular/common';
     ChatBubbleComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    DemoMaterialModule,
+    FormsModule
   ],
   exports: [
     AccordionAnchorDirective,
