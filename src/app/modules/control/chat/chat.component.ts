@@ -19,6 +19,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   users: any[] = []; 
   filteredUsers: any[] = []; 
   selectedUser: any | null = null;
+  isSelectedUser: (user: any) => boolean = (user) => false; // Inicializar la función de selección de usuario
   isTyping: boolean = false;
   profile: any
   me_user: ''
@@ -162,6 +163,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   
   selectUser(user: any) {
+    this.isSelectedUser = (u) => u === user; 
     this.apiService.getProfiles().subscribe(
       (data:any) => {
         this.profile = data.find((element) => element.id === user.id_perfil)

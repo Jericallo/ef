@@ -11,16 +11,18 @@
         border-top: none; border-left: none;border-right: none; width: 100%;">
     </div>
 
-    <div *ngFor="let user of filteredUsers" (click)="selectUser(user)">
-      <div class="user-container">
-        <img src="https://cdn-icons-png.freepik.com/512/3607/3607444.png" alt="Foto de perfil" class="avatar">
-        <div>
-          {{ user.nombre }}
-          <br>
-          <span *ngIf="user.isTyping" style="font-size: small;">Escribiendo...</span>
-        </div>
-      </div>
+<!-- En la sección de chat en tu plantilla HTML -->
+<div *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+  <div class="user-container" [class.selected-user]="isSelectedUser(user)">
+    <img src="https://cdn-icons-png.freepik.com/512/3607/3607444.png" alt="Foto de perfil" class="avatar">
+    <div>
+      {{ user.nombre }}
+      <br>
+      <span *ngIf="user.isTyping" style="font-size: small;">Escribiendo...</span>
     </div>
+  </div>
+</div>
+
   </section>
 
   <!-- OPEN CHAT -->
