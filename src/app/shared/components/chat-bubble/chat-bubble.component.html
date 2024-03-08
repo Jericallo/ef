@@ -7,9 +7,19 @@
   <section class="chat-section" style="position: relative; width: 100%;">
 
     <div class="chat-contact-container">
-      <span>{{profile?.nombre}} {{ selectedUser?.nombre }}</span>
-      <span *ngIf="selectedUser?.isTyping">Escribiendo...</span>
-      <span class="yo">{{me_user}}</span>
+      <div class="profile-div">
+        <span style="font-size: x-small;">{{profile?.nombre}} </span>
+      </div>
+      <div class="user-div">
+        <span>{{ selectedUser?.nombre }}</span>
+        <span *ngIf="selectedUser?.isTyping" style="font-size: x-small;">  Escribiendo...</span>
+      </div>
+      <div class="profile-receiving-div">
+        <span style="font-size: x-small;">Usuario</span>
+      </div>
+      <div class="user-receiving-div">
+        <span >{{me_user}}</span>
+      </div>
     </div>
 
     <div #messageContainer class="message-container">

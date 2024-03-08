@@ -47,6 +47,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.scrollToBottom();
       
     });  
+
+    this.socket.on('message-sent', (data) => {  
+      console.log('ARUTRO')
+      this.messages[this.messages.length-1].fileURL = data.message.filename
+    });  
     
     this.socket.on('typing', (data) => {
       const typingUserId = data.message[0];  
