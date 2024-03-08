@@ -1,32 +1,63 @@
 <div class="bubble-container" *ngIf="!openChat" (click)="toggleChat()">
-
+  <mat-icon style="font-size: x-large;">chat</mat-icon>
 </div>
 <div class="chat-container" *ngIf="openChat">
     
 
-    <section class="chat-section" style="position: relative; width: 100%;">
+  <section class="chat-section" style="position: relative; width: 100%;">
 
-        <div class="chat-contact-container">
-          <span>{{ selectedUser?.nombre }}</span>
+    <div class="chat-contact-container">
+      <div class="profile-div">
+        <span style="font-size: x-small;">{{profile?.nombre}} </span>
+      </div>
+      <div class="user-div">
+        <span>{{ selectedUser?.nombre }}</span>
+        <span *ngIf="selectedUser?.isTyping" style="font-size: x-small;">  Escribiendo...</span>
+      </div>
+      <div class="profile-receiving-div">
+        <span style="font-size: x-small;">Usuario</span>
+      </div>
+      <div class="user-receiving-div">
+        <span >{{me_user}}</span>
+      </div>
+    </div>
+
+    <div #messageContainer class="message-container">
+      <div *ngFor="let message of messages" class="all-message">
+        <div *ngIf="isFechaNueva(message)" class="fecha-nueva">
+          <span >
+            {{message.date | date: 'dd/MM/yyyy'}}
+          </span>
         </div>
-    
-        <div #messageContainer class="message-container">
-          <div *ngFor="let message of messages" [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
-            {{ message.text }}
+        <div 
+          [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
+          {{ message.text }} <br/>
+          <div *ngIf="message.isFile === 'file'">
+            <a href="{{message.fileURL}}" style="text-decoration: none; display: flex; align-items: center; justify-content: center;" target="_blank">
+              Archivo <mat-icon>insert_drive_file</mat-icon>
+            </a>
           </div>
+          <span class="message-date">{{ message.date | date: 'hh:mm a' }}</span>
+
         </div>
-    
-        <div class="message-input-container" style="position: absolute; bottom: 0; width: 100%;">
-            <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText" (keyup.enter)="sendMessage(newMessageText)">
-            <button mat-icon-button class="eyeButton">
-              <mat-icon style="color: white; z-index: 600; width: 3em; height: 3em; display: flex;
-              align-items: center;
-              justify-content: center;" (click)="sendMessage(newMessageText)">send</mat-icon>
-            </button>    
-        </div>
-          
-    
-    </section>
+      </div>
+    </div>
+
+    <div class="message-input-container" style="position: absolute; bottom: 0; width: 100%;">
+      <input class="message-input" placeholder="Escribe un mensaje" [(ngModel)]="newMessageText"
+        (keyup.enter)="sendMessage()" (keyup)="checkIsTyping()">
+      <button mat-icon-button class="sendButton">
+        <mat-icon style="color: white; width: 3em; height: 3em; display: flex;
+        align-items: center;
+        justify-content: center;" (click)="sendMessage()">send</mat-icon>
+      </button>
+        <input type="file" (change)="handleFileInput($event)" accept=".txt,.pdf" id="actual-btn" style="display: none;"/> 
+        <label for="actual-btn"  class="fileButton">
+            <mat-icon style="color: white; display: flex; align-items: center; justify-content: center;">attach_file</mat-icon>
+        </label>     
+    </div>
+
+  </section>
 
 
 </div>

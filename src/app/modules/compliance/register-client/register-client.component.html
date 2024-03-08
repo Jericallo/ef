@@ -35,7 +35,7 @@
                              (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)">
                         </div>
                         <div class="custom-tooltip" [id]="'tooltip-'+element.cumplimientos_obligacion.id_obligacion+'-'+column">
-                            <span>{{messageTooltip(element, column)}} </span>
+                            {{messageTooltip(element, column)}} 
                             <button *ngIf="showChatButton" class="chat-button" (click)="openChatDirective()">Ir al chat</button>
                         </div>
                     </div>

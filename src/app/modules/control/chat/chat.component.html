@@ -13,8 +13,12 @@
 
     <div *ngFor="let user of filteredUsers" (click)="selectUser(user)">
       <div class="user-container">
-        {{ user.nombre }}
-        <span *ngIf="user.isTyping" style="font-size: x-small;">Escribiendo...</span>
+        <img src="https://cdn-icons-png.freepik.com/512/3607/3607444.png" alt="Foto de perfil" class="avatar">
+        <div>
+          {{ user.nombre }}
+          <br>
+          <span *ngIf="user.isTyping" style="font-size: small;">Escribiendo...</span>
+        </div>
       </div>
     </div>
   </section>
@@ -23,8 +27,14 @@
   <section class="chat-section" style="position: relative; width: 100%;">
 
     <div class="chat-contact-container">
-      <span>{{profile?.nombre}} {{ selectedUser?.nombre }}</span>
-      <span *ngIf="selectedUser?.isTyping">Escribiendo...</span>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="https://cdn-icons-png.freepik.com/512/3607/3607444.png" alt="Foto de perfil" class="avatar">
+        <div style="display: flex; flex-direction: column;">
+          <span style="font-size: x-small;">{{profile?.nombre}}</span>
+          <span>{{ selectedUser?.nombre }}</span>
+          <span *ngIf="selectedUser?.isTyping">Escribiendo...</span>
+        </div>
+      </div>
       <span class="yo">{{me_user}}</span>
     </div>
 
@@ -38,6 +48,11 @@
         <div 
           [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
           {{ message.text }} <br/>
+          <div style="display: flex; align-items: center; justify-content: center; height: auto;" *ngIf="message.isFile === 'file'">
+            <button  href="{{message.fileURL}}" style="background: none; border: none; color: rgb(0, 157, 255); display: flex; align-items: center; justify-content: center;" (click)="openModal(message.fileURL)">
+              Archivo <mat-icon>insert_drive_file</mat-icon>
+            </button>
+          </div>
           <span class="message-date">{{ message.date | date: 'hh:mm a' }}</span>
 
         </div>
@@ -52,7 +67,7 @@
         align-items: center;
         justify-content: center;" (click)="sendMessage()">send</mat-icon>
       </button>
-        <input type="file" (change)="handleFileInput($event)" accept=".txt,.pdf" id="actual-btn" style="display: none;"/> 
+        <input type="file" (change)="handleFileInput($event)" accept=".txt,.pdf, .xslx, .docx, .obj" id="actual-btn" style="display: none;"/> 
         <label for="actual-btn"  class="fileButton">
             <mat-icon style="color: white; display: flex; align-items: center; justify-content: center;">attach_file</mat-icon>
         </label>     

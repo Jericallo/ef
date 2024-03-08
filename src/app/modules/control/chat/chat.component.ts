@@ -2,6 +2,8 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { ApiService } from 'src/app/shared/services/api.service';
+import { PdfViewerModalComponent } from './pdf-viewer-modal/pdf-viewer-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-chat',
@@ -10,7 +12,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   newMessageText: string = '';
-  messages: { text: string, type: 'sent' | 'received', date:number }[] = [];
+  messages: { text: string, type: 'sent' | 'received', date:number, isFile:string, fileURL?:string }[] = [];
   @ViewChild('messageContainer') private messageContainer: ElementRef;
   private socket: Socket; 
   searchTerm: string = '';
@@ -21,7 +23,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   profile: any
   me_user: ''
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private dialog: MatDialog) {
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     const me = apiService.getWholeUser()
     this.me_user = me.nombre
@@ -41,8 +43,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   
     this.socket.on('message', (data) => {  
-      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio });
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });
       this.scrollToBottom();
+      
+    });  
+
+    this.socket.on('message-sent', (data) => {  
+      console.log('ARUTRO')
+      this.messages[this.messages.length-1].fileURL = data.message.filename
     });  
     
     this.socket.on('typing', (data) => {
@@ -83,29 +91,75 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.getUsers()
-    if (this.users.length > 0) {
-      this.selectUser(this.users[0]);
-    }
   }
 
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
-    // Aquí puedes realizar cualquier lógica que desees con el archivo seleccionado
-    console.log('Archivo seleccionado:', file);
-  }
+    console.log(file)
+    if (file) {
+      const fileNameParts = file.name.split('.');
+      const extension = fileNameParts[fileNameParts.length - 1];
+
+      const messagePayload = {
+        file: file,
+        content: {
+          to: this.selectedUser.id,  
+          mensaje: '',
+          fecha_envio: Date.now(),
+          type: 'file',
+          extension: extension 
+        }
+      };
+
+      let fileURL = '';
+      if (navigator.userAgent.includes('WebKit')) {
+        fileURL = file.getWebkitRelativePath() || '';
+      } else if (navigator.userAgent.includes('Firefox')) {
+        fileURL = file.mozFullPath || '';
+      }
+      this.socket.emit('message', messagePayload);
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'file', fileURL: fileURL });
+      this.newMessageText = '';
+    }
+}
+
+
   
   getUsers() {
+    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     this.apiService.getUsers().subscribe(
       (data: any) => {
         this.users = data.result.map(user => ({ ...user, isTyping: false }));
+        this.users = this.users.filter(user => user.id !== userId);
         this.filteredUsers = this.users;
+
+        if (this.users.length > 0 && !this.selectedUser) {
+          this.selectedUser = this.users[0];
+          this.selectUser(this.selectedUser);
+        }
       },
       (error) => {
         console.error('Error al obtener usuarios:', error);
       }
     );
   }
+
+  openModal(pdfUrl: string): void {
+    const dialogRef = this.dialog.open(PdfViewerModalComponent, {
+      width: '1400px',
+      height: '80%',
+      position: {
+          top: '',
+          left: '20%'
+      },
+      data: { pdfUrl: pdfUrl },
+    });  
+
+  }
+  
+  
+
   
   selectUser(user: any) {
     this.apiService.getProfiles().subscribe(
@@ -119,7 +173,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     )
 
     this.messages = [];
-    console.log(user)
     this.selectedUser = user;
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
   
@@ -131,9 +184,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.socket.emit('conversation', conversationBody);
   
     this.socket.on('conversation', (messageData) => {  
+      console.log(messageData)
       messageData.forEach((message) => {
         const messageType = message.from === userId ? 'sent' : 'received';
-        this.messages.push({ text: message.message, type: messageType, date: message.sent_date });
+        this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
       });
   
       this.scrollToBottom();
@@ -158,7 +212,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         }
       };
       this.socket.emit('message', messagePayload);
-      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now() });
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'text' });
       this.newMessageText = '';
     }
   }
@@ -191,18 +245,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         const fechaNueva = new Date(message.date);
         const fechaAnterior = new Date(this.messages[fechaNuevaIndex - 1].date);
 
-        // Convertir las fechas a cadenas de texto solo con la fecha (YYYY-MM-DD)
         const fechaNuevaStr = fechaNueva.toISOString().split('T')[0];
         const fechaAnteriorStr = fechaAnterior.toISOString().split('T')[0];
 
-        // Comparar solo las fechas
         if (fechaNuevaStr > fechaAnteriorStr) {
             return true;
         } else {
             return false;
         }
     } else {
-        return false; // Si no se encuentra la fecha en el array, retornar falso
+        return false; 
     }
 }
 

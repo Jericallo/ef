@@ -8,16 +8,19 @@
     background-color: green;
     z-index: 30;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
 }
 
 .chat-container {
-    width: 320px;
-    height: 460px;
+    width: 450px;
+    height: 490px;
     border-radius: 30px;
     position: absolute;
     bottom: 60px;
     right: 30px;
-    background-color: red;
     z-index: 30;
     cursor: pointer;
 }
@@ -26,17 +29,58 @@
     flex: 0 0 75%; 
     background-color: rgb(228, 255, 234);
     width: 100%;
-    height: 460px;   
+    height: 490px;   
     position: relative; /* Agregado */
 }
 
 .chat-contact-container {
 display: flex;
-align-items: center;
 color: white;
 background-color: rgb(0, 181, 39);
-padding: 20px;
-height: 10%;
+height:  22%;
+position: relative;
+flex-direction: column;
+padding-top: 4px;
+padding-right: 16px;
+padding-left: 16px;
+}
+
+.profile-receiving-div {
+  text-align: end;
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  padding-right: 10px;
+  padding-top: 3px;
+  
+}
+
+.user-receiving-div {
+  font-weight: 600;
+  text-align: end;
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  padding-right: 10px;
+  padding-top: 3px;
+}
+
+.profile-div {
+  display: flex;
+  width: 100%;
+  padding-left: 10px;
+  padding-top: 3px;
+}
+
+.user-div {
+  font-weight: 600;
+  display: flex;
+  width: 100%;
+  padding-top: 3px;
+  padding-left: 10px;
+  // border-bottom-width: 2px;
+  // border-bottom-style: solid;
+  // border-bottom-color: rgb(37, 127, 20);
 }
 
 .message-input-container {
@@ -46,6 +90,8 @@ justify-content: center;
 position: absolute; 
 bottom: 0;
 width: 100%;
+padding-left: 10px;
+padding-right: 10px;
 padding-bottom: 30px;
 }
 
@@ -58,16 +104,20 @@ border: none;
 }
 
 .message-container {
-max-height: 330px;
+max-height: 280px;
 overflow: auto;
 display: flex;
 flex-direction: column;
 }
 
-.message.sent-message {
-margin-left: auto;
+.message-container span {
+    text-align: end;
+  }
 
-}
+  .message.sent-message {
+    margin-left: auto;
+    
+  }
 
 .message {
 background: white;
@@ -80,25 +130,43 @@ word-wrap: break-word;
 }
 
 .sent-message {
-background: white;
-max-width: 600px;
-width: fit-content;
-padding: 5px 10px;
-border-radius: 10px;
-margin: 10px;
-word-wrap: break-word;
-align-self: flex-end; /* Alinea a la derecha */
+    background: rgb(209, 255, 204);
+    max-width: 290px;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin: 10px;
+    word-wrap: break-word;
+    align-self: flex-end; /* Alinea a la derecha */
+    margin-left: auto; /* Empuja el elemento a la derecha */
 }
 
 .received-message {
-background: white;
-max-width: 600px;
-width: fit-content;
-padding: 5px 10px;
-border-radius: 10px;
-margin: 10px;
-word-wrap: break-word;
-align-self: flex-start; /* Alinea a la izquierda */
+    background: white;
+    max-width: 290px;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin: 10px;
+    word-wrap: break-word;
+    align-self: flex-start; /* Alinea a la izquierda */
+    margin-right: auto; /* Empuja el elemento a la izquierda */
+}
+
+.all-message {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.fecha-nueva {
+  margin:auto;
+  background-color: rgba(152, 152, 152, 0.599);
+  padding: 7px;
+  border-radius: 20px;
+  font-size: small;
+  color: white;
 }
 
 
@@ -115,7 +183,7 @@ background: rgb(206, 206, 206);
 cursor: pointer;
 }
 
-.eyeButton{
+.sendButton{
     border: none; 
     cursor: pointer;
     display: flex;
@@ -125,4 +193,37 @@ cursor: pointer;
     width: 3em;
     height: 3em;
     border-radius: 30px;
+    margin-left: 10px;
+    margin-bottom: 5px;
 }
+
+
+.fileButton{
+    border: none; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 181, 39);
+    width: 50px;
+    height: 43px;
+    border-radius: 30px;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .message-date {
+    color: rgb(97, 97, 97);
+    font-size: xx-small;
+    width: 100%;
+    text-align: end;
+    align-self: flex-end;
+  }
+  
+  .yo {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    text-align: end;
+  }
