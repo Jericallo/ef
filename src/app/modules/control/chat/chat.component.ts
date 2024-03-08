@@ -23,8 +23,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   isTyping: boolean = false;
   profile: any
   me_user: ''
+  scrolledToBottom: boolean = true;
 
   constructor(private apiService: ApiService, private dialog: MatDialog) {
+    this.scrolledToBottom = true
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     const me = apiService.getWholeUser()
     this.me_user = me.nombre
@@ -44,13 +46,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   
     this.socket.on('message', (data) => {  
-      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });
-      this.scrollToBottom();
-      
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });      
     });  
 
     this.socket.on('message-sent', (data) => {  
-      console.log('ARUTRO')
       this.messages[this.messages.length-1].fileURL = data.message.filename
     });  
     
@@ -85,13 +84,21 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       if (this.selectedUser && this.selectedUser.id === typingUserId.toString()) {
         this.isTyping = true;
       }    
-    });    
+    }); 
+  
   }
   }
 
 
   ngOnInit(): void {
     this.getUsers()
+  }
+
+  ngAfterViewChecked(): void {
+    if(this.scrolledToBottom && this.messages.length > 0){
+      this.scrollToBottom()
+      this.scrolledToBottom = false
+    }
   }
 
 
@@ -138,6 +145,18 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         if (this.users.length > 0 && !this.selectedUser) {
           this.selectedUser = this.users[0];
           this.selectUser(this.selectedUser);
+          this.socket.off('conversation');
+          const conversationBody = {
+            to: this.selectedUser.id
+          };
+          this.socket.emit('conversation', conversationBody);
+          this.socket.on('conversation', (messageData) => {  
+            this.messages = []
+            messageData.forEach((message) => {
+              const messageType = message.from === userId ? 'sent' : 'received';
+              this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
+            });
+          });
         }
       },
       (error) => {
@@ -167,7 +186,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.apiService.getProfiles().subscribe(
       (data:any) => {
         this.profile = data.find((element) => element.id === user.id_perfil)
-        console.log(data)
       },
       (error) => {
         console.log(error)
@@ -177,31 +195,21 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.messages = [];
     this.selectedUser = user;
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
-  
     this.socket.off('conversation');
-  
     const conversationBody = {
       to: this.selectedUser.id
     };
     this.socket.emit('conversation', conversationBody);
-  
     this.socket.on('conversation', (messageData) => {  
-      console.log(messageData)
+      this.messages = []
       messageData.forEach((message) => {
         const messageType = message.from === userId ? 'sent' : 'received';
         this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
       });
-  
-      this.scrollToBottom();
+      this.scrolledToBottom = true
     });
-
-    
   }
-  
 
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
-  }
 
   sendMessage() {
     if (this.newMessageText.trim() !== ''  && this.selectedUser) {
@@ -235,9 +243,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   
 
   private scrollToBottom(): void {
+    console.log("scrolllll")
     try {
-      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+      if (this.messageContainer) {
+        this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      }
+    } catch (err) {}
   }
 
   isFechaNueva(message: any) {

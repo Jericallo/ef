@@ -49,14 +49,13 @@
         </div>
         <div 
           [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
-          {{ message.text }} <br/>
-          <div style="display: flex; align-items: center; justify-content: center; height: auto;" *ngIf="message.isFile === 'file'">
+          {{ message.text }}
+          <div *ngIf="message.isFile === 'file'">
             <button  href="{{message.fileURL}}" style="background: none; border: none; color: rgb(0, 157, 255); display: flex; align-items: center; justify-content: center;" (click)="openModal(message.fileURL)">
               Archivo <mat-icon>insert_drive_file</mat-icon>
             </button>
           </div>
           <span class="message-date">{{ message.date | date: 'hh:mm a' }}</span>
-
         </div>
       </div>
     </div>

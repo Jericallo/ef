@@ -1,13 +1,15 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { Socket, io } from 'socket.io-client';
 import { ApiService } from '../../services/api.service';
+import { PdfViewerModalComponent } from 'src/app/modules/control/chat/pdf-viewer-modal/pdf-viewer-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-chat-bubble',
   templateUrl: './chat-bubble.component.html',
   styleUrls: ['./chat-bubble.component.scss']
 })
-export class ChatBubbleComponent implements OnInit {
+export class ChatBubbleComponent implements OnInit, AfterViewChecked {
 
   @Input() openChat = true;
 
@@ -22,8 +24,10 @@ export class ChatBubbleComponent implements OnInit {
   isTyping: boolean = false;
   profile: any
   me_user: ''
+  scrolledToBottom: boolean = true;
 
-  constructor( private apiService: ApiService ) { 
+
+  constructor( private apiService: ApiService, private dialog: MatDialog ) { 
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     const me = apiService.getWholeUser()
     this.me_user = me.nombre
@@ -44,7 +48,6 @@ export class ChatBubbleComponent implements OnInit {
   
     this.socket.on('message', (data) => {  
       this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });
-      this.scrollToBottom();
     });  
     
     this.socket.on('typing', (data) => {
@@ -86,6 +89,13 @@ export class ChatBubbleComponent implements OnInit {
     this.getUsers()
     if (this.users.length > 0) {
       this.selectUser(this.users[0]);
+    }
+  }
+
+  ngAfterViewChecked(): void {
+    if(this.scrolledToBottom && this.messages.length > 0){
+      this.scrollToBottom()
+      this.scrolledToBottom = false
     }
   }
 
@@ -143,6 +153,20 @@ export class ChatBubbleComponent implements OnInit {
       }
     );
   }
+
+  openModal(pdfUrl: string): void {
+    const dialogRef = this.dialog.open(PdfViewerModalComponent, {
+      width: '1400px',
+      height: '80%',
+      position: {
+          top: '',
+          left: '20%'
+      },
+      data: { pdfUrl: pdfUrl },
+    });  
+
+  }
+  
   
   selectUser(user: any) {
 
@@ -172,7 +196,7 @@ export class ChatBubbleComponent implements OnInit {
         const messageType = message.from === userId ? 'sent' : 'received';
         this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
       });
-  
+      this.scrolledToBottom = true
     });
   }
   
