@@ -20,6 +20,7 @@
           <span *ngIf="user.isTyping" style="font-size: small;">Escribiendo...</span>
         </div>
         <div style="display: flex; justify-content: end;">
+          <span>{{ user.unread_messages }}</span>
         </div>
       </div>
     </div>
@@ -48,7 +49,7 @@
             {{message.date | date: 'dd/MM/yyyy'}}
           </span>
         </div>
-        <div 
+        <div *ngIf="selectedUser?.id === message.from || message.type === 'sent'"
           [ngClass]="{'sent-message': message.type === 'sent', 'received-message': message.type === 'received'}">
           {{ message.text }}
           <div *ngIf="message.isFile === 'file'">
