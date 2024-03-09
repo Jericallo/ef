@@ -54,23 +54,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       if(data.from !== this.selectedUser.id){
         const selectedUser = this.filteredUsers.findIndex(u => u.id === this.selectedUser.id);
         const unreadObservables = this.users.map(user => this.getUnread(user.id));
-
-        // Combina todos los observables en uno solo y espera a que todos se completen
         forkJoin(unreadObservables).subscribe(unreads => {
-          // Asigna las cantidades sin leer a cada usuario
           unreads.forEach((unread, index) => {
             this.users[index].unread_messages = unread;
           });
 
-          // Filtra los usuarios según el ID del usuario actual
           this.users = this.users.filter(user => user.id !== userId);
           this.filteredUsers = this.users;
-
-          // if (this.users.length > 0 && !this.selectedUser) {
-          //   this.selectedUser = this.users[0];
-          //   this.selectUser(this.selectedUser);
-          //   this.getConversation();
-          // }
         });
         }
     });  
@@ -167,26 +157,21 @@ getUsers() {
   this.apiService.getUsers().subscribe(
     (data: any) => {
       this.users = data.result.map(user => ({ ...user, isTyping: false }));
-
-      // Obtiene las cantidades sin leer para cada usuario
       const unreadObservables = this.users.map(user => this.getUnread(user.id));
 
-      // Combina todos los observables en uno solo y espera a que todos se completen
       forkJoin(unreadObservables).subscribe(unreads => {
-        // Asigna las cantidades sin leer a cada usuario
         unreads.forEach((unread, index) => {
           this.users[index].unread_messages = unread;
         });
 
-        // Filtra los usuarios según el ID del usuario actual
         this.users = this.users.filter(user => user.id !== userId);
         this.filteredUsers = this.users;
 
-        // if (this.users.length > 0 && !this.selectedUser) {
-        //   this.selectedUser = this.users[0];
-        //   this.selectUser(this.selectedUser);
-        //   this.getConversation();
-        // }
+        if (this.users.length > 0 && !this.selectedUser) {
+          this.selectedUser = this.users[0];
+          this.selectUser(this.selectedUser);
+          this.getConversation();
+        }
       });
     },
     (error) => {

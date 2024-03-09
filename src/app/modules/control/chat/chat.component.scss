@@ -121,6 +121,7 @@
   .user-container{
     display: flex;
     align-items: center;
+    position: relative;
     gap: 10px;
     padding: 20px;
     background: white;
@@ -206,4 +207,24 @@ mat-card {
   scrollbar-width: thin; 
   scrollbar-base-color: red;
   scrollbar-color: rgb(203, 203, 203) transparent; /* Color de la parte que se mueve y fondo */
+}
+
+.notification-container {
+  position: absolute;
+  right: 30px;
+  background: red;
+  color: white;
+  border-radius: 50%; /* Hacerlo circular */
+  width: fit-content;
+  height: fit-content;
+  min-width: 25px;
+  min-height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Ocultar esquinas si se usa un border-radius */
+}
+
+.notification-content {
+  border-radius: 50%; /* Asegurar que el contenido sea circular */
 }

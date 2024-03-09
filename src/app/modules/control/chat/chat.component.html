@@ -19,8 +19,10 @@
           <br>
           <span *ngIf="user.isTyping" style="font-size: small;">Escribiendo...</span>
         </div>
-        <div style="display: flex; justify-content: end;">
-          <span>{{ user.unread_messages }}</span>
+        <div *ngIf="user.unread_messages > 0" class="notification-container">
+          <div  class="notification-content">
+            <span>{{ user.unread_messages }}</span>
+          </div>
         </div>
       </div>
     </div>
