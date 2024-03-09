@@ -16,7 +16,7 @@
     </div>
   </mat-toolbar-row>
 <!--LA FUCKING TABLA DEL DIABLO-->
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 50px; height: 70%; width: 7600px; border-top-width: 5px;" >
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 50px; height: 70%; width: 9900px; border-top-width: 5px;" >
     
     <ng-container matColumnDef="fixedColumn" class="container" sticky>
       <!--HEADER-->
@@ -43,7 +43,7 @@
 
     <ng-container matColumnDef="fixedColumn2" class="container" sticky>
       <!--HEADER-->
-      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 4.5;">
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 5.5;">
         <div class="container" style="flex-direction: column;">
           <div class="celdas" style="height: 4vh; min-height: 37.6px; overflow: scroll;">
             Las obligaciones se listan por <a (click)="reorderBy('id_cumplimiento')">General</a> / 
@@ -55,8 +55,15 @@
           </div>
           <div style="display: flex; flex-direction: row;">
             <div style="flex: 2.8;">
-              <div class="celdas" style="height: 4.55vh; min-height: 42.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
-              <div class="celdas">Calendario:</div>
+              <div class="celdas" style="min-height: 35.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
+              <div class="celdas" style="font-size: x-small;">Columnas que aplican en ol que sí ve el "Usuario Responsable de Cumplimiento Uno de la Empresa" </div>
+            </div>
+            <div style="flex: 1.2;">
+              <div class="celdas" style="height: 4.55vh; min-height: 37.6px;; ">Descripción a la larga</div>
+              <div class="celdas" style="height: max-content; flex-direction: row; display: flex;">
+                <div class="celdas" style="flex: 0.5;">+</div>
+                <div class="celdas" style="flex: 0.5; font-size: xx-small;">Actualizado al</div>
+              </div>
             </div>
             <div style="flex: 1.2;">
               <div class="celdas" style="height: 4.55vh; min-height: 37.6px;; ">Tipo de impuesto</div>
@@ -71,10 +78,14 @@
         </div>
       </mat-header-cell>
       <!--BODY-->
-      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 4.5;">
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 5.5;">
       <div class="container">
         <div style="flex: 2.8;">
           <div class="celdas internas" style="flex: 1;">{{row.content.nombre}}</div>  
+        </div>
+        <div style="flex: 1.2; display: flex; flex-direction: row;">
+          <div class="celdas internas" style="flex:0.5;">Contenido</div>
+          <div class="celdas internas" style="flex:0.5;">Contenido</div>
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
           <div class="celdas internas" style="flex: 0.5;">
@@ -138,10 +149,10 @@
             <div style="flex: 4; flex-direction: column; display: flex;">
               <div class="celdas" style="min-height: 20.2px;">Fundamento legal</div>
               <div class="celdas" style="display: flex; flex-direction: row;">
-                <div class="celdas" style="flex: 1;">Periodo ideal para iniciar el cumplimiento</div>
-                <div class="celdas" style="flex: 1;">Periodo ideal para terminar el cumplimiento</div>
-                <div class="celdas" style="flex: 1;">Periodo para cumplirlo con vencimiento próximo</div>
-                <div class="celdas" style="flex: 1;">Periodo para cumplirlo muy urgente</div>
+                <div class="celdas" style="flex: 1;">Periodo ideal cumplirlo</div>
+                <div class="celdas" style="flex: 1;">Periodo recomendado para cumplirlo</div>
+                <div class="celdas" style="flex: 1;">Vencimiento próximo, presentarlo ya</div>
+                <div class="celdas" style="flex: 1;">Muy urgente, presentar de inmediato</div>
               </div>
             </div>
            
@@ -149,20 +160,24 @@
               <div class="celdas" style="height: 3vh; min-height: 28.2px;">Fundamento legal</div>
               <div class="celdas" style="display: flex; flex-direction: row;">
                 <div class="celdas" style="flex: 1; height: 53px;">Fecha máxima legal</div>
-                <div class="celdas" style="flex: 1;">Art.</div>
+                <div class="celdas" style="flex: 1;">Ley y Articulo</div>
                 <div class="celdas" style="flex: 1;">Actualizado al</div>
               </div>
             </div>  
 
-            <div class="celdas" style="flex: 1;">¿Se cumplió con la obligación?</div>        
-            <div class="celdas" style="flex: 1;">Fecha en la que se cumplió</div>   
-            
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas" style="min-height: 20.2px;">Se cumplió...</div>
+              <div class="celdas" style="display: flex; flex-direction: row;">
+                <div class="celdas" style="flex: 1; min-height: 59px;">¿En qué fecha?</div>
+                <div class="celdas" style="flex: 1;">¿A tiempo, extemporal o aún no?</div>
+              </div>        
+            </div>
             <div  style="flex: 3; flex-direction: column; display: flex;">
               <div class="celdas" style="height: 3vh; min-height: 28.2px;">Alerta de lo ocurrido</div>
               <div class="celdas" style="display: flex; flex-direction: row;">
                 <div class="celdas" style="flex: 1; height: 53px;">Cumplimiento completo</div>
-                <div class="celdas" style="flex: 1;">Falta VoBo del supervisor</div>
-                <div class="celdas" style="flex: 1;">Incumplimiento 24 hrs</div>
+                <div class="celdas" style="flex: 1; font-size: x-small;">El supervisor ya recibió la evidencia y la está evaluando</div>
+                <div class="celdas" style="flex: 1;">Incumplimiento del supervisor</div>
               </div>
             </div>  
 
@@ -227,54 +242,70 @@
           <div class="celdas internas" style="flex: 1;">
             <p *ngFor="let fundamento of row.content.fundamento_legal">{{fundamento.fecha | date:'d-MMM-y'}}</p>
           </div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.se_cumplio}}</div>  
           <div class="celdas internas" style="flex: 1;">{{row.content.fecha_cumplio | date:'d-MMM-y'}}</div>  
+          <div class="celdas internas" style="flex: 1;">{{row.content.se_cumplio}}</div>  
           <div class="celdas internas" style="flex: 1;">contenido</div>  
           <div class="celdas internas" style="flex: 1;">contenido</div>  
           <div class="celdas internas" style="flex: 1;">contenido</div>  
+        </div>
+      </mat-cell>
+    </ng-container>
 
+    <ng-container matColumnDef="fixedColumn9" class="container">
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 3;">
+        <div class="container" style="flex-direction: column; min-width: 100% !important; ">
+          <div class="celdas" style=" min-height: 21.83px;">Comunicación Cliente - supervisor GB</div>
+          <div class="celdas" style="flex-direction: row; display: flex;">
+            <div style="flex: 3; flex-direction: row; display: flex;">
+              <div class="celdas" style="flex: 1; min-height: 85px;">Chat</div>
+              <div class="celdas" style="flex: 1;">Teléfono</div>
+              <div class="celdas" style="flex: 1;">Video</div>
+            </div>
+          </div>
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 3;">
+        <div class="container" style="flex-direction: row;"> 
+          <div class="celdas internas" style="flex: 1;">Contenido</div>
+          <div class="celdas internas" style="flex: 1;">Contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
         </div>
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="fixedColumn5" class="container">
       <!--HEADER-->
-      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 8;">
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 3;">
         <div class="container" style="flex-direction: column;">
           <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Envío de Documentación de Evidencia</div>
           <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
-            <div class="celdas" style="flex: 2;">Documentación que debe enviarse (declara, pagos, actas, hojas de trabajo, etc)</div>
+            <div class="celdas" style="flex: 2; min-height: 67px;" 
+            matTooltip="Documentación que debe enviarse (declaraciones, pagos (acuse de Recibo Electrónico con Sello Digital); Concilliación fiscal, Conciliación Sat(isr, iva, retenciones) vs contabilidad vs bancos vs ISRvsIVA vs Visor del Sat nóminas vs declarado, vs Diot, Opinión de cumplimiento del Sat, ydel Imss, Cálculo del Ajuste inflacionario, Repse Imss e Infonavit; Actas, Hojas de trabajo (Pérdidas fiscales, Integración de saldos a favor, Cuca, Cufin, Ptu, Baja de A/F), Estados financieros, Declaraciones complementarias ypago ydiot; Declaración ypago estatal; Poderes Contratos, Entregables, Vigencia claves, Captura de pantalla del buzón medios de contacto, correo registrado y llamada a teléfono registrado, Fotos domicilio fiscal, etc); Requerimientos del Sat; El Sistema recibe word, excel, pdf, foto, etc."
+            >Documentación que debe enviarse</div>
             <div class="celdas" style="flex: 1;">Fecha ideal para enviarla</div>
-            <div class="celdas" style="flex: 1;">Fecha máxima para enviarla</div>
-            <div class="celdas" style="flex: 1;">Fecha en la que se envió</div>
-            <div class="celdas" style="flex: 1;">Recibida a tiempo</div>
-            <div class="celdas" style="flex: 1;">Documentación suficiente</div>
-            <div class="celdas" style="flex: 1;">Documentación insuficiente</div>
-            <div class="celdas" style="flex: 1;">Notas / Chat / Bitácora</div>
+            <div class="celdas" style="flex: 1; font-size: smaller;">Fecha máxima para enviarla</div>
           </div>
         </div>
       </mat-header-cell>
       <!--BODY-->
-      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 8;">
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 3;">
         <div class="container" style="flex-direction: row;">
           <div class="celdas internas" style="flex: 2;">
             <span *ngFor="let doc of row.content.documentos_faltantes">{{doc}} <br/></span>
           </div>  
           <div class="celdas internas" style="flex: 1;">{{row.content.documentos_fecha_ideal | date}}</div>
           <div class="celdas internas" style="flex: 1;">{{row.content.documentos_fecha_maxima | date}}</div>
-          <div class="celdas internas" style="flex: 1;">contenido</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_en_tiempo}}</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_documentacion_suficiente}}</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.documentos_documentacion_suficiente}}</div>
-          <div class="celdas internas" style="flex: 1;">
-            <span *ngFor="let reg of row.content.registro_general">{{reg}} <br/></span>
-          </div>
         </div>
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="fixedColumn6" class="container">
-      <!--HEADER-->
+
+
+
+
+    <!-- <ng-container matColumnDef="fixedColumn6" class="container">
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 7;">
         <div class="container" style="flex-direction: column;">
           <div class="celdas" style="height: 3.75vh; min-height: 40.55px;">Recordatorios / Alertas x incumplimiento / Reportes a semáforo</div>
@@ -294,7 +325,6 @@
           </div>
         </div>
       </mat-header-cell>
-      <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 7;">
         <div class="container" style="flex-direction: row;">
           <div class="celdas internas" style="flex: 1;">{{row.content.nivel}}</div>  
@@ -306,54 +336,245 @@
           <div class="celdas internas" style="flex: 1;">{{row.content.reporte_via_semaforo[0]?.mensaje}}</div>
         </div>
       </mat-cell>
-    </ng-container>
+    </ng-container> -->
+
+
+
+
 
     <ng-container matColumnDef="fixedColumn7" class="container">
       <!--HEADER-->
-      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 20;">
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 55;">
         <div class="container" style="flex-direction: column;">
           <div class="celdas" style="height: 2.50vh; min-height: 23.5px;">Correlación con otros sectores del escudo fiscal</div>
           <div class="celdas" style="height: 2vh; min-height: 18.8px; display: flex; flex-direction: row;">
             <div class="celdas" style="flex: 5;">Correlación con inicio</div>
-            <div class="celdas" style="flex: 2;">... con cumplimiento</div>
-            <div class="celdas" style="flex: 9;">... con control / capacitación</div>
-            <div class="celdas" style="flex: 2;">... con control</div>
-            <div class="celdas" style="flex: 4;">... con precaución</div>
+            <!-- <div class="celdas" style="flex: 2;">... con cumplimiento</div> -->
+            <div class="celdas" style="flex: 18;">... con capacitación</div>
+            <div class="celdas" style="flex: 6;">... con capacitación de grado académico</div>
+            <div class="celdas" style="flex: 6;">... con control</div>
+            <div class="celdas" style="flex: 7;">... con Usuarios y sus semáforos</div>
+            <div class="celdas" style="flex: 3;">... con Pérdida o prescripción de</div>
+            <div class="celdas" style="flex: 14;">... con Precaución</div>
           </div>
           
           <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
-            <div class="celdas" style="flex: 2;">Leyes</div>
+            <div class="celdas" style="flex: 1;">Incentivos</div>
+            <div class="celdas" style="flex: 1;">Leyes</div>
             <div class="celdas" style="flex: 1;">Temario</div>        
             <div class="celdas" style="flex: 1;">Búsqueda</div>   
-            <div class="celdas" style="flex: 1;">Números</div>      
-            <div class="celdas" style="flex: 1;">Impuestos</div>      
-            <div class="celdas" style="flex: 1;">Documentación</div>      
-           
-            <div class="celdas" style="flex: 1;">Caso práctico</div>
-            <div class="celdas" style="flex: 1;">Textos</div>
-            <div class="celdas" style="flex: 1;">Preguntas frecuentes</div>
-            <div class="celdas" style="flex: 1;">Mejores Prácticas</div>
-            <div class="celdas" style="flex: 1;">1 Minuto</div>
-            <div class="celdas" style="flex: 1;">5 Minuto</div>
-            <div class="celdas" style="flex: 1;">15 Minuto</div>
-            <div class="celdas" style="flex: 1;">30 Minuto</div>
-            <div class="celdas" style="flex: 1;">60 Minuto</div>
-    
-            <div class="celdas" style="flex: 1;">Dictamen</div>        
-            <div class="celdas" style="flex: 1;">Semáforo</div>   
+            <div class="celdas" style="flex: 1;">Números</div>   
 
-            <div class="celdas" style="flex: 1;">Inconsistencias</div>        
-            <div class="celdas" style="flex: 1;">Sanciones genéricas importantes</div>     
-            <div class="celdas" style="flex: 1;">Sanción penal "Empresa"</div>
-            <div class="celdas" style="flex: 1;">Sanción penal "Persona"</div>
+            <!-- <div class="celdas" style="flex: 1;">Impuestos</div>      
+            <div class="celdas" style="flex: 1;">Documentación</div>       -->
+
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Textos</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Caso práctico</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Preguntas frecuentes</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">1 minuto</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">5 minutos</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">15 minutos</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">30 minutos</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">60 minutos</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Preguntas de examen</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+
+
+
+
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Diplomado</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Especialidad</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Maestría</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>
+
+
+
+    
+            <div class="celdas" style="flex: 2;">Ayuda</div>    
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Dictamen</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div>      
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas">Semáforo</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div> 
+
+
+
+
+            <div class="celdas" style="flex: 1; font-size: smaller;">1) Responsable del cumplimiento</div>
+            <div class="celdas" style="flex: 1; font-size: smaller;">2) Responsable del cumplimiento</div>
+            <div class="celdas" style="flex: 1; font-size: smaller;">3) Supervisor de cumplimiento de la empresa</div>
+            <div class="celdas" style="flex: 1; font-size: smaller;">4) Supervisor de cumplimiento de GB</div>
+            <div class="celdas" style="flex: 1; font-size: smaller;">5) Director de la empresa)</div>
+            <div class="celdas" style="flex: 1; font-size: smaller;">6) Administrador de GB</div>
+            <div class="celdas" style="flex: 1; font-size: smaller;">7) Super Administrador de GB</div>
+
+
+
+
+            <div class="celdas" style="flex: 1;">Saldos a favor de ISR</div>    
+            <div class="celdas" style="flex: 1;">Saldos a favor de IVA</div>    
+            <div class="celdas" style="flex: 1;">Uso de pérdidas fiscales</div>    
+
+
+
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas" style="font-size: smaller;">Protocolo de respuesta al sat</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div> 
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas" style="font-size: smaller;">Inconsistencias</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div> 
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas" style="font-size: smaller;">Multas y actualización</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div> 
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas" style="font-size: smaller;">Sanciones genéricas </div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div> 
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas" style="font-size: smaller;">Facultades, fiscalización y </div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div> 
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas" style="font-size: smaller;">Sanciones penales a empresa</div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div> 
+            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas" style="font-size: smaller;">Sanciones penales a persona </div>
+              <div style="display: flex; flex-direction: row; height: 41px">
+                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+              </div>
+            </div> 
 
           </div>
         </div>
       </mat-header-cell>
       <!--BODY-->
-      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 20;">
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 55;">
         <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 2; overflow: scroll;">
+          <div class="celdas internas" style="flex: 1;">Contenido</div>
+          <div class="celdas internas" style="flex: 1; overflow: scroll;">
             <button (click)="openArticleRef(row)" mat-fab color="primary" class="custom-fab">
               <mat-icon style="font-size:22px;">bookmark</mat-icon>
             </button>        
@@ -376,77 +597,140 @@
           </div>  
           <div class="celdas internas" style="flex: 1;">{{row.content.busqueda}}</div>  
           <div class="celdas internas" style="flex: 1;">{{row.content.numeros}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.impuestos}}</div>  
-          <div class="celdas internas" style="flex: 1;">
-            <button (click)="openDocumentationsRef(row)"  mat-fab color="primary" class="custom-fab">
-              <mat-icon style="font-size:22px;">insert_drive_file</mat-icon>
-            </button>
-            <p *ngFor="let b of row.content.documentacion">{{b.nombre}}</p>
-          </div>  
-          <div class="celdas internas" style="flex: 1;">
-            <button (click)="openCapacitationsRef(row)" mat-fab color="primary" class="custom-fab">
-              <mat-icon style="font-size:22px;">video_library</mat-icon>
-            </button>
-            {{row.content.caso_practico}}
-          
-          </div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.textos}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.preguntas_frecuentes}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.mejores_practicas}}</div>  
-          <div class="celdas internas" style="flex: 1;">
-            <a  *ngFor="link of row.content.un_minuto" href={{link}} >Da clic para ir al video</a>
-          </div>  
-          <div class="celdas internas" style="flex: 1;">
-            <a  *ngFor="link of row.content.cinco_minutos" href={{link}} >Da clic para ir al video</a>
-          </div>  
-          <div class="celdas internas" style="flex: 1;">
-            <a  *ngFor="link of row.content.quince_minutos" href={{link}} >Da clic para ir al video</a>
-          </div>  
-          <div class="celdas internas" style="flex: 1;">
-            <a  *ngFor="link of row.content.treinta_minutos" href={{link}} >Da clic para ir al video</a>
-          </div>   
-          <div class="celdas internas" style="flex: 1;">
-            <a  *ngFor="link of row.content.sesenta_minutos" href={{link}} >Da clic para ir al video</a>
-          </div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.dictamen}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.semaforo}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.inconsistencias}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.sanciones_generales}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.empresa}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.persona}}</div>  
-        </div>
-      </mat-cell>
-    </ng-container>
 
-    <ng-container matColumnDef="fixedColumn8" class="container">
-      <!--HEADER-->
-      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 10;">
-        <div class="container" style="flex-direction: column;">
-          <div class="celdas" style=" min-height: 10.55px;">Interacción con Personas</div>
-          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
-            <div class="celdas" style="flex: 1;">Usuario 1 (responsable)</div>
-            <div class="celdas" style="flex: 1;">Usuario 2 (segundo)</div>
-            <div class="celdas" style="flex: 1;">Usuario 3 (supervisor)</div>
-            <div class="celdas" style="flex: 1;">Usuario 4 (director)</div>
-            <div class="celdas" style="flex: 1;">Usuario 5 (GB)</div>
-          </div>
-          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
-            <div class="celdas" style="flex: 1;">Tiempo de capacitación que lleva, y qeu con tiempo le hace falta...</div>
-            <div class="celdas" style="flex: 1;">... y calificación en Capacitación, Cumplimiento, etc.</div>
-            <div class="celdas" style="flex: 1;">Que debe verificar el supervisor, de aquel cumplimiento</div>
-            <div class="celdas" style="flex: 1;">Semáforos a enviarle</div>
-            <div class="celdas" style="flex: 1;">Indica si la Documentación es suficiente y está razonable</div>
-          </div>
-        </div>
-      </mat-header-cell>
-      <!--BODY-->
-      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 10;">
-        <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 1;">{{row.content.usuario1}}</div>  
-          <div class="celdas internas" style="flex: 1;">{{row.content.usuario2}}</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.usuario3}}</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.usuario4}}</div>
-          <div class="celdas internas" style="flex: 1;">{{row.content.usuario5}}</div>
+
+
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+
+
+          
+
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div>  
+
+
+
+
+          <div class="celdas internas" style="flex: 2;">contenido</div>  
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+
+
+
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+          <div class="celdas internas" style="flex: 1;">contenido</div>  
+
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+          <div class="celdas internas" style="flex: 1;">contenido</div>
+
+
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+          <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">Contenido</div>
+          </div> 
+
         </div>
       </mat-cell>
     </ng-container>
