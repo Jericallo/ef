@@ -46,7 +46,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   
     this.socket.on('message', (data) => {  
-      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });      
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });   
+      this.scrolledToBottom = true   
     });  
 
     this.socket.on('message-sent', (data) => {  
@@ -92,6 +93,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.getUsers()
+    this.getUnread("3")
   }
 
   ngAfterViewChecked(): void {
@@ -128,6 +130,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }
       this.socket.emit('message', messagePayload);
       this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'file', fileURL: fileURL });
+      this.scrolledToBottom = true
       this.newMessageText = '';
     }
 }
@@ -145,24 +148,51 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         if (this.users.length > 0 && !this.selectedUser) {
           this.selectedUser = this.users[0];
           this.selectUser(this.selectedUser);
-          this.socket.off('conversation');
-          const conversationBody = {
-            to: this.selectedUser.id
-          };
-          this.socket.emit('conversation', conversationBody);
-          this.socket.on('conversation', (messageData) => {  
-            this.messages = []
-            messageData.forEach((message) => {
-              const messageType = message.from === userId ? 'sent' : 'received';
-              this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
-            });
-          });
+          this.getConversation()
+          // this.socket.off('conversation');
+          // const conversationBody = {
+          //   to: this.selectedUser.id
+          // };
+          // this.socket.emit('conversation', conversationBody);
+          // this.socket.on('conversation', (messageData) => {  
+          //   this.messages = []
+          //   messageData.forEach((message) => {
+          //     const messageType = message.from === userId ? 'sent' : 'received';
+          //     this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
+          //   });
+          // });
         }
       },
       (error) => {
         console.error('Error al obtener usuarios:', error);
       }
     );
+  }
+
+  getConversation(){
+    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
+    this.apiService.getConversation(userId ,this.selectedUser.id).subscribe(
+      (res:any) => {
+        this.messages = []
+      res.forEach((message) => {
+         const messageType = message.from === userId ? 'sent' : 'received';
+         this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
+       });
+      }
+    )
+  }
+
+  getUnread(id:string){
+    //const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
+    this.apiService.getUnread("2",id.toString()).subscribe(
+      (res:any) => {
+        return res.amount
+      },
+      (error: any) => {
+        console.log(error)
+        return -1
+      }
+    )
   }
 
   openModal(pdfUrl: string): void {
@@ -194,20 +224,21 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     this.messages = [];
     this.selectedUser = user;
-    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
-    this.socket.off('conversation');
-    const conversationBody = {
-      to: this.selectedUser.id
-    };
-    this.socket.emit('conversation', conversationBody);
-    this.socket.on('conversation', (messageData) => {  
-      this.messages = []
-      messageData.forEach((message) => {
-        const messageType = message.from === userId ? 'sent' : 'received';
-        this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
-      });
+    //const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
+    this.getConversation()
+    // this.socket.off('conversation');
+    // const conversationBody = {
+    //   to: this.selectedUser.id
+    // };
+    // this.socket.emit('conversation', conversationBody);
+    // this.socket.on('conversation', (messageData) => {  
+    //   this.messages = []
+    //   messageData.forEach((message) => {
+    //     const messageType = message.from === userId ? 'sent' : 'received';
+    //     this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
+    //   });
       this.scrolledToBottom = true
-    });
+  
   }
 
 
@@ -224,6 +255,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.socket.emit('message', messagePayload);
       this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'text' });
       this.newMessageText = '';
+      this.scrolledToBottom = true
     }
   }
 
@@ -234,7 +266,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   checkIsTyping() {
     this.isTyping = this.newMessageText.trim() !== '';    
     if (this.isTyping) {
-      console.log("prendido")
       this.socket.emit('typing', { to: this.selectedUser.id });
     } else {
       this.socket.emit('stoptyping', { to: this.selectedUser.id });
@@ -243,7 +274,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   
 
   private scrollToBottom(): void {
-    console.log("scrolllll")
     try {
       if (this.messageContainer) {
         this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
