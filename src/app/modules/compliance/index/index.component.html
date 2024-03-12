@@ -68,12 +68,33 @@
         <!-- ============================================================== -->
         <!-- Event Calendar -->
         <!-- ============================================================== -->
-        <div [ngSwitch]="view">
+        <div [ngSwitch]="view" *ngIf="events && events.length > 0">
             <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [locale]="locale"
                 [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen"
                 (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('', $event.event)"
-                (eventTimesChanged)="eventTimesChanged($event)">
+                (eventTimesChanged)="eventTimesChanged($event)"
+                [cellTemplate]="dayViewNormalContent"
+                
+                >
+                <ng-template #dayViewNormalContent let-day="day" let-locale="locale">
+                    <div class="cal-day-events" [ngClass]="{ 'cal-day-outside-month': day.date.getMonth() !== viewDate.getMonth() }">
+                        <div class="cal-date">{{ day.date | date: 'd' }}</div>
+                        <ng-container *ngFor="let event of day.events.slice(0, 3); let i = index">
+                            <div style="display: flex; flex-direction: row; align-items: center; justify-content: baseline;">
+                                <div class="cal-event" [style.backgroundColor]="event.color.primary"></div>
+                                <div class="cal-event-title">{{ event.title }}</div>
+                            </div>
+                            
+                        </ng-container>
+                        <div *ngIf="day.events.length > 3" >
+                            <div class="cal-event-title">...</div>
+                        </div>
+                    </div>
+                </ng-template>                            
             </mwl-calendar-month-view>
+
+
+
 
             <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" [locale]="locale"
                 [refresh]="refresh" (eventClicked)="handleEvent('', $event.event)"

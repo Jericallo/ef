@@ -21,6 +21,7 @@ import { DetailCumplimientoComponent } from './register-client/detail-cumplimien
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MainModule } from '../main/main.module';
 import { CustomTooltipComponent } from './register-client/custom-tooltip/custom-tooltip.component';
+import { ModalCalendarDayComponent } from './index/modal-calendar-day/modal-calendar-day.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { CustomTooltipComponent } from './register-client/custom-tooltip/custom-
     DetailDayComponent,
     DetailCumplimientoComponent,
     CustomTooltipComponent,
+    ModalCalendarDayComponent,
   ],
   imports: [
     CommonModule,

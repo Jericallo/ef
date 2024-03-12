@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, ChangeDetectorRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import{MatDialog,MatDialogRef,MatDialogConfig,MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder,FormControl,Validators,UntypedFormGroup } from '@angular/forms';
@@ -13,6 +13,7 @@ import { NotificationService } from './notification.service';
 import * as moment from 'moment';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { ModalCalendarDayComponent } from './modal-calendar-day/modal-calendar-day.component';
 
 registerLocaleData(localeEs);
 
@@ -132,15 +133,14 @@ export class IndexComponent implements OnInit {
   events: CalendarEvent[] = [    
   ];
 
-  activeDayIsOpen = true;
+  activeDayIsOpen = false;
 
-  constructor(public dialog: MatDialog, @Inject(DOCUMENT) doc: any, private ntfService: NotificationService, private apiService:ApiService /*, private notification: PushNotificationService*/, ) {
-   
-   }
-
+  constructor(public dialog: MatDialog, @Inject(DOCUMENT) doc: any, private ntfService: NotificationService, private apiService:ApiService /*, private notification: PushNotificationService*/, private cdr: ChangeDetectorRef ) {
+    
+  }
   ngOnInit(): void {
     this.getObligations();
-    //this.getObligationsForToday();
+   
     /*this.notification.requestPermission().then(token=>{
       console.log(token);
      })
@@ -166,8 +166,16 @@ export class IndexComponent implements OnInit {
       ) {
         this.activeDayIsOpen = false;
       } else {
-        this.activeDayIsOpen = true;
-        this.viewDate = date;
+        console.log('sola')
+
+        const dialogRef = this.dialog.open(ModalCalendarDayComponent, { 
+          width: '800px',
+          height: '600px',
+          data: {cumplimientos:events} 
+        });
+
+        //this.activeDayIsOpen = true;
+        //this.viewDate = date;
       }
     }
   }
@@ -277,6 +285,7 @@ export class IndexComponent implements OnInit {
           const currentDate = Date.now() // Get the current date and time
           this.events = res.result.flatMap(obligation => {
             obligation.fecha_inicio = (obligation.fecha_inicio * 60000)
+            //let color = this.isFechaMaxima(obligation, currentDate);
             let color = '';
             if (obligation.fecha_inicio < currentDate) {
               if(obligation.estatus.id === 1){
@@ -325,6 +334,7 @@ export class IndexComponent implements OnInit {
               ...obligacionesFuturas,
               
             ];
+
           });
           /*this.apiService.historial(params).subscribe({
             next: res => {
@@ -385,6 +395,7 @@ export class IndexComponent implements OnInit {
               console.log(err);
             }
           });*/
+          this.cdr.detectChanges();    //this.getObligationsForToday();
           console.log(this.events)
         }
       },
@@ -453,5 +464,40 @@ export class IndexComponent implements OnInit {
         }
       }, i * 1000)
     })
+  }
+
+  isFechaMaxima(element: any, column: number): string {
+    console.log(element)
+    if (column === 0) {
+      return 'transparent';
+    }
+    let fechaColumna = column;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima_fin;
+    let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
+    let fechaMinima = element.cumplimientos_obligacion.fecha_inicio_ideal
+    let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+    let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
+    const fechaHoy = Date.now()
+
+
+
+    if((element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2) && fechaCumplimiento !== null) {
+      if(fechaCumplimiento.toString() === fechaColumna.toString()) return '#ffcc0c'
+      if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
+    } 
+
+    if(element.cumplimientos_obligacion.completado === 3 && fechaCumplimiento !== null) {
+      if(fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
+      if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
+    } 
+    
+    if(fechaMinima.toString() > fechaColumna.toString()) return 'transparent'
+
+    if(fechaMaxima.toString() > fechaColumna.toString()) {
+      if(fechaColumna.toString() >= (fechaIdeal).toString()) return 'red'
+      else return '#ffcc0c'
+    } else if(fechaMaxima.toString() === fechaColumna.toString()) return 'red'
+     else if(fechaMaxima.toString() < fechaColumna.toString()) return 'transparent'
   }
 }
