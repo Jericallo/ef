@@ -12,7 +12,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 })
 export class LawsComponent implements OnInit {
   @ViewChild(MatAccordion) accordion:MatAccordion;
-
+  isExpanded: boolean = false;
   data = {clasifications:[]};
   dataSegmented = {}
 
@@ -39,6 +39,11 @@ export class LawsComponent implements OnInit {
       this.isAdmin = false
     }
   }
+
+  toggleNode() {
+    this.isExpanded = !this.isExpanded;
+  }
+
 
 
   articleClick(art, par = null, doc = '', tit='', cap='', sec=''){
@@ -414,4 +419,5 @@ export class LawsComponent implements OnInit {
   cerrarPestana(index: number) {
     this.article.splice(index, 1);
   }
+
 }
