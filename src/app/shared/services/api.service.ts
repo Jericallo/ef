@@ -180,6 +180,26 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
+  public getConversation(from: string, to: string): Observable<any> {
+    const url = `https://api.escudofiscal.alphadev.io/v2/mensajes/conversation?from=${from}&to=${to}`;
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public getUnread(from: string, to: string): Observable<any> {
+    const url = `https://api.escudofiscal.alphadev.io/v2/mensajes/unread?from=${from}&to=${to}`;
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+  
+  
+
   public getUserById(id:number):Observable<any>{
     const url = 'https://api.escudofiscal.alphadev.io/v1/usuarios?id=' + id
     let headers = new HttpHeaders({

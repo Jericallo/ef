@@ -130,10 +130,11 @@ word-wrap: break-word;
 }
 
 .sent-message {
+  position: relative;
     background: rgb(209, 255, 204);
     max-width: 290px;
     width: fit-content;
-    padding: 5px 10px;
+    padding: 5px 55px 5px 10px;    
     border-radius: 10px;
     margin: 10px;
     word-wrap: break-word;
@@ -142,10 +143,11 @@ word-wrap: break-word;
 }
 
 .received-message {
+  position: relative;
     background: white;
     max-width: 290px;
     width: fit-content;
-    padding: 5px 10px;
+    padding: 5px 55px 5px 10px;    
     border-radius: 10px;
     margin: 10px;
     word-wrap: break-word;
@@ -217,10 +219,10 @@ cursor: pointer;
     color: rgb(97, 97, 97);
     font-size: xx-small;
     width: 100%;
-    text-align: end;
-    align-self: flex-end;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
   }
-  
   .yo {
     position: absolute;
     bottom: 10px;
