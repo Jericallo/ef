@@ -13,7 +13,7 @@ import { Observable, catchError, forkJoin, map, of } from 'rxjs';
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   newMessageText: string = '';
-  messages: { text: string, type: 'sent' | 'received', date:number, isFile:string, fileURL?:string, from?:number }[] = [];
+  messages: { text: string, type: 'sent' | 'received', date: Date, isFile:string, fileURL?:string, from?:number }[] = [];
   @ViewChild('messageContainer') private messageContainer: ElementRef;
   private socket: Socket; 
   searchTerm: string = '';
@@ -48,7 +48,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   
     this.socket.on('message', (data) => {  
       console.log(data)
-      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type, from:data.from });   
+      let date = new Date (data.content.fecha_envio)
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: date, isFile: data.content.type, from:data.from });   
+      console.log(this.messages)
       this.scrolledToBottom = true   
 
       if(data.from !== this.selectedUser.id){
@@ -102,6 +104,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }    
     }); 
   
+    this.socket.on('conversation', (messageData) => {  
+      console.log(messageData)
+      messageData.forEach((message) => {
+        const messageType = message.from === userId ? 'sent' : 'received';
+        this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename, from:message.from});
+      });
+    })
+
   }
   }
 
@@ -137,14 +147,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         }
       };
 
-      let fileURL = '';
-      if (navigator.userAgent.includes('WebKit')) {
-        fileURL = file.getWebkitRelativePath() || '';
-      } else if (navigator.userAgent.includes('Firefox')) {
-        fileURL = file.mozFullPath || '';
-      }
+      
       this.socket.emit('message', messagePayload);
-      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'file', fileURL: fileURL });
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: new Date (Date.now()), isFile:'file' });
       this.scrolledToBottom = true
       this.newMessageText = '';
     }
@@ -184,6 +189,7 @@ getUsers() {
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     this.apiService.getConversation(userId ,this.selectedUser.id).subscribe(
       (res:any) => {
+        console.log(res)
         this.messages = []
       res.forEach((message) => {
          const messageType = message.from === userId ? 'sent' : 'received';
@@ -238,7 +244,6 @@ getUsers() {
     this.messages = [];
     this.selectedUser = user;
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
-    //this.getConversation()
     this.socket.off('conversation');
     const conversationBody = {
       to: this.selectedUser.id
@@ -267,7 +272,7 @@ getUsers() {
         }
       };
       this.socket.emit('message', messagePayload);
-      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'text' });
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: new Date (Date.now()), isFile:'text' });
       this.newMessageText = '';
       this.scrolledToBottom = true
     }
