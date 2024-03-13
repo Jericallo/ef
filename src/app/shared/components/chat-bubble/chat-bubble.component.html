@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div #messageContainer class="message-container">
+    <div  #messageContainer (scroll)="handleScroll($event)" class="message-container">
       <div *ngFor="let message of messages" class="all-message">
         <div *ngIf="isFechaNueva(message)" class="fecha-nueva">
           <span >

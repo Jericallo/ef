@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewChecked, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { Socket, io } from 'socket.io-client';
 import { ApiService } from '../../services/api.service';
 import { PdfViewerModalComponent } from 'src/app/modules/control/chat/pdf-viewer-modal/pdf-viewer-modal.component';
@@ -10,7 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
   templateUrl: './chat-bubble.component.html',
   styleUrls: ['./chat-bubble.component.scss']
 })
-export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewInit {
+export class ChatBubbleComponent implements OnInit, AfterViewChecked {
 
   @Input() openChat = true;
 
@@ -25,8 +25,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
   isTyping: boolean = false;
   profile: any
   me_user: ''
-  scrolledToBottom: boolean = true;
-
+  userScrollingUp: boolean = false;
 
   constructor( private apiService: ApiService, private dialog: MatDialog, private cdr: ChangeDetectorRef ) { 
     
@@ -55,7 +54,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
       }
       data.content.from= parseInt(data.content.from)
       this.messages.push({ text: data.content.mensaje, type: 'received', date: date, isFile: data.content.type, fileURL: data.content.filename});
-      this.scrolledToBottom = true   
+      this.scrollToBottom();
     });  
 
     this.socket.on('typing', (data) => {
@@ -98,18 +97,14 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
     this.getUsers();
   }
 
-  ngAfterViewInit(): void {
-    if (this.messages.length > 0) {
-      this.scrollToBottom();
-    }
-  }
-
   ngAfterViewChecked(): void {
-    if (this.scrolledToBottom && this.messages.length > 0) {
+    if (!this.userScrollingUp) {
       this.scrollToBottom();
-      this.scrolledToBottom = false;
     }
   }
+  
+
+  
 
 
   handleFileInput(event: any): void {
@@ -131,7 +126,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
 
       this.socket.emit('message', messagePayload);
       this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: new Date (Date.now()), isFile:'file' });
-      this.scrolledToBottom = true
+      
       this.newMessageText = '';
     }
 }
@@ -142,7 +137,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
       (data: any) => {
         this.users = data.result;
         this.filteredUsers = this.users; 
-        this.scrolledToBottom = true
+        
         this.filteredUsers.forEach((element) => {
           if(element.id === 29){
             this.selectUser(element)
@@ -188,7 +183,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
     }
     this.socket.emit('conversation', conversationBody);
     this.getConversation()
-    this.scrolledToBottom = true
+    
   
   }
 
@@ -204,7 +199,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
        });
       }
     )
-    this.scrolledToBottom = true
+    
   }
 
 
@@ -221,7 +216,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
       this.socket.emit('message', messagePayload);
       this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: new Date (Date.now()), isFile:'text' });
       this.newMessageText = '';
-      this.scrolledToBottom = true
+      this.scrollToBottom();
     }
   }
   
@@ -238,17 +233,24 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked, AfterViewI
       this.socket.emit('stoptyping', { to: this.selectedUser.id });
     }
   }
+
+  handleScroll(event: Event): void {
+    const element = event.target as HTMLElement;
+    const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+  
+    this.userScrollingUp = !atBottom;
+  }
+  
   
 
   private scrollToBottom(): void {
     try {
-      if (this.messageContainer) {
-        console.log("hola")
+      if (this.messageContainer && !this.userScrollingUp) {
         this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
       }
     } catch (err) {}
   }
-
+  
   isFechaNueva(message: any) {
     const fechaNuevaIndex = this.messages.findIndex((element) => element === message);
 
