@@ -2,7 +2,7 @@
     <div fxFlex="100">
         <mat-card>
             <a routerLink="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
-            <div style="display: flex; align-items: center; justify-content: center;">
+            <!-- <div style="display: flex; align-items: center; justify-content: center;">
                 <p style="font-weight: 700;">Agregar Cumplimiento</p>
             </div>    
             <mat-card-content>
@@ -20,7 +20,46 @@
                         </mat-form-field>
                     </form>
                 </div>
-            </mat-card-content>    
+            </mat-card-content>     -->
+            <mat-card-content>
+                <mat-form-field appearance="fill" class="search-field">
+                    <mat-label>Buscar</mat-label>
+                    <input matInput placeholder="Escribe para buscar" (input)="applyFilter($event.target.value)">
+                </mat-form-field>
+                <div class="table-container">
+                    <mat-table [dataSource]="dataSource">
+
+                        <!-- Definición de las columnas -->
+                        <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
+                            <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
+                            <mat-cell *matCellDef="let element; let i = index" class="table-element">
+                                <ng-container [ngSwitch]="column">
+                                    <ng-container *ngSwitchCase="'id'">{{ element.id }}</ng-container>
+                                    <ng-container *ngSwitchCase="'nombre'">{{ element.nombre }}</ng-container>
+                                    <ng-container *ngSwitchCase="'descripcion'">{{ element.descripcion }}</ng-container>
+                                    <ng-container *ngSwitchCase="'fecha_inicio'">{{ element.fecha_inicio * 60000 | date: 'dd-MM-yyyy' }}</ng-container>
+                                    <ng-container *ngSwitchCase="'fecha_fin'">{{ element.fecha_cumplimiento | date:'dd-MM-yyyy' }}</ng-container>
+                                    <ng-container *ngSwitchCase="'prioridad'">{{ element.prioridad }}</ng-container>
+                                </ng-container>
+                            </mat-cell>
+                        </ng-container>
+                    
+                        <!-- Definición de las filas de encabezado -->
+                        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                    
+                        <!-- Definición de las filas de datos -->
+                        <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+                    
+                    </mat-table>
+                
+                <!-- Agregamos el paginador -->
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+            </mat-card-content>
+           
+              
+              
         </mat-card>
     </div>
 </div>
