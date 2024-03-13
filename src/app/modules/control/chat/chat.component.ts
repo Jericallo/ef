@@ -5,6 +5,9 @@ import { ApiService } from 'src/app/shared/services/api.service';
 import { PdfViewerModalComponent } from './pdf-viewer-modal/pdf-viewer-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, catchError, forkJoin, map, of } from 'rxjs';
+import { NgZone } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-chat',
@@ -26,7 +29,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   me_user: ''
   scrolledToBottom: boolean = true;
 
-  constructor(private apiService: ApiService, private dialog: MatDialog) {
+  constructor(private apiService: ApiService, private dialog: MatDialog,private cdr: ChangeDetectorRef) {
     this.scrolledToBottom = true
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     const me = apiService.getWholeUser()
@@ -38,6 +41,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
          id: userId
       }
     });    
+
+    
+
     this.socket.on('connect', () => {
       console.log('Conectado al servidor de sockets con ID:', userId);
       });
@@ -47,9 +53,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   
     this.socket.on('message', (data) => {  
-      console.log(data)
-      let date = new Date (data.content.fecha_envio)
-      this.messages.push({ text: data.content.mensaje, type: 'received', date: date, isFile: data.content.type, from:data.from });   
+      let date = new Date(data.content.fecha_envio);
+      if(data.content.type !== "file"){
+        data.content.type = "text"
+        data.content.fileUrl
+      }
+      data.content.from= parseInt(data.content.from)
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: date, isFile: data.content.type, from:data.from });
+      this.cdr.detectChanges();
       console.log(this.messages)
       this.scrolledToBottom = true   
 
@@ -175,7 +186,11 @@ getUsers() {
         if (this.users.length > 0 && !this.selectedUser) {
           this.selectedUser = this.users[0];
           this.selectUser(this.selectedUser);
-          this.getConversation();
+          const conversationBody = {
+            to: this.selectedUser.id
+          };
+          this.socket.emit('conversation', conversationBody);
+          //this.getConversation();
         }
       });
     },
