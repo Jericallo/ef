@@ -3,6 +3,7 @@ import { Socket, io } from 'socket.io-client';
 import { ApiService } from '../../services/api.service';
 import { PdfViewerModalComponent } from 'src/app/modules/control/chat/pdf-viewer-modal/pdf-viewer-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-chat-bubble',
@@ -14,7 +15,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
   @Input() openChat = true;
 
   newMessageText: string = '';
-  messages: { text: string, type: 'sent' | 'received', date:number, isFile:string, fileURL?:string }[] = [];
+  messages: { text: string, type: 'sent' | 'received', date:Date, isFile:string, fileURL?:string }[] = [];
   @ViewChild('messageContainer') private messageContainer: ElementRef;
   private socket: Socket; 
   searchTerm: string = '';
@@ -24,10 +25,10 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
   isTyping: boolean = false;
   profile: any
   me_user: ''
-  scrolledToBottom: boolean = true;
+  userScrollingUp: boolean = false;
 
-
-  constructor( private apiService: ApiService, private dialog: MatDialog ) { 
+  constructor( private apiService: ApiService, private dialog: MatDialog, private cdr: ChangeDetectorRef ) { 
+    
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     const me = apiService.getWholeUser()
     this.me_user = me.nombre
@@ -47,9 +48,15 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
     });
   
     this.socket.on('message', (data) => {  
-      this.messages.push({ text: data.content.mensaje, type: 'received', date: data.content.fecha_envio, isFile: data.content.type });
+      let date = new Date(data.content.fecha_envio);
+      if(data.content.type !== "file"){
+        data.content.type = "text"
+      }
+      data.content.from= parseInt(data.content.from)
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: date, isFile: data.content.type, fileURL: data.content.filename});
+      this.scrollToBottom();
     });  
-    
+
     this.socket.on('typing', (data) => {
       const typingUserId = data.message[0];  
       let typingUserIndex = -1;
@@ -83,29 +90,26 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
       }    
     });    
     }
+
   }
 
   ngOnInit(): void {
-    this.getUsers()
-    if (this.users.length > 0) {
-      this.selectUser(this.users[0]);
-    }
+    this.getUsers();
   }
 
   ngAfterViewChecked(): void {
-    if(this.scrolledToBottom && this.messages.length > 0){
-      this.scrollToBottom()
-      this.scrolledToBottom = false
+    if (!this.userScrollingUp) {
+      this.scrollToBottom();
     }
   }
+  
+
+  
+
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
-    // Aquí puedes realizar cualquier lógica que desees con el archivo seleccionado
-    console.log('Archivo seleccionado:', file);
-
     if (file) {
-      // Obtener la extensión del archivo
       const fileNameParts = file.name.split('.');
       const extension = fileNameParts[fileNameParts.length - 1];
 
@@ -116,32 +120,24 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
           mensaje: '',
           fecha_envio: Date.now(),
           type: 'file',
-          extension: extension // Añadir la extensión al payload del mensaje
+          extension: extension 
         }
       };
 
-      // Detectar el navegador y obtener la ruta local del archivo seleccionado
-      let fileURL = '';
-      if (navigator.userAgent.includes('WebKit')) {
-        // Navegador basado en WebKit (Safari, Chrome, etc.)
-        fileURL = file.getWebkitRelativePath() || '';
-      } else if (navigator.userAgent.includes('Firefox')) {
-        // Navegador Mozilla (Firefox)
-        fileURL = file.mozFullPath || '';
-      }
-      console.log(fileURL)
       this.socket.emit('message', messagePayload);
-      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'file', fileURL: fileURL });
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: new Date (Date.now()), isFile:'file' });
+      
       this.newMessageText = '';
     }
-  }
+}
+
   
   getUsers() {
     this.apiService.getUsers().subscribe(
       (data: any) => {
         this.users = data.result;
         this.filteredUsers = this.users; 
-        console.log('USUARIOS FILTRADOS', this.filteredUsers)
+        
         this.filteredUsers.forEach((element) => {
           if(element.id === 29){
             this.selectUser(element)
@@ -167,39 +163,45 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
 
   }
   
-  
   selectUser(user: any) {
-
+    const selectedUser = this.filteredUsers.findIndex(u => u.id === user.id);
+    this.filteredUsers[selectedUser].unread_messages = 0
     this.apiService.getProfiles().subscribe(
       (data:any) => {
         this.profile = data.find((element) => element.id === user.id_perfil)
-        console.log(data)
       },
       (error) => {
         console.log(error)
       }
     )
+    
     this.messages = [];
     this.selectedUser = user;
-    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
-  
-    // Desuscribirse del evento 'conversation' antes de suscribirse nuevamente
     this.socket.off('conversation');
-  
     const conversationBody = {
       to: this.selectedUser.id
-    };
+    }
     this.socket.emit('conversation', conversationBody);
+    this.getConversation()
+    
   
-    this.socket.on('conversation', (messageData) => {  
-      messageData.forEach((message) => {
-        const messageType = message.from === userId ? 'sent' : 'received';
-        this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
-      });
-      this.scrolledToBottom = true
-    });
   }
+
   
+  getConversation(){
+    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
+    this.apiService.getConversation(userId ,this.selectedUser.id).subscribe(
+      (res:any) => {
+        this.messages = []
+      res.forEach((message) => {
+         const messageType = message.from === userId ? 'sent' : 'received';
+         this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
+       });
+      }
+    )
+    
+  }
+
 
   sendMessage() {
     if (this.newMessageText.trim() !== ''  && this.selectedUser) {
@@ -212,8 +214,9 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
         }
       };
       this.socket.emit('message', messagePayload);
-      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: Date.now(), isFile:'text' });
+      this.messages.push({ text: this.newMessageText.trim(), type: 'sent', date: new Date (Date.now()), isFile:'text' });
       this.newMessageText = '';
+      this.scrollToBottom();
     }
   }
   
@@ -225,20 +228,29 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
   checkIsTyping() {
     this.isTyping = this.newMessageText.trim() !== '';    
     if (this.isTyping) {
-      console.log("prendido")
       this.socket.emit('typing', { to: this.selectedUser.id });
     } else {
       this.socket.emit('stoptyping', { to: this.selectedUser.id });
     }
   }
+
+  handleScroll(event: Event): void {
+    const element = event.target as HTMLElement;
+    const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+  
+    this.userScrollingUp = !atBottom;
+  }
+  
   
 
   private scrollToBottom(): void {
     try {
-      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+      if (this.messageContainer && !this.userScrollingUp) {
+        this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      }
+    } catch (err) {}
   }
-
+  
   isFechaNueva(message: any) {
     const fechaNuevaIndex = this.messages.findIndex((element) => element === message);
 

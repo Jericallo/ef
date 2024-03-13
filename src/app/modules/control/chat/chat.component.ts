@@ -28,9 +28,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   profile: any
   me_user: ''
   scrolledToBottom: boolean = true;
-
+  
+  
   constructor(private apiService: ApiService, private dialog: MatDialog,private cdr: ChangeDetectorRef) {
-    this.scrolledToBottom = true
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     const me = apiService.getWholeUser()
     this.me_user = me.nombre
@@ -41,8 +41,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
          id: userId
       }
     });    
-
-    
 
     this.socket.on('connect', () => {
       console.log('Conectado al servidor de sockets con ID:', userId);
@@ -56,16 +54,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       let date = new Date(data.content.fecha_envio);
       if(data.content.type !== "file"){
         data.content.type = "text"
-        data.content.fileUrl
       }
       data.content.from= parseInt(data.content.from)
-      this.messages.push({ text: data.content.mensaje, type: 'received', date: date, isFile: data.content.type, from:data.from });
+      this.messages.push({ text: data.content.mensaje, type: 'received', date: date, isFile: data.content.type, from:data.from, fileURL: data.content.filename});
       this.cdr.detectChanges();
-      console.log(this.messages)
       this.scrolledToBottom = true   
 
-      if(data.from !== this.selectedUser.id){
-        const selectedUser = this.filteredUsers.findIndex(u => u.id === this.selectedUser.id);
+      if(data.from != this.selectedUser.id){
         const unreadObservables = this.users.map(user => this.getUnread(user.id));
         forkJoin(unreadObservables).subscribe(unreads => {
           unreads.forEach((unread, index) => {
@@ -98,8 +93,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }    
     });    
 
+  
+
     this.socket.on('stoptyping', (data) => {
-      console.log(data)
       const typingUserId = data.from;  
       let typingUserIndex = -1;
       this.filteredUsers.forEach((element, index) => {
@@ -114,16 +110,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.isTyping = true;
       }    
     }); 
-  
-    this.socket.on('conversation', (messageData) => {  
-      console.log(messageData)
-      messageData.forEach((message) => {
-        const messageType = message.from === userId ? 'sent' : 'received';
-        this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename, from:message.from});
-      });
-    })
+
 
   }
+  }
+
+  private setupSocketListeners() {
+    const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
+    this.socket.on('connect', () => {
+      console.log('Conectado al servidor de sockets con ID:', );
+    });
   }
 
 
@@ -142,7 +138,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
-    console.log(file)
     if (file) {
       const fileNameParts = file.name.split('.');
       const extension = fileNameParts[fileNameParts.length - 1];
@@ -188,9 +183,9 @@ getUsers() {
           this.selectUser(this.selectedUser);
           const conversationBody = {
             to: this.selectedUser.id
-          };
+          }
           this.socket.emit('conversation', conversationBody);
-          //this.getConversation();
+          this.getConversation();
         }
       });
     },
@@ -204,11 +199,10 @@ getUsers() {
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     this.apiService.getConversation(userId ,this.selectedUser.id).subscribe(
       (res:any) => {
-        console.log(res)
         this.messages = []
       res.forEach((message) => {
          const messageType = message.from === userId ? 'sent' : 'received';
-         this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename});
+         this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename, from: message.from});
        });
       }
     )
@@ -243,9 +237,7 @@ getUsers() {
   
   selectUser(user: any) {
     const selectedUser = this.filteredUsers.findIndex(u => u.id === user.id);
-
     this.filteredUsers[selectedUser].unread_messages = 0
-
     this.isSelectedUser = (u) => u === user; 
     this.apiService.getProfiles().subscribe(
       (data:any) => {
@@ -262,16 +254,10 @@ getUsers() {
     this.socket.off('conversation');
     const conversationBody = {
       to: this.selectedUser.id
-    };
+    }
     this.socket.emit('conversation', conversationBody);
-    this.socket.on('conversation', (messageData) => {  
-      this.messages = []
-      messageData.forEach((message) => {
-        const messageType = message.from === userId ? 'sent' : 'received';
-        this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename, from:message.from});
-      });
-    })
-      this.scrolledToBottom = true
+    this.getConversation()
+    this.scrolledToBottom = true
   
   }
 
