@@ -190,18 +190,6 @@
   background-color: #ccc; 
 }
 
-::-webkit-scrollbar {
-  width: 12px; /* Anchura de la barra de desplazamiento */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(0, 255, 4); /* Color de la parte que se mueve */
-}
-
-::-webkit-scrollbar-track {
-  background-color: red; /* Color del fondo de la barra */
-}
-
 /* Estilo para Firefox */
 mat-card {
   scrollbar-width: thin; 
