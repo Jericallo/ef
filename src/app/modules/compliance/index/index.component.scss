@@ -23,3 +23,60 @@
   .cal-day-outside-month {
     color: #ccc; /* Cambiar a tu color gris claro deseado */
 }
+
+.indicador {
+  min-height: 20px;
+  min-width: 20px;
+  max-height: 20px;
+  max-width: 20px;
+  border-radius: 20px;
+  margin-right: 5px;
+}
+
+.indicador:hover {
+  cursor: pointer;
+}
+
+.indicador-lento{
+  animation: parpadeo 3s infinite;
+}
+
+.indicador-rapido{
+  animation: parpadeo 0.3s infinite;
+}
+
+.rojo {
+  background-color: red;
+}
+
+.yellow {
+  background-color: #ffcc0c;
+}
+
+.green {
+  background-color: green;
+}
+
+.indicador-container {
+  display: flex;
+  flex-direction: row;
+  font-size: smaller;
+}
+
+@keyframes parpadeo {
+  0%, 100% {
+      opacity: 1;
+  }
+  50% {
+      opacity: 0;
+  }
+}
+
+@keyframes parpadeo-rapido {
+  0%, 100% {
+      opacity: 1;
+  }
+  50% {
+      opacity: 0;
+  }
+}

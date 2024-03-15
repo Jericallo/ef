@@ -1,4 +1,7 @@
-<div *ngFor="let cumplimiento of data.cumplimientos" class="container">
-    <div class="indicador" [style.background-color]="cumplimiento.color.primary"></div>
-    <p>{{cumplimiento.title}}</p>
+<div *ngFor="let cumplimiento of theCumplimientos" class="container">
+    <div class="indicador"
+    [ngStyle]="{'background-color': isFechaMaxima(cumplimiento, data.date)}"
+    [ngClass]="{'indicador-lento': isIndicadorLento(cumplimiento, data.date), 'indicador-rapido': isIndicadorRapido(cumplimiento, data.date)}"> 
+    </div>
+    <p>{{cumplimiento.nombre}}</p>
 </div>

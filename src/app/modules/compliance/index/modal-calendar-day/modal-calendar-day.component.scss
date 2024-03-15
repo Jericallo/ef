@@ -1,8 +1,38 @@
-.indicador{
-    width: 20px;
+.indicador {
     height: 20px;
+    width: 20px;
+    border-radius: 20px;
     margin-right: 10px;
-    border-radius: 15px;
+}
+
+.indicador:hover {
+    cursor: pointer;
+}
+
+.indicador-lento{
+    animation: parpadeo 3s infinite;
+}
+
+.indicador-rapido{
+    animation: parpadeo 0.3s infinite;
+}
+
+@keyframes parpadeo {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes parpadeo-rapido {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
 
 .container {

@@ -135,12 +135,15 @@ export class IndexComponent implements OnInit {
 
   activeDayIsOpen = false;
 
+  cumplimientos:any
+
   constructor(public dialog: MatDialog, @Inject(DOCUMENT) doc: any, private ntfService: NotificationService, private apiService:ApiService /*, private notification: PushNotificationService*/, private cdr: ChangeDetectorRef ) {
     
   }
+
   ngOnInit(): void {
     this.getObligations();
-   
+    this.getCumplimientos();
     /*this.notification.requestPermission().then(token=>{
       console.log(token);
      })
@@ -168,16 +171,18 @@ export class IndexComponent implements OnInit {
       } else {
         console.log('sola')
 
-        const dialogRef = this.dialog.open(ModalCalendarDayComponent, { 
-          width: '800px',
-          height: '600px',
-          data: {cumplimientos:events} 
-        });
+
 
         //this.activeDayIsOpen = true;
         //this.viewDate = date;
       }
     }
+
+    const dialogRef = this.dialog.open(ModalCalendarDayComponent, { 
+      width: '800px',
+      height: '600px',
+      data: {cumplimientos:this.cumplimientos, date: date} 
+    });
   }
 
   eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
@@ -326,9 +331,6 @@ export class IndexComponent implements OnInit {
               documentations: obligation.documentaciones
             })) : [];
 
-            console.log('FUTURO',obligacionesFuturas)
-            console.log('OBLIGASAO', obligation)
-
             return [
               ...alerts,
               ...obligacionesFuturas,
@@ -396,11 +398,21 @@ export class IndexComponent implements OnInit {
             }
           });*/
           this.cdr.detectChanges();    //this.getObligationsForToday();
-          console.log(this.events)
         }
       },
       error: err => {
         console.log(err);
+      }
+    });
+  }
+
+  getCumplimientos(){
+    this.apiService.getCumplimientosControl().subscribe({
+      next: res => {
+        res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
+        console.log(res.result)
+        this.cumplimientos = res.result;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -499,5 +511,84 @@ export class IndexComponent implements OnInit {
       else return '#ffcc0c'
     } else if(fechaMaxima.toString() === fechaColumna.toString()) return 'red'
      else if(fechaMaxima.toString() < fechaColumna.toString()) return 'transparent'
+  }
+
+  verifySpot(mode:number, day:Date){
+    if(this.cumplimientos === undefined || this.cumplimientos === null){
+      return 0
+    }
+    let milis = day.getTime() 
+    let contador = 0;
+    if(mode === 1) {
+      for (const objeto of this.cumplimientos) {
+        if (milis >= objeto.cumplimientos_obligacion.fecha_maxima && milis <= objeto.cumplimientos_obligacion.fecha_maxima_fin) {
+            contador++;
+        }
+        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis) {
+          contador --;
+        }
+      }
+
+      return contador;
+    } else if( mode === 2 ) {
+      for (const objeto of this.cumplimientos) {
+        if (milis >= objeto.cumplimientos_obligacion.fecha_ideal && milis <= objeto.cumplimientos_obligacion.fecha_ideal_fin) {
+            contador++;
+        }
+        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis) {
+          contador --;
+        }
+      }
+
+      return contador;
+    } else if( mode === 3 ) {
+      for (const objeto of this.cumplimientos) {
+        if (milis >= objeto.cumplimientos_obligacion.fecha_inicio_cumplimiento && milis <= objeto.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin) {
+            contador++;
+        }
+        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis) {
+          contador --;
+        }
+      }
+
+      return contador;
+    } else if( mode === 4 ) {
+      for (const objeto of this.cumplimientos) {
+        if (milis >= objeto.cumplimientos_obligacion.fecha_inicio_ideal && milis <= objeto.cumplimientos_obligacion.fecha_inicio_ideal_fin) {
+            contador++;
+        }
+        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis) {
+          contador --;
+        }
+      }
+
+      return contador;
+    } else if( mode === 5 ) {
+      for (const objeto of this.cumplimientos) {
+        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis && objeto.cumplimientos_obligacion.completado == 1) {
+          contador ++;
+          console.log(contador)
+        }
+      }
+
+      return contador;
+    } else if( mode === 6 ) {
+      for (const objeto of this.cumplimientos) {
+        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis && objeto.cumplimientos_obligacion.completado == 2) {
+          contador ++;
+        }
+      }
+
+      return contador;
+    } else if( mode === 7 ) {
+      for (const objeto of this.cumplimientos) {
+        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis && objeto.cumplimientos_obligacion.completado == 3) {
+          contador ++;
+        }
+      }
+
+      return contador;
+    }
+    return 0
   }
 }

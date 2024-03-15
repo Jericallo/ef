@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { addDays, addMonths, format, isSameMonth } from 'date-fns';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { es } from 'date-fns/locale';  
@@ -6,13 +6,14 @@ import { MatDialog} from '@angular/material/dialog';
 import { DetailDayComponent } from './detail-day/detail-day.component';
 import { DetailCumplimientoComponent } from './detail-cumplimiento/detail-cumplimiento.component';
 import { HttpParams } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register-client',
   templateUrl: './register-client.component.html',
   styleUrls: ['./register-client.component.scss']
 })
-export class RegisterClientComponent implements OnInit {
+export class RegisterClientComponent implements OnInit, AfterViewInit {
   dateRange: number[] = [];
   tableData: any[] = [];
   displayedColumns: any[] = ['nombre'];
@@ -26,13 +27,49 @@ export class RegisterClientComponent implements OnInit {
 
   openChat = false;
 
-  constructor(private apiService: ApiService, public dialogRef: MatDialog) {}
+  @ViewChildren('tooltip') tooltips: QueryList<ElementRef>;
+  private tooltipSubscription: Subscription;
+
+  constructor(private apiService: ApiService, public dialogRef: MatDialog, private elementRef: ElementRef) {}
 
   ngOnInit(): void {
     this.generateDateRange();
     this.getCompliance();
+  }
 
-    
+  ngAfterViewInit(): void {
+    // Observador de mutaciones para detectar cuando los elementos están listos
+    const observer = new MutationObserver(() => {
+      this.adjustAllTooltipsPosition();
+    });
+
+    // Observar cambios en el elemento padre
+    observer.observe(this.elementRef.nativeElement, { childList: true, subtree: true });
+  }
+
+  ngOnDestroy(): void {
+    if (this.tooltipSubscription) {
+      this.tooltipSubscription.unsubscribe();
+    }
+  }
+
+  adjustAllTooltipsPosition() {
+    const tooltipsArray = this.tooltips.toArray();
+    tooltipsArray.forEach(tooltipRef => {
+      const tooltip = tooltipRef.nativeElement;
+      const rect = tooltip.getBoundingClientRect();
+      const windowWidth = window.innerWidth;
+
+      // Verificar si el tooltip está demasiado cerca del borde derecho
+      if (rect.right > windowWidth) {
+          tooltip.style.left = `auto`;
+          tooltip.style.right = `0`;
+      } else {
+          tooltip.style.right = `auto`;
+          tooltip.style.left = `50%`;
+          tooltip.style.transform = `translateX(-50%)`;
+      }
+    });
   }
 
   generateDateRange(): void {
@@ -298,16 +335,35 @@ export class RegisterClientComponent implements OnInit {
   }
 
   prueba(element:any, column:number) {
+
     clearTimeout(this.hoverTimer);
     clearTimeout(this.unhoverTimer);
-    const id = element.cumplimientos_obligacion.id_obligacion
-    var sections = document.querySelectorAll('.custom-tooltip');
-    for (let i = 0; i < sections.length; i++){
-      sections[i].classList.remove('show');
+
+    const cadena = column.toString()
+
+    const fechaColumn = new Date(parseInt(cadena));
+    const fechaHoy = new Date();
+    console.log(fechaColumn, fechaHoy, column)
+    if (
+        fechaColumn.getFullYear() === fechaHoy.getFullYear() &&
+        fechaColumn.getMonth() === fechaHoy.getMonth() &&
+        fechaColumn.getDate() === fechaHoy.getDate()
+    ) {
+        this.openCumplimientoDialog(element,column)
+    } else {
+      const id = element.cumplimientos_obligacion.id_obligacion
+      var sections = document.querySelectorAll('.custom-tooltip');
+      for (let i = 0; i < sections.length; i++){
+        sections[i].classList.remove('show');
+      }
+      document.querySelector(`#tooltip-${id}-${column}`).classList.add('show');
+      this.showTooltip = true
     }
-    document.querySelector(`#tooltip-${id}-${column}`).classList.add('show');
-    this.showTooltip = true
-  }
+    }
+
+
+    
+    
 
   clearAll() {
     console.log('Clearing...')
