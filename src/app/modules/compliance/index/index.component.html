@@ -68,7 +68,7 @@
         <!-- ============================================================== -->
         <!-- Event Calendar -->
         <!-- ============================================================== -->
-        <div [ngSwitch]="view" *ngIf="events && events.length > 0">
+        <div [ngSwitch]="view" *ngIf="events && events.length > 0 && cumplimientos && cumplimientos.length > 1">
             <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [locale]="locale"
                 [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen"
                 (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('', $event.event)"
@@ -79,16 +79,31 @@
                 <ng-template #dayViewNormalContent let-day="day" let-locale="locale">
                     <div class="cal-day-events" [ngClass]="{ 'cal-day-outside-month': day.date.getMonth() !== viewDate.getMonth() }">
                         <div class="cal-date">{{ day.date | date: 'd' }}</div>
-                        <ng-container *ngFor="let event of day.events.slice(0, 3); let i = index">
-                            <div style="display: flex; flex-direction: row; align-items: center; justify-content: baseline;">
-                                <div class="cal-event" [style.backgroundColor]="event.color.primary"></div>
-                                <div class="cal-event-title">{{ event.title }}</div>
-                            </div>
-                            
-                        </ng-container>
-                        <div *ngIf="day.events.length > 3" >
-                            <div class="cal-event-title">...</div>
+                        <ng-container >
+                        <div *ngIf="verifySpot(1,day.date) >= 1" class="indicador-container">
+                            <div class="indicador indicador-rapido rojo"></div><span>{{verifySpot(1,day.date)}} Muy urgente</span>
                         </div>
+                        <div *ngIf="verifySpot(2,day.date) >= 1" class="indicador-container">
+                            <div class="indicador indicador-lento rojo"></div><span>{{verifySpot(2,day.date)}} Urgente</span>
+                        </div>
+                        <div *ngIf="verifySpot(3,day.date) >= 1" class="indicador-container">
+                            <div class="indicador indicador-rapido yellow"></div><span>{{verifySpot(3,day.date)}} Normal</span>
+                        </div>
+                        <div *ngIf="verifySpot(4,day.date) >= 1" class="indicador-container">
+                            <div class="indicador indicador-lento yellow"></div><span>{{verifySpot(4,day.date)}} Ideal</span>
+                        </div>
+
+                        <div *ngIf="verifySpot(5,day.date) >= 1" class="indicador-container">
+                            <div class="indicador yellow"></div><span>{{verifySpot(5,day.date)}} Terminado, se necesita revisar por el supervisor</span>
+                        </div>
+                        <div *ngIf="verifySpot(6,day.date) >= 1" class="indicador-container">
+                            <div class="indicador yellow"></div><span>{{verifySpot(6,day.date)}} Terminado, se está revisando por el supervisor</span>
+                        </div>
+                        <div *ngIf="verifySpot(7,day.date) >= 1" class="indicador-container">
+                            <div class="indicador green"></div><span>{{verifySpot(7,day.date)}} Terminado.</span>
+                        </div>
+
+                        </ng-container>
                     </div>
                 </ng-template>                            
             </mwl-calendar-month-view>
