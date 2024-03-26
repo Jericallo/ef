@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, ChangeDetectorRef, OnDestroy, ElementRef, AfterViewChecked, ViewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import{MatDialog,MatDialogRef,MatDialogConfig,MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder,FormControl,Validators,UntypedFormGroup } from '@angular/forms';
@@ -14,6 +14,8 @@ import * as moment from 'moment';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { ModalCalendarDayComponent } from './modal-calendar-day/modal-calendar-day.component';
+import { MousePositionService } from './mouse-position.service';
+import { ModalDataService } from './modal-data.service';
 
 registerLocaleData(localeEs);
 
@@ -64,9 +66,11 @@ export class CalendarDialogComponent {
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   dialogRef: MatDialogRef<CalendarDialogComponent> = Object.create({});
   dialogRef2: MatDialogRef<CalendarFormDialogComponent> = Object.create({});
+  @ViewChild('scrollElement') scrollElement: ElementRef;
+
   locale: string = "es";
 
   messageReceived = '';
@@ -79,6 +83,7 @@ export class IndexComponent implements OnInit {
   title = [];
 
   showMain = true;
+  scrollPending: boolean = false;
 
   config: MatDialogConfig = {
     disableClose: false,
@@ -110,6 +115,8 @@ export class IndexComponent implements OnInit {
   anio = this.d.getFullYear().toString()
 
   mesMostrar = 'Mes actual'
+
+  isModalOpen = false //Detecta si la modal ya está abierta, para evitar abrir varias.
   
   actions: CalendarEventAction[] = [
     {
@@ -137,7 +144,16 @@ export class IndexComponent implements OnInit {
 
   cumplimientos:any
 
-  constructor(public dialog: MatDialog, @Inject(DOCUMENT) doc: any, private ntfService: NotificationService, private apiService:ApiService /*, private notification: PushNotificationService*/, private cdr: ChangeDetectorRef ) {
+  constructor(
+    public dialog: MatDialog, 
+    @Inject(DOCUMENT) doc: any, 
+    private ntfService: NotificationService, 
+    private apiService:ApiService /*, 
+    private notification: PushNotificationService*/, 
+    private cdr: ChangeDetectorRef,
+    private mousePositionService: MousePositionService,
+    private modalDataService: ModalDataService,
+    private elementRef: ElementRef ) {
     
   }
 
@@ -151,38 +167,67 @@ export class IndexComponent implements OnInit {
       console.log(payload)
     })
     */
+    document.addEventListener('mousemove', this.trackMouse.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    document.removeEventListener('mousemove', this.trackMouse.bind(this));
+  }
+
+  ngAfterViewChecked(): void {
+    // Verifica si hay un scroll pendiente y la vista se ha actualizado
+    if (this.scrollPending) {
+      console.log('scroleando')
+      this.scrollElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+
+      // Restablece la bandera de scroll pendiente
+      this.scrollPending = false;
+    }
+  }
+
+  trackMouse(event: MouseEvent) {
+    this.mousePositionService.trackMousePosition(event);
   }
 
   openEventDialog(event: CalendarEvent): void {
     const dialogRef = this.dialog.open(CalendarDialogComponent, {
-      width: '400px',
+      width: '70%',
       data: event // Puedes pasar los datos del evento al diálogo a través de la propiedad 'data'
     });
+  }
+
+  dayHovered(date:Date): void {
+    // if(!this.isModalOpen) return
+    // this.modalDataService.setData({ cumplimientos: this.cumplimientos, date: date })
+    // this.exModalData = { cumplimientos: this.cumplimientos, date: date }
   }
   
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        console.log('sola')
+    // if(this.isModalOpen) return
+    // this.modalDataService.setData({ cumplimientos: this.cumplimientos, date: date })
 
+    // this.exModalData = { cumplimientos: this.cumplimientos, date: date }
+    // this.filterCumplimientos()
 
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '80%';
+    // dialogConfig.maxWidth= '80vw'
+    // dialogConfig.height = 'max-content';
+    // dialogConfig.maxHeight = '50vh';
+    // dialogConfig.hasBackdrop = false; // No mostrará el fondo oscuro
+    // dialogConfig.disableClose = false; // Permite cerrar la modal haciendo clic fuera de ella
 
-        //this.activeDayIsOpen = true;
-        //this.viewDate = date;
-      }
-    }
+    // const dialogRef = this.dialog.open(ModalCalendarDayComponent, dialogConfig);
+    // this.isModalOpen = true
+    // dialogRef.afterClosed().subscribe(result => {
+    //   this.isModalOpen = false
+    // });
 
-    const dialogRef = this.dialog.open(ModalCalendarDayComponent, { 
-      width: '800px',
-      height: '600px',
-      data: {cumplimientos:this.cumplimientos, date: date} 
-    });
+    // this.mousePositionService.setDialogRef(dialogRef);
+    this.exModalData = { cumplimientos: this.cumplimientos, date: date }
+    this.filterCumplimientos()
+    this.scrollToBottom()
   }
 
   eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
@@ -217,6 +262,7 @@ export class IndexComponent implements OnInit {
 
   addEvent(): void {
     this.dialogRef2 = this.dialog.open(CalendarFormDialogComponent, {
+      width:'1000px',
       panelClass: 'calendar-form-dialog',
       data: {
         action: 'add',
@@ -521,66 +567,45 @@ export class IndexComponent implements OnInit {
     let contador = 0;
     if(mode === 1) {
       for (const objeto of this.cumplimientos) {
-        if (milis >= objeto.cumplimientos_obligacion.fecha_maxima && milis <= objeto.cumplimientos_obligacion.fecha_maxima_fin) {
+        if (milis >= objeto.cumplimientos_obligacion.fecha_maxima && milis <= objeto.cumplimientos_obligacion.fecha_maxima_fin && objeto.cumplimientos_obligacion.fecha_cumplimiento === null) {
             contador++;
-        }
-        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis) {
-          contador --;
         }
       }
 
       return contador;
     } else if( mode === 2 ) {
       for (const objeto of this.cumplimientos) {
-        if (milis >= objeto.cumplimientos_obligacion.fecha_ideal && milis <= objeto.cumplimientos_obligacion.fecha_ideal_fin) {
+        if (milis >= objeto.cumplimientos_obligacion.fecha_ideal && milis <= objeto.cumplimientos_obligacion.fecha_ideal_fin && objeto.cumplimientos_obligacion.fecha_cumplimiento === null) {
             contador++;
-        }
-        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis) {
-          contador --;
         }
       }
 
       return contador;
     } else if( mode === 3 ) {
       for (const objeto of this.cumplimientos) {
-        if (milis >= objeto.cumplimientos_obligacion.fecha_inicio_cumplimiento && milis <= objeto.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin) {
+        if (milis >= objeto.cumplimientos_obligacion.fecha_inicio_cumplimiento && milis <= objeto.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin && objeto.cumplimientos_obligacion.fecha_cumplimiento === null) {
             contador++;
-        }
-        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis) {
-          contador --;
         }
       }
 
       return contador;
     } else if( mode === 4 ) {
       for (const objeto of this.cumplimientos) {
-        if (milis >= objeto.cumplimientos_obligacion.fecha_inicio_ideal && milis <= objeto.cumplimientos_obligacion.fecha_inicio_ideal_fin) {
+        if (milis >= objeto.cumplimientos_obligacion.fecha_inicio_ideal && milis <= objeto.cumplimientos_obligacion.fecha_inicio_ideal_fin && objeto.cumplimientos_obligacion.fecha_cumplimiento === null) {
             contador++;
-        }
-        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis) {
-          contador --;
         }
       }
 
       return contador;
     } else if( mode === 5 ) {
       for (const objeto of this.cumplimientos) {
-        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis && objeto.cumplimientos_obligacion.completado == 1) {
+        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento >= milis && (objeto.cumplimientos_obligacion.completado == 1 || objeto.cumplimientos_obligacion.completado == 2)) {
           contador ++;
-          console.log(contador)
         }
       }
 
       return contador;
     } else if( mode === 6 ) {
-      for (const objeto of this.cumplimientos) {
-        if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis && objeto.cumplimientos_obligacion.completado == 2) {
-          contador ++;
-        }
-      }
-
-      return contador;
-    } else if( mode === 7 ) {
       for (const objeto of this.cumplimientos) {
         if(objeto.cumplimientos_obligacion.fecha_cumplimiento && objeto.cumplimientos_obligacion.fecha_cumplimiento == milis && objeto.cumplimientos_obligacion.completado == 3) {
           contador ++;
@@ -590,5 +615,288 @@ export class IndexComponent implements OnInit {
       return contador;
     }
     return 0
+  }
+
+
+
+
+
+
+
+
+
+
+
+  exModalData: any;
+
+  theCumplimientos = []
+
+  banderaRoja = false
+  banderaAmarilla = false
+  banderaVerde = false
+
+
+  modalIsIndicadorLento(element: any, column: any) {
+    column = (column.getTime()).toString()
+    if (column === 0) return false;
+    if(element.cumplimientos_obligacion.completado !== 0) return false 
+
+    let fechaColumna = column;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaInicioIdeal = element.cumplimientos_obligacion.fecha_inicio_ideal;
+    let fechaInicioIdealFin = element.cumplimientos_obligacion.fecha_inicio_ideal_fin;
+    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
+    let fechaIdealFin = element.cumplimientos_obligacion.fecha_ideal_fin
+
+    const DateToday = new Date();
+    DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
+    DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
+
+    const fechaHoy = DateToday.getTime();
+    
+    if (
+        fechaColumna.toString() <= fechaMaxima.toString() &&
+        //fechaColumna.toString() >= fechaHoy.toString() &&
+        (fechaColumna >= fechaInicioIdeal && fechaColumna <= fechaIdealFin)
+    ) {
+        return true;
+    }
+
+    return false;
+}
+
+  modalIsIndicadorRapido(element: any, column: any){
+    column = (column.getTime()).toString()
+    if(column === 0) return false
+    if(element.cumplimientos_obligacion.completado !== 0) return false 
+
+    let fechaColumna = column;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaMaximaFin = element.cumplimientos_obligacion.fecha_maxima_fin
+    let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+    let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+
+    const DateToday = new Date();
+    DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
+    DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
+
+    const fechaHoy = DateToday.getTime();
+
+    if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false) return true
+
+    if(fechaColumna.toString() <= fechaMaximaFin.toString() ){
+     if(fechaColumna >= fechaInicioCumplimiento && fechaColumna <= fechaInicioCumplimientoFin) return true
+      if(fechaColumna >= fechaMaxima && fechaColumna <= fechaMaximaFin) return true
+    }
+    return false
+  }
+
+  modalIsFechaMaxima(element: any, column: any): string {
+    column = (column.getTime()).toString()
+    if (column === 0) {
+      return 'transparent';
+    }
+    let fechaColumna = column;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima_fin;
+    let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
+    let fechaMinima = element.cumplimientos_obligacion.fecha_inicio_ideal
+    let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+    let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
+    const fechaHoy = Date.now()
+
+
+
+    if((element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2) && fechaCumplimiento !== null) {
+      if(fechaCumplimiento.toString() === fechaColumna.toString()) return '#ffcc0c'
+      if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
+    } 
+
+    if(element.cumplimientos_obligacion.completado === 3 && fechaCumplimiento !== null) {
+      if(fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
+      if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
+    } 
+    
+    if(fechaMinima.toString() > fechaColumna.toString()) return 'transparent'
+
+    if(fechaMaxima.toString() > fechaColumna.toString()) {
+      if(fechaColumna.toString() >= (fechaIdeal).toString()) return 'red'
+      else return '#ffcc0c'
+    } else if(fechaMaxima.toString() === fechaColumna.toString()) return 'red'
+     else if(fechaMaxima.toString() < fechaColumna.toString()) return 'transparent'
+  }
+
+  modalIsRojorapido(element: any, column: any){
+    column = (column.getTime()).toString()
+    if(column === 0) return false
+    if(element.cumplimientos_obligacion.completado !== 0) return false 
+
+    let fechaColumna = column;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaMaximaFin = element.cumplimientos_obligacion.fecha_maxima_fin
+    let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+    let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+
+    const DateToday = new Date();
+    DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
+    DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
+
+    const fechaHoy = DateToday.getTime();
+
+    if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false) {this.banderaRoja = true; return true}
+
+    if(fechaColumna.toString() <= fechaMaximaFin.toString() ){
+      if(fechaColumna >= fechaMaxima && fechaColumna <= fechaMaximaFin) return true
+    }
+    return false
+  }
+
+  modalIsRojoLento(element: any, column: any) {
+    column = (column.getTime()).toString()
+    if (column === 0) return false;
+    if(element.cumplimientos_obligacion.completado !== 0) return false 
+
+    let fechaColumna = column;
+    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+    let fechaInicioIdeal = element.cumplimientos_obligacion.fecha_inicio_ideal;
+    let fechaInicioIdealFin = element.cumplimientos_obligacion.fecha_inicio_ideal_fin;
+    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
+    let fechaIdealFin = element.cumplimientos_obligacion.fecha_ideal_fin
+
+    const DateToday = new Date();
+    DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
+    DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
+
+    const fechaHoy = DateToday.getTime();
+    
+    if (
+        fechaColumna.toString() <= fechaMaxima.toString() &&
+        //fechaColumna.toString() >= fechaHoy.toString() &&
+        (fechaColumna >= fechaIdeal && fechaColumna <= fechaIdealFin)
+    ) {
+      this.banderaRoja = true
+        return true;
+    }
+
+    return false;
+}
+
+modalIsAmarilloRapido(element: any, column: any){
+  column = (column.getTime()).toString()
+  if(column === 0) return false
+  if(element.cumplimientos_obligacion.completado !== 0) return false 
+
+  let fechaColumna = column;
+  let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+  let fechaMaximaFin = element.cumplimientos_obligacion.fecha_maxima_fin
+  let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+  let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+
+  const DateToday = new Date();
+  DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
+  DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
+
+  const fechaHoy = DateToday.getTime();
+
+  if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false) return true
+
+  if(fechaColumna.toString() <= fechaMaximaFin.toString() ){
+   if(fechaColumna >= fechaInicioCumplimiento && fechaColumna <= fechaInicioCumplimientoFin) {this.banderaAmarilla = true; return true}
+  }
+  return false
+}
+
+modalIsAmarilloLento(element: any, column: any) {
+  column = (column.getTime()).toString()
+  if (column === 0) return false;
+  if(element.cumplimientos_obligacion.completado !== 0) return false 
+
+  let fechaColumna = column;
+  let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
+  let fechaInicioIdeal = element.cumplimientos_obligacion.fecha_inicio_ideal;
+  let fechaInicioIdealFin = element.cumplimientos_obligacion.fecha_inicio_ideal_fin;
+
+
+  const DateToday = new Date();
+  DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
+  DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
+
+  const fechaHoy = DateToday.getTime();
+  
+  if (
+      fechaColumna.toString() <= fechaMaxima.toString() &&
+      //fechaColumna.toString() >= fechaHoy.toString() &&
+      (fechaColumna >= fechaInicioIdeal && fechaColumna <= fechaInicioIdealFin)
+  ) {
+    this.banderaAmarilla = true
+      return true;
+  }
+
+  return false;
+}
+
+modalIsAmarilloFijo(element: any, column: any) {
+  column = (column.getTime()).toString()
+  if (column === 0) return false;
+
+  let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
+  let completado = element.cumplimientos_obligacion.completado
+
+  if (column > fechaCumplimiento) return false
+
+  if (completado === 1 || completado === 2) return true
+  else return false
+}
+
+modalIsVerde(element: any, column: any): boolean {
+  column = (column.getTime()).toString()
+  if (column === 0) {
+    return false;
+  }
+  let fechaColumna = column;
+  let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima_fin;
+  let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
+  let fechaMinima = element.cumplimientos_obligacion.fecha_inicio_ideal
+  let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
+  let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+  let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
+  const fechaHoy = Date.now()
+
+
+
+  if((element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2) && fechaCumplimiento !== null) {
+    if(fechaCumplimiento.toString() === fechaColumna.toString()) return false
+    if(fechaCumplimiento.toString() <= fechaColumna.toString()) return false
+  } 
+
+  if(element.cumplimientos_obligacion.completado === 3 && fechaCumplimiento !== null) {
+    if(fechaCumplimiento.toString() === fechaColumna.toString()) {this.banderaVerde = true; return true}
+    if(fechaCumplimiento.toString() <= fechaColumna.toString()) return false
+  } 
+  
+  if(fechaMinima.toString() > fechaColumna.toString()) return false
+
+  if(fechaMaxima.toString() > fechaColumna.toString()) {
+    if(fechaColumna.toString() >= (fechaIdeal).toString()) return false
+    else return false
+  } else if(fechaMaxima.toString() === fechaColumna.toString()) return false
+   else if(fechaMaxima.toString() < fechaColumna.toString()) return false
+}
+
+  filterCumplimientos(){
+    this.theCumplimientos = []
+    let milis = (this.exModalData.date.getTime()).toString()
+
+    for (const cumplimiento of this.exModalData.cumplimientos) {
+      if (milis >= cumplimiento.cumplimientos_obligacion.fecha_inicio_ideal && milis <= cumplimiento.cumplimientos_obligacion.fecha_maxima_fin) {
+        this.theCumplimientos.push(cumplimiento)
+      }
+    }
+    console.log(this.theCumplimientos)
+  }
+
+  scrollToBottom(): void {
+    console.log('entra')
+    this.scrollPending = true;
   }
 }

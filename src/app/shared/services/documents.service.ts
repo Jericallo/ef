@@ -240,14 +240,7 @@ export class DocumentsService {
     return this.http.post(url, body);
   }
 
-  public saveQuestionnaire(request: QuestionnaireSave): Observable<any> {
-    const url = this.insert;
-    const body = {
-      model: "capacitaciones_historial",
-      data: request
-    }
-    return this.http.post(url, body);
-  }
+  
 
   public saveVideoSecond(request: VideoResumeInterface): Observable<any> {
     const url = this.update;

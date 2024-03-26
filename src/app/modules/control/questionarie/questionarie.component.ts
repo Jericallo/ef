@@ -90,7 +90,7 @@ export class QuestionarieComponent implements OnInit {
 
   sendQuestionnaire() {
     this.showSpinner = true;
-    this.getDocumentsService.saveQuestionnaire(this.questionsSave)
+    this.apiService.saveQuestionnaire(this.questionsSave)
     .subscribe({
       next: response => {
         this.showSpinner = false;
