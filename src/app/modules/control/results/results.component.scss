@@ -1,0 +1,59 @@
+.main-label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.second-label {
+    font-size: 20px;
+}
+
+.buttons-container {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.left-button, .center-button, .right-button {
+    flex: 100px;
+}
+
+.buttons-container div:nth-of-type(1) {
+    text-align: left;
+}
+.buttons-container div:nth-of-type(2) {
+    text-align: center;
+}
+.buttons-container div:nth-of-type(3) {
+    text-align: right;
+}
+
+.left-txt {
+    margin-top: 5px;
+    margin-right: 198px;
+}
+
+.center-txt {
+    margin-top: 5px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.right-txt {
+    margin-top: 5px;
+    margin-left: 219px;
+}
+
+.button-txt {
+    font-size: 12px !important;
+}
+
+.result {
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 60px !important;
+}
+
+.mainCard {
+    padding: 40px !important;
+}

@@ -22,6 +22,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MainModule } from '../main/main.module';
 import { CustomTooltipComponent } from './register-client/custom-tooltip/custom-tooltip.component';
 import { ModalCalendarDayComponent } from './index/modal-calendar-day/modal-calendar-day.component';
+import { ModalDataService } from './index/modal-data.service';
+import { MousePositionService } from './index/mouse-position.service';
 
 @NgModule({
   declarations: [
@@ -53,6 +55,6 @@ import { ModalCalendarDayComponent } from './index/modal-calendar-day/modal-cale
     ConfigModule,
     SharedModule
     ],
-  providers:[NotificationService]
+  providers:[NotificationService, ModalDataService, MousePositionService]
 })
 export class ComplianceModule { }
