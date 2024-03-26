@@ -13,26 +13,30 @@
               </mat-form-field>
             </form>
             <form>
-              <mat-form-field class="description-full-width" appearance="fill">
-                <mat-label>Descripción de la obligación</mat-label>
-                <input type="text" matInput [formControl]="myControlDescription" [(ngModel)]="description" name="description">
-              </mat-form-field>
-            </form>
-          </div>
-  
-          <div class="form-container">
-            <form>
               <mat-form-field class="type-full-width" appearance="fill">
                 <mat-label>Prioridad</mat-label>
-                <input type="text" matInput [formControl]="myControlPriority" [matAutocomplete]="auto" name="prioridad">
+                <input type="text" matInput [formControl]="myControlPriority" [matAutocomplete]="auto" name="prioridad" >
                 <mat-autocomplete #auto="matAutocomplete" name="autoPriority" [displayWith]="displayPriority" (optionSelected)="selectedPriority($event)">
-                    <mat-option *ngFor="let option of filteredPriorityOptions | async" [value]="option">
-                      {{option.type}}
-                    </mat-option>
-                  </mat-autocomplete>
-            </mat-form-field>
-              </form>
-              <form>
+                  <mat-option *ngFor="let option of filteredPriorityOptions | async" [value]="option">
+                    {{option.type}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+            
+            
+          </div>
+          
+          <div class="form-container">
+      
+
+                <mat-form-field class="description-full-width" appearance="fill">
+                  <mat-label>Descripción de la obligación</mat-label>
+                  <textarea matInput [formControl]="myControlDescription" [(ngModel)]="description" name="description"></textarea>
+                </mat-form-field>
+             
+       
+              <!-- <form>
                 <mat-form-field class="type-full-width" appearance="fill">
                   <mat-label>Indicador de riesgo</mat-label>
                   <input type="text" matInput [formControl]="myControlRisk" [matAutocomplete]="autoRisk" name="indicador_riesgo">
@@ -42,7 +46,7 @@
                       </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-              </form>
+              </form> -->
           </div>
   
           <div class="form-container">
@@ -67,78 +71,91 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
             </form>
 
-            <form>
-              <mat-checkbox [(ngModel)]="isr" name="checkboxISR">Impuesto ISR</mat-checkbox>
-            </form>
-            <form>
-              <mat-checkbox [(ngModel)]="iva" name="checkboxIVA">Impuesto IVA</mat-checkbox>
-            </form>
-            <form>
-              <mat-checkbox [(ngModel)]="nom" name="checkboxNOM">Impuesto Nómina</mat-checkbox>
-            </form>
-            <form>
-              <mat-checkbox [(ngModel)]="otr" name="checkboxOTR">Impuesto Otros</mat-checkbox>
-            </form>
 
-            <form>
-              <mat-checkbox [(ngModel)]="showFinal" name="checkbox">Repetir</mat-checkbox>
+
+
+
+
+            <form style="margin-bottom: 15px;">
+              <mat-checkbox [(ngModel)]="showFinal" name="checkbox">Mostrar opciones de repetición</mat-checkbox>
             </form>
+  
+            <div class="form-container" *ngIf="showFinal">
+  
+              <form>
+                <mat-form-field class="period-full-width" appearance="fill">
+                  <mat-label>Periodo</mat-label>
+                  <input type="text" matInput [formControl]="myControlPeriod" name="periodo"[matAutocomplete]="autob"  (change)="handleEmptyPeriod($event)">
+                  <mat-autocomplete #autob="matAutocomplete" name="autoPeriod" [displayWith]="displayPeriod" (optionSelected)="selectedPeriod($event)">
+                      <mat-option *ngFor="let option of filteredPeriodOptions | async" [value]="option">
+                        {{option.nombre}}
+                      </mat-option>
+                    </mat-autocomplete>
+                 </mat-form-field>
+                </form>
+  
+              <form>
+                <mat-form-field class="period-full-width" appearance="fill">
+                  <mat-label>Cantidad</mat-label>
+                  <input type="number" matInput [(ngModel)]="quantity" [formControl]="myControlQuantity" name="quantity" (change)="handleEmptyQuantity($event)" min="1" required>
+                 </mat-form-field>
+                </form>
+  
+              <form>
+              <mat-form-field class="date-full-width" appearance="fill">
+                  <mat-label>Fecha final de repetición:</mat-label>
+                  <input matInput [matDatepicker]="picker" [(ngModel)]="dateF" name="fecha_final" (dateChange)="selectedFinalDate()" >
+                  <mat-hint>Mes/Dia/Año</mat-hint>
+                  <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              </form>
+              <form></form>
+            </div>
+
+
+
+            <form >
+              <h5>Tipo de impuesto asociado</h5>
+            </form>
+          
+            <div class="form-container">
+              <form>
+                <mat-checkbox [(ngModel)]="isr" name="checkboxISR">Impuesto ISR</mat-checkbox>
+              </form>
+              <form>
+                <mat-checkbox [(ngModel)]="iva" name="checkboxIVA">Impuesto IVA</mat-checkbox>
+              </form>
+              <form>
+                <mat-checkbox [(ngModel)]="nom" name="checkboxNOM">Impuesto Nómina</mat-checkbox>
+              </form>
+              <form>
+                <mat-checkbox [(ngModel)]="otr" name="checkboxOTR">Impuesto Otros</mat-checkbox>
+              </form>
           </div>
 
-          <div class="form-container" *ngIf="showFinal">
-
-            <form>
-              <mat-form-field class="period-full-width" appearance="fill">
-                <mat-label>Periodo</mat-label>
-                <input type="text" matInput [formControl]="myControlPeriod" name="periodo"[matAutocomplete]="autob"  (change)="handleEmptyPeriod($event)">
-                <mat-autocomplete #autob="matAutocomplete" name="autoPeriod" [displayWith]="displayPeriod" (optionSelected)="selectedPeriod($event)">
-                    <mat-option *ngFor="let option of filteredPeriodOptions | async" [value]="option">
-                      {{option.nombre}}
-                    </mat-option>
-                  </mat-autocomplete>
-               </mat-form-field>
-              </form>
-
-            <form>
-              <mat-form-field class="period-full-width" appearance="fill">
-                <mat-label>Cantidad</mat-label>
-                <input type="number" matInput [(ngModel)]="quantity" [formControl]="myControlQuantity" name="quantity" (change)="handleEmptyQuantity($event)" min="1" required>
-               </mat-form-field>
-              </form>
-
-            <form>
-            <mat-form-field class="date-full-width" appearance="fill">
-                <mat-label>Fecha final de repetición:</mat-label>
-                <input matInput [matDatepicker]="picker" [(ngModel)]="dateF" name="fecha_final" (dateChange)="selectedFinalDate()" >
-                <mat-hint>Mes/Dia/Año</mat-hint>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            </form>
           </div>
 
         </mat-card-content>
   
-        <alert-template></alert-template>
-  
-        <mat-card-content>
-          <section class="toggle-section">
-              <p>Con documentación</p>
-              <div dir="rtl">
-                  <mat-slide-toggle class="toggle-margin"
-                      [color]="color"
-                      [checked]="checked"
-                      [disabled]="disabled"
-                      (change)="onToggleDocumentationChanged($event)">
-                  </mat-slide-toggle>
-              </div>
-              &nbsp;&nbsp;<p>Sin documentación</p>
-          </section>
-      </mat-card-content>
-  
-      <mat-card-content *ngIf="showDocumentation">
-        <app-search-documentation (sendingDocumentations)="onDataReceived($event)"></app-search-documentation>
-      </mat-card-content>
+          <!-- <mat-card-content>
+            <section class="toggle-section">
+                <p>Con documentación</p>
+                <div dir="rtl">
+                    <mat-slide-toggle class="toggle-margin"
+                        [color]="color"
+                        [checked]="checked"
+                        [disabled]="disabled"
+                        (change)="onToggleDocumentationChanged($event)">
+                    </mat-slide-toggle>
+                </div>
+                &nbsp;&nbsp;<p>Sin documentación</p>
+            </section>
+        </mat-card-content>
+    
+        <mat-card-content *ngIf="showDocumentation">
+          <app-search-documentation (sendingDocumentations)="onDataReceived($event)"></app-search-documentation>
+        </mat-card-content> -->
 
     <button mat-raised-button color="primary" (click)="saveObligation()">Guardar</button>
          <!-- <button mat-raised-button color="primary" [disabled]="eventForm.invalid" aria-label="SAVE"

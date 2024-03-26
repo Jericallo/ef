@@ -25,10 +25,10 @@
 }
 
 .indicador {
-  min-height: 20px;
-  min-width: 20px;
-  max-height: 20px;
-  max-width: 20px;
+  min-height: 10px;
+  min-width: 10px;
+  max-height: 10px;
+  max-width: 10px;
   border-radius: 20px;
   margin-right: 5px;
 }
@@ -57,10 +57,18 @@
   background-color: green;
 }
 
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 100% !important;
+}
+
 .indicador-container {
   display: flex;
   flex-direction: row;
-  font-size: smaller;
+  font-size: x-small;
+  align-items: center;
 }
 
 @keyframes parpadeo {
@@ -79,4 +87,26 @@
   50% {
       opacity: 0;
   }
+}
+
+.cal-date {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+
+.cal-day-events {
+  position: relative;
+}
+
+.rojos {
+  background-color: rgb(255, 173, 173);
+}
+
+.amarillos {
+  background-color: #ffeeb1;
+}
+
+.verdes {
+  background-color: rgb(195, 255, 195);
 }

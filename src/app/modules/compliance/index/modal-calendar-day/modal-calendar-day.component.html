@@ -1,7 +1,67 @@
-<div *ngFor="let cumplimiento of theCumplimientos" class="container">
-    <div class="indicador"
-    [ngStyle]="{'background-color': isFechaMaxima(cumplimiento, data.date)}"
-    [ngClass]="{'indicador-lento': isIndicadorLento(cumplimiento, data.date), 'indicador-rapido': isIndicadorRapido(cumplimiento, data.date)}"> 
+<div style="background-color: white; width: 100%;">
+<div class="header">
+    <h3>{{data.date | date:'dd/MMM/yy'}}</h3>
+</div>
+
+<div class="container rojos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
+    <div *ngFor="let cumplimiento of theCumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
+        <div class="indicador"
+        [ngStyle]="{'background-color': isFechaMaxima(cumplimiento, data.date)}"
+        [ngClass]="{'indicador-lento': isIndicadorLento(cumplimiento, data.date), 'indicador-rapido': isIndicadorRapido(cumplimiento, data.date)}"
+        *ngIf="isRojorapido(cumplimiento, data.date)"> 
+        </div>
+        <p *ngIf="isRojorapido(cumplimiento, data.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</p>
     </div>
-    <p>{{cumplimiento.nombre}}</p>
+
+    <div *ngFor="let cumplimiento of theCumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
+        <div class="indicador"
+        [ngStyle]="{'background-color': isFechaMaxima(cumplimiento, data.date)}"
+        [ngClass]="{'indicador-lento': isIndicadorLento(cumplimiento, data.date), 'indicador-rapido': isIndicadorRapido(cumplimiento, data.date)}"
+        *ngIf="isRojoLento(cumplimiento, data.date)"> 
+        </div>
+        <p *ngIf="isRojoLento(cumplimiento, data.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</p>
+    </div>
+</div>
+
+<div class="container amarillos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
+    <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+        <div class="indicador"
+        [ngStyle]="{'background-color': isFechaMaxima(cumplimiento, data.date)}"
+        [ngClass]="{'indicador-lento': isIndicadorLento(cumplimiento, data.date), 'indicador-rapido': isIndicadorRapido(cumplimiento, data.date)}"
+        *ngIf="isAmarilloRapido(cumplimiento, data.date)"> 
+        </div>
+        <p *ngIf="isAmarilloRapido(cumplimiento, data.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</p>
+    </div>
+
+    <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+        <div class="indicador"
+        [ngStyle]="{'background-color': isFechaMaxima(cumplimiento, data.date)}"
+        [ngClass]="{'indicador-lento': isIndicadorLento(cumplimiento, data.date), 'indicador-rapido': isIndicadorRapido(cumplimiento, data.date)}"
+        *ngIf="isAmarilloLento(cumplimiento, data.date)"> 
+        </div>
+        <p *ngIf="isAmarilloLento(cumplimiento, data.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</p>
+    </div>
+
+    <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+        <div class="indicador"
+        style="background-color: #ffcc0c;"
+        
+        *ngIf="isAmarilloFijo(cumplimiento, data.date)"> 
+        </div>
+        <p *ngIf="isAmarilloFijo(cumplimiento, data.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</p>
+    </div>
+</div>
+</div>
+
+
+
+<div class="container verdes" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
+    <div *ngFor="let cumplimiento of theCumplimientos" class="container verdes" style="display: flex; flex-direction: row;" >
+        <div class="indicador"
+        [ngStyle]="{'background-color': isFechaMaxima(cumplimiento, data.date)}"
+        [ngClass]="{'indicador-lento': isIndicadorLento(cumplimiento, data.date), 'indicador-rapido': isIndicadorRapido(cumplimiento, data.date)}"
+        *ngIf="isVerde(cumplimiento, data.date)"> 
+        </div>
+        <p *ngIf="isVerde(cumplimiento, data.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</p>
+    </div>
 </div>

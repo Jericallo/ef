@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 export class RegisterClientComponent implements OnInit, AfterViewInit {
   dateRange: number[] = [];
   tableData: any[] = [];
-  displayedColumns: any[] = ['nombre'];
+  displayedColumns: any[] = ['nombre', 'descripcion'];
   currentMonth: Date;
   cumplimientos_faltantes = false
 
@@ -319,6 +319,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   }
 
   startHoverTimer(element: any, column: number) {
+    console.log(element)
     this.hoverTimer = setTimeout(() => {
         this.prueba(element, column);
     }, 2500); // 2500 ms = 2.5 segundos
@@ -369,7 +370,11 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     console.log('Clearing...')
     this.unhoverTimer = setTimeout(() => {
       console.log('Cleared')
-      var sections = document.querySelectorAll('.custom-tooltip');
+      let sections = document.querySelectorAll('.custom-tooltip');
+      for (let i = 0; i < sections.length; i++){
+        sections[i].classList.remove('show');
+      }
+      sections = document.querySelectorAll('.custom-tooltip-column');
       for (let i = 0; i < sections.length; i++){
         sections[i].classList.remove('show');
       }

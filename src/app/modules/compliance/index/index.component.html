@@ -77,30 +77,28 @@
                 
                 >
                 <ng-template #dayViewNormalContent let-day="day" let-locale="locale">
-                    <div class="cal-day-events" [ngClass]="{ 'cal-day-outside-month': day.date.getMonth() !== viewDate.getMonth() }">
+                    <div class="cal-day-events" [ngClass]="{ 'cal-day-outside-month': day.date.getMonth() !== viewDate.getMonth() }"
+                    (mouseenter)="dayHovered(day.date)">
                         <div class="cal-date">{{ day.date | date: 'd' }}</div>
-                        <ng-container >
+                        <ng-container *ngIf="day.date.getMonth() === viewDate.getMonth()">
                         <div *ngIf="verifySpot(1,day.date) >= 1" class="indicador-container">
                             <div class="indicador indicador-rapido rojo"></div><span>{{verifySpot(1,day.date)}} Muy urgente</span>
                         </div>
                         <div *ngIf="verifySpot(2,day.date) >= 1" class="indicador-container">
-                            <div class="indicador indicador-lento rojo"></div><span>{{verifySpot(2,day.date)}} Urgente</span>
+                            <div class="indicador indicador-lento rojo"></div><span>{{verifySpot(2,day.date)}} Venciendo</span>
                         </div>
                         <div *ngIf="verifySpot(3,day.date) >= 1" class="indicador-container">
-                            <div class="indicador indicador-rapido yellow"></div><span>{{verifySpot(3,day.date)}} Normal</span>
+                            <div class="indicador indicador-rapido yellow"></div><span>{{verifySpot(3,day.date)}} Recomendado</span>
                         </div>
                         <div *ngIf="verifySpot(4,day.date) >= 1" class="indicador-container">
                             <div class="indicador indicador-lento yellow"></div><span>{{verifySpot(4,day.date)}} Ideal</span>
                         </div>
 
                         <div *ngIf="verifySpot(5,day.date) >= 1" class="indicador-container">
-                            <div class="indicador yellow"></div><span>{{verifySpot(5,day.date)}} Terminado, se necesita revisar por el supervisor</span>
+                            <div class="indicador yellow"></div><span>{{verifySpot(5,day.date)}} En supervisión</span>
                         </div>
                         <div *ngIf="verifySpot(6,day.date) >= 1" class="indicador-container">
-                            <div class="indicador yellow"></div><span>{{verifySpot(6,day.date)}} Terminado, se está revisando por el supervisor</span>
-                        </div>
-                        <div *ngIf="verifySpot(7,day.date) >= 1" class="indicador-container">
-                            <div class="indicador green"></div><span>{{verifySpot(7,day.date)}} Terminado.</span>
+                            <div class="indicador green"></div><span>{{verifySpot(6,day.date)}} Realizado.</span>
                         </div>
 
                         </ng-container>
@@ -182,4 +180,73 @@
     </mat-card-content>
 </mat-card>
 -->
-  
+<mat-card >
+    <div style="padding: 20px; min-height: 200px;" #scrollElement>
+        <div *ngIf="theCumplimientos.length > 0">
+            <div class="header">
+                <h3>{{exModalData.date | date:'dd/MMM/yy'}}</h3>
+            </div>
+            
+            <div class="container rojos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
+                <div *ngFor="let cumplimiento of theCumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador"
+                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
+                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"> 
+                    </div>
+                    <span *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                </div>
+            
+                <div *ngFor="let cumplimiento of theCumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador"
+                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
+                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"> 
+                    </div>
+                    <span *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                </div>
+            </div>
+            
+            <div class="container amarillos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
+                <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador"
+                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
+                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"> 
+                    </div>
+                    <span *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                </div>
+            
+                <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador"
+                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
+                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"> 
+                    </div>
+                    <span *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                </div>
+            
+                <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador"
+                    style="background-color: #ffcc0c;"
+                    
+                    *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"> 
+                    </div>
+                    <span *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                </div>
+            </div>        
+            
+            <div class="container verdes" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
+                <div *ngFor="let cumplimiento of theCumplimientos" class="container verdes" style="display: flex; flex-direction: row;" >
+                    <div class="indicador"
+                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
+                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    *ngIf="modalIsVerde(cumplimiento, exModalData.date)"> 
+                    </div>
+                    <span *ngIf="modalIsVerde(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</mat-card>

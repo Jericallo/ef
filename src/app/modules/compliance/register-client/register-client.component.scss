@@ -159,6 +159,24 @@ a:hover{
     font-size:small;
 }
 
+.custom-tooltip-column {
+    position: absolute;
+    top: 25px;
+    left: 100%; /* Opcional: para centrarlo horizontalmente */
+    padding: 2px;
+    max-width: 300px;
+    width: max-content;
+    height: auto;
+    background-color: rgba(255, 194, 27, 0.7);
+    //background-color: red;
+    color: white;
+    border-radius: 3px;
+    display: none;
+    z-index: 30000;
+    font-size:small;
+    white-space: wrap;
+
+}
 
 .show {
     display: flex;
@@ -171,3 +189,8 @@ a:hover{
     font-weight: bold;
     margin-left: 10px;
 }
+
+.coso {
+    position: relative;
+}
+

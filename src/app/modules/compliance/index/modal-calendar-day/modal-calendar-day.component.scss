@@ -1,6 +1,8 @@
 .indicador {
-    height: 20px;
-    width: 20px;
+    min-height: 20px;
+    min-width: 20px;
+    max-height: 20px;
+    max-width: 20px;
     border-radius: 20px;
     margin-right: 10px;
 }
@@ -38,4 +40,33 @@
 .container {
     display: flex;
     flex-direction: row;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.rojos {
+    background-color: rgb(255, 173, 173);
+}
+
+.amarillos {
+    background-color: #ffeeb1;
+}
+
+.verdes {
+    background-color: rgb(195, 255, 195);
+}
+
+.header{
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding-top: 10px;
+    background-color: #ffcc0c;
+    margin-bottom: 20px;
+}
+
+mat-dialog-container{
+    width: 100% !important;
 }

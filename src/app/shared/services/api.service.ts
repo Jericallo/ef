@@ -12,7 +12,7 @@ import { VideoResumeInterface } from '../interfaces/video-resume-interface';
 
 import { environment } from 'src/environments/environment';
 import { Paragraph } from '../interfaces/paragraph-interface';
-import { Questionnaire } from '../interfaces/questionnaire-interface';
+import { Questionnaire, QuestionnaireSave } from '../interfaces/questionnaire-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -896,6 +896,20 @@ export class ApiService {
     return this.http.get<Questionnaire[]>(url,{headers:headers});
   }
 
+  public saveQuestionnaire(request: QuestionnaireSave): Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = this.insert;
+    const body = {
+      model: "capacitaciones_historial",
+      data: request
+    }
+
+    const encryptedBody = this.encrypt(body,'private')
+    return this.http.post(url, {text:encryptedBody}, {headers:headers});
+  }
 
 
 
