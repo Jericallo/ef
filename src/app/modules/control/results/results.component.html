@@ -1,0 +1,29 @@
+<div class="mainDiv">
+    <mat-card class="mainCard">
+        <div class="result">
+            <label class="second-label">Tu resultado fue: <span [ngStyle]="{ color: colorText }"> {{message}} </span></label><br><br>
+            <label class="main-label">Obtuviste {{ avg }} de 10 aciertos.</label>&nbsp;&nbsp;<br><br>
+            <label for="" *ngIf="result">La transcripcion del video ya la puedes consultar en: </label> 
+        </div>
+        <div class="buttons-container">
+            <div class="left-button">
+                <button mat-raised-button color="basic" (click)="goToVideo()">Ir a Video</button>
+                <mat-card class="left-txt">
+                    <label class="button-txt">Podras visualizar el video y realizar de nuevo el cuestionario</label>
+                </mat-card>
+            </div>
+            <div class="center-button">
+                <button mat-raised-button color="basic" *ngIf="showQuestBtn" (click)="tryAgain()">Ir a Cuestionario</button>
+                <mat-card class="center-txt" *ngIf="showQuestBtn">
+                    <label class="button-txt">Tendras otra oportunidad de realizar el cuestionario</label>
+                </mat-card>
+            </div>
+            <div class="right-button">
+                <button mat-raised-button color="primary" (click)="exit()">Ir a Capacitaciones</button>
+                <mat-card class="right-txt">
+                    <label class="button-txt">Podras ir a seleccionar una capacitación diferente</label>
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+</div>

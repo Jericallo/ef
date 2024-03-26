@@ -3,6 +3,7 @@ import { CapacitationsComponent } from './capacitations/capacitations.component'
 import { VideosComponent } from "./videos/videos.component";
 import { QuestionarieComponent } from "./questionarie/questionarie.component";
 import { ChatComponent } from "./chat/chat.component";
+import { ResultsComponent } from "./results/results.component";
 
 export const ControlRoutes: Routes = [
     {
@@ -44,6 +45,21 @@ export const ControlRoutes: Routes = [
                     urls:[
                         {title:'Ayuda', url:'/control'},
                         {title:'Ayuda'}
+                    ]
+                }
+            },
+            { path: 'resultado', 
+            component: ResultsComponent, 
+            pathMatch: 'full' },
+
+            {
+                path:'resultado',
+                component:ChatComponent,
+                data: {
+                    title:'resultado',
+                    urls:[
+                        {title:'resultado', url:'/control'},
+                        {title:'resultado'}
                     ]
                 }
             },

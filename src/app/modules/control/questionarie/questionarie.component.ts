@@ -98,9 +98,10 @@ export class QuestionarieComponent implements OnInit {
           duration: 3000,
           verticalPosition: this.verticalPosition
         });
-
+        response = JSON.parse(this.apiService.decrypt(response.message, 'private'))
+        console.log(response)
         const navigationExtras: NavigationExtras = { state: response };
-        this._router.navigate(['resultado'], navigationExtras);
+        this._router.navigate(['control/resultado'], navigationExtras);
       },
       error: err => {
         this.showSpinner = false;

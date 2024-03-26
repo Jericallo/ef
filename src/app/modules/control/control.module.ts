@@ -17,6 +17,7 @@ import { QuestionarieComponent } from './questionarie/questionarie.component';
 import { MainModule } from '../main/main.module';
 import { ChatComponent } from './chat/chat.component';
 import { PdfViewerModalComponent } from './chat/pdf-viewer-modal/pdf-viewer-modal.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { PdfViewerModalComponent } from './chat/pdf-viewer-modal/pdf-viewer-moda
     QuestionarieComponent,
     ChatComponent,
     PdfViewerModalComponent,
+    ResultsComponent,
   ],
   providers: [DatePipe, CapacitationsComponent],
   imports: [
