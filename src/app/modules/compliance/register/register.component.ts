@@ -62,186 +62,92 @@ export class RegisterComponent implements OnInit {
     this.dataSource.sort = this.sort
     }
 
-  getObligations(offset=0, orderby='') {
+  getObligations(offset=0) {
     this.dataSource.data = []
 
-    let params = new HttpParams().set("where", this.sendableDate.getTime())
-    if(orderby !== '') params = params.set('secOrderBy', orderby)
-    //params = params.set('limit',21)
-    //params = params.set('offset',offset)
-    console.log(params)
-    this.apiService.getCumplimientosControl(params).subscribe({
+    let date = new Date(this.sendableDate), y = date.getFullYear(), m = date.getMonth();
+    let firstDay = new Date(y, m, 1);
+    let lastDay = new Date(y, m + 1, 0);
+
+
+    this.apiService.getCumplimientos(firstDay.getTime(), lastDay.getTime()).subscribe({
       next: res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
+        //res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         console.log(res.result)
         this.dataSource.data = []
         let rows = []
-        res.result.forEach((element) => {
+        res.forEach((element) => {
           const row = { 
             content:{
-              id_cumplimiento:element.cumplimientos_obligacion.id_cumplimiento,
+              id_cumplimiento:element.id,
               color:'',
 
               descripcion:element.descripcion,
-              nombre:element.nombre,
+              nombre:element.descripcion,
               fecha_cumplimiento: element.fecha_cumplimiento,
               switch:false ,
 
-              ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
-              IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
-              NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
-              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro,
+              ISR:element.impuesto_isr,
+              IVA:element.impuesto_iva,
+              NOMINA:element.impuesto_nomina,
+              OTRO:element.impuesto_otro,
 
-              si: element.aplica_punto.si,
-              no: element.aplica_punto.no,
-              prioridad: element.cumplimientos_obligacion.prioridad,
+              si: '',
+              no: '',
+              prioridad: element.prioridad,
 
-              fecha_inicio_cumplimiento: element.cumplimientos_obligacion.fecha_inicio_cumplimiento,
-              fecha_inicio_cumplimiento_fin: element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin,
-              fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
-              fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
-              fecha_ideal_fin:element.cumplimientos_obligacion.fecha_ideal_fin,
-              fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
-              fecha_maxima_fin:element.cumplimientos_obligacion.fecha_maxima_fin,
-              fecha_habilitacion: element.cumplimientos_obligacion.fecha_habilitacion,
-              fecha_inicio_ideal: element.cumplimientos_obligacion.fecha_inicio_ideal,
-              fecha_inicio_ideal_fin: element.cumplimientos_obligacion.fecha_inicio_ideal_fin,
+              idel_date_start:element.ideal_date_start,
+              idel_date_end:element.ideal_date_end,
+              recommended_date_start:element.recommended_date_start,
+              recommended_date_end:element.recommended_date_end,
+              close_date_start:element.close_date_start,
+              close_date_end:element.close_date_end,
+              urgent_date_start:element.urgent_date_start,
+              urgent_date_end:element.urgent_date_end,
 
               se_cumplio:'',
-              fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento,
-
-              documentos_faltantes:element.documentos_evidencia.documentacion_faltante,
-              documentos_fecha_ideal:element.documentos_evidencia.fecha_ideal,
-              documentos_fecha_maxima:element.documentos_evidencia.fecha_maxima,
-              documentos_en_tiempo:element.documentos_evidencia.en_tiempo,
-              documentos_documentacion_suficiente:element.documentos_evidencia.documentación_suficiente,
-              registro_general:element.documentos_evidencia.registro_general,
-
-              nivel:element.documentacion_evidencia.prioridad,
-              recordatorios:element.documentacion_evidencia.recordatorios,
-              alertas:element.documentacion_evidencia.alertas_incumplimiento,
-              reporte_via_semaforo:element.documentacion_evidencia.reporte_via_semaforo,
-
-              leyes:element.correlacion.leyes,
-              temario:element.correlacion.temario,
-              busqueda:element.correlacion.busqueda,
-              numeros:element.correlacion.numeros,
-              impuestos:element.correlacion.impuestos,
-              documentacion:element.correlacion.documentacion,
-              
-              caso_practico:element.correlacion.capacitaciones.caso_practico,
-              textos:element.correlacion.capacitaciones.textos,
-              preguntas_frecuentes:element.correlacion.capacitaciones.preguntas_frecuentes,
-              mejores_practicas:element.correlacion.capacitaciones.mejores_practicas,
-              un_minuto:element.correlacion.capacitaciones.min1,
-              cinco_minutos:element.correlacion.capacitaciones.min5,
-              quince_minutos:element.correlacion.capacitaciones.min15,
-              treinta_minutos:element.correlacion.capacitaciones.min30,
-              sesenta_minutos:element.correlacion.capacitaciones.min60,
-
-              dictamen:element.correlacion.dictamen,
-              semaforo:element.correlacion.semaforo,
-              inconsistencias:element.correlacion.inconsistencias,
-              
-              sanciones_generales:element.correlacion.sanciones_generales_importantes,
-              empresa:element.correlacion.sanciones_penales.empresa,
-              persona:element.correlacion.sanciones_penales.persona,
-
-              fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
-              art:element.cumplimientos_obligacion.fundamento_legal.articulo,
-              actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
-
-              por_incumplimiento: element.aporte_semaforo.por_incumplimiento,
-              reporte_en_1_dia: element.aporte_semaforo.reporte_en_1_dia,
-
-              usuario1:element.interaccion_usuarios.responsable,
-              usuario2:element.interaccion_usuarios.segundo,
-              usuario3:element.interaccion_usuarios.supervisor,
-              usuario4:element.interaccion_usuarios.director,
-              usuario5:element.interaccion_usuarios.GB,
-              
-              obligacion:element.cumplimientos_obligacion.id_obligacion,
-              id:element.id_cumplimiento_mensual,
+              fecha_cumplio:'',
             },
             backup:{
-              id_cumplimiento:element.cumplimientos_obligacion.id_cumplimiento,
+              id_cumplimiento:element.id,
               color:'',
 
               descripcion:element.descripcion,
-              nombre:element.nombre,
+              nombre:element.descripcion,
               fecha_cumplimiento: element.fecha_cumplimiento,
               switch:false ,
 
-              ISR:element.cumplimientos_obligacion.impuestos.impuesto_isr,
-              IVA:element.cumplimientos_obligacion.impuestos.impuesto_iva,
-              NOMINA:element.cumplimientos_obligacion.impuestos.impuesto_nomina,
-              OTRO:element.cumplimientos_obligacion.impuestos.impuesto_otro,
+              ISR:element.impuesto_isr,
+              IVA:element.impuesto_iva,
+              NOMINA:element.impuesto_nomina,
+              OTRO:element.impuesto_otro,
 
-              si: element.aplica_punto.si,
-              no: element.aplica_punto.no,
-              prioridad: element.cumplimientos_obligacion.prioridad,
+              si: '',
+              no: '',
+              prioridad: element.prioridad,
 
-              fecha_inicio_cumplimiento: element.cumplimientos_obligacion.fecha_inicio_cumplimiento,
-              fecha_cumplir:element.cumplimientos_obligacion.fecha_se_puede_cumplir,
-              fecha_ideal:element.cumplimientos_obligacion.fecha_ideal,
-              fecha_maxima:element.cumplimientos_obligacion.fecha_maxima,
-              fecha_habilitacion: element.cumplimientos_obligacion.fecha_habilitacion,
-              fecha_inicio_ideal: element.cumplimientos_obligacion.fecha_inicio_ideal,
+              idel_date_start:element.ideal_date_start,
+              idel_date_end:element.ideal_date_end,
+              recommended_date_start:element.recommended_date_start,
+              recommended_date_end:element.recommended_date_end,
+              close_date_start:element.close_date_start,
+              close_date_end:element.close_date_end,
+              urgent_date_start:element.urgent_date_start,
+              urgent_date_end:element.urgent_date_end,
 
               se_cumplio:'',
-              fecha_cumplio:element.cumplimientos_obligacion.fecha_cumplimiento,
-
-              leyes:element.correlacion.leyes,
-              temario:element.correlacion.temario,
-              busqueda:element.correlacion.busqueda,
-              numeros:element.correlacion.numeros,
-              impuestos:element.correlacion.impuestos,
-              documentacion:element.correlacion.documentacion,
-              
-              caso_practico:element.correlacion.capacitaciones.caso_practico,
-              textos:element.correlacion.capacitaciones.textos,
-              preguntas_frecuentes:element.correlacion.capacitaciones.preguntas_frecuentes,
-              mejores_practicas:element.correlacion.capacitaciones.mejores_practicas,
-              un_minuto:element.correlacion.capacitaciones.min1,
-              cinco_minutos:element.correlacion.capacitaciones.min5,
-              quince_minutos:element.correlacion.capacitaciones.min15,
-              treinta_minutos:element.correlacion.capacitaciones.min30,
-              sesenta_minutos:element.correlacion.capacitaciones.min60,
-
-              dictamen:element.correlacion.dictamen,
-              semaforo:element.correlacion.semaforo,
-              inconsistencias:element.correlacion.inconsistencias,
-              
-              sanciones_generales:element.correlacion.sanciones_generales_importantes,
-              empresa:element.correlacion.sanciones_penales.empresa,
-              persona:element.correlacion.sanciones_penales.persona,
-
-              fundamento_legal:element.cumplimientos_obligacion.fundamento_legal,
-              art:element.cumplimientos_obligacion.fundamento_legal.articulo,
-              actualizado:element.cumplimientos_obligacion.fundamento_legal.actualizado_en,
-
-
-
-              por_incumplimiento: element.aporte_semaforo.por_incumplimiento,
-              reporte_en_1_dia: element.aporte_semaforo.reporte_en_1_dia,
-              
-              obligacion:element.cumplimientos_obligacion.id_obligacion,
-              id:element.id_cumplimiento_mensual,
+              fecha_cumplio:'',
             }
           };
 
             const today = Date.now()
-            if(element.cumplimientos_obligacion.completado !== true){
-              row.content.se_cumplio = null
-              row.backup.se_cumplio = null
-              if(today >= row.content.fecha_maxima) {
-                row.content.se_cumplio = 'No se cumplió'
-                row.backup.se_cumplio = 'No se cumplió'
-              }
-            } else {
-              row.content.se_cumplio = 'Se cumplió'
-              row.backup.se_cumplio = 'Se cumplió'
-            }
+            // if(row.content.completado !== true){
+            //   row.content.se_cumplio = null
+            //   row.backup.se_cumplio = null
+            // } else {
+            //   row.content.se_cumplio = 'Se cumplió'
+            //   row.backup.se_cumplio = 'Se cumplió'
+            // }
             
             /*
             row.content = new Date(row.content).toDateString(); row.backup = row.content
@@ -251,30 +157,21 @@ export class RegisterComponent implements OnInit {
             if(row.content.fecha_cumplio != null)row.content.fecha_cumplio = new Date(row.content.fecha_cumplio).toDateString(); row.backup.fecha_cumplio = row.content.fecha_cumplio
             */
 
-            if(row.content.fecha_ideal === null){
-              row.content.fecha_ideal = today
-              row.backup.fecha_ideal = today
-            }
-
-            if(today > element.cumplimientos_obligacion.fecha_maxima){
-              if(element.cumplimientos_obligacion.completado !== true){
-                row.content.color = '#f23f3f' // rojo
-              } else {
-                row.content.color = '#31e32b' // verde
-              }
-            } else {
-              if(row.content.se_cumplio === 'Se cumplió'){
-                row.content.color = '#31e32b' // verde
-              } else {
-                row.content.color = '#e0e32b' // amarillo
-              }
-            }
+            // if(today > element.urgent_date_start){
+            //   if(row.content.se_cumplio !== true){
+            //     row.content.color = '#f23f3f' // rojo
+            //   } else {
+            //     row.content.color = '#31e32b' // verde
+            //   }
+            // } else {
+            //   if(row.content.se_cumplio === 'Se cumplió'){
+            //     row.content.color = '#31e32b' // verde
+            //   } else {
+            //     row.content.color = '#e0e32b' // amarillo
+            //   }
+            // }
             row.backup = row.content
 
-            row.content.fundamento_legal.forEach(element => {
-              element.fecha = new Date(element.fecha).toDateString();
-            });
-            row.backup.fundamento_legal = row.content.fundamento_legal
 
             if(row.content.prioridad === 1){
               row.content.prioridad = 'Alta';
@@ -283,7 +180,7 @@ export class RegisterComponent implements OnInit {
               row.content.prioridad = 'Baja';
               row.backup.prioridad = row.content.prioridad
             } else {
-              row.content.prioridad = 'Prioridad'
+              row.content.prioridad = 'Media'
               row.backup.prioridad = row.content.prioridad
             }
             console.log('ROW', row)
@@ -925,17 +822,20 @@ export class RegisterComponent implements OnInit {
 
   onDateSelected(event: any, tipo:number, id:number) {
     const time = event.value.getTime()
-    let body = {obligation:null, cumplimientoMensual:null};
+    let body = {};
 
-    if(tipo === 1) body.obligation = {fecha_inicio_ideal:time}
-    if(tipo === 2) body.obligation = {fecha_inicio_ideal_fin:time}
-    if(tipo === 3) body.obligation = {fecha_inicio:(time/60000)}
-    if(tipo === 4) body.obligation = {fecha_inicio_fin:time}
-    if(tipo === 5) body.obligation = {fecha_ideal:time}
-    if(tipo === 6) body.obligation = {fecha_ideal_fin:time}
-    if(tipo === 7) body.obligation = {fecha_maxima:time}
-    if(tipo === 8) body.obligation = {periodo_fecha_maxima:time}
-    body.obligation.id = id
+    if(tipo === 1) body = {ideal_date_start:time}
+    if(tipo === 2) body = {ideal_date_end:time}
+    if(tipo === 3) body = {recommended_date_start:(time)}
+    if(tipo === 4) body = {recommended_date_end:time}
+    if(tipo === 5) body = {close_date_start:time}
+    if(tipo === 6) body = {close_date_end:time}
+    if(tipo === 7) body = {urgent_date_start:time}
+    if(tipo === 8) body = {urgent_date_end:time}
+
+    body['id'] = id
+
+    console.log(JSON.stringify(body))
 
     this.apiService.editDates(body).subscribe({
       next: res => {

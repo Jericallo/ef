@@ -24,6 +24,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   unhoverTimer:any;
   showTooltip = false
   showChatButton = false
+  sendableDate: Date = new Date();
 
   openChat = false;
 
@@ -87,7 +88,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
       next: res => {
         res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
         res.result.forEach((element)=>{
-          if(element.cumplimientos_obligacion.completado === false) return true
+          if(element.completado === false) return true
           console.log('a')
         })
       }
@@ -121,6 +122,8 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   }
 
   navigateMonth(offset: number): void {
+    if( offset > 0 ) this.sendableDate.setMonth(this.sendableDate.getMonth()+1)
+    else this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
     this.currentMonth = addMonths(this.currentMonth, offset);
     this.updateDateRange();
     this.getCompliance();
@@ -132,11 +135,14 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   }
 
   getCompliance(): void {
-    this.apiService.getCumplimientosControl().subscribe({
+
+    let date = new Date(this.sendableDate), y = date.getFullYear(), m = date.getMonth();
+    let firstDay = new Date(y, m, 1);
+    let lastDay = new Date(y, m + 1, 0);
+
+    this.apiService.getCumplimientos(firstDay.getTime(), lastDay.getTime()).subscribe({
       next: res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        console.log(res.result)
-        this.tableData = res.result;
+        this.tableData = res;
       }
     });
   }
@@ -153,22 +159,17 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
       return 'transparent';
     }
     let fechaColumna = column;
-    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima_fin;
-    let fechaCumplimiento = element.cumplimientos_obligacion.fecha_cumplimiento
-    let fechaMinima = element.cumplimientos_obligacion.fecha_inicio_ideal
-    let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
-    let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
-    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
-    const fechaHoy = Date.now()
+    let fechaMaxima = element.urgent_date_end;
+    let fechaCumplimiento = element.fecha_completado
+    let fechaMinima = element.ideal_date_start
+    let fechaIdeal = element.close_date_start
 
-
-
-    if((element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2) && fechaCumplimiento !== null) {
+    if((element.completado === 1 || element.completado === 2) && fechaCumplimiento !== null) {
       if(fechaCumplimiento.toString() === fechaColumna.toString()) return '#ffcc0c'
       if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
     } 
 
-    if(element.cumplimientos_obligacion.completado === 3 && fechaCumplimiento !== null) {
+    if(element.completado === 3 && fechaCumplimiento !== null) {
       if(fechaCumplimiento.toString() === fechaColumna.toString()) return 'green'
       if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
     } 
@@ -205,8 +206,8 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     const user = this.apiService.getWholeUser()
 
     if(user.nombre_perfil !== 'Supervisor'){
-      if(cumplimiento.cumplimientos_obligacion.completado !== 0) return
-      if(day > cumplimiento.cumplimientos_obligacion.fecha_maxima_fin || day < cumplimiento.cumplimientos_obligacion.fecha_inicio_ideal) return
+      if(cumplimiento.completado !== 0) return
+      if(day > cumplimiento.urgent_date_end || day < cumplimiento.ideal_date_start) return
     }
 
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
@@ -222,24 +223,19 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
   isIndicadorLento(element: any, column: any) {
     if (column === 0) return false;
-    if(element.cumplimientos_obligacion.completado !== 0) return false 
+    if(element.completado !== 0) return false 
 
     let fechaColumna = column;
-    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
-    let fechaInicioIdeal = element.cumplimientos_obligacion.fecha_inicio_ideal;
-    let fechaInicioIdealFin = element.cumplimientos_obligacion.fecha_inicio_ideal_fin;
-    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal
-    let fechaIdealFin = element.cumplimientos_obligacion.fecha_ideal_fin
+    let fechaMaxima = element.urgent_date_start;
+    let fechaInicioIdeal = element.ideal_date_start;
+    let fechaIdealFin = element.close_date_end
 
     const DateToday = new Date();
     DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
     DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
-
-    const fechaHoy = DateToday.getTime();
     
     if (
         fechaColumna.toString() <= fechaMaxima.toString() &&
-        //fechaColumna.toString() >= fechaHoy.toString() &&
         (fechaColumna >= fechaInicioIdeal && fechaColumna <= fechaIdealFin)
     ) {
         return true;
@@ -250,21 +246,19 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
   isIndicadorRapido(element: any, column: number){
     if(column === 0) return false
-    if(element.cumplimientos_obligacion.completado !== 0) return false 
+    if(element.completado !== 0) return false 
 
     let fechaColumna = column;
-    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
-    let fechaMaximaFin = element.cumplimientos_obligacion.fecha_maxima_fin
-    let fechaInicioCumplimiento = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
-    let fechaInicioCumplimientoFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+    let fechaMaxima = element.urgent_date_start;
+    let fechaMaximaFin = element.urgent_date_end
+    let fechaInicioCumplimiento = element.recommended_date_start;
+    let fechaInicioCumplimientoFin = element.recommended_date_end;
 
     const DateToday = new Date();
     DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
     DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
 
-    const fechaHoy = DateToday.getTime();
-
-    if(fechaColumna.toString() === fechaMaxima.toString() && element.cumplimientos_obligacion.completado === false) return true
+    if(fechaColumna.toString() === fechaMaxima.toString() && element.completado === false) return true
 
     if(fechaColumna.toString() <= fechaMaximaFin.toString() ){
      if(fechaColumna >= fechaInicioCumplimiento && fechaColumna <= fechaInicioCumplimientoFin) return true
@@ -277,40 +271,40 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     this.showChatButton = false
     let fechaColumna = column;
     
-    let fechaInicioCumplimientoIdeal = element.cumplimientos_obligacion.fecha_inicio_ideal;
-    let fechaInicioCumplimientoIdealFin = element.cumplimientos_obligacion.fecha_inicio_ideal_fin;
+    let fechaInicioCumplimientoIdeal = element.ideal_date_start;
+    let fechaInicioCumplimientoIdealFin = element.ideal_date_end;
 
-    let fechaInicio = element.cumplimientos_obligacion.fecha_inicio_cumplimiento;
-    let fechaInicioFin = element.cumplimientos_obligacion.fecha_inicio_cumplimiento_fin;
+    let fechaInicio = element.recommended_date_start;
+    let fechaInicioFin = element.recommended_date_end;
 
-    let fechaIdeal = element.cumplimientos_obligacion.fecha_ideal;
-    let fechaIdealFin = element.cumplimientos_obligacion.fecha_ideal_fin;
+    let fechaIdeal = element.close_date_start;
+    let fechaIdealFin = element.close_date_end;
 
-    let fechaMaxima = element.cumplimientos_obligacion.fecha_maxima;
-    let fechaMaximaFin = element.cumplimientos_obligacion.fecha_maxima_fin;
+    let fechaMaxima = element.urgent_date_start;
+    let fechaMaximaFin = element.urgent_date_end;
     
     if(fechaColumna < fechaInicioCumplimientoIdeal) return 'Nada que revisar'
 
-    if(element.cumplimientos_obligacion.fecha_cumplimiento !== null){
-      let fecha_completado = element.cumplimientos_obligacion.fecha_cumplimiento
+    if(element.fecha_completado !== null){
+      let fecha_completado = element.fecha_completado
 
-      if(fechaColumna > fecha_completado && element.cumplimientos_obligacion.completado === 3) return 'Cumplimiento realizado.'
+      if(fechaColumna > fecha_completado && element.completado === 3) return 'Cumplimiento realizado.'
       
 
-      if(element.cumplimientos_obligacion.completado === 3)return 'Cumplimiento totalmente realizado. El supervisor ya dio el visto bueno a la evidencia del cumplimiento.'
-      if(element.cumplimientos_obligacion.completado === 2 || element.cumplimientos_obligacion.completado === 1){
+      if(element.completado === 3)return 'Cumplimiento totalmente realizado. El supervisor ya dio el visto bueno a la evidencia del cumplimiento.'
+      if(element.completado === 2 || element.completado === 1){
         if(parseInt(fecha_completado) + 86400000 < Date.now()){ 
           this.showChatButton = true
           return 'El usuario indico que ya realizo el cumplimiento. El supervisor aún no contesta, favor de contactarlo de inmediato.'; 
         } 
         else return 'El usuario indico que ya realizo el cumplimiento. Pendiente que el supervisor reciba y de su visto bueno a la evidencia del cumplimiento.'
       }
-      if(fechaColumna > fecha_completado && (element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2))return 'Cumplimiento aun no realizado'
+      if(fechaColumna > fecha_completado && (element.completado === 1 || element.completado === 2))return 'Cumplimiento aun no realizado'
       
     }
 
 
-    if(fechaColumna > fechaMaximaFin && element.cumplimientos_obligacion.completado === 0)return 'Cumplimiento aun no realizado'
+    if(fechaColumna > fechaMaximaFin && element.completado === 0)return 'Cumplimiento aun no realizado'
     
     if(fechaColumna >= fechaInicioCumplimientoIdeal && fechaColumna < fechaInicioCumplimientoIdealFin) return 'Periodo ideal para iniciar el cumplimiento'
     if(fechaColumna >= fechaInicio && fechaColumna < fechaInicioFin) return 'Periodo ideal para terminar el cumplimiento'
@@ -352,7 +346,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     ) {
         this.openCumplimientoDialog(element,column)
     } else {
-      const id = element.cumplimientos_obligacion.id_obligacion
+      const id = element.id
       var sections = document.querySelectorAll('.custom-tooltip');
       for (let i = 0; i < sections.length; i++){
         sections[i].classList.remove('show');
