@@ -84,7 +84,7 @@
           <div class="celdas internas" style="flex: 1;">{{row.content.nombre}}</div>  
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
-          <div class="celdas internas" style="flex: 1;" contenteditable (input)="onFieldEdit($event)">{{row.content.descripcion}}</div>
+          <div class="celdas internas" style="flex: 1; white-space: wrap;" contenteditable (input)="onFieldEdit($event)">{{row.content.descripcion}}</div>
 
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
