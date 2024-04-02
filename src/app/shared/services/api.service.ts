@@ -313,30 +313,6 @@ export class ApiService {
   }
   */
 
-  public postObligations( data: any): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/insert';
-    const encryptedData = this.encrypt(data, "1");
-    if(encryptedData == "") {
-      //console.log("PP", this.privateKey)
-      this.encrypt(data,"private")
-    }
-    
-    let body = ({
-      text:encryptedData
-    });
-    //console.log("body",body);
-    const headers = new HttpHeaders({
-      'Content-type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
-    });
-    return this.http.post(url, body, { headers: headers }).pipe(
-      catchError((error) => {
-        console.error(this.decrypt(error.error.message,'private'));
-        return throwError('An error occurred while sending the post request.');
-      })
-    );
-  }
-
   public getPeriods():Observable<any>{
     const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones_periodos'
     let headers = new HttpHeaders({
@@ -645,15 +621,6 @@ export class ApiService {
 
   public returnToken(){
     return this.getToken()
-  }
-
-  public getCumplimientos(params?:HttpParams):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_mensual';
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
-    });
-    return this.http.get(url ,{params:params,headers:headers});
   }
 
   public getCumplimientosControl(params?:HttpParams):Observable<any>{
@@ -973,12 +940,22 @@ export class ApiService {
 
   //ENDPOINTS PARA CUMPLIMIENTO CONTROL
 
+  public getCumplimientos(start:number, end:number):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/task/dates?start=' + start + '&end=' + end
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
   public editDates(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/cumplimiento_control'
+    body = JSON.stringify(body)
+    const url = 'https://api.escudofiscal.alphadev.io/v2/task'
     return this.http.put(url, body,{headers:headers});  
   }
 
@@ -1047,5 +1024,16 @@ export class ApiService {
     });
     const url = 'https://api.escudofiscal.alphadev.io/v2/empresa/delete'
     return this.http.put(url, body,{headers:headers});  
+  }
+
+  //ENDPOINTS PARA LAS OBLIGACIONES
+
+  public postObligations( data: any): Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation';
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, data, { headers: headers })
   }
 }

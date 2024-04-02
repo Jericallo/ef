@@ -60,6 +60,17 @@
               </mat-form-field>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               </form>
+
+            <form>
+              <mat-form-field class="date-full-width" appearance="fill">
+                <mat-label>Hora de inicio</mat-label>
+                <mat-select [(ngModel)]="selectedStartHour">
+                  <mat-option *ngFor="let hour of hours" [value]="hour.milliseconds">
+                    {{hour.hour}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </form>
             
             <form>
             <mat-form-field class="date-full-width" appearance="fill">
@@ -71,14 +82,23 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
             </form>
 
-
-
-
-
-
-            <form style="margin-bottom: 15px;">
-              <mat-checkbox [(ngModel)]="showFinal" name="checkbox">Mostrar opciones de repetición</mat-checkbox>
+            <form>
+              <mat-form-field class="date-full-width" appearance="fill">
+                <mat-label>Hora de finalización</mat-label>
+                <mat-select [(ngModel)]="selectedEndHour">
+                  <mat-option *ngFor="let hour of hours" [value]="hour.milliseconds">
+                    {{hour.hour}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </form>
+
+
+
+
+            <div style="margin-bottom: 15px; width: 100%;">
+              <mat-checkbox [(ngModel)]="showFinal" name="checkbox">Mostrar opciones de repetición</mat-checkbox>
+            </div>
   
             <div class="form-container" *ngIf="showFinal">
   
@@ -113,7 +133,7 @@
               <form></form>
             </div>
 
-
+            <div></div>
 
             <form >
               <h5>Tipo de impuesto asociado</h5>

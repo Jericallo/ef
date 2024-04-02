@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     DemoMaterialModule,
-    FormsModule
+    FormsModule,
   ],
   exports: [
     AccordionAnchorDirective,

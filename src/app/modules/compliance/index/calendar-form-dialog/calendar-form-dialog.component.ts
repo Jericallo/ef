@@ -224,6 +224,9 @@ export class CalendarFormDialogComponent implements OnInit {
   htmlContent = "";
   quantity = 1;
 
+  selectedStartHour:number = 0
+  selectedEndHour:number = 0
+
   showFinal = false;
   showMain = true;
   showSpinner = false;
@@ -256,6 +259,33 @@ export class CalendarFormDialogComponent implements OnInit {
   otr = false
   
   sentDocumentations = null
+
+  hours = [
+    {hour:'00:00', milliseconds:0},
+    {hour:'01:00', milliseconds:3600000},
+    {hour:'02:00', milliseconds:7200000},
+    {hour:'03:00', milliseconds:10800000},
+    {hour:'04:00', milliseconds:14400000},
+    {hour:'05:00', milliseconds:18000000},
+    {hour:'06:00', milliseconds:21600000},
+    {hour:'07:00', milliseconds:25200000},
+    {hour:'08:00', milliseconds:28800000},
+    {hour:'09:00', milliseconds:32400000},
+    {hour:'10:00', milliseconds:36000000},
+    {hour:'11:00', milliseconds:39600000},
+    {hour:'12:00', milliseconds:43200000},
+    {hour:'13:00', milliseconds:46800000},
+    {hour:'14:00', milliseconds:50400000},
+    {hour:'15:00', milliseconds:54000000},
+    {hour:'16:00', milliseconds:57600000},
+    {hour:'17:00', milliseconds:61200000},
+    {hour:'18:00', milliseconds:64800000},
+    {hour:'19:00', milliseconds:68400000},
+    {hour:'20:00', milliseconds:72000000},
+    {hour:'21:00', milliseconds:75600000},
+    {hour:'22:00', milliseconds:79200000},
+    {hour:'23:00', milliseconds:82800000},
+  ]
 
   constructor(
     public dialogRef: MatDialogRef<CalendarFormDialogComponent>, private http: HttpClient, private apiService:ApiService, 
@@ -398,11 +428,6 @@ export class CalendarFormDialogComponent implements OnInit {
   }
 
   saveObligation() {
-    if(chicken1) { alerts.push(sendAlert1) }
-    if(chicken2) { alerts.push(sendAlert2) }
-    if(chicken3) { alerts.push(sendAlert3) }
-    var a = new Date(this.sendingObligation.fecha_cumplimiento * 1000);
-    var dayOfMonth = a.getDate()
     let isr = 0; let iva = 0; let nom = 0; let otr = 0;
     if(this.isr) isr = 1
     if(this.iva) iva = 1
@@ -411,46 +436,55 @@ export class CalendarFormDialogComponent implements OnInit {
 
     console.log(this.showFinal)
     console.log(this.isr)
-    
-    const body = {model:"obligaciones", data: {
-      fecha_cumplimiento: this.sendingObligation.fecha_final,
-      id_cliente: 2,
-      indicador_riesgo: this.sendingObligation.indicador_riesgo,
+
+    const difference = this.sendingObligation.fecha_cumplimiento - this.sendingObligation.fecha_cumplimiento_ideal;
+    const diff = Math.floor(difference / 4);
+    const ideal_date_end = this.sendingObligation.fecha_cumplimiento_ideal + diff;
+    const recommended_date_start = this.sendingObligation.fecha_cumplimiento_ideal + diff;
+    const recommended_date_end = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff;
+    const close_date_start = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff;
+    const close_date_end = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff + diff;
+    const urgent_date_start = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff + diff;    
+
+    const body = {
+      nombre:this.obligations,
+      descripcion:this.description,
+      completado:0,
+      texto_documentos:this.obligations,
       prioridad: this.sendingObligation.prioridad,
-      nombre: this.obligations,
-      descripcion: this.description,
-      id_tipo: this.sendingObligation.id_tipo,
-      periodo: period * this.quantity,
-      con_document: 0,
-      documentaciones:this.sentDocumentations,
+      impuesto_isr: isr,
+      impuesto_iva: iva,
+      impuesto_nomina: nom,
+      impuesto_otro:otr,
+      id_tipo:1,
       id_usuario: 2,
-      alertas: alerts,
-      dia_del_mes:dayOfMonth,
-      fecha_inicio:this.sendingObligation.fecha_cumplimiento,
-      //obligacion:{
-        impuesto_isr:isr,
-        impuesto_otro:otr,
-        impuesto_nomina:nom,
-        impuesto_iva: iva,
-      //}
-      tipo_cumplimiento: 1,
-      fecha_temporal:this.sendingObligation.fecha_cumplimiento
-    }};
-    console.log(body)
+      start_date:this.sendingObligation.fecha_cumplimiento_ideal + this.selectedStartHour,
+      end_date:this.sendingObligation.fecha_cumplimiento + this.selectedEndHour,
+        //ideal_date_start: this.sendingObligation.fecha_cumplimiento_ideal,
+        // ideal_date_end: ideal_date_end,
+        // recommended_date_start: recommended_date_start,
+        // recommended_date_end: recommended_date_end,
+        // close_date_start: close_date_start,
+        // close_date_end: close_date_end,
+        // urgent_date_start: urgent_date_start,
+        //urgent_date_end: this.sendingObligation.fecha_cumplimiento,
+      repetition_type: 'weeks',
+      repetition_value: this.quantity,
+      set_day_to_stop: this.sendingObligation.fecha_final
+    };
+    console.log('BODY',body)
     this.apiService.postObligations(body).subscribe({
       next: response => {
-        const respuesta = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        if(respuesta.status === 'OK'){
+        console.log(response)
+        if('new_obligation' in response){
           alert('Obligación agregada correctamente.')
         } else {
           alert('Ocurrió un error al agregar la obligación, intente de nuevo más tarde.')
         }
-        alerts = []
       },
       error: err => {
         alert('Ocurrió un error al agregar la obligación, intente de nuevo más tarde.')
         console.log(err);
-        alerts = []
       }
     });
     //this.resetFields();

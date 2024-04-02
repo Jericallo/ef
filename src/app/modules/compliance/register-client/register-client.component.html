@@ -31,9 +31,9 @@
             #currentDayCell [ngStyle]="{'background-color': isColumn(column, element)}">
 
                 <ng-container *ngIf="column === 'nombre'; else dateCell" class="coso">
-                    <span (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)">{{ element[column] }}</span>
-                    <div class="custom-tooltip-column" [id]="'tooltip-'+element.cumplimientos_obligacion.id_obligacion+'-'+column" >
-                        {{element.descripcion}} ayuda 
+                    <span (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)">{{ element.descripcion }}</span>
+                    <div class="custom-tooltip-column" [id]="'tooltip-'+element.id+'-'+column" >
+                        {{element.descripcion}} 
                     </div>
                 </ng-container>
                 
@@ -42,13 +42,13 @@
                 </ng-container>
                 <ng-template #dateCell>
                     <div style="position: relative;"> <!-- Agregar style="position: relative;" al div padre -->
-                        {{ element[column]?.fecha_maxima | date:'dd MMMM' }}
+                        {{ element[column]?.urgent_date_start | date:'dd MMMM' }}
                         <div class="indicador"
                              [ngStyle]="{'background-color': isFechaMaxima(element, column)}"
                              [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
                              (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)">
                         </div>
-                        <div class="custom-tooltip" [id]="'tooltip-'+element.cumplimientos_obligacion.id_obligacion+'-'+column" >
+                        <div class="custom-tooltip" [id]="'tooltip-'+element.id+'-'+column" >
                             {{messageTooltip(element, column)}} 
                             <button *ngIf="showChatButton" class="chat-button" (click)="openChatDirective()">Ir al chat</button>
                         </div>

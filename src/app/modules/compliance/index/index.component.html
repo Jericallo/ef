@@ -1,9 +1,9 @@
 <app-notification></app-notification>
 <app-user-icon></app-user-icon>
-
-<mat-card>
-    <mat-card-content>
-        <div class="d-flex align-items-center">
+<div style="width: 100%; height: 1px; background-color: transparent;" #scrollCalendar></div>
+<mat-card >
+    <mat-card-content >
+        <div class="d-flex align-items-center" >
             <h3 class="m-t-0">Calendario de obligaciones {{mes + ' ' + anio}}</h3>
             <div class="ml-auto">
                 <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c;" (click)="addEvent()">Agregar Obligación</button>
@@ -13,7 +13,7 @@
 </mat-card> 
   
 <mat-card>
-    <mat-card-content>
+    <mat-card-content (mouseenter)="showButton(2)">
       <mat-toolbar class="no-shadow" style="background-color:#ffcc0c;">
         <mat-toolbar-row>
             <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" style="margin-right: 50px;" (click)="monthPrevious()">
@@ -34,7 +34,7 @@
             <!-- Event View -->
             <!-- ============================================================== -->
             
-            <div fxShow="false" fxShow.gt-xs>
+            <div fxShow="false" fxShow.gt-xs >
                 <button mat-button (click)="view = 'month'" [class.active]="view === 'month'">Mes</button>
                 <button mat-button (click)="view = 'week'" [class.active]="view === 'week'">Semana</button>
                 <button mat-button (click)="view = 'day'" [class.active]="view === 'day'">Dia</button>
@@ -68,7 +68,7 @@
         <!-- ============================================================== -->
         <!-- Event Calendar -->
         <!-- ============================================================== -->
-        <div [ngSwitch]="view" *ngIf="events && events.length > 0 && cumplimientos && cumplimientos.length > 1">
+        <div [ngSwitch]="view">
             <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [locale]="locale"
                 [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen"
                 (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('', $event.event)"
@@ -77,8 +77,7 @@
                 
                 >
                 <ng-template #dayViewNormalContent let-day="day" let-locale="locale">
-                    <div class="cal-day-events" [ngClass]="{ 'cal-day-outside-month': day.date.getMonth() !== viewDate.getMonth() }"
-                    (mouseenter)="dayHovered(day.date)">
+                    <div class="cal-day-events" [ngClass]="{ 'cal-day-outside-month': day.date.getMonth() !== viewDate.getMonth() }">
                         <div class="cal-date">{{ day.date | date: 'd' }}</div>
                         <ng-container *ngIf="day.date.getMonth() === viewDate.getMonth()">
                         <div *ngIf="verifySpot(1,day.date) >= 1" class="indicador-container">
@@ -181,72 +180,75 @@
 </mat-card>
 -->
 <mat-card >
-    <div style="padding: 20px; min-height: 200px;" #scrollElement>
-        <div *ngIf="theCumplimientos.length > 0">
+    <div style="padding: 20px; min-height: 200px;" #scrollElement (mouseenter)="showButton(1)">
+        <div *ngIf="exModalData !== null">
             <div class="header">
                 <h3>{{exModalData.date | date:'dd/MMM/yy'}}</h3>
             </div>
             
             <div class="container rojos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
-                <div *ngFor="let cumplimiento of theCumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
-                    <div class="indicador"
+                <div *ngFor="let cumplimiento of cumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador" style="margin-top: 7px;"
                     [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
                 </div>
             
-                <div *ngFor="let cumplimiento of theCumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
-                    <div class="indicador"
+                <div *ngFor="let cumplimiento of cumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador" style="margin-top: 7px;"
                     [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
                 </div>
             </div>
             
             <div class="container amarillos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
-                <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
-                    <div class="indicador"
+                <div *ngFor="let cumplimiento of cumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador" style="margin-top: 7px;"
                     [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
                 </div>
             
-                <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
-                    <div class="indicador"
+                <div *ngFor="let cumplimiento of cumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador" style="margin-top: 7px;"
                     [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
                 </div>
             
-                <div *ngFor="let cumplimiento of theCumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
+                <div *ngFor="let cumplimiento of cumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
                     <div class="indicador"
-                    style="background-color: #ffcc0c;"
+                    style="background-color: #ffcc0c; margin-top: 7px;"
                     
                     *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
                 </div>
             </div>        
             
             <div class="container verdes" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
-                <div *ngFor="let cumplimiento of theCumplimientos" class="container verdes" style="display: flex; flex-direction: row;" >
-                    <div class="indicador"
+                <div *ngFor="let cumplimiento of cumplimientos" class="container verdes" style="display: flex; flex-direction: row;" >
+                    <div class="indicador" style="margin-top: 7px;"
                     [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsVerde(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsVerde(cumplimiento, exModalData.date)"><strong>{{cumplimiento.nombre}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsVerde(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
                 </div>
             </div>
         </div>
         
     </div>
 </mat-card>
+
+
+<div (click)="scrollToTop()" class="floating-button" *ngIf="isTopOfPage"><mat-icon style="font-size: x-large;">keyboard_arrow_up</mat-icon></div>

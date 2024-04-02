@@ -52,16 +52,13 @@ export class HorizontalAppSidebarComponent implements OnDestroy, OnInit {
   funcion(object:any){
     if(this.a !== null ) {
       let arreglo = Array.prototype.slice.call(this.a)
-      console.log(arreglo)
       arreglo[0].style.overflow = 'hidden'
       if(this.intervalo !== null){
         clearInterval(this.intervalo)
       }
     }
     this.a = document.getElementsByClassName('juice-item-'+object)//.addEventListener('mouseover',(event) => {console.log('hola')})
-    console.log(this.a)
     let arreglo = Array.prototype.slice.call(this.a)
-    console.log(arreglo)
     arreglo[0].style.overflow = 'visible'
     arreglo[0].style.left = '-90px'
     arreglo[0].style.marginTop = '6px'
@@ -82,7 +79,6 @@ export class HorizontalAppSidebarComponent implements OnDestroy, OnInit {
 
   toggleSubItemVisibility(clase:any){
     this.subItemVisible = !this.subItemVisible
-    console.log(clase)
   }
   
 }

@@ -26,19 +26,19 @@ export class DetailCumplimientoComponent implements OnInit {
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
   ngOnInit(): void {
-    if((this.data.cumplimiento.cumplimientos_obligacion.fecha_inicio_ideal > this.data.fecha || 
-      this.data.cumplimiento.cumplimientos_obligacion.fecha_maxima_fin < this.data.fecha) || 
-      (this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento !== null && 
-        this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento < this.data.fecha)) this.blanco = false
+    if((this.data.cumplimiento.ideal_date_start > this.data.fecha || 
+      this.data.cumplimiento.urgent_date_end < this.data.fecha) || 
+      (this.data.cumplimiento.fecha_completado !== null && 
+        this.data.cumplimiento.fecha_completado < this.data.fecha)) this.blanco = false
 
-    if((this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento !== null && 
-      this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento < this.data.fecha && 
-      this.data.cumplimiento.cumplimientos_obligacion.completado !== 3) ||
-      this.data.cumplimiento.cumplimientos_obligacion.fecha_maxima_fin < this.data.fecha) this.mensaje_blanco = "Cumplimieto aún no realizado"
+    if((this.data.cumplimiento.fecha_completado !== null && 
+      this.data.cumplimiento.fecha_completado < this.data.fecha && 
+      this.data.cumplimiento.completado !== 3) ||
+      this.data.cumplimiento.urgent_date_end < this.data.fecha) this.mensaje_blanco = "Cumplimieto aún no realizado"
 
-    if( this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento !== null ){ //Si ya fue completado el cumplimiento
-      if(this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento <= this.data.fecha && this.data.cumplimiento.cumplimientos_obligacion.completado === 1) {
-        if(parseInt(this.data.fecha) >= parseInt(this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento) + 86400000 ) this.mensaje_blanco = "Cumplimiento pendiente de revisión retrasado 24 horas. Favor de contactar al supervisor"
+    if( this.data.cumplimiento.fecha_completado !== null ){ //Si ya fue completado el cumplimiento
+      if(this.data.cumplimiento.fecha_completado <= this.data.fecha && this.data.cumplimiento.completado === 1) {
+        if(parseInt(this.data.fecha) >= parseInt(this.data.cumplimiento.fecha_completado) + 86400000 ) this.mensaje_blanco = "Cumplimiento pendiente de revisión retrasado 24 horas. Favor de contactar al supervisor"
         else this.mensaje_blanco = "Cumplimiento pendiente de revisión";
       }
     }
@@ -47,18 +47,18 @@ export class DetailCumplimientoComponent implements OnInit {
 
     const user = this.apiService.getWholeUser()
     let body = {}
-    if(user.nombre_perfil === "Administrador" && (this.data.cumplimiento.cumplimientos_obligacion.completado === 1 || this.data.cumplimiento.cumplimientos_obligacion.completado === 2)) {
+    if(user.nombre_perfil === "Administrador" && (this.data.cumplimiento.completado === 1 || this.data.cumplimiento.completado === 2)) {
       this.disabled = true;
       this.texto = "Esperando confirmación del supervisor"
-    } else if (user.nombre_perfil === "Supervisor" && this.data.cumplimiento.cumplimientos_obligacion.completado === 1){
+    } else if (user.nombre_perfil === "Supervisor" && this.data.cumplimiento.completado === 1){
       this.disabled = false;
       this.texto = "Comenzar a revisar como cumplido"
-    } else if (user.nombre_perfil === "Supervisor" && this.data.cumplimiento.cumplimientos_obligacion.completado === 2){
+    } else if (user.nombre_perfil === "Supervisor" && this.data.cumplimiento.completado === 2){
       this.disabled = false;
       this.texto = "Terminar revisión"
     }
 
-    if(this.data.cumplimiento.cumplimientos_obligacion.completado === true){
+    if(this.data.cumplimiento.completado === true){
       this.disabled = true;
       this.texto = "Esperando confirmación del supervisor"
     }
@@ -68,7 +68,7 @@ export class DetailCumplimientoComponent implements OnInit {
     fechaHoy.setTime(fechaHoy.getTime() - 1);
     
 
-    if(this.data.cumplimiento.cumplimientos_obligacion.completado === 3 || this.data.fecha > today) this.showButton = false
+    if(this.data.cumplimiento.completado === 3 || this.data.fecha > today) this.showButton = false
     if(this.data.fecha < fechaHoy.getTime()) this.mostrarLeyenda = true
     
   }
@@ -78,50 +78,39 @@ export class DetailCumplimientoComponent implements OnInit {
     let body
     if(user.nombre_perfil === "Administrador") {
       body = {
-        obligation:{
-          id: this.data.cumplimiento.cumplimientos_obligacion.id_obligacion,
-          fecha_completado:parseInt(this.data.fecha),
-          completado:1
-        },
-        cumplimientoMensual:null
+        id: this.data.cumplimiento.id,
+        fecha_completado:parseInt(this.data.fecha),
+        completado:1
       }
     } else if (user.nombre_perfil === "Supervisor"){
-      if(this.data.cumplimiento.cumplimientos_obligacion.completado === 1) {
+      if(this.data.cumplimiento.completado === 1) {
         body = {
-          obligation:{
-            id: this.data.cumplimiento.cumplimientos_obligacion.id_obligacion,
-            fecha_completado:parseInt(this.data.fecha),
-            completado:2
-          },
-          cumplimientoMensual:null
+          id: this.data.cumplimiento.id,
+          fecha_completado:parseInt(this.data.fecha),
+          completado:2
         }
       } else {
         body = {
-          obligation:{
-            id: this.data.cumplimiento.cumplimientos_obligacion.id_obligacion,
-            fecha_completado:parseInt(this.data.fecha),
-            completado:3
-          },
-          cumplimientoMensual:null
+          id: this.data.cumplimiento.id,
+          fecha_completado:parseInt(this.data.fecha),
+          completado:3
         }
       }
       
     }
     
-    console.log(body)
     this.apiService.editDates(body).subscribe({
       next: res => {
         console.log(res)
         this.disabled = true;
         if(user.nombre_perfil === "Supervisor" && body.obligation.completado === 2){
-          this.data.cumplimiento.cumplimientos_obligacion.completado = 2;
-          //this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento = this.data.fecha
+          this.data.cumplimiento.completado = 2;
           this.texto = "Terminar revisión..."
           this.disabled = false;
           return
         } else if(user.nombre_perfil === "Supervisor" && body.obligation.completado === 3){
-          this.data.cumplimiento.cumplimientos_obligacion.completado = 3;
-          this.data.cumplimiento.cumplimientos_obligacion.fecha_cumplimiento = this.data.fecha
+          this.data.cumplimiento.completado = 3;
+          this.data.cumplimiento.fecha_completado = this.data.fecha
           this.showButton = false
         }
         this.texto = "Esperando confirmación del supervisor"
@@ -136,8 +125,8 @@ export class DetailCumplimientoComponent implements OnInit {
     if (column === 0) {
       return 'transparent';
     }
-    if(element.cumplimientos_obligacion.completado === 1 || element.cumplimientos_obligacion.completado === 2) return '#ffcc0c'
-    else if(element.cumplimientos_obligacion.completado === 3) return 'green'
+    if(element.completado === 1 || element.completado === 2) return '#ffcc0c'
+    else if(element.completado === 3) return 'green'
     else return 'transparent'
   }
 }

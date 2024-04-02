@@ -12,7 +12,7 @@
   
   .withoverflow {
      height : 100px;
-     overflow:scroll; 
+     //overflow:scroll; 
   }
 
   .cal-event-title{
@@ -67,7 +67,7 @@
 .indicador-container {
   display: flex;
   flex-direction: row;
-  font-size: x-small;
+  font-size: 12px;
   align-items: center;
 }
 
@@ -97,6 +97,7 @@
 
 .cal-day-events {
   position: relative;
+  min-height: 180px;
 }
 
 .rojos {
@@ -109,4 +110,30 @@
 
 .verdes {
   background-color: rgb(195, 255, 195);
+}
+
+.floating-button {
+  position: fixed;
+  display: flex;
+  bottom: 10px;
+  right: 10px;
+  max-width: 50px;
+  min-width: 50px;
+  max-height: 50px;
+  min-height: 50px;
+  border-radius: 40px;
+  background-color: #ffcc0c;
+  align-items: center;
+  justify-content: center;
+}
+
+.header{
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  padding-top: 10px;
+  background-color: #ffcc0c;
+  margin-bottom: 20px;
 }
