@@ -67,7 +67,7 @@
 .indicador-container {
   display: flex;
   flex-direction: row;
-  font-size: x-small;
+  font-size: 12px;
   align-items: center;
 }
 
@@ -97,6 +97,7 @@
 
 .cal-day-events {
   position: relative;
+  min-height: 180px;
 }
 
 .rojos {

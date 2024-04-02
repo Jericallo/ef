@@ -39,6 +39,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PushNotificationService } from './shared/services/push-notification.service';
 //import { PasswordModalComponent } from './login/password-modal/password-modal.component';
 //import { ResetComponent } from './login/reset-component/reset/reset.component';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -87,7 +88,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         deps: [HttpClient]
       }
     }),
-    AuthenticationModule
+    AuthenticationModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
   providers: [
    PushNotificationService,

@@ -16,7 +16,7 @@
     </div>
   </mat-toolbar-row>
 <!--LA FUCKING TABLA DEL DIABLO-->
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 40px; height: 70%; width: 9900px; border-top-width: 5px;" >
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 40px; height: 70%; width: 10900px; border-top-width: 5px;" >
     
     <ng-container matColumnDef="fixedColumn" class="container" sticky>
       <!--HEADER-->
@@ -34,7 +34,7 @@
         <div class="container">
           <div class="celdas internas" style="flex: 1;">{{row.content.id_cumplimiento}}</div>  
           <div class="celdas internas" style="flex: 1;">
-            <div class="circle" [ngStyle]="{'background-color':row.content.color}"></div>
+            <div class="circle" [ngStyle]="{'background-color': isFechaMaxima(row.content)}"></div>
           </div>
         </div>
       </mat-cell>
@@ -43,7 +43,7 @@
 
     <ng-container matColumnDef="fixedColumn2" class="container" sticky>
       <!--HEADER-->
-      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 5.5;">
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 4.5;">
         <div class="container" style="flex-direction: column;">
           <div class="celdas" style="height: 4vh; min-height: 37.6px; overflow: scroll;">
             Las obligaciones se listan por <a (click)="reorderBy('id_cumplimiento')">General</a> / 
@@ -54,7 +54,7 @@
             <a (click)="getObligations(0, 'impuesto_otro')">Otros</a> / 
           </div>
           <div style="display: flex; flex-direction: row;">
-            <div style="flex: 2.8;">
+            <div style="flex: 2;">
               <div class="celdas" style="min-height: 35.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
               <div class="celdas" style="font-size: x-small;">Columnas que aplican en ol que sí ve el "Usuario Responsable de Cumplimiento Uno de la Empresa" </div>
             </div>
@@ -78,14 +78,14 @@
         </div>
       </mat-header-cell>
       <!--BODY-->
-      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 5.5;">
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 4.5;">
       <div class="container">
-        <div style="flex: 2.8;">
+        <div style="flex: 2;">
           <div class="celdas internas" style="flex: 1;">{{row.content.nombre}}</div>  
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
-          <div class="celdas internas" style="flex:0.5;">Contenido</div>
-          <div class="celdas internas" style="flex:0.5;">Contenido</div>
+          <div class="celdas internas" style="flex: 1;" contenteditable (input)="onFieldEdit($event)">{{row.content.descripcion}}</div>
+
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
           <div class="celdas internas" style="flex: 0.5;">
@@ -130,7 +130,7 @@
             </mat-slide-toggle>
           </div>  
           <div class="celdas internas" style="flex: 1;">
-            <button mat-button [matMenuTriggerFor]="menu">{{row.content.prioridad}} <mat-icon>keyboard_arrow_down</mat-icon> </button>
+            <button mat-button [matMenuTriggerFor]="menu" style="padding: 0;">{{row.content.prioridad}} <mat-icon>keyboard_arrow_down</mat-icon> </button>
             <mat-menu #menu="matMenu">
               <button mat-menu-item (click)="modPrioridad(1, row)">Alta</button>
               <button mat-menu-item (click)="modPrioridad(2, row)">Media</button>
@@ -148,7 +148,7 @@
           <div class="celdas" style=" min-height: 21.83px;">Cumplimiento de obligación</div>
           <div class="celdas" style="flex-direction: row; display: flex;">
             <div style="flex: 4; flex-direction: column; display: flex;">
-              <div class="celdas" style="min-height: 20.2px;">Fundamento legal</div>
+              <div class="celdas" style="min-height: 42.2px;">Fundamento legal</div>
               <div class="celdas" style="display: flex; flex-direction: row;">
                 <div class="celdas" style="flex: 1;">Periodo ideal cumplirlo</div>
                 <div class="celdas" style="flex: 1;">Periodo recomendado para cumplirlo</div>
@@ -188,48 +188,159 @@
       <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 16;">
         <div class="container" style="min-width: 100%;">
-          <div class="celdas internas" style="flex: 1;">
-            
+          <div class="celdas internas" style="flex: 1; display: flex; flex-direction: column;">
+            <!-- <span>Inicio del periodo</span>
+            <div>
             <input matInput [matDatepicker]="picker" [value]="row.content.idel_date_start | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 1, row.content.id_cumplimiento)">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker ></mat-datepicker> / 
+            </div>
 
+            <span>Fin del periodo</span>
+            <div>
             <input matInput [matDatepicker]="picker2" [value]="row.content.idel_date_end | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 2, row.content.id_cumplimiento)">
             <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
+            </div> -->
 
+            <mat-form-field>
+              <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Inicio del periodo" [(ngModel)]="row.content.idel_date_start_date" 
+                 [min]="minDate" [max]="maxDate" [disabled]="disabled" (dateChange)="onDateSelected($event, 1, row.content.id_cumplimiento)">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker1 [showSpinners]="showSpinners" [showSeconds]="showSeconds" 
+                 [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                 [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
+                 [disableMinute]="disableMinute" [hideTime]="hideTime">
+              </ngx-mat-datetime-picker>
+           </mat-form-field>
+           
+           <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Inicio del periodo" [(ngModel)]="row.content.idel_date_end_date" 
+               [min]="minDate" [max]="maxDate" [disabled]="disabled" (dateChange)="onDateSelected($event, 2, row.content.id_cumplimiento)">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker2 [showSpinners]="showSpinners" [showSeconds]="showSeconds" 
+               [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+               [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
+               [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+            
           </div>
-          <div class="celdas internas" style="flex: 1;">
-
+          <div class="celdas internas" style="flex: 1; display: flex; flex-direction: column;">
+            <!-- <span>Inicio del periodo</span>
+            <div>
             <input matInput [matDatepicker]="picker3" [value]="row.content.recommended_date_start  | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 3, row.content.id_cumplimiento)">
             <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
-            <mat-datepicker #picker3></mat-datepicker> / 
+            <mat-datepicker #picker3></mat-datepicker> 
+            </div>
 
+            <span>Fin del periodo</span>
+            <div>
             <input matInput [matDatepicker]="picker4" [value]="row.content.recommended_date_end  | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 4, row.content.id_cumplimiento)">
             <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
             <mat-datepicker #picker4></mat-datepicker>
+            </div> -->
+
+            <mat-form-field>
+              <input matInput [ngxMatDatetimePicker]="picker3" placeholder="Inicio del periodo" [(ngModel)]="row.content.recommended_date_start_date" 
+                 [min]="minDate" [max]="maxDate" [disabled]="disabled" (dateChange)="onDateSelected($event, 3, row.content.id_cumplimiento)">
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker3 [showSpinners]="showSpinners" [showSeconds]="showSeconds" 
+                 [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                 [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
+                 [disableMinute]="disableMinute" [hideTime]="hideTime">
+              </ngx-mat-datetime-picker>
+           </mat-form-field>
+           
+           <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker4" placeholder="Inicio del periodo" [(ngModel)]="row.content.recommended_date_end_date" 
+               [min]="minDate" [max]="maxDate" [disabled]="disabled" (dateChange)="onDateSelected($event, 4, row.content.id_cumplimiento)">
+            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker4 [showSpinners]="showSpinners" [showSeconds]="showSeconds" 
+               [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+               [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
+               [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
 
           </div>
-          <div class="celdas internas" style="flex: 1;">
-
+          <div class="celdas internas" style="flex: 1; display: flex; flex-direction: column;">
+            <!-- <span>Inicio del periodo</span>
+            <div>
             <input matInput [matDatepicker]="picker5" [value]="row.content.close_date_start  | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 5, row.content.id_cumplimiento)">
             <mat-datepicker-toggle matIconSuffix [for]="picker5"></mat-datepicker-toggle>
-            <mat-datepicker #picker5></mat-datepicker> / 
+            <mat-datepicker #picker5></mat-datepicker> 
+            </div>
 
+            <span>Fin dle periodo</span>
+            <div>
             <input matInput [matDatepicker]="picker6" [value]="row.content.close_date_end  | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 6, row.content.id_cumplimiento)">
             <mat-datepicker-toggle matIconSuffix [for]="picker6"></mat-datepicker-toggle>
             <mat-datepicker #picker6></mat-datepicker>
+            </div> -->
+
+            <mat-form-field>
+              <input matInput [ngxMatDatetimePicker]="picker5" placeholder="Inicio del periodo" [(ngModel)]="row.content.close_date_start_date" 
+                 [min]="minDate" [max]="maxDate" [disabled]="disabled" (dateChange)="onDateSelected($event, 5, row.content.id_cumplimiento)">
+              <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker5 [showSpinners]="showSpinners" [showSeconds]="showSeconds" 
+                 [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                 [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
+                 [disableMinute]="disableMinute" [hideTime]="hideTime">
+              </ngx-mat-datetime-picker>
+           </mat-form-field>
+           
+           <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker6" placeholder="Inicio del periodo" [(ngModel)]="row.content.close_date_end_date" 
+               [min]="minDate" [max]="maxDate" [disabled]="disabled" (dateChange)="onDateSelected($event, 6, row.content.id_cumplimiento)">
+            <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker6 [showSpinners]="showSpinners" [showSeconds]="showSeconds" 
+               [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+               [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
+               [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+
 
           </div>  
-          <div class="celdas internas" style="flex: 1;">
-
+          <div class="celdas internas" style="flex: 1; display: flex; flex-direction: column;">
+            <!-- <span>Inicio del periodo</span>
+            <div>
             <input matInput [matDatepicker]="picker7" [value]="row.content.urgent_date_start | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 7, row.content.id_cumplimiento)">
             <mat-datepicker-toggle matIconSuffix [for]="picker7"></mat-datepicker-toggle>
             <mat-datepicker #picker7></mat-datepicker> / 
+           </div>
 
+           <span>Fin del periodo</span>
+            <div>
             <input matInput [matDatepicker]="picker8" [value]="row.content.urgent_date_end | date:'yyyy-MM-dd'" class="fecha_picker" (dateChange)="onDateSelected($event, 8, row.content.id_cumplimiento)">
             <mat-datepicker-toggle matIconSuffix [for]="picker8"></mat-datepicker-toggle>
             <mat-datepicker #picker8></mat-datepicker>
+            </div> -->
+
+            <mat-form-field>
+              <input matInput [ngxMatDatetimePicker]="picker7" placeholder="Inicio del periodo" [(ngModel)]="row.content.urgent_date_start_date" 
+                 [min]="minDate" [max]="maxDate" [disabled]="disabled" (dateChange)="onDateSelected($event, 7, row.content.id_cumplimiento)">
+              <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker7 [showSpinners]="showSpinners" [showSeconds]="showSeconds" 
+                 [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                 [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
+                 [disableMinute]="disableMinute" [hideTime]="hideTime">
+              </ngx-mat-datetime-picker>
+           </mat-form-field>
+           
+           <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker8" placeholder="Inicio del periodo" [(ngModel)]="row.content.urgent_date_end_date" 
+               [min]="minDate" [max]="maxDate" [disabled]="disabled" (dateChange)="onDateSelected($event, 8, row.content.id_cumplimiento)">
+            <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker8 [showSpinners]="showSpinners" [showSeconds]="showSeconds" 
+               [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+               [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" 
+               [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+
+
           </div>  
           <div class="celdas internas" style="flex: 1;">contenido</div>  
           <div class="celdas internas" style="flex: 1;">

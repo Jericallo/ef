@@ -24,6 +24,9 @@ import { CustomTooltipComponent } from './register-client/custom-tooltip/custom-
 import { ModalCalendarDayComponent } from './index/modal-calendar-day/modal-calendar-day.component';
 import { ModalDataService } from './index/modal-data.service';
 import { MousePositionService } from './index/mouse-position.service';
+import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+
+
 
 @NgModule({
   declarations: [
@@ -53,7 +56,8 @@ import { MousePositionService } from './index/mouse-position.service';
     ReactiveFormsModule,
     FlexLayoutModule,
     ConfigModule,
-    SharedModule
+    SharedModule,
+    NgxMatDatetimePickerModule,
     ],
   providers:[NotificationService, ModalDataService, MousePositionService]
 })
