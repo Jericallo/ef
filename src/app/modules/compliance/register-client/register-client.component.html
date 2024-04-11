@@ -31,9 +31,10 @@
             #currentDayCell [ngStyle]="{'background-color': isColumn(column, element)}">
 
                 <ng-container *ngIf="column === 'nombre'; else dateCell" class="coso">
-                    <span (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)">{{ element.descripcion }}</span>
+                    <p (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)"
+                    class="paragraph">{{ element.obligations.nombre }}</p>
                     <div class="custom-tooltip-column" [id]="'tooltip-'+element.id+'-'+column" >
-                        {{element.descripcion}} 
+                        {{element.obligations.descripcion}} 
                     </div>
                 </ng-container>
                 

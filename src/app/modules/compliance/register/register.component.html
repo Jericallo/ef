@@ -81,7 +81,7 @@
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 4.5;">
       <div class="container">
         <div style="flex: 2;">
-          <div class="celdas internas" style="flex: 1;">{{row.content.nombre}}</div>  
+          <div class="celdas internas" style="flex: 1;"><p style="overflow: scroll; max-width: 250px;">{{row.content.nombre}}</p></div>  
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
           <div class="celdas internas" style="flex: 1; white-space: wrap;" contenteditable (input)="onFieldEdit($event, row)">{{row.content.descripcion}}</div>

@@ -367,87 +367,89 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
     //---------------------------------------------//
     //---------ROJO PARPADEO RAPIDO----------------//
     //---------------------------------------------//
-    
-    if(mode === 1) {
-      for (const objeto of this.cumplimientos) {
-        if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis > objeto.fecha_completado) contador --
-        if (milis >= objeto.urgent_date_start && milis <= objeto.urgent_date_end) {
-          contador++;
+    switch (mode){
+      case 1:
+        for (const objeto of this.cumplimientos) {
+          if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis >= objeto.fecha_completado) {}
+          else if (milis >= objeto.urgent_date_start && milis <= objeto.urgent_date_end) {
+            contador++;
+          }
         }
-      }
 
-      return contador;
+        return contador;
 
-    //---------------------------------------------//
-    //---------ROJO PARPADEO LENTO-----------------//
-    //---------------------------------------------//
-    
-    } else if( mode === 2 ) {
-      for (const objeto of this.cumplimientos) {
-        if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis > objeto.fecha_completado) contador --
-        if (milis >= objeto.close_date_start && milis <= objeto.close_date_end) {
-          contador++;
+      //---------------------------------------------//
+      //---------ROJO PARPADEO LENTO-----------------//
+      //---------------------------------------------//
+      
+      case 2:
+        for (const objeto of this.cumplimientos) {
+          if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis >= objeto.fecha_completado) {}
+          else if (milis >= objeto.close_date_start && milis <= objeto.close_date_end) {
+            contador++;
+          }
         }
-      }
 
-      return contador;
+        return contador;
 
-    //---------------------------------------------//
-    //-------AMARILLO PARPADEO RAPIDO--------------//
-    //---------------------------------------------//
-    
+      //---------------------------------------------//
+      //-------AMARILLO PARPADEO RAPIDO--------------//
+      //---------------------------------------------//
+      
 
-    } else if( mode === 3 ) {
-      for (const objeto of this.cumplimientos) {
-        if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis > objeto.fecha_completado) contador --
-        if (milis >= objeto.recommended_date_start && milis <= objeto.recommended_date_end) {
-          contador++;
+      case 3:
+        for (const objeto of this.cumplimientos) {
+          if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis >= objeto.fecha_completado) {}
+          else if (milis >= objeto.recommended_date_start && milis <= objeto.recommended_date_end) {
+            contador++;
+          }
         }
-      }
 
-      return contador;
+        return contador;
 
-    //---------------------------------------------//
-    //-------AMARILLO PARPADEO LENTO---------------//
-    //---------------------------------------------//
-    } else if( mode === 4 ) {
-      for (const objeto of this.cumplimientos) {
-        if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis > objeto.fecha_completado) contador --
-        if (milis >= objeto.ideal_date_start && milis <= objeto.ideal_date_end ) {
-          contador++;
+      //---------------------------------------------//
+      //-------AMARILLO PARPADEO LENTO---------------//
+      //---------------------------------------------//
+      case 4:
+        for (const objeto of this.cumplimientos) {
+          if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis >= objeto.fecha_completado) {}
+          else if (milis >= objeto.ideal_date_start && milis <= objeto.ideal_date_end ) {
+            contador++;
+          }
         }
-      }
 
-      return contador;
+        return contador;
 
-    //---------------------------------------------//
-    //-------AMARILLO PARPADEO SÓLIDO--------------//
-    //---------------------------------------------//
+      //---------------------------------------------//
+      //-------------AMARILLO SÓLIDO-----------------//
+      //---------------------------------------------//
 
-    } else if( mode === 5 ) {
-      for (const objeto of this.cumplimientos) {
-        if(objeto.fecha_completado && objeto.fecha_completado >= milis && (objeto.completado == 1 || objeto.completado == 2)) {
-          contador ++;
+      case 5:
+        for (const objeto of this.cumplimientos) {
+          if(objeto.fecha_completado !== '0' && objeto.fecha_completado >= milis && objeto.fecha_completado <=  (parseInt(milis) + 86399999).toString() && (objeto.completado == 1 || objeto.completado == 2)) {
+            contador ++;
+          }
         }
-      }
 
-      return contador;
+        return contador;
 
-    //---------------------------------------------//
-    //----------------VERDE SÓLIDO-----------------//
-    //---------------------------------------------//
+      //---------------------------------------------//
+      //----------------VERDE SÓLIDO-----------------//
+      //---------------------------------------------//
 
 
-    } else if( mode === 6 ) {
-      for (const objeto of this.cumplimientos) {
-        if(objeto.fecha_completado && (objeto.fecha_completado >= milis && objeto.fecha_completado <= (parseInt(milis) + 86399999).toString()) && objeto.completado == 3) {
-          contador ++;
+      case 6:
+        for (const objeto of this.cumplimientos) {
+          if(objeto.fecha_completado && (objeto.fecha_completado >= milis && objeto.fecha_completado <= (parseInt(milis) + 86399999).toString()) && objeto.completado == 3) {
+            contador ++;
+          }
         }
-      }
 
-      return contador;
+        return contador;
+        
+      default:
+        return 0
     }
-    return 0
   }
 
   returnUp(){

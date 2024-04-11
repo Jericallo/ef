@@ -69,6 +69,7 @@
   flex-direction: row;
   font-size: 12px;
   align-items: center;
+  margin: -6px;
 }
 
 @keyframes parpadeo {
@@ -97,7 +98,8 @@
 
 .cal-day-events {
   position: relative;
-  min-height: 180px;
+  min-height: 140px;
+  padding: 10px;
 }
 
 .rojos {

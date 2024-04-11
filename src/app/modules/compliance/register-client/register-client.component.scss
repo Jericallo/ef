@@ -52,7 +52,9 @@ th.date-column, td.date-column {
     text-align: center;
     //background: #ffcc0c;
     flex: 1;
+    max-width: 30vw;
     background-color: transparent;
+    overflow: scroll;
 }
 
 mat-header-row, mat-row {
@@ -192,5 +194,17 @@ a:hover{
 
 .coso {
     position: relative;
+    max-width: 20vw;
+    overflow: scroll;
 }
 
+.paragraph {
+    ::-webkit-scrollbar {
+        width: 0; /* Ancho de la barra de desplazamiento vertical */
+        height: 0; /* Altura de la barra de desplazamiento horizontal */
+    }
+
+    /* Estilo para Firefox */
+    scrollbar-width: none; /* Oculta las barras de desplazamiento */
+    overflow: scroll;
+}

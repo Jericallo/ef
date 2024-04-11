@@ -9,7 +9,7 @@
             <form>
               <mat-form-field class="obligations-full-width" appearance="fill">
                 <mat-label>Nombre de obligación</mat-label>
-                <input type="text" maxlength="50" matInput [formControl]="myControlObligations" [(ngModel)]="obligations" name="obligations" required>
+                <input type="text" maxlength="75" matInput [formControl]="myControlObligations" [(ngModel)]="obligations" name="obligations" required>
               </mat-form-field>
             </form>
             <form>
@@ -30,10 +30,11 @@
           <div class="form-container">
       
 
-                <mat-form-field class="description-full-width" appearance="fill">
-                  <mat-label>Descripción de la obligación</mat-label>
-                  <textarea matInput [formControl]="myControlDescription" [(ngModel)]="description" name="description"></textarea>
-                </mat-form-field>
+            <mat-form-field class="description-full-width" appearance="fill">
+              <mat-label>Descripción de la obligación</mat-label>
+              <textarea matInput [formControl]="myControlDescription" [(ngModel)]="description" name="description" maxlength="300"></textarea>
+          </mat-form-field>
+          
              
        
               <!-- <form>

@@ -193,7 +193,7 @@
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"><strong matTooltip="{{cumplimiento.obligations.descripcion}}">{{cumplimiento.obligations.nombre}} </strong></span>
                 </div>
             
                 <div *ngFor="let cumplimiento of cumplimientos" class="container rojos" style="display: flex; flex-direction: row;" >
@@ -202,7 +202,7 @@
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"><strong matTooltip="{{cumplimiento.obligations.descripcion}}">{{cumplimiento.obligations.nombre}} </strong></span>
                 </div>
             </div>
             
@@ -213,7 +213,7 @@
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"><strong matTooltip="{{cumplimiento.obligations.descripcion}}">{{cumplimiento.obligations.nombre}} </strong></span>
                 </div>
             
                 <div *ngFor="let cumplimiento of cumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
@@ -222,7 +222,7 @@
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"><strong matTooltip="{{cumplimiento.obligations.descripcion}}">{{cumplimiento.obligations.nombre}} </strong></span>
                 </div>
             
                 <div *ngFor="let cumplimiento of cumplimientos" class="container amarillos" style="display: flex; flex-direction: row;" >
@@ -231,7 +231,7 @@
                     
                     *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"><strong matTooltip="{{cumplimiento.obligations.descripcion}}">{{cumplimiento.obligations.nombre}} </strong></span>
                 </div>
             </div>        
             
@@ -242,7 +242,7 @@
                     [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
                     *ngIf="modalIsVerde(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsVerde(cumplimiento, exModalData.date)"><strong>{{cumplimiento.descripcion}} </strong> - {{cumplimiento.descripcion}}</span>
+                    <span *ngIf="modalIsVerde(cumplimiento, exModalData.date)"><strong matTooltip="{{cumplimiento.obligations.descripcion}}">{{cumplimiento.obligations.nombre}} </strong></span>
                 </div>
             </div>
         </div>
