@@ -22,6 +22,13 @@ import { EditParagraphComponent } from './leyes-config/edit-paragraph/edit-parag
 import { FestiveDaysComponent } from './festive-days/festive-days.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { PromotionalsComponent } from './promotionals/promotionals.component';
+import { IntrosComponent } from './intros/intros.component';
+import { NewsComponent } from './news/news.component';
+import { CapacitationsComponent } from '../control/capacitations/capacitations.component';
+import { CapacitationsVideosComponent } from './capacitations-videos/capacitations-videos.component';
+import { CapacitationsCrudComponent } from './capacitations-crud/capacitations-crud.component';
+import { QuestionCrudComponent } from './capacitations-crud/question-crud/question-crud.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -283,7 +290,72 @@ export const ConfigRoutes: Routes = [
                     ]
                 }
             },
-            
+            {
+                path: 'promotionals',
+                component: PromotionalsComponent,
+                data: {
+                    title: 'Videos promocionales',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'intro-videos',
+                component: IntrosComponent,
+                data: {
+                    title: 'Videos de introducción',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'news-videos',
+                component: NewsComponent,
+                data: {
+                    title: 'Videos de noticias',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'capacitations-videos',
+                component: CapacitationsVideosComponent,
+                data: {
+                    title: 'Videos de capacitaciones',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'capacitations-table',
+                component: CapacitationsCrudComponent,
+                data: {
+                    title: 'Capacitaciones',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'questionarie',
+                component: QuestionCrudComponent,
+                data: {
+                    title: 'Cuestionario',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
         ]
     }
 ];

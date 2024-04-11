@@ -57,6 +57,23 @@ import { EditCompaniesDialogComponent } from './companies/edit-companies-dialog/
 import { EditCompanyDialogComponent } from './companies/edit-company-dialog/edit-company-dialog.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { PasswordChangeComponent } from './user-profile/password-change/password-change.component';
+import { PromotionalsComponent } from './promotionals/promotionals.component';
+import { AddPromotionalComponent } from './promotionals/add-promotional/add-promotional.component';
+import { DeletePromotionalComponent } from './promotionals/delete-promotional/delete-promotional.component';
+import { IntrosComponent } from './intros/intros.component';
+import { EditIntrosComponent } from './intros/edit-intros/edit-intros.component';
+import { NewsComponent } from './news/news.component';
+import { DeleteNewsComponent } from './news/delete-news/delete-news.component';
+import { AddNewsComponent, MY_FORMATS } from './news/add-news/add-news.component';
+import { DateAdapter } from 'angular-calendar';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CapacitationsVideosComponent } from './capacitations-videos/capacitations-videos.component';
+import { AddCapacitationsVideosComponent } from './capacitations-videos/add-capacitations-videos/add-capacitations-videos.component';
+import { DeleteCapacitationsVideosComponent } from './capacitations-videos/delete-capacitations-videos/delete-capacitations-videos.component';
+import { CapacitationsCrudComponent } from './capacitations-crud/capacitations-crud.component';
+import { AddCapacitationsComponent } from './capacitations-crud/add-capacitations/add-capacitations.component';
+import { AssignVideoComponent } from './capacitations-crud/assign-video/assign-video.component';
+import { QuestionCrudComponent } from './capacitations-crud/question-crud/question-crud.component';
 
 @NgModule({
   declarations: [
@@ -103,9 +120,26 @@ import { PasswordChangeComponent } from './user-profile/password-change/password
     EditCompaniesDialogComponent,
     EditCompanyDialogComponent,
     UserProfileComponent,
-    PasswordChangeComponent
+    PasswordChangeComponent,
+    PromotionalsComponent,
+    AddPromotionalComponent,
+    DeletePromotionalComponent,
+    IntrosComponent,
+    EditIntrosComponent,
+    NewsComponent,
+    DeleteNewsComponent,
+    AddNewsComponent,
+    CapacitationsVideosComponent,
+    AddCapacitationsVideosComponent,
+    DeleteCapacitationsVideosComponent,
+    CapacitationsCrudComponent,
+    AddCapacitationsComponent,
+    AssignVideoComponent,
+    QuestionCrudComponent
   ],
-  providers: [DatePipe, CapacitationsComponent],
+  providers: [DatePipe, CapacitationsComponent,
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
   imports: [
     FormsModule,
     CommonModule,

@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Eliminar video promocional</h2>
+<mat-dialog-content>
+  <p>¿Estás seguro de que quieres eliminar el video {{ data.video.nombre }}?</p>
+</mat-dialog-content>
+<mat-dialog-actions style="justify-content: end;">
+  <button mat-raised-button color="primary" (click)="delete()">Eliminar</button>
+  <button mat-button (click)="cancel()">Cancelar</button>
+</mat-dialog-actions>

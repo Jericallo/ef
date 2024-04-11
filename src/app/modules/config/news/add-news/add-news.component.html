@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Agregar nuevo video</h2>
+<mat-dialog-content>
+    <div class="grid-container">
+        <div class="grid-item">
+            <mat-form-field>
+                <input matInput required placeholder="Nombre" [(ngModel)]="name">
+            </mat-form-field>
+        </div>
+        <div class="grid-item">
+            <mat-form-field>
+                <mat-label>Duración</mat-label>
+                <mat-select [(ngModel)]="length">
+                    <mat-option [value]="'min1'">1 minuto</mat-option>
+                    <mat-option [value]="'min5'">5 minutos</mat-option>
+                    <mat-option [value]="'min10'">10 minutos</mat-option>
+                    <mat-option [value]="'min15'">15 minutos</mat-option>
+                    <mat-option [value]="'min30'">30 minutos</mat-option>
+                    <mat-option [value]="'hour1'">60 minutos</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="grid-item">
+            <mat-form-field >
+                <mat-label>Month and Year</mat-label>
+                <input matInput [(ngModel)]="dateDate" [matDatepicker]="dp" >
+                <mat-hint>MM/YYYY</mat-hint>
+                <label>{{date | date:'MM/yyyy'}}</label>
+                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker #dp
+                                startView="multi-year"
+                                (monthSelected)="setMonthAndYear($event, dp)"
+                                panelClass="example-month-picker">
+                </mat-datepicker>
+            </mat-form-field>
+                                 
+        </div>
+        <div class="grid-item" style="margin-top: 20px;">
+            <h4 mat-dialog-title>Subir video</h4>
+            <div class="grid-item">
+                <input type="file" (change)="seleccionarArchivo($event)" accept=".mp4">
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h4 mat-dialog-title>Subir miniatura</h4>
+            <div class="grid-item">
+                <input type="file" (change)="seleccionarImagen($event)" accept=".jpg, .jpeg, .png">
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button mat-button color="primary" (click)="addVideo()">{{textButton}}</button>
+</mat-dialog-actions>

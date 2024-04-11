@@ -1,6 +1,9 @@
+
 <div class="app-user-container">
   <app-user-icon></app-user-icon>
 </div>
+
+<app-loader *ngIf="isLoading"></app-loader>
 
 <div class="container-big">
   <div style="width: 100vw; height: fit-content">
@@ -10,14 +13,14 @@
     <button  (click)="scrollDown()" class="scroll" mat-button><mat-icon class="icono">expand_more</mat-icon></button>
     <span (click)="scrollDown()" class="scroll-text">Ver más</span>
     <div>
-      <video autoplay="autoplay" id="myVideo" #noticia (ended)="vidEnded()"><!--<source type="video/mp4">--></video>
+      <video autoplay="autoplay" id="myVideo" #noticia (ended)="vidEnded()"></video>
 
       <div class="content">
         <div (click)="playNew(time,indexTime)" *ngFor="let time of mytimelines;let indexTime=index;" style="width: 8.33%; height: auto; padding-right: 1%; padding-left: 1%; cursor: pointer;" >
           <div>
-            <h6 style="text-align: center;">{{ time.fecha?.slice(0, 3) + time.fecha?.slice(-5, -4) + time.fecha?.slice(-2) || '' }}</h6>
+            <h6 style="text-align: center;">{{ formatDate( time.date ) || '' }}</h6>
           </div>
-          <img [src]="time.imagen" alt="" style="width: 100%; height: auto;" [ngClass]="{'b-red':time.selected}">
+          <img [src]="time.address_image === 'https://api.escudofiscal.alphadev.io/uploads/null' ? 'https://www.aliatuniversidades.com.mx/hubfs/Imported_Blog_Media/ETAC-Cuales-son-los-requisitos-para-entrar-a-la-licenciatura-en-Contaduria-Publica-1-1.jpg' : time.address_image" alt="" style="width: 100%; height: auto; aspect-ratio: 16 / 9;" [ngClass]="{'b-red':time.selected}">
         </div>
       </div>
     </div>
@@ -28,11 +31,20 @@
 
     <div fxLayout="row reverse" style="flex-direction: row;">
       <div #scrollElement fxFlex.gt-sm="25" *ngFor="let time of mytimelines;let indexTime=index;" class="dates" fxFlex="100" style="z-index: 1;padding-left: .1em;padding-right: .1em;">
-        <mat-card class="oh text-center little-profile" (click)="playNew(time,indexTime)">
-          <mat-card-content [ngStyle]="{'background-image':'url('+time.imagen+')'}" style="background-repeat: no-repeat; background-size: cover; min-height: 30vh; cursor: pointer;">
+        <mat-card class="oh text-center little-profile" (click)="playNew(time,indexTime)" *ngIf="time.address_image !== 'https://api.escudofiscal.alphadev.io/uploads/null'">
+          <mat-card-content [ngStyle]="{'background-image':'url('+time.address_image+')'}" style="background-repeat: no-repeat; background-size: cover; min-height: 30vh; cursor: pointer;" >
             <!--<h3 class="m-b-0 noticiero_fiscal">NOTICIERO FISCAL</h3>-->
             <div class="fecha_noticiero_fiscal">
-              <h4>{{time.fecha || ''}}</h4>
+              <h4>{{formatDateLong( time.date ) || ''}}</h4>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="oh text-center little-profile" (click)="playNew(time,indexTime)" *ngIf="time.address_image === 'https://api.escudofiscal.alphadev.io/uploads/null'">
+          <mat-card-content style="background-repeat: no-repeat; background-size: cover; min-height: 30vh; cursor: pointer; background-image: url('https://www.aliatuniversidades.com.mx/hubfs/Imported_Blog_Media/ETAC-Cuales-son-los-requisitos-para-entrar-a-la-licenciatura-en-Contaduria-Publica-1-1.jpg');" >
+            <!--<h3 class="m-b-0 noticiero_fiscal">NOTICIERO FISCAL</h3>-->
+            <div class="fecha_noticiero_fiscal">
+              <h4>{{formatDateLong( time.date ) || ''}}</h4>
             </div>
           </mat-card-content>
         </mat-card>

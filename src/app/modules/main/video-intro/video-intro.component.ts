@@ -16,8 +16,13 @@ export class VideoIntroComponent implements OnInit {
   srcVideo = "";
   titVideo = ""
   results =[];
+  videoCount:number = 0
+  counter = 0
   private playCount = 0;
   private maxPlays = 5; 
+
+  isLoading = false
+
 
   constructor(
     private apiService: ApiService, 
@@ -34,26 +39,27 @@ export class VideoIntroComponent implements OnInit {
   }
   
   get(){
-    this.apiService.getAll(this.apiService.MODELS.intros).subscribe({
+    this.isLoading = true
+    this.apiService.getVideos('promotional').subscribe({
       next:(res)=>{
-        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
-        if(res.status == "OK"){
-          this.results = res.result;
-          console.log(this.results)
-          this.setSrcVideo(this.results[0])
-        }
+        this.isLoading = false
+        this.results = res.result;
+        this.videoCount = this.results.length
+        console.log(this.results)
+        this.setSrcVideo(this.results[0])
       }
     });
+    this.isLoading = false
   }
 
   setSrcVideo(obj){
     this.changeDetector.detectChanges();
-    if(obj.video.url == undefined){
+    if(obj.address == undefined){
       alert('No se encontró el video')
     }else{
-      this.srcVideo = obj.video.url;
+      this.srcVideo = obj.address;
     }
-    this.titVideo = obj.titulo;
+    this.titVideo = obj.nombre;
     setTimeout(()=>{this.playNew(obj);},1)
   }
 
@@ -62,7 +68,7 @@ export class VideoIntroComponent implements OnInit {
       this.playCount++;
       this.results.forEach(mtl => (mtl.selected = false));
       obj.selected = true;
-      this.video.nativeElement.src = obj.video.url;
+      this.video.nativeElement.src = obj.address;
       this.video.nativeElement.muted = false;
       this.video.nativeElement.load();
       this.video.nativeElement.play();
@@ -74,7 +80,13 @@ export class VideoIntroComponent implements OnInit {
 
   private handleVideoEnded = () => {
     this.video.nativeElement.removeEventListener('ended', this.handleVideoEnded);
-    this.playNew(this.results[0]);
+    this.counter ++
+    if(this.counter === this.videoCount) {
+      this.router.navigate(['/main/news'])   
+    } else {
+      this.playNew(this.results[this.counter]);
+    }
+    
   };
 
 

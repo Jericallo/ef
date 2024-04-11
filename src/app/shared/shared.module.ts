@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { AppModule } from '../app.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule } from '@angular/forms';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FormsModule } from '@angular/forms';
     AccordionDirective,
     TrafficLightComponent,
     ChatBubbleComponent,
+    LoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { FormsModule } from '@angular/forms';
     AccordionLinkDirective,
     AccordionDirective,
     TrafficLightComponent,
-    ChatBubbleComponent
+    ChatBubbleComponent,
+    LoaderComponent
   ],
   providers: [MenuItems, HorizontalMenuItems],
 })

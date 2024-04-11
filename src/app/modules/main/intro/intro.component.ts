@@ -30,6 +30,8 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   videoIndex = 0
   showModal:boolean = false
 
+  isLoading = false
+
   constructor(private apiService:ApiService,
     private changeDetector:ChangeDetectorRef,
     private dialog: MatDialog, private router: Router,
@@ -40,26 +42,26 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   }
 
   get(){
-    this.apiService.getAll(this.apiService.MODELS.intros).subscribe({
+    this.isLoading = true
+    this.apiService.getVideos('intro').subscribe({
       next:(res)=>{
-        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
-        if(res.status == "OK"){
-          this.results = res.result;
-          this.setSrcVideo(this.results[this.videoIndex])
-          console.log(this.results)
-
-        }
+        this.isLoading = false
+        this.results = res.result;
+        console.log(res.result)
+        this.setSrcVideo(this.results[this.videoIndex])
+        console.log(this.results)
       }
     });
+    this.isLoading = false
   }
 
   setSrcVideo(obj){
     this.changeDetector.detectChanges();
-    if(obj.video.url == undefined){
+    if(obj.address == undefined){
       alert('No se encontró el video')
     }else{
       this.videoIndex = this.results.indexOf(obj);
-      this.srcVideo = obj.video.url;
+      this.srcVideo = obj.address;
     }
     this.titVideo = obj.titulo;
     setTimeout(()=>{this.playNew(obj);},1)
@@ -71,45 +73,57 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
   }
 
-  playNew(obj: any) {
-    if (typeof obj === "undefined") {
-      return;
-    }
-    this.results.forEach((mtl) => {
-      mtl.selected = false;
-    });
-    obj.selected = true;
-    this.video.nativeElement.src = obj.video.url;
-    this.video.nativeElement.muted = false;
-
-    this.video.nativeElement.addEventListener("loadedmetadata", () => {
-      const videoDuration = this.video.nativeElement.duration;
-      const alertTime = videoDuration - 8;
-
-      if (!this.isIntervalActive) { // Comprobar si el intervalo está activo
-        this.isIntervalActive = true; // Marcar el intervalo como activo
-
-        const intervalId = setInterval(() => {
-          const currentTime = this.video.nativeElement.currentTime;
-          if (currentTime >= alertTime) {
-            clearInterval(intervalId);
-            this.isIntervalActive = false; // Marcar el intervalo como inactivo
-            this.startCountdown();
-          }
-          console.log('hola');
-          if (this.video.nativeElement.ended) {
-
-          }
-        }, 1000);
+  async playNew(obj: any) {
+    this.isLoading = true
+    try{
+      if (typeof obj === "undefined") {
+        return;
       }
-
-      this.video.nativeElement.play();
-      this.divVideo.nativeElement.parentElement.parentElement.parentElement.scrollIntoView({
-        behavior: "smooth",
+      let url = ''
+      const partes = obj.filename.split('.')
+      const name = partes[0]
+      const res = await this.apiService.watch(name)
+      url = URL.createObjectURL(res)
+      obj.address = url
+  
+      this.results.forEach((mtl) => {
+        mtl.selected = false;
       });
-    });
-
-    this.video.nativeElement.load();
+      obj.selected = true;
+      this.video.nativeElement.src = obj.address;
+      this.video.nativeElement.muted = false;
+  
+      this.video.nativeElement.addEventListener("loadedmetadata", () => {
+        const videoDuration = this.video.nativeElement.duration;
+        const alertTime = videoDuration - 8;
+  
+        if (!this.isIntervalActive) { // Comprobar si el intervalo está activo
+          this.isIntervalActive = true; // Marcar el intervalo como activo
+  
+          const intervalId = setInterval(() => {
+            const currentTime = this.video.nativeElement.currentTime;
+            if (currentTime >= alertTime) {
+              clearInterval(intervalId);
+              this.isIntervalActive = false; // Marcar el intervalo como inactivo
+              this.startCountdown();
+            }
+            if (this.video.nativeElement.ended) {
+  
+            }
+          }, 1000);
+        }
+  
+        this.video.nativeElement.play();
+        this.divVideo.nativeElement.parentElement.parentElement.parentElement.scrollIntoView({
+          behavior: "smooth",
+        });
+      });
+  
+      this.video.nativeElement.load();
+      this.isLoading = false
+    } catch (error) {
+      this.isLoading = false
+    }
   }
   
   startCountdown() {

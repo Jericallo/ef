@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +25,7 @@ import { MatTreeModule } from '@angular/material/tree';
 
 import { VideoIntroComponent } from './video-intro/video-intro.component';
 import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -55,9 +56,10 @@ import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal
     ReactiveFormsModule,
     FlexLayoutModule,
     CdkTreeModule,
-    MatTreeModule
+    MatTreeModule,
+    SharedModule
   ],
-  providers:[CourseService],
+  providers:[CourseService, {provide:LOCALE_ID, useValue:'es'}],
   exports:[UserIconComponent]
 })
 export class MainModule { }

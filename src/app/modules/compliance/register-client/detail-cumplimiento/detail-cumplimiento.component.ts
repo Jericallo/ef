@@ -26,9 +26,8 @@ export class DetailCumplimientoComponent implements OnInit {
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
   ngOnInit(): void {
-    if((this.data.cumplimiento.ideal_date_start > this.data.fecha || 
-      this.data.cumplimiento.urgent_date_end < this.data.fecha) || 
-      (this.data.cumplimiento.fecha_completado !== null && 
+    if((this.data.cumplimiento.ideal_date_start > this.data.fecha ) || 
+      (this.data.cumplimiento.fecha_completado !== null && this.data.cumplimiento.fecha_completado !== '0' &&
         this.data.cumplimiento.fecha_completado < this.data.fecha)) this.blanco = false
 
     if((this.data.cumplimiento.fecha_completado !== null && 
@@ -43,7 +42,6 @@ export class DetailCumplimientoComponent implements OnInit {
       }
     }
 
-    console.log(this.data)
 
     const user = this.apiService.getWholeUser()
     let body = {}
@@ -67,8 +65,7 @@ export class DetailCumplimientoComponent implements OnInit {
     fechaHoy.setHours(0, 0, 0, 0);
     fechaHoy.setTime(fechaHoy.getTime() - 1);
     
-
-    if(this.data.cumplimiento.completado === 3 || this.data.fecha > today) this.showButton = false
+    if(this.data.cumplimiento.completado === 3 || parseInt(this.data.fecha) > today + 86400000) this.showButton = false
     if(this.data.fecha < fechaHoy.getTime()) this.mostrarLeyenda = true
     
   }
