@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Agregar nueva capacitación</h2>
+<mat-dialog-content>
+    <div class="grid-container">
+        <div class="grid-item">
+            <mat-form-field>
+                <input matInput required placeholder="Titulo" [(ngModel)]="titulo">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="Descripciónn" [(ngModel)]="descripcion">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="Tiempo Limite" [(ngModel)]="tiempo_limite" >
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>A quién pertenece</mat-label>
+                <mat-select [(value)]="pertenece_a">
+                    <mat-option *ngFor="let cap of data.capacitations" [value]="cap.nivel_1 + '/' + cap.nivel_2 + '/' + cap.nivel_3" >
+                        <div *ngIf="!cap!.nivel_3 || 0 > 0">
+                            <span *ngIf="cap!.nivel_1 || 0 > 0">{{cap.nivel_1 || ''}}</span>
+                            <span *ngIf="cap!.nivel_2 || 0 > 0">{{'.' + cap.nivel_2 || ''}}</span>
+                            <span *ngIf="cap!.nivel_3 || 0 > 0">{{'.' + cap.nivel_3 || ''}}</span>
+                            {{ cap.titulo }}
+                        </div>
+                    </mat-option>
+            </mat-select>
+            </mat-form-field>
+
+        </div>
+        
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <!-- <button mat-button (click)="dialogRef.close()">Cancelar</button> -->
+    <button mat-button color="primary" (click)="createCapacitation()">Guardar</button>
+</mat-dialog-actions>

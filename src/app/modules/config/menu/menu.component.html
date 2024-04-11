@@ -141,6 +141,32 @@
           </a>
         </div>
       </div>
+
+      <div class="title">Control</div>
+  
+      <div class="container">
+        <div class="box" *ngFor="let control of filterControl()">
+          <a [href]="'/config/' + control.path">
+            <div class="option_container">
+              <mat-icon class="icon">{{ control.icon }}</mat-icon>
+              <span>{{ control.descripcion }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="title">Videos</div>
+  
+      <div class="container">
+        <div class="box" *ngFor="let videos of filterVideos()">
+          <a [href]="'/config/' + videos.path">
+            <div class="option_container">
+              <mat-icon class="icon">{{ videos.icon }}</mat-icon>
+              <span>{{ videos.descripcion }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
   
     </mat-card-content>
   </mat-card>

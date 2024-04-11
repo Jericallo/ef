@@ -84,7 +84,8 @@
           <div class="celdas internas" style="flex: 1;">{{row.content.nombre}}</div>  
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
-          <div class="celdas internas" style="flex: 1; white-space: wrap;" contenteditable (input)="onFieldEdit($event)">{{row.content.descripcion}}</div>
+          <div class="celdas internas" style="flex: 1; white-space: wrap;" contenteditable (input)="onFieldEdit($event, row)">{{row.content.descripcion}}</div>
+          <div class="celdas internas" style="flex: 1; white-space: wrap;">{{parseDate(row.content.modificadoAl) | date:'dd/MMM/yy'}} a las {{parseDate(row.content.modificadoAl) | date:'HH:mm'}}</div>
 
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
@@ -464,96 +465,96 @@
         <div class="container" style="flex-direction: column;">
           <div class="celdas" style="height: 2.50vh; min-height: 23.5px;">Correlación con otros sectores del escudo fiscal</div>
           <div class="celdas" style="height: 2vh; min-height: 18.8px; display: flex; flex-direction: row;">
-            <div class="celdas" style="flex: 5;">Correlación con inicio</div>
+            <div class="celdas celdasAzules" style="flex: 5;">Correlación con inicio</div>
             <!-- <div class="celdas" style="flex: 2;">... con cumplimiento</div> -->
-            <div class="celdas" style="flex: 18;">... con capacitación</div>
-            <div class="celdas" style="flex: 6;">... con capacitación de grado académico</div>
-            <div class="celdas" style="flex: 6;">... con control</div>
+            <div class="celdas celdasVerdes" style="flex: 18;">... con capacitación</div>
+            <div class="celdas celdasVerdes" style="flex: 6;">... con capacitación de grado académico</div>
+            <div class="celdas celdasVerdes" style="flex: 6;">... con control</div>
             <div class="celdas" style="flex: 7;">... con Usuarios y sus semáforos</div>
             <div class="celdas" style="flex: 3;">... con Pérdida o prescripción de</div>
-            <div class="celdas" style="flex: 14;">... con Precaución</div>
+            <div class="celdas celdasRojas" style="flex: 14;">... con Precaución</div>
           </div>
           
           <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
-            <div class="celdas" style="flex: 1;">Incentivos</div>
-            <div class="celdas" style="flex: 1;">Leyes</div>
-            <div class="celdas" style="flex: 1;">Temario</div>        
-            <div class="celdas" style="flex: 1;">Búsqueda</div>   
-            <div class="celdas" style="flex: 1;">Números</div>   
+            <div class="celdas celdasAzules" style="flex: 1;">Incentivos</div>
+            <div class="celdas celdasAzules" style="flex: 1;">Leyes</div>
+            <div class="celdas celdasAzules" style="flex: 1;">Temario</div>        
+            <div class="celdas celdasAzules" style="flex: 1;">Búsqueda</div>   
+            <div class="celdas celdasAzules" style="flex: 1;">Números</div>   
 
             <!-- <div class="celdas" style="flex: 1;">Impuestos</div>      
             <div class="celdas" style="flex: 1;">Documentación</div>       -->
 
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Textos</div>
+              <div class="celdas celdasVerdes">Textos</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Caso práctico</div>
+              <div class="celdas celdasVerdes">Caso práctico</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Preguntas frecuentes</div>
+              <div class="celdas celdasVerdes">Preguntas frecuentes</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">1 minuto</div>
+              <div class="celdas celdasVerdes">1 minuto</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">5 minutos</div>
+              <div class="celdas celdasVerdes">5 minutos</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">15 minutos</div>
+              <div class="celdas celdasVerdes">15 minutos</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">30 minutos</div>
+              <div class="celdas celdasVerdes">30 minutos</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">60 minutos</div>
+            <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasVerdes">60 minutos</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Preguntas de examen</div>
+            <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasVerdes">Preguntas de examen</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
 
@@ -561,48 +562,48 @@
 
 
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Diplomado</div>
+              <div class="celdas celdasVerdes">Diplomado</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Especialidad</div>
+              <div class="celdas celdasVerdes">Especialidad</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Maestría</div>
+            <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasVerdes">Maestría</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>
 
 
 
     
-            <div class="celdas" style="flex: 2;">Ayuda</div>    
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Dictamen</div>
+            <div class="celdas celdasVerdes" style="flex: 2;">Ayuda</div>    
+            <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasVerdes">Dictamen</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div>      
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas">Semáforo</div>
+            <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasVerdes">Semáforo</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div> 
 
@@ -626,60 +627,60 @@
 
 
 
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas" style="font-size: smaller;">Protocolo de respuesta al sat</div>
+            <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasRojas" style="font-size: smaller;">Protocolo de respuesta al sat</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div> 
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas" style="font-size: smaller;">Inconsistencias</div>
+            <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasRojas" style="font-size: smaller;">Inconsistencias</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div> 
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas" style="font-size: smaller;">Multas y actualización</div>
+            <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasRojas" style="font-size: smaller;">Multas y actualización</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div> 
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas" style="font-size: smaller;">Sanciones genéricas </div>
+            <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasRojas" style="font-size: smaller;">Sanciones genéricas </div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div> 
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas" style="font-size: smaller;">Facultades, fiscalización y </div>
+            <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasRojas" style="font-size: smaller;">Facultades, fiscalización y </div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div> 
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas" style="font-size: smaller;">Sanciones penales a empresa</div>
+            <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasRojas" style="font-size: smaller;">Sanciones penales a empresa</div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div> 
-            <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
-              <div class="celdas" style="font-size: smaller;">Sanciones penales a persona </div>
+            <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
+              <div class="celdas celdasRojas" style="font-size: smaller;">Sanciones penales a persona </div>
               <div style="display: flex; flex-direction: row; height: 41px">
-                <div class="celdas" style="font-size: x-small; flex: 1;">link</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
-                <div class="celdas" style="font-size: x-small; flex: 1;">Actualizado el</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
+                <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
               </div>
             </div> 
 
@@ -858,9 +859,10 @@
 
 </div>
 
+<div *ngIf="universalRow !== null">
 <div style="position: fixed; 
 top:130px; left: 390px; 
-width: 50%; z-index: 4; 
+width: 50%; z-index: 400; 
 max-height: 80vh; 
 background-color: white; 
 padding: 10px; 
@@ -873,7 +875,8 @@ border-radius: 10px; overflow:scroll;"
   (sendingParagraphs) = "parRecieved($event)"
   (sendingDeleted) = "delArtRecieved($event)"
   (closingPanel)="closePanel($event)" 
-  [articlesPrevRelated]="universalrow.content.leyes"></app-search-document-and-paragraph> 
+  [articlesPrevRelated]="universalRow.content.leyes"></app-search-document-and-paragraph> 
+</div>
 </div>
 
 <div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 4;">

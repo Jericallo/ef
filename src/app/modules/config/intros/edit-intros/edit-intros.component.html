@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Editar intro</h2>
+<mat-dialog-content>
+    <div class="grid-container">
+        <div class="grid-item">
+            <mat-form-field>
+                <input matInput required placeholder="Nombre" [(ngModel)]="title">
+            </mat-form-field>
+        </div>
+        <div class="grid-item">
+            <h4 mat-dialog-title>Subir video</h4>
+            <input type="file" (change)="seleccionarArchivo($event)" accept=".mp4">
+        </div>
+        <div class="grid-item">
+            <h4 mat-dialog-title>Subir miniatura</h4>
+            <div class="grid-item">
+                <input type="file" (change)="seleccionarImagen($event)" accept=".jpg, .jpeg, .png">
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button mat-button color="primary" (click)="addVideo()">{{textButton}}</button>
+</mat-dialog-actions>

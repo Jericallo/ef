@@ -38,7 +38,6 @@ export class ProfilesComponent implements OnInit {
     this.getPermissions()
   }
 
-
   getProfiles(){
     this.apiService.getProfiles().subscribe({
       next:res => {

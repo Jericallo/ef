@@ -37,6 +37,23 @@
   font-size: small;
 }
 
+.celdasAzules {
+  background-color: #177cff;
+  border-color: #1f0e81;
+  color: white;
+}
+
+.celdasVerdes {
+  background-color: lawngreen;
+  border-color: #0e8118;
+}
+
+.celdasRojas {
+  background-color: rgb(181, 0, 0);
+  border-color: #810e0e;
+  color: white;
+}
+
 .fixed-column {
   height: 100% !important;
 }

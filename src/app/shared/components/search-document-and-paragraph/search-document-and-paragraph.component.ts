@@ -61,6 +61,7 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.articlesPrevRelated)
     this.filteredDocOptions = this.myControlDocuments.valueChanges.pipe(
       startWith(''),debounceTime(300),
       map(value => {

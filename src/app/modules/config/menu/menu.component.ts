@@ -92,8 +92,39 @@ export class MenuComponent implements OnInit {
       descripcion: 'Días Festivos',
       path: 'festive-days'
     },
-
   ];
+
+  control: any[] = [
+    {
+      icon: 'alarm',
+      descripcion: 'Capacitaciones',
+      path: 'capacitations-table'
+    },
+  ]
+
+  videos: any[] = [
+    {
+      icon: 'store',
+      descripcion: 'Promocionales',
+      path: 'promotionals'
+    },
+    {
+      icon: 'book',
+      descripcion: 'Intros',
+      path: 'intro-videos'
+    },
+    {
+      icon: 'linked_camera',
+      descripcion: 'Noticias',
+      path: 'news-videos'
+    },
+    {
+      icon: 'build',
+      descripcion: 'Capacitaciones',
+      path: 'capacitations-videos'
+    },
+  ]
+  
 
   filterUsuarios() {
     const searchTermLower = this.searchTerm.toLowerCase();
@@ -128,6 +159,27 @@ export class MenuComponent implements OnInit {
     }
   }
   
+  filterVideos() {
+    const searchTermLower = this.searchTerm.toLowerCase();
+    if (searchTermLower.includes('videos')) {
+      return this.videos;
+    } else {
+      return this.videos.filter(videos =>
+        videos.descripcion.toLowerCase().includes(searchTermLower)
+      );
+    }
+  }
+
+  filterControl() {
+    const searchTermLower = this.searchTerm.toLowerCase();
+    if (searchTermLower.includes('control')) {
+      return this.control;
+    } else {
+      return this.control.filter(control =>
+        control.descripcion.toLowerCase().includes(searchTermLower)
+      );
+    }
+  }
   
   
 

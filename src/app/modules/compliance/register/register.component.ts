@@ -12,6 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -73,7 +74,10 @@ export class RegisterComponent implements OnInit {
 
   public date_1 = new Date()
 
-  constructor(private apiService:ApiService, public dialog: MatDialog) {}
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  config_snack = { duration: 3000,verticalPosition: this.verticalPosition}
+
+  constructor(private apiService:ApiService, public dialog: MatDialog, public snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     
@@ -93,16 +97,17 @@ export class RegisterComponent implements OnInit {
     this.apiService.getCumplimientos(firstDay.getTime(), lastDay.getTime()).subscribe({
       next: res => {
         //res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        console.log(res.result)
         this.dataSource.data = []
         let rows = []
         res.forEach((element) => {
           const row = { 
             content:{
               id_cumplimiento:element.id,
+              id_obligacion: element.obligations.id,
               color:'',
 
               descripcion:element.obligations.descripcion,
+              modificadoAl:element.obligations.modified_at,
               nombre:element.obligations.nombre,
               fecha_cumplimiento: element.fecha_cumplimiento,
               switch:false ,
@@ -136,6 +141,8 @@ export class RegisterComponent implements OnInit {
 
               se_cumplio:'',
               fecha_cumplio:'',
+
+              leyes:element.obligations.obligations_articles
             },
             backup:{
               id_cumplimiento:element.id,
@@ -181,7 +188,6 @@ export class RegisterComponent implements OnInit {
           row.content.urgent_date_start_date = new Date(parseInt(row.content.urgent_date_start))
           row.content.urgent_date_end_date = new Date(parseInt(row.content.urgent_date_end))
 
-          console.log(this.date_1, new Date(parseInt(row.content.idel_date_start)))
           if(row.content.prioridad === 1){
             row.content.prioridad = 'Alta';
             row.backup.prioridad = row.content.prioridad;
@@ -192,9 +198,9 @@ export class RegisterComponent implements OnInit {
             row.content.prioridad = 'Media'
             row.backup.prioridad = row.content.prioridad
           }
-          console.log('ROW', row)
           rows.push(row)
         })
+        this.universalRow = rows[0]
         this.dataSource.data = rows
       },
       error: err => {
@@ -434,6 +440,7 @@ export class RegisterComponent implements OnInit {
   //---------------------------------------FOR CORRELATION WITH ARTICLES--------------------------------------//
 
   openArticleRef(row:any){
+    console.log(this.universalRow)
     this.universalRow = row
     console.log(this.universalRow)
     if(this.isShownComponent == true){
@@ -868,10 +875,25 @@ export class RegisterComponent implements OnInit {
 
   //---------------------------------------FOR MODIFICATIONS OF DESCRIPTION------------------------------//
 
-  onFieldEdit(event: any) {
-    // Aquí puedes manejar la edición del campo
-    const nuevoValor = event.target.textContent; // Obtiene el nuevo valor editado
-    console.log("Nuevo valor:", nuevoValor, 'Actualizado al:', new Date());
-    // Aquí puedes realizar cualquier acción que desees con el nuevo valor
+  onFieldEdit( event: any, row: any ) {
+    const body = {
+      id: row.content.id_obligacion,
+      descripcion: event.target.textContent
+    }
+    this.apiService.putObligations(body).subscribe({
+      next: res => {
+        console.log(res)
+      }, error: err => {
+        this.snackBar.open('Ha ocurrido un error al actualizar la descripción', '', this.config_snack);
+      }
+    })
+    console.log("BODY", body);
+  }
+
+  parseDate ( date:string ) {
+    const fecha = Date.parse(date)
+    const fecha2 = new Date(fecha)
+
+    return fecha2
   }
 }

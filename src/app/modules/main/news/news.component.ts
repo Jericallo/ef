@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, LOCALE_ID } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import * as moment from 'moment';
 import { trigger, state, style, animate, transition, AnimationEvent } from '@angular/animations';
@@ -20,6 +20,8 @@ export class NewsComponent implements OnInit {
   @ViewChild('noticia', {static:true}) noticia:ElementRef
   @ViewChild('scrollElement') scrollElement: ElementRef;
 
+  isLoading = false
+
   numVideo = 0;
   mytimelines: any[] = []; // Aquí se declara mytimelines como un arreglo vacío
   idIntVideo = null;
@@ -34,56 +36,47 @@ export class NewsComponent implements OnInit {
   }
 
   
-  playNew(obj: any, vieoSeleccionao = -1) {
-    if(typeof obj === "undefined"){
-      return
-    }
-    this.mytimelines.forEach(mtl => {mtl.selected = false;});
-    obj.selected=true;
-    this.noticia.nativeElement.src = obj.video.url;
-    this.noticia.nativeElement.muted = false;
-    this.noticia.nativeElement.load();
-    this.noticia.nativeElement.play();
-
-    if(vieoSeleccionao !== -1){
-      this.videoDeInicio = vieoSeleccionao
-    }
-
-    /*if(this.idIntVideo !== null){
-      clearInterval(this.idIntVideo); this.idIntVideo = null;
-    }
-    console.log(numVideo)
-    this.idIntVideo = setInterval(()=>{
-      clearInterval(this.idIntVideo);
-      console.log(numVideo)
-      if(this.noticia.nativeElement.ended || this.noticia.nativeElement.src == 'http://localhost:4200/null'){
-        console.log('ended');
-        if(numVideo < 12){
-          if(numVideo === 0) window.location.href = '/compliance/index'
-          else numVideo--;
-        }else numVideo = numVideo + 1;
-        this.noticia.nativeElement.src = this.mytimelines[numVideo].video.url
-        this.noticia.nativeElement.load()
-        this.noticia.nativeElement.play()
+  async playNew(obj: any, vieoSeleccionao = -1) {
+    this.isLoading = true
+    try{
+      if(typeof obj === "undefined"){
+        return
       }
-    },1000);*/
+      let url = ''
+      const partes = obj.filename.split('.')
+      const name = partes[0]
+      const res = await this.apiService.watch(name)
+      url = URL.createObjectURL(res)
+      obj.address = url
+  
+      this.mytimelines.forEach(mtl => {mtl.selected = false;});
+      obj.selected=true;
+      this.noticia.nativeElement.src = obj.address;
+      this.noticia.nativeElement.muted = false;
+      this.noticia.nativeElement.load();
+      this.noticia.nativeElement.play();
+  
+      if(vieoSeleccionao !== -1){
+        this.videoDeInicio = vieoSeleccionao
+      }
+      this.isLoading = false
+    } catch (error) {
+      this.isLoading = false
+    }
   }
 
   get(){
-    this.apiService.getAll(this.apiService.MODELS.news,'','',12).subscribe({
+    this.isLoading = true
+    this.apiService.getNews().subscribe({
       next:(res)=>{
-        res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
-        if(res.status == "OK"){
-          res.result.sort(this.compararPorFecha)
-          res.result.forEach(res => {
-            res.fecha = (moment(res.fecha * 60000).format('MMMM/YYYY')).toUpperCase();
-          });
-          this.mytimelines = res.result;
-          console.log(this.mytimelines)
-          if(this.mytimelines.length > 0) this.playNew(this.mytimelines[11]);
-        }
+        this.isLoading = false
+        res.result = res.result.reverse()
+        this.mytimelines = res.result;
+        console.log(this.mytimelines)
+        if(this.mytimelines.length > 0) this.playNew(this.mytimelines[11]);
       }, error:(err)=>{
         console.log(this.apiService.decrypt(err.error.message, 'private'))
+        this.isLoading = false
       }
     });
   }
@@ -117,6 +110,22 @@ export class NewsComponent implements OnInit {
     
     this.videoDeInicio--;
     this.playNew(this.mytimelines[this.videoDeInicio]);
+  }
+
+  formatDate(date:string){
+    const fecha = new Date(parseInt(date))
+    console.log(fecha)
+    const mes = fecha.toLocaleString('default', {month:'short'})
+    const anio = fecha.getFullYear().toString().slice(-2);
+    return `${mes}/${anio}`
+  }
+
+  formatDateLong(date:string){
+    const fecha = new Date(parseInt(date))
+    console.log(fecha)
+    const mes = fecha.toLocaleString('default', {month:'long'})
+    const anio = fecha.getFullYear().toString().slice(-2);
+    return `${mes}/${anio}`
   }
 
 }

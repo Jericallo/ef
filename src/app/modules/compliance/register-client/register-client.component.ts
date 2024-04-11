@@ -164,6 +164,8 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     let fechaMinima = element.ideal_date_start
     let fechaIdeal = element.close_date_start
 
+    const fechaHoy = new Date().getTime()
+
     if((element.completado === 1 || element.completado === 2) && fechaCumplimiento !== null) {
       if(fechaCumplimiento.toString() === fechaColumna.toString()) return '#ffcc0c'
       if(fechaCumplimiento.toString() <= fechaColumna.toString()) return 'transparent'
@@ -180,7 +182,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
       if(fechaColumna.toString() >= (fechaIdeal).toString()) return 'red'
       else return '#ffcc0c'
     } else if(fechaMaxima.toString() === fechaColumna.toString()) return 'red'
-     else if(fechaMaxima.toString() < fechaColumna.toString()) return 'transparent'
+     else if(fechaMaxima.toString() < fechaColumna.toString() && fechaColumna.toString() <= fechaHoy.toString()) return 'red'
   }
 
   isColumn(column : any, element : any){
@@ -205,11 +207,12 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     this.clearHoverTimer()
     const user = this.apiService.getWholeUser()
 
+    console.log(user)
+
     if(user.nombre_perfil !== 'Supervisor'){
       if(cumplimiento.completado !== 0) return
-      if(day > cumplimiento.urgent_date_end || day < cumplimiento.ideal_date_start) return
+      //if(day > cumplimiento.urgent_date_end || day < cumplimiento.ideal_date_start) return
     }
-
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
       width: '800px',
       height: '170px',
@@ -309,18 +312,16 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     if(fechaColumna >= fechaInicioCumplimientoIdeal && fechaColumna < fechaInicioCumplimientoIdealFin) return 'Periodo ideal para iniciar el cumplimiento'
     if(fechaColumna >= fechaInicio && fechaColumna < fechaInicioFin) return 'Periodo ideal para terminar el cumplimiento'
     if(fechaColumna >= fechaIdeal && fechaColumna < fechaIdealFin) return 'Periodo para cumplirlo con vencimiento próximo'
-    if(fechaColumna >= fechaMaxima && fechaColumna < fechaMaximaFin) return 'Periodo para cumplirlo muy urgente'
+    if(fechaColumna >= fechaMaxima && fechaColumna <= fechaMaximaFin) return 'Periodo para cumplirlo muy urgente'
   }
 
   startHoverTimer(element: any, column: number) {
-    console.log(element)
     this.hoverTimer = setTimeout(() => {
         this.prueba(element, column);
     }, 2500); // 2500 ms = 2.5 segundos
   }
 
   clearHoverTimer() {
-    console.log(this.showTooltip)
     if(this.showTooltip){
       this.clearAll()
     } else {
@@ -338,7 +339,6 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
     const fechaColumn = new Date(parseInt(cadena));
     const fechaHoy = new Date();
-    console.log(fechaColumn, fechaHoy, column)
     if (
         fechaColumn.getFullYear() === fechaHoy.getFullYear() &&
         fechaColumn.getMonth() === fechaHoy.getMonth() &&
