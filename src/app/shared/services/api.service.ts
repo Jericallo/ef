@@ -346,6 +346,30 @@ export class ApiService {
     }
   }
 
+  public getUnreadNotifications(){
+    if(localStorage['ef_notifications_unread']){
+      let res = JSON.parse(localStorage.getItem('ef_notifications_unread' || '{[]}'))
+      return res
+    }
+  }
+
+  public getUnreadNotificationsAmmount(){
+    if(localStorage['ef_notifications_unread_ammount']){
+      let res = JSON.parse(localStorage.getItem('ef_notifications_unread_ammount' || '0'))
+      return res
+    } else{
+      return '0'
+    }
+  }
+
+  public postUnreadNotificationsAmmount(ammount:number) {
+    localStorage.setItem('ef_notifications_unread_ammount', ammount.toString())
+  }
+
+  public postUnreadNotifications(object:any) {
+    localStorage.setItem('ef_notifications_unread', JSON.stringify(object))
+  }
+
   public getPrivateKey(){
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
@@ -632,16 +656,6 @@ export class ApiService {
     return this.http.get(url ,{params:params,headers:headers});
   }
 
-  public relateCumplimientoArticulo(body, ext):Observable<any>{
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
-    });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/' + ext
-    const encryptedBody = this.encrypt(body,'private')
-    return this.http.post(url, {text:encryptedBody},{headers:headers});  
-  }
-
   public getArticleById(id):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
@@ -658,16 +672,6 @@ export class ApiService {
     });
     const url = 'https://api.escudofiscal.alphadev.io/v1/temario'
     return this.http.get(url, {headers:headers});  
-  }
-
-  public relateCumplimientoTopics(body):Observable<any>{
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
-    });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_temario'
-    const encryptedBody = this.encrypt(body,'private')
-    return this.http.post(url, {text:encryptedBody},{headers:headers});  
   }
 
   public relateCumplimientoDocumentaciones(body):Observable<any>{
@@ -698,18 +702,6 @@ export class ApiService {
     const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_capacitaciones'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.post(url, {text:encryptedBody},{headers:headers});  
-  }
-
-  public deleteCumplimientoArticulo(body):Observable<any>{
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
-    });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_articulos'
-    console.log('BODY', body)
-    const encryptedBody = this.encrypt(body,'private')
-    return this.http.request('delete', url, {body:{text:encryptedBody}, headers:headers, observe:'response'}, );
-    //return this.http.delete(url, {data: {text:encryptedBody}}, headers: headers});  
   }
 
   public getParapgraphs(id_articulo):Observable<any>{
@@ -938,6 +930,51 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
+  public postModules(body:any):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/module'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, body, {headers:headers})
+  }
+
+  public putModules(body:any):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/module'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, {headers:headers})
+  }
+
+  public putPerfilesModulos(body:any):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/perfiles_modulos'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, {headers:headers})
+  }
+
+  public addProfileModulos(body:any):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/module/add_profile'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, {headers:headers})
+  }
+
+  public deleteProfileModule(body:any):Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/module/delete_profile'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, {headers:headers})
+  }
+
   //ENDPOINTS PARA CUMPLIMIENTO CONTROL
 
   public getCumplimientos(start:number, end:number):Observable<any>{
@@ -957,6 +994,15 @@ export class ApiService {
     body = JSON.stringify(body)
     const url = 'https://api.escudofiscal.alphadev.io/v2/task'
     return this.http.put(url, body,{headers:headers});  
+  }
+
+  public getMissing():Observable<any>{
+    const url = 'https://api.escudofiscal.alphadev.io/v2/task/uncompleted_tasks'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
   }
 
   //ENDPOINTS PARA LOS DÍAS FESTIVOS
@@ -1057,6 +1103,15 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
+  public getAllVideos():Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/video'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
   public getNews():Observable<any> {
     const url = 'https://api.escudofiscal.alphadev.io/v2/video?category=news&orderby=date:desc&limit=12'
     let headers = new HttpHeaders({
@@ -1138,5 +1193,86 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     return this.http.delete(url, {headers:headers})
+  }
+
+  public postQuestionAndAnswer(body:any):Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/questionarie'
+    let headers = new HttpHeaders({
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, body, {headers:headers})
+  }
+
+  public getQuestionAndAnswer(id:number):Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/questionarie/' + id
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public putQuestionAndAnswer(body:any):Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/questionarie'
+    let headers = new HttpHeaders({
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, {headers:headers})
+  }
+
+  //ENDPOINTS PARA LIGAR OBLIGACIONES CON COSAS
+
+  public relateCumplimientoArticulo(body:any):Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/add_articles'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, {headers:headers})
+  }
+
+  public deleteCumplimientoArticulo(body:any):Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/delete_articles'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.delete(url, { headers: headers, body: body });  
+  }
+
+  public relateCumplimientoParrafo(body:any):Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/add_paragraphs'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, body, {headers:headers})
+  }
+
+  public deleteCumplimientoParrafo(body:any):Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/delete_paragraphs'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.delete(url, { headers: headers, body: body });  
+  }
+
+  public relateCumplimientoTopics(body):Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/add_subjects'
+    return this.http.put(url, body,{headers:headers});  
+  }
+
+  public deleteCumplimientoTopics(body:any):Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/delete_subjects'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.delete(url, { headers: headers, body: body });  
   }
 }

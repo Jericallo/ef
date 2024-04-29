@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { IndexComponent } from './index/index.component';
 import { RegisterComponent } from './register/register.component';
 import { RegisterClientComponent } from './register-client/register-client.component';
+import { ProfileGuard } from 'src/app/shared/services/profile.guard';
 
 export const CompilanceRoutes: Routes = [
     {
@@ -25,7 +26,8 @@ export const CompilanceRoutes: Routes = [
                     urls: [
                         { title: 'Registro' }
                     ]
-                }
+                },
+                canActivate:[ProfileGuard]
             },
             {
                 path:'register-client',

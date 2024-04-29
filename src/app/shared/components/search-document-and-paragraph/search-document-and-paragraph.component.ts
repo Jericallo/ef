@@ -22,9 +22,11 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
 
   @Output() sendingArticles = new EventEmitter<string[]>();
   @Output() sendingParagraphs = new EventEmitter<string[]>();
-  @Output() sendingDeleted = new EventEmitter<string[]>();
+  @Output() sendingDeleted = new EventEmitter<number[]>();
+  @Output() sendingDeletedParagraphs = new EventEmitter<number[]>();
   @Output() closingPanel = new EventEmitter<boolean>();
   @Input() articlesPrevRelated = [];
+  @Input() parragraphsPrevRelated = [];
 
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
@@ -235,23 +237,6 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
     }
     this.sendingArticles.emit(this.selectedArtOptions);
     this.sendingParagraphs.emit(this.selectedParOptions);
-    
-    let emitiing = []
-    if(this.articlesPrevRelated.length === 0 ){
-      
-    }
-    this.articlesPrevRelated.forEach((element) => {
-      let bandera = false
-      this.selectedDelOptions.forEach((element2) => {
-        if(element.id === element2.id){
-          bandera = true;
-        }
-      })
-      if(!bandera){
-        emitiing.push(element.id)
-      }
-    })
-    this.sendingDeleted.emit(emitiing);
     this.closingPanel.emit(true);
   }
 
@@ -265,6 +250,18 @@ export class SearchDocumentAndParagraphComponent implements OnInit {
     }else{
       return true;
     }
+  }
+
+  deleteArticle(id:number, index:number) {
+    this.sendingDeleted.emit([id])
+
+    this.articlesPrevRelated.splice(index,1)
+  }
+
+  deleteParragraph(id:number, index:number) {
+    this.sendingDeletedParagraphs.emit([id])
+
+    this.parragraphsPrevRelated.splice(index,1)
   }
 
   isActiveRelation(){

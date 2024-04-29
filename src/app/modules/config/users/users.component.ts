@@ -23,11 +23,11 @@ export class UsersComponent implements OnInit {
 
   dataSource!: MatTableDataSource<any>;
   usersList = []
-  columnsToDisplay = ['id','nombre', 'correo','telefono', 'acciones'];
+  columnsToDisplay = ['nombre', 'perfil', 'correo','telefono', 'acciones'];
 
   columnNames = {
-    id: '#',
-    nombre: 'Nombre',
+    nombre: 'Nombre',   
+    perfil: 'Perfil',
     correo: 'Correo',     
     telefono: 'Telefono',
     acciones: 'Acciones'

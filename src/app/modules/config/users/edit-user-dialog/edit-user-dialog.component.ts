@@ -18,7 +18,8 @@ interface Usuario {
   styleUrls: ['./edit-user-dialog.component.scss']
 })
 export class EditUserDialogComponent implements OnInit {
-
+  perfiles = []
+  selectedOption: number = 1
 
   editedUser: Usuario = {
     id_perfil: 1, 
@@ -41,6 +42,30 @@ export class EditUserDialogComponent implements OnInit {
      }
 
   ngOnInit(): void {
+    this.getProfiles()
+    
+  }
+
+  getProfiles(){
+    this.apiService.getProfiles().subscribe(
+      (response) => {
+        console.log('Perfiles', response);
+        this.perfiles = response
+        this.selectProfile()
+      },
+      (error) => {
+        console.error('Error al agregar el usuario', error);
+      }
+    );
+  }
+
+  selectProfile() {
+
+      if (this.editedUser && this.perfiles) {
+        console.log('seleccionando...')
+        this.selectedOption = this.editedUser.id_perfil;
+      }
+
   }
 
   cancel(): void {

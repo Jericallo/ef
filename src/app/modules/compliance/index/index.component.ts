@@ -16,6 +16,7 @@ import localeEs from '@angular/common/locales/es';
 import { ModalCalendarDayComponent } from './modal-calendar-day/modal-calendar-day.component';
 import { MousePositionService } from './mouse-position.service';
 import { ModalDataService } from './modal-data.service';
+import { MatTooltip } from '@angular/material/tooltip';
 
 registerLocaleData(localeEs);
 
@@ -72,6 +73,13 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('scrollElement') scrollElement: ElementRef;
   @ViewChild('scrollCalendar') scrollCalendar: ElementRef;
 
+  @ViewChild('toolTip1', {static:false}) tooltip1: MatTooltip;
+  @ViewChild('toolTip2', {static:false}) tooltip2: MatTooltip;  
+  @ViewChild('toolTip3', {static:false}) tooltip3: MatTooltip;
+  @ViewChild('toolTip4', {static:false}) tooltip4: MatTooltip;
+  @ViewChild('toolTip5', {static:false}) tooltip5: MatTooltip;
+  @ViewChild('toolTip6', {static:false}) tooltip6: MatTooltip;
+
   locale: string = "es";
 
   messageReceived = '';
@@ -108,6 +116,8 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   viewDate: Date = new Date();
 
   sendableDate: Date = new Date();
+
+  showToolTip = true
 
   d = new Date()
   month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -288,7 +298,11 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.apiService.getCumplimientos(firstDay.getTime(), lastDay.getTime()).subscribe({
       next: res => {
-        this.cumplimientos = res;
+        this.cumplimientos = res.tasks;
+        this.cumplimientos = this.cumplimientos.concat(res.overdue_tasks)
+        this.cumplimientos.forEach(element => {
+          element.obligations.respaldo =''
+        });
         this.cdr.detectChanges();
       }
     });
@@ -446,6 +460,17 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         return contador;
+
+      //---------------------------------------------//
+      //----------------ROJO SÓLIDO------------------//
+      //---------------------------------------------//
+
+      case 7:
+        for (const objeto of this.cumplimientos) {
+          if(objeto.completado === 0 && milis > objeto.urgent_date_end && milis <= Date.now().toString())
+            contador ++
+        }
+        return contador
         
       default:
         return 0
@@ -536,7 +561,6 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
     let fechaColumna = column;
     let fechaCumplimiento = element.fecha_completado
 
-    console.log(element)
 
     //****NUEVA FORMA****//
 
@@ -650,5 +674,25 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   scrollToTop(): void {
     this.scrollToTopPending = true;
+  }
+
+  hoverTimer: any;
+
+  async startHoverTimer(mode:number) {
+    this.hoverTimer = setTimeout(async () => {
+      this.overrideBackup(mode)
+    }, 2500); // 2500 ms = 2.5 segundos
+  }
+
+  clearHoverTimer() {
+    clearTimeout(this.hoverTimer);
+    this.cumplimientos.forEach((element, index) => {
+      this.cumplimientos[index].obligations.respaldo =''
+    })
+  }
+
+  overrideBackup(index:number){
+    this.cumplimientos[index].obligations.respaldo = this.cumplimientos[index].obligations.descripcion
+    this.cdr.detectChanges();
   }
 }

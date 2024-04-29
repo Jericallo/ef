@@ -7,19 +7,6 @@
             </mat-form-field>
         </div>
         <div class="grid-item">
-            <mat-form-field>
-                <mat-label>Duración</mat-label>
-                <mat-select [(ngModel)]="length">
-                    <mat-option [value]="'min1'">1 minuto</mat-option>
-                    <mat-option [value]="'min5'">5 minutos</mat-option>
-                    <mat-option [value]="'min10'">10 minutos</mat-option>
-                    <mat-option [value]="'min15'">15 minutos</mat-option>
-                    <mat-option [value]="'min30'">30 minutos</mat-option>
-                    <mat-option [value]="'hour1'">60 minutos</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="grid-item">
             <h4 mat-dialog-title>Subir video</h4>
             <div class="grid-item">
                 <input type="file" (change)="seleccionarArchivo($event)" accept=".mp4">

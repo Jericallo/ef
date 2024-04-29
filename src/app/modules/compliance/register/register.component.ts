@@ -13,6 +13,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { V } from '@angular/cdk/keycodes';
+import { EditVideoComponent } from './edit-video/edit-video.component';
 
 @Component({
   selector: 'app-register',
@@ -24,9 +26,12 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 export class RegisterComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
-  dataSource = new MatTableDataSource()
+  //GLOBAL VARIABLES FOR YELLOW TABLE
+
+  dataSource = new MatTableDataSource([])
   displayedColumns: string[];
   fixedColumns: string[];
+  yellowColumns: string[];
   offset = 0
   derechaHabilitado = false
   izquierdaHabilitado = false
@@ -77,14 +82,56 @@ export class RegisterComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   config_snack = { duration: 3000,verticalPosition: this.verticalPosition}
 
+  //GLOBAR VARIABLES FOR BLUE TABLE
+
+  blueTableDataSource!:any;
+  videoList = []
+  blueColumnsToDisplay = ['numeros', 'modulo', 'contenido', 'link', 'column1', 'column2', 'column3', 'column4', 'column5', 'column6', 'column7', 'column8', 'column9', 'column10', 'column11', 'column12', 'column13', 'column14', 'column15', 'column16', 'column17', 'column18', 'column19', 'column20', ];
+
+  blueColumnNames = {
+    numeros: 'Números',
+    modulo: 'Módulo',
+    contenido: 'Contenido',
+    link:'Link',
+    column1: 'Columna 1',
+    column2: 'Columna 2',
+    column3: 'Columna 3',
+    column4: 'Columna 4',
+    column5: 'Columna 5',
+    column6: 'Columna 6',
+    column7: 'Columna 7',
+    column8: 'Columna 8',
+    column9: 'Columna 9',
+    column10: 'Columna 10',
+    column11: 'Columna 11',
+    column12: 'Columna 12',
+    column13: 'Columna 13',
+    column14: 'Columna 14',
+    column15: 'Columna 15',
+    column16: 'Columna 16',
+    column17: 'Columna 17',
+    column18: 'Columna 18',
+    column19: 'Columna 19',
+    column20: 'Columna 20',
+  };
+
+
+  //GLOBAL VARIABLES FOR PERMISSIONS TABLE
+
+  dataSourcePermissionTable:any
+  permissionsColumnsToDisplay = ['perfil', 'circulo_azul', 'intro', 'noticias', 'leyes', 'temario', 'busqueda', 'incentivos', 'numeros', 'obligacion', 'descripcion', 'impuestos', 'aplicaAlPunto', 'prioridad', 'periodoIdeal', 'periodoRecomendado', 'vencimientoProximo', 'muyUrgente', 'fechaMaxima', 'seCumplio', 'alertaDeLoOcurrido', 'comunicacion', 'documentacion', 'textos', 'casoPractico', 'preguntasFrecuentes', '1minuto', '5minutos', '15minutos', '30minutos', '60minutos', 'examen', 'diplomado', 'especialidad', 'maestria', 'ayuda', 'dictamen', 'semaforo', 'responsable1', 'responsable2', 'supervisor', 'supervisorGB', 'director', 'administrador', 'superadministrador', 'isr', 'iva', 'fiscales', 'respuestaSat', 'inconsistencias', 'multas', 'sancionesGenericas', 'facultades', 'sancionesEmpresa', 'sancionesPersona']
+  allModules =[]
+
   constructor(private apiService:ApiService, public dialog: MatDialog, public snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    
     this.create_table()
     this.getObligations()
+    this.getProfiles()
+    this.getModules()
     this.dataSource.sort = this.sort
-    }
+    
+  }
 
   getObligations(offset=0) {
     this.dataSource.data = []
@@ -97,9 +144,9 @@ export class RegisterComponent implements OnInit {
     this.apiService.getCumplimientos(firstDay.getTime(), lastDay.getTime()).subscribe({
       next: res => {
         //res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        this.dataSource.data = []
+        
         let rows = []
-        res.forEach((element) => {
+        res.tasks.forEach((element) => {
           const row = { 
             content:{
               id_cumplimiento:element.id,
@@ -142,7 +189,9 @@ export class RegisterComponent implements OnInit {
               se_cumplio:'',
               fecha_cumplio:'',
 
-              leyes:element.obligations.obligations_articles
+              leyes:element.obligations.obligations_articles,
+              parrafos:element.obligations.obligations_paragraphs,
+              temas:element.obligations.obligations_subjects
             },
             backup:{
               id_cumplimiento:element.id,
@@ -202,6 +251,7 @@ export class RegisterComponent implements OnInit {
         })
         this.universalRow = rows[0]
         this.dataSource.data = rows
+        this.getVideos()
       },
       error: err => {
         this.bandera = false
@@ -211,18 +261,160 @@ export class RegisterComponent implements OnInit {
 
   }
 
+  getModules() {
+    this.apiService.getModules().subscribe({
+      next:res => {
+        console.log(res)
+        this.allModules = res
+      }, error: err => {
+        console.error(err)
+      }
+    })
+  }
+
+  getProfiles(){
+    this.apiService.getProfiles().subscribe({
+      next:res => {
+        console.log(res)
+        this.dataSourcePermissionTable = res;
+      }
+    })
+  }
+
+  getVideos(){
+    this.apiService.getAllVideos().subscribe({
+      next: res => {
+        console.log(res.result)
+        let videos = res.result
+        videos.sort(this.compareByType)
+        videos = videos.filter(video => video.category !== 'trainning')
+        console.log(videos)
+
+        const data = []
+        const contadores = {promocional:0, intro:0, noticias:0}
+        videos.forEach((element, index) => {
+          let entrada = {numeros:index, id:element.id, modulo:'', contenido:element.nombre, link:element.address}
+          switch(element.category){
+            case 'promotional':
+              entrada.modulo = contadores.promocional === 0 ? 'Promocional' : 'Promocional'
+              contadores.promocional ++
+              break
+            case 'intro':
+              entrada.modulo = contadores.intro === 0 ? 'Intro' : 'Intro'
+              contadores.intro ++
+              break
+            case 'news':
+              entrada.modulo = contadores.noticias === 0 ? 'Noticias' : 'Noticias'
+              contadores.noticias ++
+              break
+            default:
+              entrada.modulo = 'Sin modulo'
+          }
+          data.push(entrada)
+        })
+
+        let textos = []
+        let cats = []
+        let urls = []
+        let ids = []
+
+        data.forEach((element, index) => {
+          if(index === 0) {
+            textos.push('!!MODULO!!' + element.modulo)
+            cats.push('')
+            urls.push('')
+            ids.push(-1)
+            textos.push(element.contenido)
+            cats.push(element.modulo)
+            urls.push(element.link)
+            ids.push(element.id)
+          } else if(data[index].modulo !== data[index-1].modulo){
+            textos.push('!!MODULO!!' + element.modulo)
+            cats.push('')
+            urls.push('')
+            ids.push(-1)
+            textos.push(element.contenido)
+            cats.push(element.modulo)
+            urls.push(element.link)
+            ids.push(element.id)
+          } else {
+            textos.push(element.contenido)
+            cats.push(element.modulo)
+            urls.push(element.link)
+            ids.push(element.id)
+          }
+        })
+        this.dataSource.data.forEach((element, index) => {
+          if(index < textos.length){
+            this.dataSource.data[index].content.columna_extra = textos[index]
+            this.dataSource.data[index].content.circulo_azul = cats[index] === 'Promocional' ? urls[index] : ''
+            this.dataSource.data[index].content.news = cats[index] === 'Noticias' ? urls[index] : ''
+            this.dataSource.data[index].content.intro = cats[index] === 'Intro' ? urls[index] : ''
+            this.dataSource.data[index].content.video_id_blue = ids[index]
+          } else {
+            this.dataSource.data[index].content.columna_extra = ''
+            this.dataSource.data[index].content.circulo_azul = ''
+            this.dataSource.data[index].content.news = ''
+            this.dataSource.data[index].content.intro = ''
+            this.dataSource.data[index].content.video_id_blue = ids[index]
+          }
+        });
+        console.log(this.dataSource.data)
+
+        this.blueTableDataSource = data
+        
+      }, error: err => {
+        console.error(err)
+      }
+    })
+  }
+
+  shave(input:string){
+    if(input.includes('!!MODULO!!')) return true
+    else return false
+  }
+
+  shaveAgain(input:string) {
+    return input.slice(10, input.length)
+  }
+
+  compareByType(a:any, b:any) {
+    const orderVideos = ['promotional','intro', 'news']
+    const indexA = orderVideos.indexOf(a.category)
+    const indexB = orderVideos.indexOf(b.category)
+
+    if (indexA < indexB) {
+      return -1; // a viene antes que b
+    } else if (indexA > indexB) {
+      return 1; // b viene antes que a
+    } else {
+      return 0; // a y b tienen el mismo índice, están en la misma posición en el orden
+    }
+  }
+
+  abrirVideo(link:string){
+    window.open(link, '_blank');
+  }
+
+  editVideo(id:number){
+    const dialogRef = this.dialog.open(EditVideoComponent, {
+      width: '600px',
+      data: { id }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getVideos()
+    });
+  }
+
   ngAfterViewInit() {
-    /*let intervalo = setInterval(() => {
-      console.log('LA BANDERA ES:',this.bandera)
-      if(this.bandera) {this.loadMoreData()}
-      else clearInterval(intervalo)
-    }, 2000);*/
   }
 
   create_table(){
     this.dataSource.data = [];
     this.displayedColumns = [];
-    this.fixedColumns = ['fixedColumn','fixedColumn2', 'fixedColumn3', 'fixedColumn4', 'fixedColumn9','fixedColumn5', 'fixedColumn7'];
+    this.fixedColumns = ['fixedColumn02','fixedColumn01','fixedColumn2', 'fixedColumn3', 'fixedColumn4', 'fixedColumn9','fixedColumn5', 'fixedColumn7'];
+    this.yellowColumns = ['fixedColumn', 'fixedColumn2']
+    //'fixedColumn',
     let rows = []
     for (let i = 1; i <= 1; i++) {
       const row = { 
@@ -468,8 +660,6 @@ export class RegisterComponent implements OnInit {
       console.log('vacio')
       return
     }
-    console.log(art)
-    console.log(this.universalRow.fixedColumn)
     art.length == 0 ? this.showResults = false : this.showResults = true;
     this.listOfArticles = Object.assign(art)
     let ides = []
@@ -479,23 +669,19 @@ export class RegisterComponent implements OnInit {
     let body = {}
 
     if(this.extArticulos == 'temporal'){
-      body = {data:{
-        arr_articulos:ides,
-        id_obligacion:this.universalRow.obligacion
-      }}
+      body = {
+        articles_ids:ides,
+        id_obligation:this.universalRow.content.id_obligacion
+      }
     } else {
-      body = {data:{
-        arr_articulos:ides,
-        id_cumplimiento:this.universalRow.fixedColumn
-      }}
+      body = {
+        articles_ids:ides,
+        id_obligation:this.universalRow.content.id_obligacion
+      }
     }
-    
-    console.log('CUERPO', body)
-
-    this.apiService.relateCumplimientoArticulo(body, this.extArticulos).subscribe({
+    this.apiService.relateCumplimientoArticulo(body).subscribe({
       next: res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
-        console.log('RESPONSE',res.result)
+        console.log('RESPONSE',res)
       },
       error: err => {
         this.bandera = false
@@ -505,8 +691,6 @@ export class RegisterComponent implements OnInit {
   }
 
   parRecieved(par:any[]){
-    console.log(par)
-    console.log(this.universalRow.fixedColumn)
     let ides = []
     par.forEach((element) => {
       ides.push(element.id)
@@ -514,20 +698,17 @@ export class RegisterComponent implements OnInit {
     let body = {}
 
     if(this.extArticulos == 'temporal'){
-      body = {data:{
-        arr_relacion_parrafos:ides,
-        id_obligacion:this.universalRow.obligacion
-      }}
+      body = {
+        paragraphs_ids:ides,
+        id_obligation:this.universalRow.content.id_obligacion
+      }
     } else {
       return
     }
-    
-    console.log('CUERPO', body)
-
-    this.apiService.relateCumplimientoArticulo(body, this.extArticulos).subscribe({
+    console.log(body)
+    this.apiService.relateCumplimientoParrafo(body).subscribe({
       next: res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
-        console.log('RESPONSE',res.result)
+        console.log('RESPONSE',res)
       },
       error: err => {
         this.bandera = false
@@ -542,20 +723,36 @@ export class RegisterComponent implements OnInit {
     }
     console.log('DELETED',del)
     const body = {
-      id_cumplimiento:this.universalRow.fixedColumn,
-      articulos: del
+      id_obligation:this.universalRow.content.id_obligacion,
+      articles_ids: del
     }
     console.log('BODY', body)
     this.apiService.deleteCumplimientoArticulo(body).subscribe({
-      next: res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
-        console.log('RESPONSE',res.result)
-      },
-      error: err => {
-        err = JSON.parse(this.apiService.decrypt(err.error.message, 'private'));
-        console.log('ERROR',err);
+      next:res => {
+        console.log(res)
+      }, error:err => {
+        console.log(err)
       }
-    });
+    })
+  }
+
+  delParRecieved(del:any[]){
+    if(del.length <1){
+      return
+    }
+    console.log('DELETED',del)
+    const body = {
+      id_obligation:this.universalRow.content.id_obligacion,
+      paragraphs_ids: del
+    }
+    console.log('BODY', body)
+    this.apiService.deleteCumplimientoParrafo(body).subscribe({
+      next:res => {
+        console.log(res)
+      }, error:err => {
+        console.log(err)
+      }
+    })
   }
 
   articleClicked(a:any){
@@ -568,30 +765,30 @@ export class RegisterComponent implements OnInit {
   //---------------------------------------FOR CORRELATION WITH TOPICS--------------------------------------//
 
   openTopicsRef(row:any){
+    this.universalRow = row
     if(this.isShownTopics == true){
       this.isShownTopics = false
     } else {
       this.isShownTopics = true
     }
 
-    this.universalRow = row
+    
     console.log(this.isShownTopics)
   }
 
   topicReceived(art: any[]) {
     console.log(art)
-    console.log(this.universalRow.fixedColumn)
+    console.log(this.universalRow.content.id_obligacion)
     this.listOfArticles = Object.assign(art)
-    const body = {data:{
-      arr_temario:art,
-      id_cumplimiento:this.universalRow.fixedColumn
-    }}
+    const body = {
+      subject_ids:art,
+      id_obligation:this.universalRow.content.id_obligacion
+    }
     console.log('CUERPO', body)
 
     this.apiService.relateCumplimientoTopics(body).subscribe({
       next: res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, 'private'));
-        console.log('RESPONSE',res.result)
+        console.log('RESPONSE',res)
         this.isShownTopics = false
       },
       error: err => {
@@ -599,6 +796,22 @@ export class RegisterComponent implements OnInit {
         console.log(err);
       }
     }); 
+  }
+
+  deleteTopic(top:any){
+    console.log(top)
+    const body = {
+      id_obligation:this.universalRow.content.id_obligacion,
+      subject_ids:[top]
+    }
+    this.apiService.deleteCumplimientoTopics(body).subscribe({
+      next: res => {
+        console.log('RESPONSE',res)
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
   }
 
   //---------------------------------------FOR CORRELATION WITH DOCUMENTATIONS--------------------------------------//
@@ -895,5 +1108,103 @@ export class RegisterComponent implements OnInit {
     const fecha2 = new Date(fecha)
 
     return fecha2
+  }
+
+  //---------------------------------------FOR MODIFICATIONS OF PERMISSIONS------------------------------//
+
+  editPermissions(permission:number, profileId:number, remove:boolean){
+    if(!remove){
+      const body = {
+        id_profile: profileId,
+        id_module: permission,
+        permissions: 'R-W-E'
+      }
+      this.apiService.addProfileModulos(body).subscribe({
+        next: res => {
+          console.log(res)
+          const index = this.allModules.findIndex((element) => element.id === permission)
+          const profileIndex = this.dataSourcePermissionTable.findIndex((element) => element.id === profileId)
+          const newModule = {
+            estatus:1,
+            fecha_creacion: res.new_module_profile.fecha_creacion,
+            fecha_modificacion:null,
+            id:res.new_module_profile.id,
+            id_modulo: permission,
+            id_perfil:profileId,
+            modulos:this.allModules[index]
+          }
+          console.log(this.dataSourcePermissionTable[profileIndex])
+          this.dataSourcePermissionTable[profileIndex].perfiles_modulos.push(newModule)
+        }, error: err => {
+          console.error(err)
+        }
+      })
+    } else {
+      const indexProfile = this.dataSourcePermissionTable.findIndex((element) => element.id === profileId)
+      const profileIndex = this.dataSourcePermissionTable[indexProfile].perfiles_modulos.findIndex((element:any) => element.id_modulo === permission)
+      const element = this.dataSourcePermissionTable[indexProfile].perfiles_modulos.find((element:any) => element.id_modulo === permission)
+      const id = element.id
+
+      const body = {
+        id: id
+      }
+
+      this.apiService.deleteProfileModule(body).subscribe({
+        next: res => {
+          console.log(res)
+          this.dataSourcePermissionTable[indexProfile].perfiles_modulos.splice(profileIndex, 1)
+        }, error: err => {
+          console.error
+        }
+      })
+    }
+  }
+
+  getPermission(permission:number, profileId:number) {
+    switch(permission){
+      case 1:
+        const index = this.dataSourcePermissionTable.findIndex((element:any) => element.id === profileId);
+        const element = this.dataSourcePermissionTable[index].perfiles_modulos.find((element:any) => element.modulos.nombre === 'Inicio')
+        if(element) return 'Si'
+        else return 'No'
+      case 2:
+        const index2 = this.dataSourcePermissionTable.findIndex((element:any) => element.id === profileId);
+        const element2 = this.dataSourcePermissionTable[index2].perfiles_modulos.find((element:any) => element.modulos.nombre === 'Intro')
+        if(element2) return 'Si'
+        else return 'No'
+      case 3:
+        const index3 = this.dataSourcePermissionTable.findIndex((element:any) => element.id === profileId);
+        const element3 = this.dataSourcePermissionTable[index3].perfiles_modulos.find((element:any) => element.modulos.nombre === 'Noticias')
+        if(element3) return 'Si'
+        else return 'No'
+      case 4:
+        const index4 = this.dataSourcePermissionTable.findIndex((element:any) => element.id === profileId);
+        const element4 = this.dataSourcePermissionTable[index4].perfiles_modulos.find((element:any) => element.modulos.nombre === 'Leyes')
+        if(element4) return 'Si'
+        else return 'No'
+      case 5:
+        const index5 = this.dataSourcePermissionTable.findIndex((element:any) => element.id === profileId);
+        const element5 = this.dataSourcePermissionTable[index5].perfiles_modulos.find((element:any) => element.modulos.nombre === 'Temario')
+        if(element5) return 'Si'
+        else return 'No'
+      case 6:
+        const index6 = this.dataSourcePermissionTable.findIndex((element:any) => element.id === profileId);
+        const element6 = this.dataSourcePermissionTable[index6].perfiles_modulos.find((element:any) => element.modulos.nombre === 'Busqueda')
+        if(element6) return 'Si'
+        else return 'No'
+      case 7:
+        const index7 = this.dataSourcePermissionTable.findIndex((element:any) => element.id === profileId);
+        const element7 = this.dataSourcePermissionTable[index7].perfiles_modulos.find((element:any) => element.modulos.nombre === 'Incentivos')
+        if(element7) return 'Si'
+        else return 'No'
+      case 8:
+        const index8 = this.dataSourcePermissionTable.findIndex((element:any) => element.id === profileId);
+        const element8 = this.dataSourcePermissionTable[index8].perfiles_modulos.find((element:any) => element.modulos.nombre === 'Numeros')
+        if(element8) return 'Si'
+        else return 'No'
+      default:
+        return 'No'
+      }
+    return "si"
   }
 }

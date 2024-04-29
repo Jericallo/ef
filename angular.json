@@ -39,8 +39,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/firebase-messaging-sw.js",
-              "src/manifest.json",
-              "src/firebase-messaging-sw.json"
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.scss",

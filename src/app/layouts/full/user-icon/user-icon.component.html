@@ -1,11 +1,24 @@
-<div class="button-container" (click)="toggleMenu()">
-    <i class="material-icons user-icon">person</i>
-    <div class="menu-container" [ngStyle]="{ 'display': isMenuOpen ? 'flex' : 'none' }">
-      <ul>
-        <li *ngIf="user.nombre_perfil === 'Administrador'"><a id="config" routerLink="/config/menu">Configuraciones</a></li>
-        <li><a id="profile" routerLink="/config/user-profile">Perfil</a></li>
-        <li><a id="logOut" (click)="logOut()">Salir</a></li>
-      </ul>
+<div class="button-container">
+  <i class="material-icons user-icon" (click)="toggleMenu()">person</i>
+  <div class="notification-bubble" *ngIf="notification_amount > 0">{{notification_amount}}</div>
+  <div class="menu-container" [ngStyle]="{ 'display': isMenuOpen ? 'flex' : 'none' }">
+    <ul>
+      <li *ngIf="user.nombre_perfil === 'Administrador de Global Business'"><a id="config" routerLink="/config/menu">Configuraciones</a></li>
+      <li>
+        <a id="notifications" (click)="toggleNotification()" [ngClass]="{'disabled-link': notifications.length === 0}">
+          Notificaciones
+        </a>
+      </li>
+      <li><a id="profile" routerLink="/config/user-profile">Perfil</a></li>
+      <li><a id="logOut" (click)="logOut()">Salir</a></li>
+    </ul>
+
+    <div class="notification-container" *ngIf="showNotification">
+      <div *ngFor="let not of notifications" class="noti">
+        <span style="font-weight: 600;">{{not.title}}</span>
+        <span>{{not.body}}</span>
+      </div>
     </div>
+
   </div>
-  
+</div>

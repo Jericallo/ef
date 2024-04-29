@@ -11,8 +11,8 @@
                     <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
                     <mat-cell *matCellDef="let element; let i = index" class="table-element">
                         <ng-container [ngSwitch]="column">
-                            <ng-container *ngSwitchCase="'id'">{{ element.id }}</ng-container>
                             <ng-container *ngSwitchCase="'nombre'">{{ element.nombre }}</ng-container>
+                            <ng-container *ngSwitchCase="'perfil'">{{ element.id_perfil }}</ng-container>
                             <ng-container *ngSwitchCase="'correo'">{{ element.correo }}</ng-container>
                             <ng-container *ngSwitchCase="'telefono'">{{ element.telefono }}</ng-container>
                             <ng-container *ngSwitchCase="'acciones'">

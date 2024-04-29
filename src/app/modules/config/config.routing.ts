@@ -29,6 +29,7 @@ import { CapacitationsComponent } from '../control/capacitations/capacitations.c
 import { CapacitationsVideosComponent } from './capacitations-videos/capacitations-videos.component';
 import { CapacitationsCrudComponent } from './capacitations-crud/capacitations-crud.component';
 import { QuestionCrudComponent } from './capacitations-crud/question-crud/question-crud.component';
+import { ProfileGuard } from 'src/app/shared/services/profile.guard';
 
 export const ConfigRoutes: Routes = [
     {
@@ -356,6 +357,7 @@ export const ConfigRoutes: Routes = [
                     ]
                 }
             },
-        ]
+        ],
+        canActivate:[ProfileGuard]
     }
 ];

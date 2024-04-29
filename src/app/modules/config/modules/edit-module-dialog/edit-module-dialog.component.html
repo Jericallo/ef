@@ -26,9 +26,9 @@
         <div class="submodule-section">
             <mat-label>Submodulos:</mat-label>           
              <mat-list>
-                <mat-list-item *ngFor="let submodule of data.moduleData.submodulos; let i = index">
+                <mat-list-item *ngFor="let submodule of data.moduleData.other_modulos; let i = index">
                     <mat-form-field>
-                        <input matInput [(ngModel)]="data.moduleData.submodulos[i].nombre" placeholder="Nombre submódulo">
+                        <input matInput [(ngModel)]="data.moduleData.other_modulos[i].nombre" placeholder="Nombre submódulo">
                     </mat-form-field>
                     <button mat-icon-button color="warn" (click)="removeSubmodule(i)">
                         <mat-icon>delete</mat-icon>

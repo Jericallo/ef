@@ -114,7 +114,6 @@ export class NewsComponent implements OnInit {
 
   formatDate(date:string){
     const fecha = new Date(parseInt(date))
-    console.log(fecha)
     const mes = fecha.toLocaleString('default', {month:'short'})
     const anio = fecha.getFullYear().toString().slice(-2);
     return `${mes}/${anio}`
@@ -122,7 +121,6 @@ export class NewsComponent implements OnInit {
 
   formatDateLong(date:string){
     const fecha = new Date(parseInt(date))
-    console.log(fecha)
     const mes = fecha.toLocaleString('default', {month:'long'})
     const anio = fecha.getFullYear().toString().slice(-2);
     return `${mes}/${anio}`

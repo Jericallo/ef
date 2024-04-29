@@ -39,10 +39,13 @@ export class AddPermissionDialogComponent implements OnInit {
 
   
   permissionsListIncludes(permission: string): boolean {
+    console.log(permission)
     const existingPermissions = this.permissionsList.find(permission =>
       permission.id_perfil === this.data.profile.id &&
       permission.id_modulo === this.selectedModule
     );
+
+    console.log(existingPermissions)
   
     if (existingPermissions) {
       return existingPermissions.permisos.includes(permission);
@@ -53,11 +56,12 @@ export class AddPermissionDialogComponent implements OnInit {
 
   
   getModulesForProfile(){
-    const moduleIdsInProfile = this.data.profile.modulos.map(module => module.id);
-    this.apiService.getAll("modulos").subscribe({
+    console.log(this.data.profile.perfiles_modulos)
+    const moduleIdsInProfile = this.data.profile.perfiles_modulos.map(module => module.id_modulo);
+    this.apiService.getModules().subscribe({
       next:res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        this.moduleList = res.result.filter(module => moduleIdsInProfile.includes(module.id));
+        console.log(res, moduleIdsInProfile)
+        this.moduleList = res.filter(module => moduleIdsInProfile.includes(module.id));
       }
     });
   }
@@ -69,34 +73,41 @@ export class AddPermissionDialogComponent implements OnInit {
       return;
     }  
 
-    const selectedModule = this.data.profile.modulos.find(module => module.id === this.selectedModule);
+    const selectedModule = this.data.profile.perfiles_modulos.find(module => module.id_modulo === this.selectedModule);
   
     if (selectedModule) {
-      this.selectedModulePermissionId = selectedModule.id_permiso;
+      console.log(selectedModule)
+      this.selectedModulePermissionId = selectedModule.id;
     }
   
     const selectedPermissions = Object.keys(this.permissions)
       .map(permission => (this.permissions[permission] ? permission : '-'))
       .join('-');
   
-    const modulePermission = {
+    const body = {
       id: this.selectedModulePermissionId,
-      id_perfil: this.data.profile.id,
-      id_modulo: this.selectedModule,
       permisos: selectedPermissions
     };
   
-    const body = { model: "perfiles_modulos", data: modulePermission };
-  
-    this.apiService.put(body).subscribe({
+    console.log(this.permissions, body)
+    this.apiService.putPerfilesModulos(body).subscribe({
       next: (response) => {
         console.log('Permisos guardados exitosamente:', response);
         this.dialogRef.close();
       },
       error: (error) => {
-        console.error('Error al guardar permisos:', error);
+        console.error('Error al guardar permisos:');
+        console.log(JSON.parse(this.apiService.decrypt(error.error.message, 'private')))
       }
     });
   }
-  
+
+  runPermissions() {
+    const selectedModule = this.data.profile.perfiles_modulos.find(module => module.id_modulo === this.selectedModule);
+    console.log(selectedModule)
+
+    if(selectedModule.permisos.includes('R')) this.permissions['R'] = true; else this.permissions['R'] = false
+    if(selectedModule.permisos.includes('W')) this.permissions['W'] = true; else this.permissions['W'] = false
+    if(selectedModule.permisos.includes('E')) this.permissions['E'] = true; else this.permissions['E'] = false
+  }
 }
