@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, LOCALE_ID, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, LOCALE_ID, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -122,7 +122,11 @@ export class RegisterComponent implements OnInit {
   permissionsColumnsToDisplay = ['perfil', 'circulo_azul', 'intro', 'noticias', 'leyes', 'temario', 'busqueda', 'incentivos', 'numeros', 'obligacion', 'descripcion', 'impuestos', 'aplicaAlPunto', 'prioridad', 'periodoIdeal', 'periodoRecomendado', 'vencimientoProximo', 'muyUrgente', 'fechaMaxima', 'seCumplio', 'alertaDeLoOcurrido', 'comunicacion', 'documentacion', 'textos', 'casoPractico', 'preguntasFrecuentes', '1minuto', '5minutos', '15minutos', '30minutos', '60minutos', 'examen', 'diplomado', 'especialidad', 'maestria', 'ayuda', 'dictamen', 'semaforo', 'responsable1', 'responsable2', 'supervisor', 'supervisorGB', 'director', 'administrador', 'superadministrador', 'isr', 'iva', 'fiscales', 'respuestaSat', 'inconsistencias', 'multas', 'sancionesGenericas', 'facultades', 'sancionesEmpresa', 'sancionesPersona']
   allModules =[]
 
-  constructor(private apiService:ApiService, public dialog: MatDialog, public snackBar: MatSnackBar) {}
+  //GLOBAL VARIABLES FOR ??? TABLE
+
+  fixedColumnsWeird: string[];
+
+  constructor(private apiService:ApiService, public dialog: MatDialog, public snackBar: MatSnackBar, private cdr: ChangeDetectorRef,) {}
 
   ngOnInit(): void {
     this.create_table()
@@ -191,7 +195,15 @@ export class RegisterComponent implements OnInit {
 
               leyes:element.obligations.obligations_articles,
               parrafos:element.obligations.obligations_paragraphs,
-              temas:element.obligations.obligations_subjects
+              temas:element.obligations.obligations_subjects,
+
+              columna_extra: '',
+              circulo_azul: '',
+              news: '',
+              intro: '',
+              video_id_blue:0,
+
+              capacitacion:{}
             },
             backup:{
               id_cumplimiento:element.id,
@@ -222,6 +234,8 @@ export class RegisterComponent implements OnInit {
 
               se_cumplio:'',
               fecha_cumplio:'',
+
+              capacitacion:{}
             }
           };
 
@@ -264,7 +278,7 @@ export class RegisterComponent implements OnInit {
   getModules() {
     this.apiService.getModules().subscribe({
       next:res => {
-        console.log(res)
+        
         this.allModules = res
       }, error: err => {
         console.error(err)
@@ -275,7 +289,7 @@ export class RegisterComponent implements OnInit {
   getProfiles(){
     this.apiService.getProfiles().subscribe({
       next:res => {
-        console.log(res)
+        
         this.dataSourcePermissionTable = res;
       }
     })
@@ -284,11 +298,10 @@ export class RegisterComponent implements OnInit {
   getVideos(){
     this.apiService.getAllVideos().subscribe({
       next: res => {
-        console.log(res.result)
+        
         let videos = res.result
         videos.sort(this.compareByType)
         videos = videos.filter(video => video.category !== 'trainning')
-        console.log(videos)
 
         const data = []
         const contadores = {promocional:0, intro:0, noticias:0}
@@ -344,29 +357,296 @@ export class RegisterComponent implements OnInit {
             ids.push(element.id)
           }
         })
-        this.dataSource.data.forEach((element, index) => {
-          if(index < textos.length){
-            this.dataSource.data[index].content.columna_extra = textos[index]
-            this.dataSource.data[index].content.circulo_azul = cats[index] === 'Promocional' ? urls[index] : ''
-            this.dataSource.data[index].content.news = cats[index] === 'Noticias' ? urls[index] : ''
-            this.dataSource.data[index].content.intro = cats[index] === 'Intro' ? urls[index] : ''
-            this.dataSource.data[index].content.video_id_blue = ids[index]
-          } else {
-            this.dataSource.data[index].content.columna_extra = ''
-            this.dataSource.data[index].content.circulo_azul = ''
-            this.dataSource.data[index].content.news = ''
-            this.dataSource.data[index].content.intro = ''
-            this.dataSource.data[index].content.video_id_blue = ids[index]
-          }
-        });
-        console.log(this.dataSource.data)
+        textos.reverse()
+        cats.reverse()
+        urls.reverse()
+        ids.reverse()
 
+        let info = this.dataSource.data
+        let rows = []
+
+        textos.forEach((element, index) => {
+          const row = { 
+            content:{
+              id_cumplimiento:null,
+              id_obligacion: null,
+              color:'',
+
+              descripcion: null,
+              modificadoAl:0,
+              nombre:'',
+              fecha_cumplimiento: null,
+              switch:false ,
+
+              ISR:false,
+              IVA:false,
+              NOMINA:false,
+              OTRO:false,
+
+              si: '',
+              no: '',
+              prioridad: 'NA',
+
+              idel_date_start:null,
+              idel_date_end:null,
+              recommended_date_start:null,
+              recommended_date_end:null,
+              close_date_start:null,
+              close_date_end:null,
+              urgent_date_start:null,
+              urgent_date_end:null,
+
+              idel_date_start_date:0,
+              idel_date_end_date:0,
+              recommended_date_start_date:0,
+              recommended_date_end_date:0,
+              close_date_start_date:0,
+              close_date_end_date:0,
+              urgent_date_start_date:0,
+              urgent_date_end_date:0 ,
+
+              se_cumplio:'',
+              fecha_cumplio:'',
+
+              leyes:[],
+              parrafos:[],
+              temas:[],
+
+              columna_extra: textos[index],
+              circulo_azul: cats[index] === 'Promocional' ? urls[index] : '',
+              news: cats[index] === 'Noticias' ? urls[index] : '',
+              intro: cats[index] === 'Intro' ? urls[index] : '',
+              video_id_blue:ids[index],
+
+              capacitacion:{}
+            },
+            backup:{
+              id_cumplimiento:null,
+              id_obligacion: null,
+              color:'',
+
+              descripcion: null,
+              modificadoAl:null,
+              nombre:'',
+              fecha_cumplimiento: null,
+              switch:false ,
+
+              ISR:false,
+              IVA:false,
+              NOMINA:false,
+              OTRO:false,
+
+              si: '',
+              no: '',
+              prioridad: 1,
+
+              idel_date_start:null,
+              idel_date_end:null,
+              recommended_date_start:null,
+              recommended_date_end:null,
+              close_date_start:null,
+              close_date_end:null,
+              urgent_date_start:null,
+              urgent_date_end:null,
+
+              idel_date_start_date:null,
+              idel_date_end_date:null,
+              recommended_date_start_date:null,
+              recommended_date_end_date:null,
+              close_date_start_date:null,
+              close_date_end_date:null,
+              urgent_date_start_date:null,
+              urgent_date_end_date:null,
+
+              se_cumplio:'',
+              fecha_cumplio:'',
+
+              leyes:[],
+              parrafos:[],
+              temas:[],
+
+              columna_extra: textos[index],
+              circulo_azul: cats[index] === 'Promocional' ? urls[index] : '',
+              news: cats[index] === 'Noticias' ? urls[index] : '',
+              intro: cats[index] === 'Intro' ? urls[index] : '',
+              video_id_blue:ids[index],
+
+              capacitacion:{}
+            }
+          };
+
+          rows.push(row)
+          
+          info.unshift(row)
+        })
+        // this.dataSource.data.forEach((element, index) => {
+        //   if(index < textos.length){
+        //     this.dataSource.data[index].content.columna_extra = textos[index]
+        //     this.dataSource.data[index].content.circulo_azul = cats[index] === 'Promocional' ? urls[index] : ''
+        //     this.dataSource.data[index].content.news = cats[index] === 'Noticias' ? urls[index] : ''
+        //     this.dataSource.data[index].content.intro = cats[index] === 'Intro' ? urls[index] : ''
+        //     this.dataSource.data[index].content.video_id_blue = ids[index]
+        //   } else {
+        //     this.dataSource.data[index].content.columna_extra = ''
+        //     this.dataSource.data[index].content.circulo_azul = ''
+        //     this.dataSource.data[index].content.news = ''
+        //     this.dataSource.data[index].content.intro = ''
+        //     this.dataSource.data[index].content.video_id_blue = ids[index]
+        //   }
+        // });
+
+
+        this.dataSource.data = info
         this.blueTableDataSource = data
+        this.getCapacitations()
+        this.cdr.detectChanges();
+        
         
       }, error: err => {
         console.error(err)
       }
     })
+  }
+
+  getCapacitations(){
+    this.apiService.getAllCapacitations().subscribe({
+      next: res => {
+        const capacitaciones = res.allCapacitations
+        console.log(capacitaciones)
+        const info = this.dataSource.data
+        capacitaciones.forEach((element, index) => {
+          const row = {
+            content:{
+              id_cumplimiento:null,
+              id_obligacion: null,
+              color:'',
+
+              descripcion: null,
+              modificadoAl:0,
+              nombre:'',
+              fecha_cumplimiento: null,
+              switch:false ,
+
+              ISR:false,
+              IVA:false,
+              NOMINA:false,
+              OTRO:false,
+
+              si: '',
+              no: '',
+              prioridad: 'NA',
+
+              idel_date_start:null,
+              idel_date_end:null,
+              recommended_date_start:null,
+              recommended_date_end:null,
+              close_date_start:null,
+              close_date_end:null,
+              urgent_date_start:null,
+              urgent_date_end:null,
+
+              idel_date_start_date:0,
+              idel_date_end_date:0,
+              recommended_date_start_date:0,
+              recommended_date_end_date:0,
+              close_date_start_date:0,
+              close_date_end_date:0,
+              urgent_date_start_date:0,
+              urgent_date_end_date:0 ,
+
+              se_cumplio:'',
+              fecha_cumplio:'',
+
+              leyes:[],
+              parrafos:[],
+              temas:[],
+
+              columna_extra: element.titulo,
+              circulo_azul: '',
+              news: '',
+              intro: '',
+              video_id_blue: -1,
+
+              capacitacion:element
+            },
+            backup:{
+              id_cumplimiento:null,
+              id_obligacion: null,
+              color:'',
+
+              descripcion: null,
+              modificadoAl:null,
+              nombre:'',
+              fecha_cumplimiento: null,
+              switch:false ,
+
+              ISR:false,
+              IVA:false,
+              NOMINA:false,
+              OTRO:false,
+
+              si: '',
+              no: '',
+              prioridad: 1,
+
+              idel_date_start:null,
+              idel_date_end:null,
+              recommended_date_start:null,
+              recommended_date_end:null,
+              close_date_start:null,
+              close_date_end:null,
+              urgent_date_start:null,
+              urgent_date_end:null,
+
+              idel_date_start_date:null,
+              idel_date_end_date:null,
+              recommended_date_start_date:null,
+              recommended_date_end_date:null,
+              close_date_start_date:null,
+              close_date_end_date:null,
+              urgent_date_start_date:null,
+              urgent_date_end_date:null,
+
+              se_cumplio:'',
+              fecha_cumplio:'',
+
+              leyes:[],
+              parrafos:[],
+              temas:[],
+
+              columna_extra: element.titulo,
+              circulo_azul: '',
+              news: '',
+              intro: '',
+              video_id_blue: -1,
+
+              capacitacion:element
+            }
+          }
+
+          info.push(row)
+        })
+        this.dataSource.data = info
+      }, error: err => {
+        console.error(err)
+      }
+    })
+  }
+
+  filterCapacitation(row:any, minute:number):boolean{
+    if(row.content.capacitacion.videos === undefined) return false
+    if(minute === 1) {
+      if(row.content.capacitacion.videos.length === 'min1') return true
+    } else if (minute === 5) {
+      if(row.content.capacitacion.videos.length === 'min5') return true
+    } else if (minute === 15) {
+      if(row.content.capacitacion.videos.length === 'min15' || row.content.capacitacion.videos.length === 'min10') return true
+    } else if (minute === 30) {
+      if(row.content.capacitacion.videos.length === 'min30') return true
+    } else if (minute === 60) {
+      if(row.content.capacitacion.videos.length === 'hour1') return true
+    }
+    return false
   }
 
   shave(input:string){

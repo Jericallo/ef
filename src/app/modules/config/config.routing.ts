@@ -30,6 +30,7 @@ import { CapacitationsVideosComponent } from './capacitations-videos/capacitatio
 import { CapacitationsCrudComponent } from './capacitations-crud/capacitations-crud.component';
 import { QuestionCrudComponent } from './capacitations-crud/question-crud/question-crud.component';
 import { ProfileGuard } from 'src/app/shared/services/profile.guard';
+import { LogsComponent } from './logs/logs.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -351,6 +352,28 @@ export const ConfigRoutes: Routes = [
                 component: QuestionCrudComponent,
                 data: {
                     title: 'Cuestionario',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'questionarie',
+                component: QuestionCrudComponent,
+                data: {
+                    title: 'Cuestionario',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'logs',
+                component: LogsComponent,
+                data: {
+                    title: 'Acciones',
                     urls: [
                         { title: 'Configuración', url: '/config' },
                         { title: 'user-profile' }

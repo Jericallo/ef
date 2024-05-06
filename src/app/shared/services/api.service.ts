@@ -327,8 +327,9 @@ export class ApiService {
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
       this.id = res.id
-      if(res.token) return res.token;
-      else return environment.token;
+      // if(res.token) return res.token;
+      // else return environment.token;
+      return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
     }
   }
 
@@ -1171,6 +1172,14 @@ export class ApiService {
 
   //ENDPOINTS PARA CAPACITACIONES
 
+  public getAllCapacitations():Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/capacitaciones'
+    let headers = new HttpHeaders({
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, {headers:headers})
+  }
+
   public postCapacitations(data:any):Observable<any> {
     const url = 'https://api.escudofiscal.alphadev.io/v2/capacitaciones'
     let headers = new HttpHeaders({
@@ -1274,5 +1283,16 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     return this.http.delete(url, { headers: headers, body: body });  
+  }
+
+  //ENDPOINTS PARA LOGS
+
+  public getAllLogs():Observable<any> {
+    const url = 'https://api.escudofiscal.alphadev.io/v2/action'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, {headers: headers});  
   }
 }

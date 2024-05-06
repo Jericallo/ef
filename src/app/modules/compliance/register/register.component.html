@@ -156,7 +156,12 @@
           <div style="display: flex; flex-direction: row;">
             <div style="flex: 2;">
               <div class="celdas" style="min-height: 35.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
-              <div class="celdas" style="font-size: x-small;">Columnas que aplican en ol que sí ve el "Usuario Responsable de Cumplimiento Uno de la Empresa" </div>
+              <!-- <div class="celdas" style="font-size: x-small;">Columnas que aplican en ol que sí ve el "Usuario Responsable de Cumplimiento Uno de la Empresa" </div> -->
+              <div class="celdas" style="display: flex; flex-direction: row;">
+                <div style="flex: 1; font-size: x-small;" class="celdas">Muestra el cumplimiento</div>
+                <div style="flex: 1; font-size: x-small;" class="celdas">Modifica el cumplimiento</div>
+                <div style="flex: 1; font-size: x-small;" class="celdas">Puede acceder al chat</div>
+              </div>
             </div>
             <div style="flex: 1.2;">
               <div class="celdas" style="height: 4.55vh; min-height: 37.6px;; ">Descripción</div>
@@ -799,29 +804,49 @@
             <div class="celdas internas" style="flex: 1;">Contenido</div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 1)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 5)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 15)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 30)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 60)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
             <div class="celdas internas" style="flex: 1;">Contenido</div>
@@ -923,387 +948,399 @@
   </mat-table>
 
 
+
+
+
   <table mat-table [dataSource]="dataSourcePermissionTable" class="mat-elevation-z8">
     <ng-container matColumnDef="perfil">
-      <th mat-header-cell *matHeaderCellDef style="min-width: 262.067px; max-width: 262.067px;"> Contenido </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="min-width: 262.067px; max-width: 262.067px;"> Contenido </th>
       <td mat-cell *matCellDef="let element" style="min-width: 262.067px; max-width: 262.067px; overflow: scroll; padding: 10px;" class="celdas internas">
          {{element.nombre}} 
       </td>
     </ng-container>
   
     <ng-container matColumnDef="circulo_azul">
-      <th mat-header-cell *matHeaderCellDef style="min-width:98.2667px; max-width: 98.2667px;"> Círculo azul </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="min-width:98.2667px; max-width: 98.2667px;"> Círculo azul </th>
       <td mat-cell *matCellDef="let element" style="min-width: 98.2667px; max-width: 98.2667px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(1, element.id) === 'Si' ? true : false)">{{getPermission(1, element.id)}}</button>
       </td>
     </ng-container>
   
     <ng-container matColumnDef="intro">
-      <th mat-header-cell *matHeaderCellDef> Intro </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Intro </th>
       <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(9, element.id, getPermission(2, element.id) === 'Si' ? true : false)">{{getPermission(2, element.id)}}</button>
      </td>
     </ng-container>
   
     <ng-container matColumnDef="noticias">
-      <th mat-header-cell *matHeaderCellDef> Noticias </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Noticias </th>
       <td mat-cell *matCellDef="let element" style="min-width: 98.2667px; max-width: 98.2667px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(10, element.id, getPermission(3, element.id) === 'Si' ? true : false)">{{getPermission(3, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="leyes">
-      <th mat-header-cell *matHeaderCellDef> Leyes </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Leyes </th>
       <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(11, element.id, getPermission(4, element.id) === 'Si' ? true : false)">{{getPermission(4, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="temario">
-      <th mat-header-cell *matHeaderCellDef> Temario </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Temario </th>
       <td mat-cell *matCellDef="let element" style="min-width: 98.2667px; max-width: 98.2667px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(12, element.id, getPermission(5, element.id) === 'Si' ? true : false)">{{getPermission(5, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="busqueda">
-      <th mat-header-cell *matHeaderCellDef> Búsqueda </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Búsqueda </th>
       <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(13, element.id, getPermission(6, element.id) === 'Si' ? true : false)">{{getPermission(6, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="incentivos">
-      <th mat-header-cell *matHeaderCellDef> Incentivos </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Incentivos </th>
       <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(14, element.id, getPermission(7, element.id) === 'Si' ? true : false)">{{getPermission(7, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="numeros">
-      <th mat-header-cell *matHeaderCellDef> Números </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Números </th>
       <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="obligacion">
-      <th mat-header-cell *matHeaderCellDef> Obligación </th>
-      <td mat-cell *matCellDef="let element" style="min-width: 268.033px; max-width: 268.033px; overflow: scroll; padding: 10px;" class="celdas internas">
-        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Obligación </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 268.033px; max-width: 268.033px; overflow: scroll; display: flex; flex-direction: row;" class="celdas internas">
+        <div class="celdas internas" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+        </div>
+        <div class="celdas internas" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+        </div>
+        <div class="celdas internas" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+        </div>
+        
      </td>
     </ng-container>
 
     <ng-container matColumnDef="descripcion">
-      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Descripción </th>
       <td mat-cell *matCellDef="let element" style="min-width: 160.8167px; max-width: 160.8167px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="impuestos">
-      <th mat-header-cell *matHeaderCellDef> Impuestos </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Impuestos </th>
       <td mat-cell *matCellDef="let element" style="min-width: 160.8168px; max-width: 160.8168px; overflow: scroll; padding: 10px;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="aplicaAlPunto">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;"> Aplica al punto </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;"> Aplica al punto </th>
       <td mat-cell *matCellDef="let element" style="min-width: 85.1667px; max-width: 85.1667px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="prioridad">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Prioridad </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Prioridad </th>
       <td mat-cell *matCellDef="let element" style="min-width: 85.1833px; max-width: 85.1833px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="periodoIdeal">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Periodo ideal para cumplirlo </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Periodo ideal para cumplirlo </th>
       <td mat-cell *matCellDef="let element" style="min-width: 174.7px; max-width: 174.7px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="periodoRecomendado">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Periodo recomendado para cumplirlo </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Periodo recomendado para cumplirlo </th>
       <td mat-cell *matCellDef="let element" style="min-width: 174.7px; max-width: 174.7px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="vencimientoProximo">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Vencimiento próximo</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Vencimiento próximo</th>
       <td mat-cell *matCellDef="let element" style="min-width: 174.7px; max-width: 174.7px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="muyUrgente">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Muy urgente</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Muy urgente</th>
       <td mat-cell *matCellDef="let element" style="min-width: 174.7px; max-width: 174.7px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="fechaMaxima">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Fundamento legal</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Fundamento legal</th>
       <td mat-cell *matCellDef="let element" style="min-width: 524.151px; max-width: 524.151px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="seCumplio">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Se cumplió</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Se cumplió</th>
       <td mat-cell *matCellDef="let element" style="min-width: 349.434px; max-width: 349.434px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
     
     <ng-container matColumnDef="alertaDeLoOcurrido">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Alerta de lo ocurrido</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Alerta de lo ocurrido</th>
       <td mat-cell *matCellDef="let element" style="min-width: 524.151px; max-width: 524.151px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="comunicacion">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Comunicación cliente - supervisor de GB</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Comunicación cliente - supervisor de GB</th>
       <td mat-cell *matCellDef="let element" style="min-width: 393.099px; max-width: 393.099px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="documentacion">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Envío de documentación de evidencia</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Envío de documentación de evidencia</th>
       <td mat-cell *matCellDef="let element" style="min-width: 393.1px; max-width: 393.1px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="textos">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Textos</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Textos</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="casoPractico">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Caso práctico</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Caso práctico</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="preguntasFrecuentes">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Preguntas frecuentes </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Preguntas frecuentes </th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="1minuto">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">1 minuto </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">1 minuto </th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="5minutos">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">5 minutos</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">5 minutos</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="15minutos">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">15 minutos </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">15 minutos </th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="30minutos">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">30 minutos </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">30 minutos </th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="60minutos">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">60 minutos </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">60 minutos </th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="examen">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Examen </th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Examen </th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="diplomado">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Diplomado</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Diplomado</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="especialidad">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Especialidad</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Especialidad</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="maestria">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Maestría</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Maestría</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="ayuda">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Ayuda</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Ayuda</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="dictamen">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Dictamen</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Dictamen</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="semaforo">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Semáforo</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Semáforo</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="responsable1">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Responsable del cumplimiento</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Responsable del cumplimiento</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="responsable2">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Responsable del cumplimiento 2</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Responsable del cumplimiento 2</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="supervisor">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Supervisor del cumplimiento de la empresa</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Supervisor del cumplimiento de la empresa</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="supervisorGB">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Supervisor del cumplimiento de GB</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Supervisor del cumplimiento de GB</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="director">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Director de la empresa</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Director de la empresa</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="administrador">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Administrador de GB</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Administrador de GB</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="superadministrador">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Super administrador</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Super administrador</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="isr">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Saldos a favor del ISR</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Saldos a favor del ISR</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="iva">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Saldos a favor del IVA</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Saldos a favor del IVA</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="fiscales">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Uso de pérdidas de fiscales</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Uso de pérdidas de fiscales</th>
       <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="respuestaSat">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Protocolo de respuesta al SAT</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Protocolo de respuesta al SAT</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="inconsistencias">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Inconsistencias</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Inconsistencias</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="multas">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Multas y actualización</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Multas y actualización</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="sancionesGenericas">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Sanciones genéricas</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Sanciones genéricas</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="facultades">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Facultades</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Facultades</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
   
     <ng-container matColumnDef="sancionesEmpresa">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Sanciones penales a empresas</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Sanciones penales a empresas</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>
     </ng-container>
 
     <ng-container matColumnDef="sancionesPersona">
-      <th mat-header-cell *matHeaderCellDef style="padding: 0;">Sanciones penales a personas</th>
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Sanciones penales a personas</th>
       <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
         <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
      </td>

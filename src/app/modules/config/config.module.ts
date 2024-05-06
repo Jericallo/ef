@@ -76,6 +76,7 @@ import { AssignVideoComponent } from './capacitations-crud/assign-video/assign-v
 import { QuestionCrudComponent } from './capacitations-crud/question-crud/question-crud.component';
 
 import localeEsAr from '@angular/common/locales/es-AR';
+import { LogsComponent } from './logs/logs.component';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -139,7 +140,8 @@ registerLocaleData(localeEsAr, 'es-Ar');
     CapacitationsCrudComponent,
     AddCapacitationsComponent,
     AssignVideoComponent,
-    QuestionCrudComponent
+    QuestionCrudComponent,
+    LogsComponent
   ],
   providers: [DatePipe, CapacitationsComponent,
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
