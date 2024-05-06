@@ -15,11 +15,10 @@ export class PromotionalsComponent implements OnInit {
 
   dataSource!: MatTableDataSource<any>;
   videoList = []
-  columnsToDisplay = ['name', 'duration','address', 'acciones'];
+  columnsToDisplay = ['name', 'address', 'acciones'];
 
   columnNames = {
     name: 'Nombre',
-    duration: 'Duración',     
     address: 'Video',
     acciones: 'Acciones'
   };

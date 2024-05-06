@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatListOption } from '@angular/material/list';
@@ -17,8 +17,11 @@ import { ApiService } from '../../services/api.service';
 })
 export class SearchTopicComponent implements OnInit {
 
+  @Input() topicsPrevRelated = [];
+
   @Output() sendingTopics = new EventEmitter<string[]>();
   @Output() closingPanel = new EventEmitter<boolean>();
+  @Output() takeTopic = new EventEmitter<number>();
 
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
@@ -137,6 +140,12 @@ export class SearchTopicComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  deleteTopic(id:number, index:number) {
+    this.takeTopic.emit(id)
+
+    this.topicsPrevRelated.splice(index,1)
   }
 
 }

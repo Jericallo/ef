@@ -1,0 +1,39 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+        <div class="filters">
+        <mat-form-field appearance="fill">
+            <mat-label>Fecha</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Seleccionar fecha" (dateInput)="applyFilter($event.target.value, 'date')">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        
+        <!-- Filtro por movimiento -->
+        <mat-form-field appearance="fill">
+            <mat-label>Movimiento</mat-label>
+            <mat-select (selectionChange)="applyFilter($event.value, 'action')">
+                <mat-option *ngFor="let action of actions" [value]="action">{{ action }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        </div>
+       <mat-card>
+            
+            <mat-table [dataSource]="dataSource">
+                <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
+                    <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" class="table-element">
+                        <ng-container [ngSwitch]="column">
+                            <ng-container *ngSwitchCase="'user'">{{ element.id_user }}</ng-container>
+                            <ng-container *ngSwitchCase="'action'">  {{ getAction(element) }}</ng-container>
+                            <ng-container *ngSwitchCase="'date'">{{ getDate(element.created_at) | date:'dd-MMMM-YYYY' }} a las {{ getDate(element.created_at) | date:'mm:HH' }}</ng-container>
+                        </ng-container>
+                    </mat-cell>
+                </ng-container>
+    
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    
+                <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+            </mat-table>
+        </mat-card>
+    </div>
+</div>

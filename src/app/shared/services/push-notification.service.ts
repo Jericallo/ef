@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class PushNotificationService {
   messagingFirebase: firebase.messaging.Messaging;
   constructor() {
-      firebase.initializeApp(environment.configFirebase)
+      //firebase.initializeApp(environment.configFirebase)
       this.messagingFirebase = firebase.messaging();
    }
    //Solicita permiso al usuario para las notificaciones push

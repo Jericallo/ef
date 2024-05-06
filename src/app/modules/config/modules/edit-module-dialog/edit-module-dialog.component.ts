@@ -51,17 +51,16 @@ export class EditModuleDialogComponent implements OnInit {
 }
 
 editSubmoduleName(index: number) {
-  console.log(this.data.moduleData.submodulos)
-  const removedSubmoduleId = this.data.moduleData.submodulos[index].id; 
-  const newName= this.data.moduleData.submodulos[index].nombre
+  console.log(this.data.moduleData.other_modulos)
+  const removedSubmoduleId = this.data.moduleData.other_modulos[index].id; 
+  const newName= this.data.moduleData.other_modulos[index].nombre
 
   const editedSub = {
     id: removedSubmoduleId,
     nombre: newName
   }
 
-  const body = { model: "modulos", data: editedSub };
-  this.apiService.put(body).subscribe({
+  this.apiService.putModules(editedSub).subscribe({
     next: (response) => {
       console.log('Módulo actualizado exitosamente:', response);
       this.dialogRef.close();

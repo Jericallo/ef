@@ -100,6 +100,11 @@ export class MenuComponent implements OnInit {
       descripcion: 'Capacitaciones',
       path: 'capacitations-table'
     },
+    {
+      icon: 'list',
+      descripcion: 'Acciones',
+      path: 'logs'
+    },
   ]
 
   videos: any[] = [

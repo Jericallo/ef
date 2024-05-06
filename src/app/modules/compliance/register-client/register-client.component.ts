@@ -16,9 +16,10 @@ import { Subscription } from 'rxjs';
 export class RegisterClientComponent implements OnInit, AfterViewInit {
   dateRange: number[] = [];
   tableData: any[] = [];
-  displayedColumns: any[] = ['nombre', 'descripcion'];
+  displayedColumns: any[] = ['nombre'];
+  allVideosPrueba: any[]
   currentMonth: Date;
-  cumplimientos_faltantes = false
+  cumplimientos_faltantes:number
 
   hoverTimer: any;
   unhoverTimer:any;
@@ -36,6 +37,8 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.generateDateRange();
     this.getCompliance();
+    this.getAllVideosPrueba();
+    this.updateCumplimientosFaltantes()
   }
 
   ngAfterViewInit(): void {
@@ -79,21 +82,26 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     this.currentMonth.setHours(0, 0, 0, 0);
 
     this.updateDateRange();
-    this.cumplimientos_faltantes = this.updateCumplimientosFaltantes()
   }
 
-  updateCumplimientosFaltantes():boolean{
-    let params = new HttpParams().set('where',this.currentMonth.getTime())
-    this.apiService.getCumplimientosControl(params).subscribe({
+  getAllVideosPrueba() {
+    this.apiService.getAllVideos().subscribe({
       next: res => {
-        res = JSON.parse(this.apiService.decrypt(res.message, this.apiService.getPrivateKey()));
-        res.result.forEach((element)=>{
-          if(element.completado === false) return true
-          console.log('a')
-        })
+        console.log(res)
+        this.allVideosPrueba = res.result
+      }, error: err => {
+
+      }
+    })
+  }
+
+  updateCumplimientosFaltantes(){
+    this.apiService.getMissing().subscribe({
+      next: res => {
+        console.log(res)
+        this.cumplimientos_faltantes = res.result
       }
     });
-    return true
   }
 
   updateDateRange(): void {
@@ -108,7 +116,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
       current = addDays(current, 1);
     }
 
-    this.displayedColumns = ['nombre', ...this.dateRange.map(date => this.formatDateInSpanish(date))];
+    this.displayedColumns = ['nombre', ...this.dateRange.map(date => this.formatDateInSpanish(date)), 'descripcion'];
   }
 
   getCurrentMonthText(): string {
@@ -127,7 +135,6 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     this.currentMonth = addMonths(this.currentMonth, offset);
     this.updateDateRange();
     this.getCompliance();
-    this.cumplimientos_faltantes = this.updateCumplimientosFaltantes()
   }
 
   formatDateInSpanish(date: number): string {
@@ -142,7 +149,9 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
     this.apiService.getCumplimientos(firstDay.getTime(), lastDay.getTime()).subscribe({
       next: res => {
-        this.tableData = res;
+        this.tableData = res.tasks;
+        this.tableData = this.tableData.concat(res.overdue_tasks)
+        console.log(this.tableData)
       }
     });
   }
@@ -378,5 +387,9 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
   openChatDirective(){
     this.openChat = true
+  }
+
+  abrirVideo(link:string){
+    window.open(link, '_blank');
   }
 }

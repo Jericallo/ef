@@ -78,7 +78,6 @@ export class ProfilesComponent implements OnInit {
   
 
   getModuleNames(profile: any): string {
-    console.log(profile)
     if (profile.perfiles_modulos && profile.perfiles_modulos.length > 0) {
       return profile.perfiles_modulos.map(modulo => modulo.modulos.nombre).join(', ');
     }

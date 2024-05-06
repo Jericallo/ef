@@ -43,21 +43,50 @@
             
             <mat-card *ngIf="articlesPrevRelated.length > 0">
                 <mat-card-content>
-                    <label >Ya relacionados</label>
-                    <mat-selection-list #prev (selectionChange)="onChangePrevious(prev.selectedOptions.selected)">
+                    <p style="margin-bottom: 10px;">Ya relacionados</p>
+                    <p *ngIf="articlesPrevRelated.length > 0" style="margin-left: 10px;">Articulos</p>
+                    <div class="prevTopicsRelated" >
+                        <div *ngFor="let prev of articlesPrevRelated; let i = index" 
+                        class="chip" 
+                        (click)="deleteArticle(prev.articulos.id, i)"
+                        matTooltip="Dame clic para borrarme"
+                        [matTooltipShowDelay]="300"
+                        >Art. {{prev.articulos.articulo}}.- {{prev.articulos.nombre}}
+                        <mat-icon>close</mat-icon>
+                    </div>
+
+                    </div>
+
+                    <p *ngIf="parragraphsPrevRelated.length > 0" style="margin-left: 10px;">Párrafos</p>
+                    <div class="prevTopicsRelated" >
+                        <div *ngFor="let prev of parragraphsPrevRelated; let i = index" 
+                        class="chip" 
+                        (click)="deleteParragraph(prev.articulos.id, i)"
+                        matTooltip="Dame clic para borrarme"
+                        [matTooltipShowDelay]="300"
+                        >Art. {{prev.articulo_parafo.id_articulo}}, Párr.- {{prev.articulo_parafo.numero}} - {{prev.articulo_parafo.nombre}}
+                        <mat-icon>close</mat-icon>
+                    </div>
+
+                    </div>
+
+                    <!-- <mat-selection-list #prev (selectionChange)="onChangePrevious(prev.selectedOptions.selected)">
                         <mat-list-option *ngFor="let prev of articlesPrevRelated" [value]="prev" [selected]="true">
                             <mat-label>Art. {{prev.articulos.articulo}}.- {{prev.articulos.nombre}} </mat-label>
                             <br>
                         </mat-list-option>
                     </mat-selection-list>
                     <br>
-                    <p>Párrafos seleccionados: {{prev.selectedOptions.selected.length}}</p>
+                    <p>Párrafos seleccionados: {{prev.selectedOptions.selected.length}}</p> -->
+
+
+
                 </mat-card-content>
             </mat-card>
         </mat-card-content>
         <button mat-raised-button color="primary" style="margin: 22px;" (click)="saveRelation()" [disabled]="isActiveRelation()">Guardar</button>&nbsp;
         <button mat-raised-button color="primary" style="margin: 22px;" (click)="verParrafos()" [disabled]="btnPar">Ver párrafos</button>&nbsp;
-        <button mat-raised-button color="secondary" (click)="closePanel()">Cancelar</button>
+        <button mat-raised-button color="secondary" (click)="closePanel()">Cerrar</button>
 
         <mat-card-content *ngIf="showParrafos">
             <!-- Documentos -->

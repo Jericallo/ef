@@ -50,7 +50,7 @@ export class AddNewsComponent implements OnInit {
     this.textButton = 'Guardando...'
     const formData = new FormData();
     formData.append('nombre', this.name.toString())
-    formData.append('length', this.length.toString())
+    formData.append('length', 'min5')
     formData.append('category', 'news')
     formData.append('video', this.file)
     formData.append('image', this.image)

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { VideoIntroComponent } from 'src/app/modules/main/video-intro/video-intro.component';
+import { ApiService } from '../services/api.service';
 
 
 export interface BadgeItem {
@@ -193,7 +194,17 @@ const MENUITEMS = [
 
 @Injectable()
 export class HorizontalMenuItems {
+    constructor(public apiService: ApiService){}
     getMenuitem(): Menu[] {
+        let user = this.apiService.getWholeUser()
+        if(user.nombre_perfil !== 'Administrador de Global Business') {
+            console.log('USER', user)
+            const index = MENUITEMS.find(item => item.name === 'Cumplimiento').children.findIndex(child => child.name === 'Registra');
+            if (index !== -1) {
+                MENUITEMS.find(item => item.name === 'Cumplimiento').children.splice(index, 1);
+            }
+        }
+
         return MENUITEMS;
     }
 }

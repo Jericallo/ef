@@ -40,6 +40,11 @@ import { PushNotificationService } from './shared/services/push-notification.ser
 //import { PasswordModalComponent } from './login/password-modal/password-modal.component';
 //import { ResetComponent } from './login/reset-component/reset/reset.component';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+//FIREBASE SHIT
+import { environment } from "../environments/environment";
+import { initializeApp } from "firebase/app";
+
+initializeApp(environment.firebase);
 
 
 export function HttpLoaderFactory(http: HttpClient) {

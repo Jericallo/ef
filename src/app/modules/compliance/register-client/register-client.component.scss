@@ -31,6 +31,20 @@
     font-weight: 500;
     padding-top: 10px;
     padding-bottom: 10px;
+    position: relative;
+}
+
+.indicador-pasado {
+    position: absolute;
+    font-size: x-small;
+    right: -1px;
+    top: -10px;
+    padding: 5px;
+    background-color: red;
+    border-radius: 15px;
+    color: white;
+    font-weight: normal;
+    display: flex;
 }
 
 .mat-elevation-z8 {
@@ -52,7 +66,9 @@ th.date-column, td.date-column {
     text-align: center;
     //background: #ffcc0c;
     flex: 1;
+    max-width: 30vw;
     background-color: transparent;
+    overflow: scroll;
 }
 
 mat-header-row, mat-row {
@@ -159,6 +175,10 @@ a:hover{
     font-size:small;
 }
 
+td{
+    padding-left: 0px !important;
+}
+
 .custom-tooltip-column {
     position: absolute;
     top: 25px;
@@ -167,7 +187,7 @@ a:hover{
     max-width: 300px;
     width: max-content;
     height: auto;
-    background-color: rgba(255, 194, 27, 0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     //background-color: red;
     color: white;
     border-radius: 3px;
@@ -192,5 +212,20 @@ a:hover{
 
 .coso {
     position: relative;
+    max-width: 20vw;
+    overflow: scroll;
 }
 
+.paragraph {
+    ::-webkit-scrollbar {
+        width: 0; /* Ancho de la barra de desplazamiento vertical */
+        height: 0; /* Altura de la barra de desplazamiento horizontal */
+        display: none;
+    }
+
+    /* Estilo para Firefox */
+    overflow: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    padding: 8px;
+}

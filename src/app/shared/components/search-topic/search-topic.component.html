@@ -12,10 +12,21 @@
                     </mat-option>
                 </mat-autocomplete>
                 </mat-form-field>
+
+                <div *ngIf="topicsPrevRelated.length > 0" class="prevTopicsRelated">
+                
+                    <div *ngFor="let topic of topicsPrevRelated; let i = index" 
+                    class="chip" 
+                    (click)="deleteTopic(topic.temario.id, i)"
+                    matTooltip="Dame clic para borrarme"
+                    [matTooltipShowDelay]="300"
+                    >{{topic.temario.nombre}}</div>
+                
+                </div>
             </form>
         </mat-card-content>
         <button mat-raised-button color="primary" style="margin: 22px;" (click)="saveRelation()" [disabled]="isActiveRelation()">Relacionar</button>&nbsp;
-        <button mat-raised-button color="secondary" (click)="closePanel()">Cancelar</button>
+        <button mat-raised-button color="secondary" (click)="closePanel()">Cerrar</button>
     </mat-card>
 </div>
 <div class="spinner" *ngIf="showMainSpinner">

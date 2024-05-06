@@ -39,8 +39,7 @@ export class AddModuleDialogComponent implements OnInit {
       orden: this.newOrder.toString() || "0",
       modulo_padre: this.selectedModule
     };
-    const body = { model: "modulos", data: newModule };
-    this.apiService.post(body).subscribe({
+    this.apiService.postModule(newModule).subscribe({
       next: (response) => {
         console.log('Modulo creado exitosamente:', response);
         this.dialogRef.close(); 

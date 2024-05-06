@@ -3,29 +3,44 @@
         <h4>Cuestionario con id {{id}}</h4>
         <div class="container">
             
-            <div class="pregunta" *ngFor="let preguntas of preguntas; let i = index">
-                <h5>Pregunta {{i + 1}}</h5>
+            <div class="pregunta" *ngFor="let preguntas of questions; let i = index">
+                <div *ngIf="preguntas.deleted === 0" style="position: relative;">
+                <h5>Pregunta {{assignNumber(i)}}</h5>
                 <mat-form-field>
-                    <input matInput required placeholder="Pregunta">
+                    <input matInput required placeholder="Pregunta" [(ngModel)]="preguntas.pregunta" (ngModelChange)="modifyQuestion(i)">
                 </mat-form-field>
-                <div class="answer-template" *ngFor="let respuesta of respuestas; let i = index">
-                    <div class="input-container">
+                <div class="answer-template" *ngFor="let answer of preguntas.respuesta; let j = index">
+                    <div class="input-container" *ngIf="answer.deleted === 0">
                         <div class="index"></div>
-                        <mat-form-field style="width: 70%;">
-                            <input matInput required placeholder="Respuesta {{ i + 1 }}" [(ngModel)]="respuestas[i]">
+                        <mat-form-field style="width: 60%;">
+                            <input matInput required placeholder="Respuesta {{ j + 1 }}" [(ngModel)]="answer.respuesta" (ngModelChange)="modifyAnswer(i, j)">
                         </mat-form-field>
-                        <mat-checkbox class="checkbox"> ¿Es correcta?</mat-checkbox>
-                        <button mat-icon-button class="add-answer" matTooltip="Agregar respuesta" (click)="agregarRespuesta()">
+                        <mat-checkbox class="checkbox" [(ngModel)]="answer.correcta" (change)="onCheckboxChange(i, j)"> ¿Es correcta?</mat-checkbox>
+                        <button mat-icon-button class="add-answer" matTooltip="Borrar respuesta" (click)="deleteAnswer(i, j)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+
+                        <button mat-icon-button class="add-answer" matTooltip="Agregar respuesta" (click)="agregarRespuesta(i)" *ngIf="j === preguntas.respuesta.length-1">
                             <mat-icon>playlist_add</mat-icon>
                         </button>
                     </div>
                 </div>
                 <mat-dialog-actions class="botones">
-                    <button mat-button >Borrar</button>
-                    <button mat-button color="primary">Guardar</button>
+                    <button mat-button (click)="deleteQuestion(i)">Borrar</button>
+                    <button mat-button color="primary" [disabled]="!preguntas.modified" (click)="saveQuestion(i)">Guardar</button>
                 </mat-dialog-actions>
-            </div>
 
+                <div class="button-container">
+                    <button mat-icon-button class="add-question" matTooltip="Mover pregunta hacia arriba" (click)="moverArriba(i, i-1)" [disabled]="checkFirst(i)">
+                        <mat-icon>keyboard_arrow_up</mat-icon>
+                    </button>
+                    <button mat-icon-button class="add-question" matTooltip="Mover pregunta hacia abajo" (click)="moverAbajo(i, i+1)" [disabled]="checkLast(i)">
+                        <mat-icon>keyboard_arrow_down</mat-icon>
+                    </button>
+                </div>
+
+                </div>
+            </div>
             <button mat-icon-button class="add-question" matTooltip="Agregar respuesta" (click)="agregarPregunta()">
                 <mat-icon>add</mat-icon>
             </button>

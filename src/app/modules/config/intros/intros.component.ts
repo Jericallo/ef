@@ -14,11 +14,10 @@ export class IntrosComponent implements OnInit {
 
   dataSource!: MatTableDataSource<any>;
   videoList = []
-  columnsToDisplay = ['name', 'duration','address', 'image', 'acciones'];
+  columnsToDisplay = ['name','address', 'image', 'acciones'];
 
   columnNames = {
     name: 'Nombre',
-    duration: 'Duración',     
     address: 'Video',
     image:'Miniatura',
     acciones: 'Acciones'

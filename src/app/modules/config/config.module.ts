@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { LeyesConfigComponent } from './leyes-config/leyes-config.component';
 import { AddArticleComponent } from './leyes-config/add-article/add-article.component';
 import { AddCategoryComponent } from './leyes-config/add-category/add-category.component';
@@ -75,6 +75,11 @@ import { AddCapacitationsComponent } from './capacitations-crud/add-capacitation
 import { AssignVideoComponent } from './capacitations-crud/assign-video/assign-video.component';
 import { QuestionCrudComponent } from './capacitations-crud/question-crud/question-crud.component';
 
+import localeEsAr from '@angular/common/locales/es-AR';
+import { LogsComponent } from './logs/logs.component';
+
+registerLocaleData(localeEsAr, 'es-Ar');
+
 @NgModule({
   declarations: [
     LeyesConfigComponent,
@@ -135,10 +140,12 @@ import { QuestionCrudComponent } from './capacitations-crud/question-crud/questi
     CapacitationsCrudComponent,
     AddCapacitationsComponent,
     AssignVideoComponent,
-    QuestionCrudComponent
+    QuestionCrudComponent,
+    LogsComponent
   ],
   providers: [DatePipe, CapacitationsComponent,
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    { provide: LOCALE_ID, useValue: 'es-Ar' }
   ],
   imports: [
     FormsModule,

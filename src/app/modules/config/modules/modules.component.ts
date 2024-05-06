@@ -36,7 +36,6 @@ export class ModulesComponent implements OnInit {
   getModules(){
     this.apiService.getModules().subscribe({
       next:res => {
-        console.log(res)
         //res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         this.modulesList = res;
         this.dataSource = new MatTableDataSource<any>(this.modulesList);
@@ -46,15 +45,15 @@ export class ModulesComponent implements OnInit {
   }
 
   getOptionName(module: any): string {
-    if (module.opciones && module.opciones.length > 0) {
-      return module.opciones.map(modulo => modulo.subdominio).join(', ');
+    if (module.modulos_opciones && module.modulos_opciones.length > 0) {
+      return module.modulos_opciones.map(modulo => modulo.subdominio).join(', ');
     }
     return '---';
   }
 
   getSubmoduleName(module: any): string {
-    if (module.submodulos && module.submodulos.length > 0) {
-      return module.submodulos.map(modulo => modulo.nombre).join(', ');
+    if (module.other_modulos && module.other_modulos.length > 0) {
+      return module.other_modulos.map(modulo => modulo.nombre).join(', ');
     }
     return '---';
   }
@@ -86,7 +85,8 @@ openEdit(element: any) {
     data: {
       moduleData: element,
       moduleList: this.modulesList
-    }
+    },
+    width:'800px'
   });
 
   dialogRef.afterClosed().subscribe(result => {

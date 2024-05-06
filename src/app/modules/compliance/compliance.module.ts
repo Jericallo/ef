@@ -25,6 +25,7 @@ import { ModalCalendarDayComponent } from './index/modal-calendar-day/modal-cale
 import { ModalDataService } from './index/modal-data.service';
 import { MousePositionService } from './index/mouse-position.service';
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+import { EditVideoComponent } from './register/edit-video/edit-video.component';
 
 
 
@@ -41,6 +42,7 @@ import { NgxMatDatetimePickerModule } from '@angular-material-components/datetim
     DetailCumplimientoComponent,
     CustomTooltipComponent,
     ModalCalendarDayComponent,
+    EditVideoComponent,
   ],
   imports: [
     CommonModule,

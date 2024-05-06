@@ -13,11 +13,24 @@
     opacity: 0.5;
     transition: ease-in-out .3s;
   }
+
+  .notification-bubble{
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    color: white;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   
   .button-container:hover {
     background: rgb(152, 152, 152);
     opacity: 1;
-    cursor: pointer;
   }
   
   .user-icon {
@@ -57,6 +70,31 @@
   .menu-container a {
     color: #333;
     text-decoration: none;
+    cursor: pointer;
+  }
+
+  .notification-container {
+    background-color: rgb(228, 228, 228);
+    position: absolute;
+    left: -350px;
+    top: 50px;
+    padding: 10px;
+    border-radius: 15px;
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .noti {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: white;
+    padding: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border-radius: 5px;
   }
 
 
@@ -68,5 +106,19 @@
   #config:hover{
     color:rgb(33, 123, 219);
   }
-    
+
+  #profile:hover{
+    color:rgb(33, 219, 36);
+  }
+
+  #notifications:hover{
+    color:rgb(163, 33, 219);
+  }
+  
+  .disabled-link {
+    pointer-events: none; /* Evita que el enlace sea clickeable */
+    cursor:default;
+    color: rgb(185, 185, 185) !important;
+  }
+  
   

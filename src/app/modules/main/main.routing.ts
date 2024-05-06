@@ -6,6 +6,7 @@ import { TopicsComponent } from './topics/topics.component';
 import {SearchComponent} from './search/search.component'
 import { ResponseComponent } from './response/response.component';
 import { VideoIntroComponent } from './video-intro/video-intro.component';
+import { ProfileGuard } from 'src/app/shared/services/profile.guard';
 
 export const MainRoutes: Routes = [
     {
@@ -19,7 +20,8 @@ export const MainRoutes: Routes = [
                     urls: [
                         { title: 'Inicio' }
                     ]
-                }
+                },
+                canActivate:[ProfileGuard]
             },
             {
                 path: 'intro',
@@ -30,7 +32,8 @@ export const MainRoutes: Routes = [
                         { title: 'Inicio', url: '/main' },
                         { title: 'Intro' }
                     ]
-                }
+                },
+                canActivate:[ProfileGuard]
             },
             {
                 path: 'news',
@@ -41,7 +44,8 @@ export const MainRoutes: Routes = [
                         { title: 'Inicio', url: '/main' },
                         { title: 'Noticias' }
                     ]
-                }
+                },
+                canActivate:[ProfileGuard]
             },
             {
                 path: 'laws',
@@ -52,7 +56,8 @@ export const MainRoutes: Routes = [
                         { title: 'Inicio', url: '/main' },
                         { title: 'Leyes' }
                     ]
-                }
+                },
+                canActivate:[ProfileGuard]
             },
             {
                 path: 'topics',
@@ -63,7 +68,8 @@ export const MainRoutes: Routes = [
                         { title: 'Inicio', url: '/main' },
                         { title: 'Temario' }
                     ]
-                }
+                },
+                canActivate:[ProfileGuard]
             },
             {
               path: 'busqueda',
@@ -74,7 +80,8 @@ export const MainRoutes: Routes = [
                       { title: 'Inicio', url: '/main' },
                       { title: 'Búsqueda' }
                   ]
-              }
+              },
+              canActivate:[ProfileGuard]
           },
           {
             path: 'response',
@@ -85,7 +92,8 @@ export const MainRoutes: Routes = [
                     { title: 'Inicio', url: '/main' },
                     { title: 'Respuesta' }
                 ]
-            }
+            },
+            canActivate:[ProfileGuard]
         },
         {
             path: 'videoIntro',
@@ -96,7 +104,8 @@ export const MainRoutes: Routes = [
                     { title: 'Inicio', url: '/main' },
                     { title: 'Introducción' }
                 ]
-            }
+            },
+            canActivate:[ProfileGuard]
         }
         ]
     }

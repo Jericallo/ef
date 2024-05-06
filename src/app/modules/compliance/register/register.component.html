@@ -1,24 +1,124 @@
 <app-user-icon></app-user-icon>
 
-<div class="page-content" #tableContainer>
+<div class="page-content" #tableContainer style="overflow: scroll;">
+<!-- SEÑOR CONTADOR ESPERO QUE NUNCA VEA ESTO PORQUE SABRÁ PUES QUE LO ODIO CON TODO MI CORAZÓN, Y CON CARIÑO, USTED ES UN ESTÚPIDO -->
 
-  <mat-toolbar-row style="background-color: #ffcc0c; width: 100%; position: fixed; z-index: 3; top: 30px;" >
-    <div style=" margin-left: auto; margin-right: auto;">
-      <button mat-icon-button mwlCalendarPreviousView class="button_month" (click)="monthPrevious()">
-          <mat-icon>chevron_left</mat-icon><span>Anterior</span>
-      </button>
-      <span >
-          {{mesMostrar}}
-      </span>
-      <button mat-icon-button mwlCalendarNextView class="button_month" (click)="monthNext()">
-          <span>Siguiente</span><mat-icon>chevron_right</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar-row>
+<div style="overflow: scroll;">
+<!-- <mat-table [dataSource]="blueTableDataSource" style="width: 3000px;">
+  <ng-container *ngFor="let column of blueColumnsToDisplay" [matColumnDef]="column">
+      <mat-header-cell *matHeaderCellDef style="color: white;">{{ blueColumnNames[column] }}</mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index" class="table-element">
+          <ng-container [ngSwitch]="column">
+              <ng-container *ngSwitchCase="'numeros'">{{element.numeros}}</ng-container>
+              <ng-container *ngSwitchCase="'modulo'"><strong>{{element.modulo}}</strong></ng-container>
+              <ng-container *ngSwitchCase="'contenido'">{{element.contenido}}</ng-container>
+              <ng-container *ngSwitchCase="'link'">
+                <button mat-icon-button (click)="abrirVideo(element.link)">
+                  <mat-icon>video_library</mat-icon>
+                </button>
+              </ng-container>
+          </ng-container>
+      </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="blueColumnsToDisplay" class="celdasAzules"></mat-header-row>
+
+  <mat-row *matRowDef="let row; columns: blueColumnsToDisplay"></mat-row>
+</mat-table> -->
+</div>
 <!--LA FUCKING TABLA DEL DIABLO-->
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style=" margin-top: 40px; height: 70%; width: 10900px; border-top-width: 5px;" >
+
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 celdas" matSort style="height: 70%; width: 11900px; border-top-width: 5px;" >
+
+    <ng-container matColumnDef="fixedColumn02" class="container" >
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 2;">
+        <div style="display: flex; flex-direction: column; width: 100%; height: 110px;" class="celdas celdasAzules">
+          Contenido
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff;  padding: 0px; margin: 0px; flex: 2;">
+        <div class="container celdas internas" *ngIf="shave(row.content.columna_extra)">
+          <strong>{{shaveAgain(row.content.columna_extra)}}</strong>
+        </div>
+        <div class="container celdas internas" *ngIf="!shave(row.content.columna_extra)">
+          {{row.content.columna_extra}}
+        </div>
+      </mat-cell>
+
+    </ng-container>
+
+    <ng-container matColumnDef="fixedColumn01" class="container" >
+      <!--HEADER-->
+      <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 6;">
+        <div style="display: flex; flex-direction: column; width: 100%;">
+          <div class="celdas celdasAzules">Correlación con inicio</div>
+          <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
+            <div class="celdas celdasAzules" style="flex: 1; height: 86px;">Círculo Azul</div>
+            <div class="celdas celdasAzules" style="flex: 1;">Intro</div>
+            <div class="celdas celdasAzules" style="flex: 1;">Noticias</div>
+            <div class="celdas celdasAzules" style="flex: 1;">Leyes</div>
+            <div class="celdas celdasAzules" style="flex: 1;">Temario</div>        
+            <div class="celdas celdasAzules" style="flex: 1;">Búsqueda</div>  
+            <div class="celdas celdasAzules" style="flex: 1;">Incentivos</div> 
+            <div class="celdas celdasAzules" style="flex: 1;">Números</div>
+          </div>
+        </div>
+      </mat-header-cell>
+      <!--BODY-->
+      <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 6;">
+        <div class="container">
+          <div class="celdas internas" style="flex: 1;">
+            <button mat-icon-button (click)="abrirVideo(row.content.circulo_azul)" *ngIf="row.content.circulo_azul !== ''">
+              <mat-icon>video_library</mat-icon>
+            </button>
+            <a (click)="editVideo(row.content.video_id_blue)" *ngIf="row.content.circulo_azul !== ''">Editar</a>
+          </div>
+          <div class="celdas internas" style="flex: 1;">
+            <button mat-icon-button (click)="abrirVideo(row.content.news)" *ngIf="row.content.news !== ''">
+              <mat-icon>video_library</mat-icon>
+            </button>
+            <a (click)="editVideo(row.content.video_id_blue)" *ngIf="row.content.news !== ''">Editar</a>
+          </div>
+          <div class="celdas internas" style="flex: 1;">
+            <button mat-icon-button (click)="abrirVideo(row.content.intro)" *ngIf="row.content.intro !== ''">
+              <mat-icon>video_library</mat-icon>
+            </button>
+            <a (click)="editVideo(row.content.video_id_blue)" *ngIf="row.content.intro !== ''">Editar</a>
+          </div>
+          <div class="celdas internas" style="flex: 1; overflow: scroll;">
+            <button (click)="openArticleRef(row)" mat-fab color="primary" class="custom-fab">
+              <mat-icon style="font-size:22px;">bookmark</mat-icon>
+            </button>        
+            <br/>
+
+            <p *ngIf="row.content.leyes.length > 0">Articulos</p>
+            <a *ngFor="let a of row.content.leyes" (click)="articleClicked(a)" >
+              {{a.articulos.articulo}} .- {{a.articulos.nombre}}
+            </a>
+
+            <p *ngIf="row.content.parrafos.length > 0">Parrafos</p>
+            <a *ngFor="let a of row.content.parrafos">
+              {{a.articulo_parafo.id_articulo}} .- Parr. {{a.articulo_parafo.numero}}, {{a.articulo_parafo.nombre}}
+            </a>
+
+          </div>  
+          <div class="celdas internas" style="flex: 1; overflow: scroll;">
+            <button (click)="openTopicsRef(row)"  mat-fab color="primary" class="custom-fab">
+              <mat-icon style="font-size:22px;">assignment</mat-icon>
+            </button>
+            <span *ngFor="let b of row.content.temas">{{b.temario.nombre}}, </span> 
+          </div>  
+          <div class="celdas internas" style="flex: 1;">Contenido</div>  
+          <div class="celdas internas" style="flex: 1;">Contenido</div>  
+          <div class="celdas internas" style="flex: 1;">Contenido</div>
+        </div>
+      </mat-cell>
+
+    </ng-container>
     
-    <ng-container matColumnDef="fixedColumn" class="container" sticky>
+    <ng-container matColumnDef="fixedColumn" class="container" >
       <!--HEADER-->
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.2;">
         <div class="container" style="flex-direction: column;">
@@ -41,7 +141,7 @@
 
     </ng-container>
 
-    <ng-container matColumnDef="fixedColumn2" class="container" sticky>
+    <ng-container matColumnDef="fixedColumn2" class="container" >
       <!--HEADER-->
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 4.5;">
         <div class="container" style="flex-direction: column;">
@@ -56,7 +156,12 @@
           <div style="display: flex; flex-direction: row;">
             <div style="flex: 2;">
               <div class="celdas" style="min-height: 35.77px; text-align: center; padding-top:4%;"><b>Cumplimiento {{d | date:'d-MMMM-y'}}</b></div>
-              <div class="celdas" style="font-size: x-small;">Columnas que aplican en ol que sí ve el "Usuario Responsable de Cumplimiento Uno de la Empresa" </div>
+              <!-- <div class="celdas" style="font-size: x-small;">Columnas que aplican en ol que sí ve el "Usuario Responsable de Cumplimiento Uno de la Empresa" </div> -->
+              <div class="celdas" style="display: flex; flex-direction: row;">
+                <div style="flex: 1; font-size: x-small;" class="celdas">Muestra el cumplimiento</div>
+                <div style="flex: 1; font-size: x-small;" class="celdas">Modifica el cumplimiento</div>
+                <div style="flex: 1; font-size: x-small;" class="celdas">Puede acceder al chat</div>
+              </div>
             </div>
             <div style="flex: 1.2;">
               <div class="celdas" style="height: 4.55vh; min-height: 37.6px;; ">Descripción</div>
@@ -81,10 +186,10 @@
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 4.5;">
       <div class="container">
         <div style="flex: 2;">
-          <div class="celdas internas" style="flex: 1;">{{row.content.nombre}}</div>  
+          <div class="celdas internas" style="flex: 1;"><p style="overflow: scroll; max-width: 250px;">{{row.content.nombre}}</p></div>  
         </div>
         <div style="flex: 1.2; display: flex; flex-direction: row;">
-          <div class="celdas internas" style="flex: 1; white-space: wrap;" contenteditable (input)="onFieldEdit($event, row)">{{row.content.descripcion}}</div>
+          <div class="celdas internas" style="flex: 1; white-space: wrap;" contenteditable (input)="onFieldEdit($event, row)"><p style="overflow: scroll; max-width: 78px;">{{row.content.descripcion}}</p></div>
           <div class="celdas internas" style="flex: 1; white-space: wrap;">{{parseDate(row.content.modificadoAl) | date:'dd/MMM/yy'}} a las {{parseDate(row.content.modificadoAl) | date:'HH:mm'}}</div>
 
         </div>
@@ -106,7 +211,7 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="fixedColumn3" class="container" sticky>
+    <ng-container matColumnDef="fixedColumn3" class="container" >
       <!--HEADER-->
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 1.3;">
         <div class="container" style="flex-direction: column;">
@@ -463,9 +568,7 @@
       <!--HEADER-->
       <mat-header-cell *matHeaderCellDef class="fixed-column" style="background-color: #ffcc0c; padding: 0px; flex: 55;">
         <div class="container" style="flex-direction: column;">
-          <div class="celdas" style="height: 2.50vh; min-height: 23.5px;">Correlación con otros sectores del escudo fiscal</div>
           <div class="celdas" style="height: 2vh; min-height: 18.8px; display: flex; flex-direction: row;">
-            <div class="celdas celdasAzules" style="flex: 5;">Correlación con inicio</div>
             <!-- <div class="celdas" style="flex: 2;">... con cumplimiento</div> -->
             <div class="celdas celdasVerdes" style="flex: 18;">... con capacitación</div>
             <div class="celdas celdasVerdes" style="flex: 6;">... con capacitación de grado académico</div>
@@ -476,18 +579,12 @@
           </div>
           
           <div class="celdas" style="flex-direction: row; display: flex; width: 100%;">
-            <div class="celdas celdasAzules" style="flex: 1;">Incentivos</div>
-            <div class="celdas celdasAzules" style="flex: 1;">Leyes</div>
-            <div class="celdas celdasAzules" style="flex: 1;">Temario</div>        
-            <div class="celdas celdasAzules" style="flex: 1;">Búsqueda</div>   
-            <div class="celdas celdasAzules" style="flex: 1;">Números</div>   
-
             <!-- <div class="celdas" style="flex: 1;">Impuestos</div>      
             <div class="celdas" style="flex: 1;">Documentación</div>       -->
 
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Textos</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -495,7 +592,7 @@
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Caso práctico</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -503,7 +600,7 @@
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Preguntas frecuentes</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -511,7 +608,7 @@
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">1 minuto</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -519,7 +616,7 @@
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">5 minutos</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -527,7 +624,7 @@
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">15 minutos</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -535,7 +632,7 @@
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">30 minutos</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -543,7 +640,7 @@
             </div>
             <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">60 minutos</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -551,7 +648,7 @@
             </div>
             <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Preguntas de examen</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -563,7 +660,7 @@
 
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Diplomado</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -571,7 +668,7 @@
             </div>
             <div class="celdas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Especialidad</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -579,7 +676,7 @@
             </div>
             <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Maestría</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -592,7 +689,7 @@
             <div class="celdas celdasVerdes" style="flex: 2;">Ayuda</div>    
             <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Dictamen</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -600,7 +697,7 @@
             </div>      
             <div class="celdas celdasVerdes" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasVerdes">Semáforo</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasVerdes" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -629,7 +726,7 @@
 
             <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasRojas" style="font-size: smaller;">Protocolo de respuesta al sat</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -637,7 +734,7 @@
             </div> 
             <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasRojas" style="font-size: smaller;">Inconsistencias</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -645,7 +742,7 @@
             </div> 
             <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasRojas" style="font-size: smaller;">Multas y actualización</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -653,7 +750,7 @@
             </div> 
             <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasRojas" style="font-size: smaller;">Sanciones genéricas </div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -661,7 +758,7 @@
             </div> 
             <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasRojas" style="font-size: smaller;">Facultades, fiscalización y </div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -669,7 +766,7 @@
             </div> 
             <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasRojas" style="font-size: smaller;">Sanciones penales a empresa</div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -677,7 +774,7 @@
             </div> 
             <div class="celdas celdasRojas" style="flex: 2; display: flex; flex-direction: column;">
               <div class="celdas celdasRojas" style="font-size: smaller;">Sanciones penales a persona </div>
-              <div style="display: flex; flex-direction: row; height: 41px">
+              <div style="display: flex; flex-direction: row; height: 65px">
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">link</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Fundamento Legal</div>
                 <div class="celdas celdasRojas" style="font-size: x-small; flex: 1;">Actualizado el</div>
@@ -690,33 +787,6 @@
       <!--BODY-->
       <mat-cell *matCellDef="let row" class="fixed-column" style="background-color: #ffffff; height: 40vh ; padding: 0px; margin: 0px; flex: 55;">
         <div class="container" style="flex-direction: row;">
-          <div class="celdas internas" style="flex: 1;">Contenido</div>
-          <div class="celdas internas" style="flex: 1; overflow: scroll;">
-            <button (click)="openArticleRef(row)" mat-fab color="primary" class="custom-fab">
-              <mat-icon style="font-size:22px;">bookmark</mat-icon>
-            </button>        
-            <br/>
-            <a *ngFor="let a of row.content.leyes" (click)="articleClicked(a)" >
-              <!-- <span *ngIf="!a.parrafos" matTooltip="{{a.nombre_documento}} / {{a.nombre}}">
-                {{a.abreviatura}} / Art. {{a.articulo}} <br/>
-              </span>
-              <div *ngIf="a.parrafos">
-                <span *ngFor="let p of a.parrafos" matTooltip="{{a.nombre}} / Párr. {{p.numero}} - {{p.nombre}}"> {{a.abreviatura}} / Art. {{a.articulo}} / Párr. {{p.numero}} <br/></span>
-              </div> -->
-              Contenido
-            </a>
-          </div>  
-          <div class="celdas internas" style="flex: 1; overflow: scroll;">
-            <button (click)="openTopicsRef(row)"  mat-fab color="primary" class="custom-fab">
-              <mat-icon style="font-size:22px;">assignment</mat-icon>
-            </button>
-            <!-- <span *ngFor="let b of row.content.temario">{{b.nombre}}, </span> -->
-            Contenido
-          </div>  
-          <div class="celdas internas" style="flex: 1;">Contenido</div>  
-          <div class="celdas internas" style="flex: 1;">Contenido</div>  
-
-
 
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
             <div class="celdas internas" style="flex: 1;">Contenido</div>
@@ -734,29 +804,49 @@
             <div class="celdas internas" style="flex: 1;">Contenido</div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 1)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 5)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 15)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 30)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
-            <div class="celdas internas" style="flex: 1;">Contenido</div>
+            <div class="celdas internas" style="flex: 1;">
+              <button mat-icon-button *ngIf="filterCapacitation(row, 60)" (click)="abrirVideo('https://api.escudofiscal.alphadev.io/uploads/'+row.content.capacitacion.videos.filename)">
+                <mat-icon>video_library</mat-icon>
+              </button>
+            </div>
+            <div class="celdas internas" style="flex: 1;"></div>
+            <div class="celdas internas" style="flex: 1;"></div>
           </div>  
           <div class="celdas internas" style="flex: 2; display: flex; flex-direction: row;">
             <div class="celdas internas" style="flex: 1;">Contenido</div>
@@ -854,8 +944,432 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="fixedColumns; sticky: true" style="background-color: #ffcc0c;" ></mat-header-row>
-    <mat-row class="row-table" style="height: 15vh; min-height: 141px;" *matRowDef="let row; columns: fixedColumns;"></mat-row>
+    <mat-row class="row-table" style="height: 15vh; " *matRowDef="let row; columns: fixedColumns;"></mat-row>
   </mat-table>
+
+
+
+
+
+  <table mat-table [dataSource]="dataSourcePermissionTable" class="mat-elevation-z8">
+    <ng-container matColumnDef="perfil">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="min-width: 262.067px; max-width: 262.067px;"> Contenido </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 262.067px; max-width: 262.067px; overflow: scroll; padding: 10px;" class="celdas internas">
+         {{element.nombre}} 
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="circulo_azul">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="min-width:98.2667px; max-width: 98.2667px;"> Círculo azul </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 98.2667px; max-width: 98.2667px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(1, element.id) === 'Si' ? true : false)">{{getPermission(1, element.id)}}</button>
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="intro">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Intro </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(9, element.id, getPermission(2, element.id) === 'Si' ? true : false)">{{getPermission(2, element.id)}}</button>
+     </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="noticias">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Noticias </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 98.2667px; max-width: 98.2667px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(10, element.id, getPermission(3, element.id) === 'Si' ? true : false)">{{getPermission(3, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="leyes">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Leyes </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(11, element.id, getPermission(4, element.id) === 'Si' ? true : false)">{{getPermission(4, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="temario">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Temario </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 98.2667px; max-width: 98.2667px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(12, element.id, getPermission(5, element.id) === 'Si' ? true : false)">{{getPermission(5, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="busqueda">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Búsqueda </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(13, element.id, getPermission(6, element.id) === 'Si' ? true : false)">{{getPermission(6, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="incentivos">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Incentivos </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(14, element.id, getPermission(7, element.id) === 'Si' ? true : false)">{{getPermission(7, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="numeros">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Números </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 98.2833px; max-width: 98.2833px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="obligacion">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Obligación </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 268.033px; max-width: 268.033px; overflow: scroll; display: flex; flex-direction: row;" class="celdas internas">
+        <div class="celdas internas" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+        </div>
+        <div class="celdas internas" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+        </div>
+        <div class="celdas internas" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+        </div>
+        
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Descripción </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 160.8167px; max-width: 160.8167px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="impuestos">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission"> Impuestos </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 160.8168px; max-width: 160.8168px; overflow: scroll; padding: 10px;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="aplicaAlPunto">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;"> Aplica al punto </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 85.1667px; max-width: 85.1667px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prioridad">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Prioridad </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 85.1833px; max-width: 85.1833px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="periodoIdeal">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Periodo ideal para cumplirlo </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 174.7px; max-width: 174.7px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="periodoRecomendado">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Periodo recomendado para cumplirlo </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 174.7px; max-width: 174.7px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="vencimientoProximo">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Vencimiento próximo</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 174.7px; max-width: 174.7px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="muyUrgente">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Muy urgente</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 174.7px; max-width: 174.7px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaMaxima">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Fundamento legal</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 524.151px; max-width: 524.151px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="seCumplio">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Se cumplió</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 349.434px; max-width: 349.434px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="alertaDeLoOcurrido">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Alerta de lo ocurrido</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 524.151px; max-width: 524.151px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="comunicacion">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Comunicación cliente - supervisor de GB</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 393.099px; max-width: 393.099px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="documentacion">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Envío de documentación de evidencia</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 393.1px; max-width: 393.1px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="textos">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Textos</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="casoPractico">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Caso práctico</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="preguntasFrecuentes">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Preguntas frecuentes </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="1minuto">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">1 minuto </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="5minutos">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">5 minutos</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="15minutos">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">15 minutos </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="30minutos">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">30 minutos </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="60minutos">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">60 minutos </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="examen">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Examen </th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="diplomado">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Diplomado</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="especialidad">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Especialidad</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maestria">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Maestría</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ayuda">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Ayuda</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dictamen">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Dictamen</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="semaforo">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Semáforo</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="responsable1">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Responsable del cumplimiento</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="responsable2">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Responsable del cumplimiento 2</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="supervisor">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Supervisor del cumplimiento de la empresa</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="supervisorGB">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Supervisor del cumplimiento de GB</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="director">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Director de la empresa</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="administrador">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Administrador de GB</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="superadministrador">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Super administrador</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isr">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Saldos a favor del ISR</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="iva">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Saldos a favor del IVA</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fiscales">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Uso de pérdidas de fiscales</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 134.4px; max-width: 134.4px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="respuestaSat">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Protocolo de respuesta al SAT</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="inconsistencias">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Inconsistencias</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="multas">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Multas y actualización</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sancionesGenericas">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Sanciones genéricas</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="facultades">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Facultades</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="sancionesEmpresa">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Sanciones penales a empresas</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sancionesPersona">
+      <th mat-header-cell *matHeaderCellDef class="thead-permission" style="padding: 0;">Sanciones penales a personas</th>
+      <td mat-cell *matCellDef="let element" style="min-width: 266.5499px; max-width: 266.5499px; overflow: scroll;" class="celdas internas">
+        <button mat-button color="primary" (click)="editPermissions(1, element.id, getPermission(8, element.id) === 'Si' ? true : false)">{{getPermission(8, element.id)}}</button>
+     </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="permissionsColumnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: permissionsColumnsToDisplay;"></tr>
+  </table>
+  
+
+
+
+
+
+
+
+<mat-toolbar-row style="background-color: #ffcc0c; width: 900px; z-index: 3; " >
+  <div style=" margin-left: auto; margin-right: auto;">
+    <button mat-icon-button mwlCalendarPreviousView class="button_month" (click)="monthPrevious()">
+        <mat-icon>chevron_left</mat-icon><span>Anterior</span>
+    </button>
+    <span >
+        {{mesMostrar}}
+    </span>
+    <button mat-icon-button mwlCalendarNextView class="button_month" (click)="monthNext()">
+        <span>Siguiente</span><mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</mat-toolbar-row>
 
 </div>
 
@@ -874,15 +1388,20 @@ border-radius: 10px; overflow:scroll;"
   (sendingArticles)="artReceived($event)" 
   (sendingParagraphs) = "parRecieved($event)"
   (sendingDeleted) = "delArtRecieved($event)"
+  (sendingDeletedParagraphs) = "delArtRecieved($event)"
   (closingPanel)="closePanel($event)" 
-  [articlesPrevRelated]="universalRow.content.leyes"></app-search-document-and-paragraph> 
+  [articlesPrevRelated]="universalRow.content.leyes"
+  [parragraphsPrevRelated]="universalRow.content.parrafos"></app-search-document-and-paragraph> 
 </div>
 </div>
 
-<div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 4;">
+<div style="position: fixed; top:230px; left: 390px; width: 50%; z-index: 400;">
   <div style="background-color: white; padding: 10px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); border-radius: 10px;" *ngIf="isShownTopics">
     <h5>Relacionar con temas.</h5>
-    <app-search-topic (sendingTopics)="topicReceived($event)" (closingPanel)="closePanel($event)"></app-search-topic>
+    <app-search-topic (sendingTopics)="topicReceived($event)" 
+    (closingPanel)="closePanel($event)" 
+    (takeTopic)="deleteTopic($event)"
+    [topicsPrevRelated]="universalRow.content.temas"></app-search-topic>
   </div>
 </div>
 
