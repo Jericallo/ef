@@ -18,6 +18,7 @@ import { MainModule } from '../main/main.module';
 import { ChatComponent } from './chat/chat.component';
 import { PdfViewerModalComponent } from './chat/pdf-viewer-modal/pdf-viewer-modal.component';
 import { ResultsComponent } from './results/results.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ResultsComponent } from './results/results.component';
     VgOverlayPlayModule,
     VgBufferingModule,
     VgStreamingModule,
-    MainModule
+    MainModule,
+    SharedModule
   ]
 })
 export class ControlModule { }

@@ -198,7 +198,6 @@ export class HorizontalMenuItems {
     getMenuitem(): Menu[] {
         let user = this.apiService.getWholeUser()
         if(user.nombre_perfil !== 'Administrador de Global Business') {
-            console.log('USER', user)
             const index = MENUITEMS.find(item => item.name === 'Cumplimiento').children.findIndex(child => child.name === 'Registra');
             if (index !== -1) {
                 MENUITEMS.find(item => item.name === 'Cumplimiento').children.splice(index, 1);

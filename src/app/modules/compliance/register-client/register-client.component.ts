@@ -363,11 +363,21 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
       document.querySelector(`#tooltip-${id}-${column}`).classList.add('show');
       this.showTooltip = true
     }
-    }
+  } 
 
-
-    
-    
+  clearTooltips() {
+    clearTimeout(this.hoverTimer);
+    clearTimeout(this.unhoverTimer);
+    let sections = document.querySelectorAll('.custom-tooltip');
+      for (let i = 0; i < sections.length; i++){
+        sections[i].classList.remove('show');
+      }
+      sections = document.querySelectorAll('.custom-tooltip-column');
+      for (let i = 0; i < sections.length; i++){
+        sections[i].classList.remove('show');
+      }
+    this.showTooltip = false
+  }
 
   clearAll() {
     console.log('Clearing...')

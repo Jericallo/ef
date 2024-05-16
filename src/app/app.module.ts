@@ -43,6 +43,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
 //FIREBASE SHIT
 import { environment } from "../environments/environment";
 import { initializeApp } from "firebase/app";
+import { HelipopperModule } from '@ngneat/helipopper';
 
 initializeApp(environment.firebase);
 

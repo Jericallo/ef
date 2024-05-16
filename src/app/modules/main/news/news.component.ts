@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, LOCALE_ID } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, LOCALE_ID, OnDestroy } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import * as moment from 'moment';
 import { trigger, state, style, animate, transition, AnimationEvent } from '@angular/animations';
@@ -16,11 +16,12 @@ import { trigger, state, style, animate, transition, AnimationEvent } from '@ang
   ]
 })
 
-export class NewsComponent implements OnInit {
+export class NewsComponent implements OnInit, OnDestroy {
   @ViewChild('noticia', {static:true}) noticia:ElementRef
   @ViewChild('scrollElement') scrollElement: ElementRef;
 
   isLoading = false
+  private destroyed = false;
 
   numVideo = 0;
   mytimelines: any[] = []; // Aquí se declara mytimelines como un arreglo vacío
@@ -35,6 +36,10 @@ export class NewsComponent implements OnInit {
     this.noticia.nativeElement.addEventListener('error', this.handleVideoError);
   }
 
+  ngOnDestroy(): void {
+    this.destroyed = true;
+  }
+
   
   async playNew(obj: any, vieoSeleccionao = -1) {
     this.isLoading = true
@@ -45,20 +50,24 @@ export class NewsComponent implements OnInit {
       let url = ''
       const partes = obj.filename.split('.')
       const name = partes[0]
-      const res = await this.apiService.watch(name)
-      url = URL.createObjectURL(res)
-      obj.address = url
-  
-      this.mytimelines.forEach(mtl => {mtl.selected = false;});
-      obj.selected=true;
-      this.noticia.nativeElement.src = obj.address;
-      this.noticia.nativeElement.muted = false;
-      this.noticia.nativeElement.load();
-      this.noticia.nativeElement.play();
-  
-      if(vieoSeleccionao !== -1){
-        this.videoDeInicio = vieoSeleccionao
+      if(!this.destroyed){
+        const res = await this.apiService.watch(name)
+        if(this.destroyed) return
+        url = URL.createObjectURL(res)
+        obj.address = url
+    
+        this.mytimelines.forEach(mtl => {mtl.selected = false;});
+        obj.selected=true;
+        this.noticia.nativeElement.src = obj.address;
+        this.noticia.nativeElement.muted = false;
+        this.noticia.nativeElement.load();
+        this.noticia.nativeElement.play();
+    
+        if(vieoSeleccionao !== -1){
+          this.videoDeInicio = vieoSeleccionao
+        }
       }
+      
       this.isLoading = false
     } catch (error) {
       this.isLoading = false

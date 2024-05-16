@@ -199,8 +199,9 @@ getUsers() {
     const userId = JSON.parse(localStorage.getItem('token_escudo')).id;
     this.apiService.getConversation(userId ,this.selectedUser.id).subscribe(
       (res:any) => {
+        console.log(res)
         this.messages = []
-      res.forEach((message) => {
+        res.map((message) => {
          const messageType = message.from === userId ? 'sent' : 'received';
          this.messages.push({ text: message.message, type: messageType, date: message.sent_date, isFile: message.type, fileURL:message.filename, from: message.from});
        });

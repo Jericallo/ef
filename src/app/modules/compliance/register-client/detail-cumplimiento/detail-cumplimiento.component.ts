@@ -72,8 +72,9 @@ export class DetailCumplimientoComponent implements OnInit {
 
   changeStatus(){
     const user = this.apiService.getWholeUser()
+    console.log(user)
     let body
-    if(user.nombre_perfil === "Administrador") {
+    if(user.nombre_perfil === "Administrador de Global Business") {
       body = {
         id: this.data.cumplimiento.id,
         fecha_completado:parseInt(this.data.fecha),
