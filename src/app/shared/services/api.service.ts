@@ -994,6 +994,7 @@ export class ApiService {
     });
     body = JSON.stringify(body)
     const url = 'https://api.escudofiscal.alphadev.io/v2/task'
+    console.log(body)
     return this.http.put(url, body,{headers:headers});  
   }
 

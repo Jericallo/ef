@@ -1,4 +1,4 @@
-<app-traffic-light></app-traffic-light>
+<app-traffic-light [datosActualizados]="tableData"></app-traffic-light>
 <app-user-icon></app-user-icon>
 <app-chat-bubble [openChat]="openChat"></app-chat-bubble>
 
@@ -34,7 +34,7 @@
             #currentDayCell [ngStyle]="{'background-color': isColumn(column, element)}">
 
                 <ng-container *ngIf="column === 'nombre'; else dateCell" class="coso">
-                    <p (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)"
+                    <p (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearTooltips()" (click)="prueba(element, column)"
                     class="paragraph">{{ element.obligations.nombre }}</p>
                     <div class="custom-tooltip-column" [id]="'tooltip-'+element.id+'-'+column" >
                         {{element.obligations.descripcion}} 
@@ -53,12 +53,16 @@
                         <div class="indicador"
                              [ngStyle]="{'background-color': isFechaMaxima(element, column)}"
                              [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
-                             (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearHoverTimer()" (click)="prueba(element, column)">
+                             (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearTooltips()" (click)="prueba(element, column)">
                         </div>
                         <div class="custom-tooltip" [id]="'tooltip-'+element.id+'-'+column" >
                             {{messageTooltip(element, column)}} 
                             <button *ngIf="showChatButton" class="chat-button" (click)="openChatDirective()">Ir al chat</button>
                         </div>
+                        <ng-template #tpl>
+                            {{messageTooltip(element, column)}}
+                            <button *ngIf="showChatButton" class="chat-button" (click)="openChatDirective()">Ir al chat</button>
+                        </ng-template>
                     </div>
                 </ng-template>
                 

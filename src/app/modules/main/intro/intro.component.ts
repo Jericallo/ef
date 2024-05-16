@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, OnChanges, SimpleChanges, AfterViewInit, OnDestroy } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
@@ -11,7 +11,7 @@ import { AnimationBuilder, animate, style, transition, trigger } from '@angular/
   styleUrls: ['./intro.component.scss'],
   
 })
-export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
+export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/, OnDestroy {
   @ViewChild('video', {read:ElementRef, static:false}) video:ElementRef
   @ViewChild('divVideo',{static:false}) divVideo:ElementRef;  
   @ViewChild('scrollElement') scrollElement: ElementRef;
@@ -31,6 +31,7 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
   showModal:boolean = false
 
   isLoading = false
+  private destroyed = false;
 
   constructor(private apiService:ApiService,
     private changeDetector:ChangeDetectorRef,
@@ -39,6 +40,10 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
 
   ngOnInit(): void {
     this.get();    
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed = true;
   }
 
   get(){
@@ -82,44 +87,47 @@ export class IntroComponent implements OnInit/*, OnChanges, AfterViewInit*/ {
       let url = ''
       const partes = obj.filename.split('.')
       const name = partes[0]
-      const res = await this.apiService.watch(name)
-      url = URL.createObjectURL(res)
-      obj.address = url
-  
-      this.results.forEach((mtl) => {
-        mtl.selected = false;
-      });
-      obj.selected = true;
-      this.video.nativeElement.src = obj.address;
-      this.video.nativeElement.muted = false;
-  
-      this.video.nativeElement.addEventListener("loadedmetadata", () => {
-        const videoDuration = this.video.nativeElement.duration;
-        const alertTime = videoDuration - 8;
-  
-        if (!this.isIntervalActive) { // Comprobar si el intervalo está activo
-          this.isIntervalActive = true; // Marcar el intervalo como activo
-  
-          const intervalId = setInterval(() => {
-            const currentTime = this.video.nativeElement.currentTime;
-            if (currentTime >= alertTime) {
-              clearInterval(intervalId);
-              this.isIntervalActive = false; // Marcar el intervalo como inactivo
-              this.startCountdown();
-            }
-            if (this.video.nativeElement.ended) {
-  
-            }
-          }, 1000);
-        }
-  
-        this.video.nativeElement.play();
-        this.divVideo.nativeElement.parentElement.parentElement.parentElement.scrollIntoView({
-          behavior: "smooth",
+      if(!this.destroyed){
+        const res = await this.apiService.watch(name)
+        if(this.destroyed) return
+        url = URL.createObjectURL(res)
+        obj.address = url
+    
+        this.results.forEach((mtl) => {
+          mtl.selected = false;
         });
-      });
-  
-      this.video.nativeElement.load();
+        obj.selected = true;
+        this.video.nativeElement.src = obj.address;
+        this.video.nativeElement.muted = false;
+    
+        this.video.nativeElement.addEventListener("loadedmetadata", () => {
+          const videoDuration = this.video.nativeElement.duration;
+          const alertTime = videoDuration - 8;
+    
+          if (!this.isIntervalActive) { // Comprobar si el intervalo está activo
+            this.isIntervalActive = true; // Marcar el intervalo como activo
+    
+            const intervalId = setInterval(() => {
+              const currentTime = this.video.nativeElement.currentTime;
+              if (currentTime >= alertTime) {
+                clearInterval(intervalId);
+                this.isIntervalActive = false; // Marcar el intervalo como inactivo
+                this.startCountdown();
+              }
+              if (this.video.nativeElement.ended) {
+    
+              }
+            }, 1000);
+          }
+    
+          this.video.nativeElement.play();
+          this.divVideo.nativeElement.parentElement.parentElement.parentElement.scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+    
+        this.video.nativeElement.load();
+      }
       this.isLoading = false
     } catch (error) {
       this.isLoading = false
