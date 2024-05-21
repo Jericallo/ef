@@ -747,7 +747,7 @@ export class ApiService {
 
   public getAllChapters(model:string,params?:HttpParams, id:string = ''):Observable<any>{
     const url = `https://api.escudofiscal.alphadev.io/v1/getAll?model=articulo_capitulos`
-    console.log(url)
+    console.log('URL',url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`

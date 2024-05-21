@@ -86,6 +86,7 @@ export class LawsComponent implements OnInit {
     this.subRowTable = -1;
     this.apiService.getAll("clasificaciones").subscribe({
       next:res=>{
+        console.log('RES', res)
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         this.data.clasifications = res.result;
         if(this.data.clasifications.length > 0){
