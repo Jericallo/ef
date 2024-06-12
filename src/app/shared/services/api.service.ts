@@ -74,6 +74,26 @@ export class ApiService {
     return this.http.get(url,{params:params,headers:headers});
   }
 
+  public getAllSpecial(model:string="", where:string="", orderby:string="",limit:number=-1, offset:number=-1, querys:Object=null): Observable<any> {
+    const url = environment.baseUrl+`getAll`;
+    let params = new HttpParams();
+    if(model) params = params.set("model",model);
+    if(where) params =  params.set("where",where);
+    if(orderby) params = params.set("orderby",orderby);
+    if(limit > 0) params = params.set("limit", limit);
+    if(offset > 0) params = params.set("offset", offset);
+    if(querys)
+      for (const que in querys)
+        if(querys[que])
+          params = params.set(que,querys[que]);
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
+      //'Authorization':`Bearer ${environment.token}`
+    });
+    return this.http.get(url,{params:params,headers:headers});
+  }
+
   public emergencyContent(model:string='', params=''): Observable<any>{
     const url = environment.baseUrl+`content?` + params + '&model=' + model;
     console.log('URL:',url)
@@ -330,6 +350,16 @@ export class ApiService {
       // if(res.token) return res.token;
       // else return environment.token;
       return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
+    }
+  }
+
+  private getTokenSpecial(){
+    if(localStorage[this.TOKEN]){
+      let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
+      this.id = res.id
+      if(res.token) return res.token;
+      else return environment.token;
+      // return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
     }
   }
 

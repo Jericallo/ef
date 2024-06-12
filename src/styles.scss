@@ -3,3 +3,16 @@
     padding-right: 0px !important;
     padding-left:10px !important;
   }
+
+body {
+  font-size: medium !important;
+}
+
+.example::-webkit-scrollbar {
+  display: none;
+}
+
+.example {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

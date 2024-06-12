@@ -81,10 +81,11 @@ export class LawsComponent implements OnInit {
   }
 
   getClasifications(){
+    console.log('hola')
     this.data.clasifications = [];
     this.rowTable = 0;
     this.subRowTable = -1;
-    this.apiService.getAll("clasificaciones").subscribe({
+    this.apiService.getAllSpecial("clasificaciones").subscribe({
       next:res=>{
         console.log('RES', res)
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
@@ -104,7 +105,7 @@ export class LawsComponent implements OnInit {
     /*this.data.clasifications = [];
     this.rowTable = 0;
     this.subRowTable = -1;*/
-    this.apiService.getAll("documentos","","",-1,-1,{id_categoria:id_categoria}).subscribe({
+    this.apiService.getAllSpecial("documentos","","",-1,-1,{id_categoria:id_categoria}).subscribe({
       next:res=>{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         for (let index = 0; index < this.data.clasifications.length; index++) {
@@ -137,7 +138,7 @@ export class LawsComponent implements OnInit {
 
   
   getTitles(id_documento){
-    this.apiService.getAll("articulo_titulo","","",-1,-1,{id_documento:id_documento}).subscribe({
+    this.apiService.getAllSpecial("articulo_titulo","","",-1,-1,{id_documento:id_documento}).subscribe({
       next:res=>{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         let findit = false; 
@@ -165,7 +166,7 @@ export class LawsComponent implements OnInit {
   }
 
   getChapters(id_documento, id_titulo){
-    this.apiService.getAll("articulo_capitulos","","",-1,-1,(id_titulo === 0 ? {id_documento:id_documento}:{id_titulo:id_titulo})).subscribe({
+    this.apiService.getAllSpecial("articulo_capitulos","","",-1,-1,(id_titulo === 0 ? {id_documento:id_documento}:{id_titulo:id_titulo})).subscribe({
       next:res=>{
         if(res !== null){
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
@@ -208,7 +209,7 @@ export class LawsComponent implements OnInit {
   }
 
   getSections(id_documento, id_titulo, id_capitulo){
-    this.apiService.getAll(this.apiService.MODELS.article_sections,"","",-1,-1,(id_titulo == 0 ? {id_documento:id_documento}:{id_titulo:id_titulo})).subscribe({
+    this.apiService.getAllSpecial(this.apiService.MODELS.article_sections,"","",-1,-1,(id_titulo == 0 ? {id_documento:id_documento}:{id_titulo:id_titulo})).subscribe({
       next:res=>{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         let findit = false; 
@@ -261,7 +262,7 @@ export class LawsComponent implements OnInit {
       querys = {id_documento:id_documento, id_titulo:id_titulo, id_capitulo:id_capitulo}
     }
     //querys = {id_documento:id_documento}
-    this.apiService.getAll("articulos","","",-1,-1,querys).subscribe({
+    this.apiService.getAllSpecial("articulos","","",-1,-1,querys).subscribe({
       next:res=>{
         if(res === null){return}
         if(res.message == 'yAfu2LmX+QNhwJG99OWNO82jTZgZSx9OAUHJJoXrXBQ0bzRPJbK6XFWH4mUG+TjOJ+9oz+DoRFkx9xnLEIHc8Q=='){return}
