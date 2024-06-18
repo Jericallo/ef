@@ -229,3 +229,12 @@ td{
     scrollbar-width: none;  /* Firefox */
     padding: 8px;
 }
+
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+.scroll-invisible{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }

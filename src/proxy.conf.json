@@ -1,6 +1,6 @@
 {
   "/v1":{
-    "target":"https://api.escudofiscal.alphadev.io",
+    "target":"https://apief.globalbusiness.com.mx",
     "secure": true,
     "changeOrigin":true,
     "logLevel": "debug"

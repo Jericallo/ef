@@ -36,7 +36,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.me_user = me.nombre
     
     if(userId !== null){
-    this.socket = io('wss://api.escudofiscal.alphadev.io', {
+    this.socket = io('wss://apief.globalbusiness.com.mx', {
      extraHeaders: {
          id: userId
       }

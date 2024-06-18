@@ -24,10 +24,10 @@ export class DocumentsService {
   readonly TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXNlIjoiZGFuaWVsQGFscGhhZGV2LmlvIiwiaWF0IjoxNjgzMTcwNDk2fQ.4bv05c7XwJ4ScTTTPYPJPgt0JqWWZJe63AikoGbEv9o";
 
   get:string = `${environment.url_base}getAll?model=`
-  insert: string = 'https://api.escudofiscal.alphadev.io/v1/insert';
-  update: string = 'https://api.escudofiscal.alphadev.io/v1/update';
+  insert: string = 'https://apief.globalbusiness.com.mx/v1/insert';
+  update: string = 'https://apief.globalbusiness.com.mx/v1/update';
   models = {clasificaciones:"clasificaciones",documentos:"documentos",documentaciones:"documentaciones",
-    articulo_titulos:"articulo_titulos",articulo_capitulos:"articulo_capitulos", 
+    articulo_titulos:"articulo_titulos",articulo_capitulos:"articulo_capitulo", 
     articulo_secciones:"articulo_secciones",articulos:"articulos",clientes:"clientes",obligaciones:"obligaciones",
     obligaciones_tipos:"obligaciones_tipos",regimen_fiscal:"regimen_fiscal"}
 
@@ -70,13 +70,13 @@ export class DocumentsService {
   }
 
   public getClientObligations(id: number): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=clientes' + '&id=' + id + '&template=obligaciones';
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=clientes' + '&id=' + id + '&template=obligaciones';
     return this.http.get<ClientsObligations[]>(url);
   }
 
   public getDates(day: number, type?: string): Observable<any> {
     type === 'month' ? type = "" : "";
-    const url = 'https://api.escudofiscal.alphadev.io/v1/dates?day=' + day + '&period=' + type;
+    const url = 'https://apief.globalbusiness.com.mx/v1/dates?day=' + day + '&period=' + type;
     return this.http.get(url);
   }
 
@@ -93,17 +93,17 @@ export class DocumentsService {
   }
 
   public getDocumentationsTemplate(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=documentaciones&template=obligaciones';
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=documentaciones&template=obligaciones';
     return this.http.get<Documentations[]>(url);
   }
 
   public getCapacitations(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=capacitaciones&id_usuario=2';
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=capacitaciones&id_usuario=2';
     return this.http.get<Capacitations[]>(url);
   }
 
   public getQuestionnaire(id: number): Observable<any> {
-    const url = "https://api.escudofiscal.alphadev.io/v1/getAll?model=capacitaciones_preguntas&id_video=" + id;
+    const url = "https://apief.globalbusiness.com.mx/v1/getAll?model=capacitaciones_preguntas&id_video=" + id;
     return this.http.get<Questionnaire[]>(url);
   }
 
@@ -167,7 +167,7 @@ export class DocumentsService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.TOKEN}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones_periodos';
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=obligaciones_periodos';
     return this.http.get<ObligationsPeriod[]>(url,{headers:headers});
   }
 
@@ -208,17 +208,17 @@ export class DocumentsService {
   }
 
   public searchArticle(id: number, request: string): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/search?model=articulos&id_documento=' + id + '&query=' + request;
+    const url = 'https://apief.globalbusiness.com.mx/v1/search?model=articulos&id_documento=' + id + '&query=' + request;
     return this.http.get(url);
   }
 
   public searchRelated(word: string | undefined): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/search?query=' + word;
+    const url = 'https://apief.globalbusiness.com.mx/v1/search?query=' + word;
     return this.http.get(url);
   }
 
   public searchObligations(word: string | undefined): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/search?model=obligaciones&query=' + word;
+    const url = 'https://apief.globalbusiness.com.mx/v1/search?model=obligaciones&query=' + word;
     return this.http.get(url);
   }
 

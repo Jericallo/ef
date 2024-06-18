@@ -26,7 +26,7 @@ export class NewsComponent implements OnInit, OnDestroy {
   numVideo = 0;
   mytimelines: any[] = []; // Aquí se declara mytimelines como un arreglo vacío
   idIntVideo = null;
-  videoDeInicio = 11
+  videoDeInicio = 0
   public showModal:boolean = false
 
   constructor(private apiService:ApiService) { moment.locale("es"); }
@@ -79,10 +79,10 @@ export class NewsComponent implements OnInit, OnDestroy {
     this.apiService.getNews().subscribe({
       next:(res)=>{
         this.isLoading = false
-        res.result = res.result.reverse()
+        //res.result = res.result.reverse()
         this.mytimelines = res.result;
         console.log(this.mytimelines)
-        if(this.mytimelines.length > 0) this.playNew(this.mytimelines[11]);
+        if(this.mytimelines.length > 0) this.playNew(this.mytimelines[0]);
       }, error:(err)=>{
         console.log(this.apiService.decrypt(err.error.message, 'private'))
         this.isLoading = false
@@ -95,10 +95,11 @@ export class NewsComponent implements OnInit, OnDestroy {
   }
 
   vidEnded(){
-    if(this.videoDeInicio === 0){
+    console.log(this.videoDeInicio)
+    if(this.videoDeInicio === 11){
       window.location.href = 'compliance/index'
     }
-    this.videoDeInicio --
+    this.videoDeInicio ++
     this.playNew(this.mytimelines[this.videoDeInicio])
   }
 
@@ -117,7 +118,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     }, 0);
 
     
-    this.videoDeInicio--;
+    this.videoDeInicio++;
     this.playNew(this.mytimelines[this.videoDeInicio]);
   }
 

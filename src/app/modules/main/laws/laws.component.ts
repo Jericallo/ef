@@ -92,6 +92,7 @@ export class LawsComponent implements OnInit {
         this.data.clasifications = res.result;
         if(this.data.clasifications.length > 0){
           for (const index in this.data.clasifications) {
+            console.log(this.data.clasifications[index].id)
             this.getDocuments(this.data.clasifications[index].id);
           }
         }
@@ -108,6 +109,7 @@ export class LawsComponent implements OnInit {
     this.apiService.getAllSpecial("documentos","","",-1,-1,{id_categoria:id_categoria}).subscribe({
       next:res=>{
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
+        if(id_categoria === 51) console.log('RESUL',res)
         for (let index = 0; index < this.data.clasifications.length; index++) {
           if(this.data.clasifications[index].id == id_categoria){
             this.data.clasifications[index].documents = res.result;
@@ -166,11 +168,13 @@ export class LawsComponent implements OnInit {
   }
 
   getChapters(id_documento, id_titulo){
-    this.apiService.getAllSpecial("articulo_capitulos","","",-1,-1,(id_titulo === 0 ? {id_documento:id_documento}:{id_titulo:id_titulo})).subscribe({
+    this.apiService.getAllSpecial("articulo_capitulo","","",-1,-1,(id_titulo === 0 ? {id_documento:id_documento}:{id_titulo:id_titulo})).subscribe({
       next:res=>{
+        if(id_titulo === 35) console.log('hola')
         if(res !== null){
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
         let findit = false; 
+        if(id_titulo === 35) {console.log('RESPONSE',res)}
         for (let c = 0; c < this.data.clasifications.length; c++) {
           for (let d = 0; d < this.data.clasifications[c].documents.length; d++) {
             if(this.data.clasifications[c].documents[d].id == id_documento){
@@ -192,6 +196,7 @@ export class LawsComponent implements OnInit {
                 findit = true;break;
               }
             }
+            console.log(this.data.clasifications)
             if(findit) break;
           }
           if(findit) break;
@@ -399,7 +404,7 @@ export class LawsComponent implements OnInit {
           }
         }
       }
-    } else if (model === 'articulo_capitulos') {
+    } else if (model === 'articulo_capitulo') {
       for (const clasifications of this.data.clasifications) {
         for(const documentos of clasifications.documents){
           for( const titulos of documentos.titles){

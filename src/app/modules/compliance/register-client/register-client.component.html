@@ -48,7 +48,7 @@
                     </button>
                 </ng-container>
                 <ng-template #dateCell>
-                    <div style="position: relative;"> <!-- Agregar style="position: relative;" al div padre -->
+                    <div style="position: relative;" class="scroll-invisible"> <!-- Agregar style="position: relative;" al div padre -->
                         {{ element[column]?.urgent_date_start | date:'dd MMMM' }}
                         <div class="indicador"
                              [ngStyle]="{'background-color': isFechaMaxima(element, column)}"
