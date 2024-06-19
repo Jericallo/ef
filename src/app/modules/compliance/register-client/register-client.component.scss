@@ -230,9 +230,9 @@ td{
     padding: 8px;
 }
 
-::-webkit-scrollbar {
+.scroll-invisible ::-webkit-scrollbar {
     display: none;
-  }
+}
   
 .scroll-invisible{
     -ms-overflow-style: none;  /* IE and Edge */

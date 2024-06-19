@@ -33,7 +33,7 @@
             <td mat-cell *matCellDef="let element; let index" class="date-column" [ngClass]="{'sticky-column': i === 0, 'cumplimiento-cell': column === 'nombre'}"
             #currentDayCell [ngStyle]="{'background-color': isColumn(column, element)}">
 
-                <ng-container *ngIf="column === 'nombre'; else dateCell" class="coso">
+                <ng-container *ngIf="column === 'nombre'; else dateCell" class="coso scroll-invisible">
                     <p (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearTooltips()" (click)="prueba(element, column)"
                     class="paragraph">{{ element.obligations.nombre }}</p>
                     <div class="custom-tooltip-column" [id]="'tooltip-'+element.id+'-'+column" >
