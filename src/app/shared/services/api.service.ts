@@ -338,7 +338,7 @@ export class ApiService {
     const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=obligaciones_periodos'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get(url,{headers:headers})
   }
@@ -637,7 +637,7 @@ export class ApiService {
   public getCapacitations(): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/capacitaciones?id_usuario=' + this.id;
     console.log(url)
