@@ -50,12 +50,15 @@ export class HorizontalAppSidebarComponent implements OnDestroy, OnInit {
   intervalo = null
 
   funcion(object:any){
-    if(this.a !== null ) {
+    if(this.a !== null) {
       let arreglo = Array.prototype.slice.call(this.a)
+      console.log(arreglo, Array.prototype.slice.call(this.a), this.a)
       arreglo[0].style.overflow = 'hidden'
       if(this.intervalo !== null){
         clearInterval(this.intervalo)
       }
+
+      this.a = null
     }
     this.a = document.getElementsByClassName('juice-item-'+object)//.addEventListener('mouseover',(event) => {console.log('hola')})
     let arreglo = Array.prototype.slice.call(this.a)

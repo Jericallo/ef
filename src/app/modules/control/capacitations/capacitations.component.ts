@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { Router, NavigationExtras } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Capacitations } from 'src/app/shared/interfaces/capacitations-interface';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/shared/services/api.service';
-import { DocumentsService } from 'src/app/shared/services/documents.service';
-import { GlobalTitleService } from 'src/app/shared/services/global-title.service';
+import Swal from 'sweetalert2';
+import { start } from 'repl';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-capacitations',
@@ -13,100 +11,157 @@ import { GlobalTitleService } from 'src/app/shared/services/global-title.service
   styleUrls: ['./capacitations.component.css']
 })
 export class CapacitationsComponent implements OnInit {
+  loading: boolean = false;
+  selectedTraining: any;
+  trainings: any;
+  videoName: string = '';
+  id_started: any = null;
+  completado: any = null
+  user: any = null;
+  videoProgressInterval: any;
+  videoElement: HTMLVideoElement | null = null;
+  finished: any = null;
   
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-  showSpinner = false;
-  showMain = false;
-  capacitations: Capacitations[] = [];
-
-  title = "Capacitaciones";
-
-  constructor(public apiService: ApiService, public snackBar: MatSnackBar, private _router: Router, private globalTitle: GlobalTitleService) {
-    this.globalTitle.updateGlobalTitle(this.title);
-    sessionStorage.removeItem('state');
+  constructor(private apiService: ApiService, private router: Router) {
+    const token = localStorage.getItem('token_escudo');
+    this.user = token ? JSON.parse(token) : null;
+    console.log(this.finished)
   }
 
-  ngOnInit() {
-    this.showMain = false;
-    this.showSpinner = true;
-    this.getCapacitations();
+  ngOnInit(): void {
+    this.getTrainings();
   }
 
-  getCapacitations(): Observable<any> {
-    this.apiService.getCapacitations()
-    .subscribe({
-      next: response => {
-        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        this.showMain = true;
-        this.showSpinner = false;
-        this.capacitations = response.result;
-        console.log('CAPACITACIONES:',this.capacitations)
+  getTrainings() {
+    this.loading = true;
+    this.apiService.getTrainings(this.user.id).subscribe(
+      (data) => {
+        this.trainings = data.allCapacitations;
+        this.loading = false;
       },
-      error: err => {
-        this.showMain = true;
-        this.showSpinner = false;
-        console.log(err);
-        this.snackBar.open("Error al cargar las Capacitaciones", '', { 
-          duration: 3000,
-          verticalPosition: this.verticalPosition
-        });
+      (error) => {
+        console.error(error);
       }
-    });
-    return this.apiService.getCapacitations();
+    );
   }
 
-  goToVideo(cap: Capacitations, restart?: boolean) {
-    restart ? cap.restart = restart : false;
-    cap.url = cap.url + '?authorization=' + this.apiService.returnToken()
-    console.log('CAPACITACION:',cap)
-    const navigationExtras: NavigationExtras = { state: cap }
-    this._router.navigate(['control/videos'], navigationExtras);
-  }
-
-  public prevCapacitation(current: Capacitations) {
-    this.apiService.getCapacitations().subscribe({
-      next: response => {
-        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        this.capacitations = response.result;
-      },
-      error: err => {
-        console.log(err);
-      }, 
-      complete: () => {
-        this.manageCapacitations("prev", current);
+  getLastAttempt(training: any) {
+    if (training.video_registro && training.video_registro.length > 0) {
+      const lastVideoRegistro = training.video_registro[training.video_registro.length - 1];
+      if (lastVideoRegistro.intento_cuestionario && lastVideoRegistro.intento_cuestionario.length > 0) {
+        const lastAttempt = lastVideoRegistro.intento_cuestionario[lastVideoRegistro.intento_cuestionario.length - 1];
+        this.finished = lastVideoRegistro.intento_cuestionario[lastVideoRegistro.intento_cuestionario.length - 1];
+        lastAttempt.calificacionNumerica = parseInt(lastAttempt.calificacion);
+        lastAttempt.verde = 0
+        lastAttempt.amarillo = 0
+        lastAttempt.rojo = 0
+        if (lastAttempt.calificacionNumerica >= 9) {
+          lastAttempt.verde = 1
+        } else if (lastAttempt.calificacionNumerica <= 8 && lastAttempt.calificacionNumerica >= 6) {
+          lastAttempt.amarillo = 1;
+        } else {
+          lastAttempt.rojo = 1;
+        }
+        return lastAttempt
       }
-    });
-  }
-
-  public nextCapacitation(current: Capacitations) {
-    this.apiService.getCapacitations().subscribe({
-      next: response => {
-        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        this.capacitations = response.result;
-      },
-      error: err => {
-        console.log(err);
-      }, 
-      complete: () => {
-        this.manageCapacitations("next", current);
-      }
-    });
-  }
-
-  private manageCapacitations(type: string, current: Capacitations) {
-    const index = this.capacitations.findIndex(cap => cap.id == current.id);
-
-    if(type === "prev" && index !== 0) {
-      const cap: Capacitations = this.capacitations[index - 1];
-      this.goToVideo(cap);
-    } else if(type === "prev" && index == 0) {
-      this.goToVideo(current);
-    } else if(type === "next" && index !== this.capacitations.length - 1) {
-      const cap: Capacitations = this.capacitations[index + 1];
-      this.goToVideo(cap);
-    } else if(type === "next" && index === this.capacitations.length - 1) {
-      this.goToVideo(current);
     }
+    return null;
+  }
+
+
+
+  getImageUrl(imageName: string): string {
+    return `https://apief.globalbusiness.com.mx/uploads/${imageName}`;
+  }
+
+  showVideo(training: any): void {
+    this.completado = 0
+    this.selectedTraining = training;
+    this.videoName = this.selectedTraining.videos.nombre;
+    const data = {
+      id_user: this.user.id,
+      id_capacitacion: training.id
+    };
+
+    this.apiService.getVideoLocation(this.user.id, training.id).subscribe({
+      next: res => {
+        if (res.videoPosition !== null) {
+          if (res.videoPosition.completado === 1) {
+            this.completado = 1
+          }
+        }
+        this.videoElement = document.getElementById('videoElement') as HTMLVideoElement;
+        if (this.videoElement) {
+          this.videoElement.src = `https://apief.globalbusiness.com.mx/uploads/${training.videos.filename}`;
+          if (res.videPosition !== null) {
+            this.videoElement.currentTime = res.videoPosition ? res.videoPosition.segundo : 0;
+          }
+          this.videoElement.play();
+          const videoPlayer = document.getElementById('videoPlayer');
+          if (videoPlayer) {
+            videoPlayer.style.display = 'block';
+          }
+          if (this.videoProgressInterval) {
+            clearInterval(this.videoProgressInterval);
+          }
+          this.videoProgressInterval = setInterval(() => this.saveProgress(), 1000);
+          this.apiService.startCapacitation(data).subscribe({
+            next: res => {
+              this.id_started = res.followedVideo.id;
+            },
+            error: err => {
+              console.error('Error starting capacitacion:', err);
+            }
+          });
+        }
+      },
+      error: err => {
+        console.error('Failed to get video location:', err);
+      }
+
+
+    });
+
+
+  }
+
+  saveProgress(): void {
+    if (this.videoElement && this.id_started) {
+      const currentTime = Math.round(this.videoElement.currentTime);
+      const duration = Math.round(this.videoElement.duration);
+      const body = {
+        id_video_registro: this.id_started,
+        segundo: currentTime,
+        completado: currentTime === duration ? 1 : 0
+      };
+
+      this.apiService.registerVideoAdvancement(body).subscribe({
+        next: res => {
+
+        },
+        error: err => Swal.fire('¡Error al guardar el avance!', '', 'error')
+      });
+    }
+  }
+
+
+  goToQuestionarie(): void {
+    const body = {
+      id_video_registro: this.id_started
+    }
+    this.apiService.startQuestionarie(body).subscribe({
+      next: res => {
+        this.router.navigate(['/control/questionarie'], { state: { training: this.selectedTraining, questionarieData: res } });
+      },
+      error: err => {
+        console.log(err.error.message )
+        if(err.error.message === "User has spent all three attempts on this quiz"){
+          Swal.fire('Sin intentos!', 'Ya se tomaron los tres intentos para el cuestionario.', 'error');
+        }else{
+          Swal.fire('¡Error al iniciar el cuestionario!', '', 'error');
+        }
+      }
+    });
   }
 
 }

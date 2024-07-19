@@ -1,6 +1,10 @@
 <mat-card>
     <mat-card-content>
-        <h4>Cuestionario con id {{id}}</h4>
+        <div style="display: flex; align-items: center; gap:20px">
+            <a routerLink="/config/capacitations-table" class="return"><mat-icon  style="font-weight: 700; font-size: 40px; overflow: visible; margin-left: 20px;">arrow_back</mat-icon></a>
+            <h4>Cuestionario con id {{id}}</h4>
+        </div>
+       
         <div class="container">
             
             <div class="pregunta" *ngFor="let preguntas of questions; let i = index">

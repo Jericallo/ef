@@ -55,7 +55,7 @@
                              [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
                              (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearTooltips()" (click)="prueba(element, column)">
                         </div>
-                        <div class="custom-tooltip" [id]="'tooltip-'+element.id+'-'+column" >
+                        <div class="custom-tooltip" [id]="'tooltip-'+element.id+'-'+column" (mouseenter)="prueba(element, column)" (mouseleave)="clearTooltips()">
                             {{messageTooltip(element, column)}} 
                             <button *ngIf="showChatButton" class="chat-button" (click)="openChatDirective()">Ir al chat</button>
                         </div>

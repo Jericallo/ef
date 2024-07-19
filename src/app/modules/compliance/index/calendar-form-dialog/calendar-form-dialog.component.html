@@ -65,7 +65,7 @@
             <form>
               <mat-form-field class="date-full-width" appearance="fill">
                 <mat-label>Hora de inicio</mat-label>
-                <mat-select [(ngModel)]="selectedStartHour">
+                <mat-select [(value)]="selectedStartHour">
                   <mat-option *ngFor="let hour of hours" [value]="hour.milliseconds">
                     {{hour.hour}}
                   </mat-option>
@@ -86,7 +86,7 @@
             <form>
               <mat-form-field class="date-full-width" appearance="fill">
                 <mat-label>Hora de finalización</mat-label>
-                <mat-select [(ngModel)]="selectedEndHour">
+                <mat-select [(value)]="selectedEndHour">
                   <mat-option *ngFor="let hour of hours" [value]="hour.milliseconds">
                     {{hour.hour}}
                   </mat-option>

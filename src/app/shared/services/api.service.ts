@@ -19,6 +19,7 @@ import { Questionnaire, QuestionnaireSave } from '../interfaces/questionnaire-in
 })
 export class ApiService {
   
+  apiUrlv2= 'https://apief.globalbusiness.com.mx/v2/'
   id = 0
   get:string = `${environment.url_base}getAll?model=`
   insert: string = 'https://apief.globalbusiness.com.mx/v1/insert';
@@ -92,6 +93,7 @@ export class ApiService {
       'Authorization':`Bearer ${this.getTokenSpecial()}`
       //'Authorization':`Bearer ${environment.token}`
     });
+    console.log(headers)
     return this.http.get(url,{params:params,headers:headers});
   }
 
@@ -166,11 +168,8 @@ export class ApiService {
   }
 
   public login(body: any): Observable<any> {
-    //console.log("body",body)
-    const encryptedBody = this.encrypt(body, '');
-    //console.log("encrybtedBody", encryptedBody)
-    //console.log("llave",this.publicKey)
-    return this.http.post(environment.baseUrl + 'login', {"text":encryptedBody}, {});
+    console.log(body)
+    return this.http.post(this.apiUrlv2 + 'login', body, {});
   }
 
   public postResetPass(data: any): Observable<any>{
@@ -262,7 +261,7 @@ export class ApiService {
     })
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
+      'Authorization': `Bearer ${this.getTokenSpecial()}`
     });
     return this.http.post(url, body, { headers });
   }
@@ -275,7 +274,7 @@ export class ApiService {
     })
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
+      'Authorization': `Bearer ${this.getTokenSpecial()}`
     });
     return this.http.put(url, body, { headers });
   }
@@ -348,9 +347,9 @@ export class ApiService {
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
       this.id = res.id
-      // if(res.token) return res.token;
-      // else return environment.token;
-      return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
+      if(res.token) return res.token;
+      else return environment.token;
+      //return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
     }
   }
 
@@ -358,9 +357,9 @@ export class ApiService {
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
       this.id = res.id
-      if(res.token) return res.token;
-      else return environment.token;
-      // return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
+      //if(res.token) return res.token;
+      //else return environment.token;
+       return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNhcmlvIjoiR2FicmllbCBDb250cmVyYSIsImNvcnJlbyI6ImdhYm9AYWxwaGFkZXYuaW8iLCJpYXQiOjE3MjEzMjc4ODV9.R_V2DS9_Wum5ATURfVa19UtArAYHdhgVsx9FG9zNSF4'
     }
   }
 
@@ -461,7 +460,7 @@ export class ApiService {
     const url = 'https://apief.globalbusiness.com.mx/v1/documentos?estatus=1'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<Documents[]>(url,{headers:headers});
   }
@@ -470,7 +469,7 @@ export class ApiService {
     const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=articulo_secciones'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<Documents[]>(url,{headers:headers});
   }
@@ -480,7 +479,7 @@ export class ApiService {
     console.log(url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<any>(url,{params:params,headers:headers})
   }
@@ -489,7 +488,7 @@ export class ApiService {
     const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=clasificaciones&estatus=1'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<Classifications[]>(url,{headers:headers});
   }
@@ -498,7 +497,7 @@ export class ApiService {
     const url = 'https://apief.globalbusiness.com.mx/v1/content?model=articulos&id_documento=' + id + '&where=' + request;
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get(url ,{headers:headers});
   }
@@ -508,7 +507,7 @@ export class ApiService {
     console.log('URL', url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get(url ,{headers:headers});
   }
@@ -520,7 +519,7 @@ export class ApiService {
   public saveArticle(request: Article): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model: this.models.articulos,data: {
@@ -544,7 +543,7 @@ export class ApiService {
   public saveClasification(name: string | undefined): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model: this.models.clasificaciones,data:{nombre: name,}};
@@ -555,7 +554,7 @@ export class ApiService {
   public saveArticleChapter(request:Article_Chapter):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model:this.models.articulo_capitulos,data:{nombre:request.nombre, id_documento:request.id_documento,id_titulo:request.id_titulo,fecha_creacion:request.fecha_creacion,fecha_modificacion:request.fecha_modificacion}};
@@ -566,7 +565,7 @@ export class ApiService {
   public saveParagraph(request:Paragraph):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert
     const body = {model:'articulo_parafo',data:{indicador:request.indicador, orden:request.orden, id_articulo:request.id_articulo, contenido:request.contenido,tipo:request.tipo,numero:request.numero,nombre:request.nombre, relaciones:request.relaciones}};
@@ -578,7 +577,7 @@ export class ApiService {
   public saveDocument(request: Documents): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model: this.models.documentos,data: {titulo:request.titulo, editorial:request.editorial, abreviatura:request.abreviatura, num_articulos:request.num_articulos, ayo:request.ayo, fecha_modificacion:request.fecha_modificacion, fecha_creacion:request.fecha_creacion, clasificacion:request.clasificacion}};
@@ -603,7 +602,7 @@ export class ApiService {
   public saveArticleTitle(request:Article_Title):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/articulo_titulo'
     const body = {data:{nombre: request.nombre, id_documento:request.id_documento}};
@@ -615,7 +614,7 @@ export class ApiService {
   public saveSection(request:Article_Section):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model:this.models.articulo_secciones,data:{id_capitulo: request.id_capitulo, id_titulo:request.id_titulo, id_documento:request.id_documento, nombre:request.nombre}};
@@ -691,7 +690,7 @@ export class ApiService {
   public getArticleById(id):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/articulos?id=' + id
     return this.http.get(url, {headers:headers});  
@@ -749,7 +748,7 @@ export class ApiService {
   public getParrafo():Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/articulo_parafo';
     console.log(url)
@@ -770,7 +769,7 @@ export class ApiService {
   public getAllDocuments(params?):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = `https://apief.globalbusiness.com.mx/v1/documentos?estatus=1&id=${params}`;
     return this.http.get(url, {headers:headers});
@@ -781,7 +780,7 @@ export class ApiService {
     console.log('URL',url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<any>(url,{params:params,headers:headers})
   }
@@ -791,7 +790,7 @@ export class ApiService {
     console.log(url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<any>(url,{params:params,headers:headers})
   }
@@ -799,7 +798,7 @@ export class ApiService {
   public getAllDocuments2(params?):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = `https://apief.globalbusiness.com.mx/v1/documentos?estatus=1`;
     return this.http.get(url, {headers:headers});
@@ -808,7 +807,7 @@ export class ApiService {
   public editDoc(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/documentos'
     const encryptedBody = this.encrypt(body,'private')
@@ -819,7 +818,7 @@ export class ApiService {
   public editTit(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/articulo_titulo'
     const encryptedBody = this.encrypt(body,'private')
@@ -829,7 +828,7 @@ export class ApiService {
   public editClassif(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/clasificaciones'
     const encryptedBody = this.encrypt(body,'private')
@@ -839,7 +838,7 @@ export class ApiService {
   public editChapter(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/articulo_capitulo'
     const encryptedBody = this.encrypt(body,'private')
@@ -850,7 +849,7 @@ export class ApiService {
   public editSection(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/articulo_secciones'
     const encryptedBody = this.encrypt(body,'private')
@@ -860,7 +859,7 @@ export class ApiService {
   public editArticle(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/articulos'
     const encryptedBody = this.encrypt(body,'private')
@@ -870,7 +869,7 @@ export class ApiService {
   public editParagraph(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = 'https://apief.globalbusiness.com.mx/v1/articulo_parafo'
     const encryptedBody = this.encrypt(body,'private')
@@ -1326,5 +1325,70 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     return this.http.get(url, {headers: headers});  
+  }
+
+  //ENDPOINTS PARA CAPACITACIONES
+
+  public getTrainings(id:any):Observable<any> {
+    const url = this.apiUrlv2 + `capacitaciones?id_usuario=${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public getQuestions(id:string):Observable<any> {
+    const url = this.apiUrlv2 + `questionarie/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }  
+
+public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any> {
+    const url = this.apiUrlv2 + `capacitaciones/get-video-location?id_user=${id_user}&id_capacitacion=${id_capacitacion}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public startCapacitation(data: any): Observable<any> {
+    const url = `${this.apiUrlv2}capacitaciones/start-capacitation`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, data, { headers: headers });
+  }
+
+  public registerVideoAdvancement(data: any): Observable<any> {
+    const url = `${this.apiUrlv2}capacitaciones/register-video-advancement`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, data, { headers: headers });
+  }
+
+  public startQuestionarie(data: any): Observable<any> {
+    const url = `${this.apiUrlv2}capacitaciones/start-questionarie`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, data, { headers: headers });
+  }
+
+  public grades(id: any, data: any): Observable<any> {
+    const url = `${this.apiUrlv2}capacitaciones/grade/${id}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, data, { headers: headers });
   }
 }

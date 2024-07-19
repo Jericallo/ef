@@ -224,8 +224,8 @@ export class CalendarFormDialogComponent implements OnInit {
   htmlContent = "";
   quantity = 1;
 
-  selectedStartHour:number = 0
-  selectedEndHour:number = 0
+  selectedStartHour:number 
+  selectedEndHour:number
 
   showFinal = false;
   showMain = true;
@@ -373,7 +373,14 @@ export class CalendarFormDialogComponent implements OnInit {
 //PERIOD ----------------------------------------------------------------------------------------------------
 
   selectedPeriod(opt: MatAutocompleteSelectedEvent) {
-    period = opt.option.value.minutos;
+    console.log(opt.option.value)
+    if(opt.option.value.nombre === 'Mensual'){
+      period = 'months'
+    } else if(opt.option.value.nombre === 'Semanal'){
+      period = 'weeks'
+    } else if(opt.option.value.nombre === 'Anual') {
+      period = 'years'
+    }
   }
 
   displayPeriod(periodo: ObligationsPeriod): string {
@@ -434,9 +441,6 @@ export class CalendarFormDialogComponent implements OnInit {
     if(this.nom) nom = 1
     if(this.otr) otr = 1
 
-    console.log(this.showFinal)
-    console.log(this.isr)
-
     const difference = this.sendingObligation.fecha_cumplimiento - this.sendingObligation.fecha_cumplimiento_ideal;
     const diff = Math.floor(difference / 4);
     const ideal_date_end = this.sendingObligation.fecha_cumplimiento_ideal + diff;
@@ -444,7 +448,8 @@ export class CalendarFormDialogComponent implements OnInit {
     const recommended_date_end = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff;
     const close_date_start = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff;
     const close_date_end = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff + diff;
-    const urgent_date_start = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff + diff;    
+    const urgent_date_start = this.sendingObligation.fecha_cumplimiento_ideal + diff + diff + diff;
+    console.log('HOURS', this.selectedStartHour, this.selectedEndHour)
 
     const body = {
       nombre:this.obligations,
@@ -468,7 +473,7 @@ export class CalendarFormDialogComponent implements OnInit {
         // close_date_end: close_date_end,
         // urgent_date_start: urgent_date_start,
         //urgent_date_end: this.sendingObligation.fecha_cumplimiento,
-      repetition_type: 'weeks',
+      repetition_type: period,
       repetition_value: this.quantity,
       set_day_to_stop: this.sendingObligation.fecha_final
     };
@@ -479,6 +484,7 @@ export class CalendarFormDialogComponent implements OnInit {
         if('new_obligation' in response){
           alert('Obligación agregada correctamente.')
         } else {
+          console.log(response)
           alert('Ocurrió un error al agregar la obligación, intente de nuevo más tarde.')
         }
       },

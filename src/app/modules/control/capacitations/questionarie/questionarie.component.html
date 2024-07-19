@@ -1,0 +1,35 @@
+<div class="questions-container" *ngIf="questions.length > 0">
+    <h1>{{ questionarie.video_registro.capacitaciones.titulo }}</h1>
+    <div style="display: flex; align-items: center; justify-content: space-around; margin-bottom: 10px; gap: 20px; width: 60vw; margin-top: -20px;">
+        <span><span style="font-weight: 700;">Preguntas contestadas:</span> {{ answeredCount }}/{{
+            questions.length }}</span>
+        <span> <span style="font-weight: 700;">Tiempo restante:</span> {{ timeRemaining }}</span>
+    </div>
+
+    <div class="question-card" style="height: 80vh; overflow: auto; padding: 10px;">
+        <form #form="ngForm" (ngSubmit)="onSubmit()">
+            <ng-container *ngFor="let pregunta of questions; let i = index">
+                <div style="padding: 20px;"
+                    [ngClass]="{'unanswered-question': form.submitted && pregunta.respuesta === null}">
+                    <p style="font-weight: 700; font-size: 18px;">{{ i + 1 }}. {{ pregunta.contenido }}</p>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li style="margin-bottom: 10px;"
+                            *ngFor="let respuesta of pregunta.capacitations_preguntas_respuestas">
+                            <label>
+                                <input type="radio" name="pregunta{{ pregunta.id }}" [value]="respuesta.id"
+                                    [(ngModel)]="pregunta.respuesta" (change)="updateAnsweredCount()" required>
+                                {{ respuesta.respuesta }}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div style="width: 100%; border: 1px solid rgb(194, 194, 194);"></div>
+            </ng-container>
+            
+            <div style="display: flex; justify-content: end; align-items: center;">
+                <button class="submit-btn" type="submit">Enviar respuestas</button>
+            </div>
+        </form>
+    </div>
+</div>
+

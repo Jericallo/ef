@@ -249,7 +249,7 @@ export class EditTitleComponent implements OnInit {
 
   getTitulos(){
     const httpParams = new HttpParams().set('estatus', '1');
-    this.apiService.getAll('articulo_titulo').subscribe({
+    this.apiService.getAllSpecial('articulo_titulo').subscribe({
       next: response => {
         response = JSON.parse(this.apiService.decrypt(response.message, 'private'));
         this.searchResultsTit = response.result

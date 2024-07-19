@@ -1,47 +1,71 @@
 <app-user-icon></app-user-icon>
 <app-traffic-light></app-traffic-light>
 
-<div class="mainDiv" *ngIf="showMain">
-    <mat-card class="mainCard">
-        <a routerLink="/index" class="return"><mat-icon>arrow_back</mat-icon></a>
-        <!--<p>{{ title }}</p>-->
-        <!-- <mat-selection-list [multiple]="false">
-            <mat-list-option *ngFor="let cap of capacitations" [value]="cap" (click)="goToVideo(cap)">
-                <p class="matListItemTitle">{{ cap.titulo }}</p>
-                <p class="matListItemLine">{{ cap.descripcion }}</p>
-            </mat-list-option>
-        </mat-selection-list> -->
-        <mat-list class="list-item" role="list">
-            <mat-list-item *ngFor="let cap of capacitations; let i = index" [value]="cap">
-                <div class="left" (click)="goToVideo(cap)" [ngClass]="{'level2': cap.nivel_2 || 0 > 0, 'level3': cap.nivel_3 || 0 > 0}">
-                    <div class="matListItemTitle"> 
-                        <span *ngIf="cap!.nivel_1 || 0 > 0">{{cap.nivel_1 || ''}}</span>
-                        <span *ngIf="cap!.nivel_2 || 0 > 0">{{'.' + cap.nivel_2 || ''}}</span>
-                        <span *ngIf="cap!.nivel_3 || 0 > 0">{{'.' + cap.nivel_3 || ''}}</span>
-                        {{ cap.titulo }}
+<div class="container">
+    <div class="row">
+        <h1 style="margin-top: -5px;">Capacitaciones</h1>
+        <div style="display: flex; flex-direction: column; overflow-x:hidden; overflow-y: auto; gap: 1rem;">
+            <div class="card" *ngFor="let training of trainings"
+                (click)="getLastAttempt(training)?.calificacionNumerica !== 10 ? showVideo(training) : null" [ngClass]="{
+                'card-terminado-verde': getLastAttempt(training)?.verde === 1,
+                'card-terminado-amarillo': getLastAttempt(training)?.amarillo === 1,
+                'card-terminado-rojo': getLastAttempt(training)?.rojo === 1,
+                'card-disabled':  getLastAttempt(training)?.calificacionNumerica === 10
+            }" [style.pointer-events]="getLastAttempt(training)?.calificacionNumerica === 10 ? 'none' : 'auto'">
+                <div>
+                    <img [src]="getImageUrl(training.videos.imagename)" alt="Card image cap">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 700; font-size: 18px;">{{ training.titulo }}</span>
+                        <span>{{ training.descripcion }}</span>
+                        <div
+                            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap:5px">
+                            <div style="display: flex; gap:5px">
+                                <span *ngIf="getLastAttempt(training)?.terminado === 1"
+                                    style="font-weight: 700; text-align: end; color: black">Calificación:</span>
+                                <span *ngIf="getLastAttempt(training)?.terminado === 1" [ngClass]="{
+                          'span-verde': getLastAttempt(training)?.verde === 1,
+                          'span-amarillo': getLastAttempt(training)?.amarillo === 1,
+                          'span-rojo': getLastAttempt(training)?.rojo === 1
+                        }" style="font-weight: 700; text-align: end;">{{
+                                    finished.calificacion }}/10</span>
+                            </div>
+
+                            <span style="font-weight: 700;" *ngIf="getLastAttempt(training)?.calificacionNumerica >= 9"> Pasaste!</span>
+                            <span style="font-size: x-small;" *ngIf="getLastAttempt(training)?.calificacionNumerica === 9"> Si gustas puedes mejorar viendo el video o repitiendo el cuestionario</span>
+                            <span style="font-weight: 700; text-align: center;" *ngIf="getLastAttempt(training)?.calificacionNumerica === 7 ||  getLastAttempt(training)?.calificacionNumerica === 8">Repasar video o reintentar cuestionario</span>
+                            <span style="font-weight: 700;" *ngIf="getLastAttempt(training)?.calificacionNumerica >= 1 && getLastAttempt(training)?.calificacionNumerica <= 6">Repetir capacitación</span>                        
+                        </div>
                     </div>
-                    <div class="matListItemLine">&nbsp;&nbsp;{{ cap.descripcion }}</div>
-                    <div class="matListItemLineSeconds" matLine>Duración: <b>{{ cap.duracion_video }} segundos</b></div>
                 </div>
-                <div class="right">
-                    <button mat-raised-button color="accent" *ngIf="cap.resumen_video <= 0" (click)="goToVideo(cap,false)">
-                        <mat-icon fontIcon="play_arrow"></mat-icon>
-                        <small>Iniciar</small>
-                    </button>
-                    <button mat-raised-button color="accent" *ngIf="cap.resumen_video > 0" (click)="goToVideo(cap,true)">
-                        <mat-icon fontIcon="replay"></mat-icon>
-                        <small>Reiniciar</small>
-                    </button>
-                    <button mat-raised-button color="black" *ngIf="cap.resumen_video > 0" (click)="goToVideo(cap)">
-                        <mat-icon fontIcon="live_tv"></mat-icon>
-                        <small>Continuar</small>
-                    </button>&nbsp;  
-                    <div class="matListItemLineStatus" matLine>Estatus: <b>{{ cap.estatus_video }}</b></div>
-                </div>
-            </mat-list-item>
-        </mat-list>
-    </mat-card>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="videoName" style="width: 65vw;background: rgb(238, 238, 238); padding: 20px; border-radius: 50px;">
+        <div id="videoPlayer" style="display: none; width: 100%;">
+            <video style="width: 65vw; height: auto;" controls autoplay id="videoElement">
+                Tu navegador no admite el elemento de video.
+            </video>
+            <div style="display: flex; align-items: center; justify-content: space-around; margin-top: 1rem;">
+                <span style="font-weight: 700; font-size: 18px;">{{videoName}}</span>
+                <button
+                    style="background: green; padding: 10px; border: none; color: white; border-radius: 10px; cursor: pointer;"
+                    (click)="goToQuestionarie()">Ir al cuestionario</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!videoName" id="prevVideo">
+        Seleccione una capacitación para empezar
+    </div>
 </div>
-<div class="spinner" *ngIf="showSpinner">
-    <mat-spinner></mat-spinner>
+
+<div *ngIf="loading" class="loader-overlay">
+    <div class="loader">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
 </div>

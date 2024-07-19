@@ -218,12 +218,12 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
     console.log(user)
 
-    if(user.nombre_perfil !== 'Supervisor'){
+    if(user.nombre_perfil !== 'Supervisor de cumplimiento de la empresa'){
       if(cumplimiento.completado !== 0) return
       //if(day > cumplimiento.urgent_date_end || day < cumplimiento.ideal_date_start) return
     }
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
-      width: '800px',
+      width: '500px',
       height: '170px',
       data: {cumplimiento:cumplimiento, fecha:day} 
     });
@@ -348,6 +348,12 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
     const fechaColumn = new Date(parseInt(cadena));
     const fechaHoy = new Date();
+    const user = this.apiService.getWholeUser()
+    
+    if (user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && element.completado > 0 && element.completado < 3){
+      this.openCumplimientoDialog(element,column)
+      return
+    }
     if (
         fechaColumn.getFullYear() === fechaHoy.getFullYear() &&
         fechaColumn.getMonth() === fechaHoy.getMonth() &&
