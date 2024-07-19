@@ -19,12 +19,13 @@ import { Questionnaire, QuestionnaireSave } from '../interfaces/questionnaire-in
 })
 export class ApiService {
   
+  apiUrlv2= 'https://apief.globalbusiness.com.mx/v2/'
   id = 0
   get:string = `${environment.url_base}getAll?model=`
-  insert: string = 'https://api.escudofiscal.alphadev.io/v1/insert';
-  update: string = 'https://api.escudofiscal.alphadev.io/v1/update';
+  insert: string = 'https://apief.globalbusiness.com.mx/v1/insert';
+  update: string = 'https://apief.globalbusiness.com.mx/v1/update';
   models = {clasificaciones:"clasificaciones",documentos:"documentos",documentaciones:"documentaciones",
-    articulo_titulos:"articulo_titulo",articulo_capitulos:"articulo_capitulos", 
+    articulo_titulos:"articulo_titulo",articulo_capitulos:"articulo_capitulo", 
     articulo_secciones:"articulo_secciones",articulos:"articulos",clientes:"clientes",obligaciones:"obligaciones",
     obligaciones_tipos:"obligaciones_tipos",regimen_fiscal:"regimen_fiscal"}
   
@@ -74,6 +75,28 @@ export class ApiService {
     return this.http.get(url,{params:params,headers:headers});
   }
 
+  public getAllSpecial(model:string="", where:string="", orderby:string="",limit:number=-1, offset:number=-1, querys:Object=null): Observable<any> {
+    const url = environment.url_base+`getAll`;
+    //const url = 'http://127.0.0.1:3000/v1/getAll'
+    let params = new HttpParams();
+    if(model) params = params.set("model",model);
+    if(where) params =  params.set("where",where);
+    if(orderby) params = params.set("orderby",orderby);
+    if(limit > 0) params = params.set("limit", limit);
+    if(offset > 0) params = params.set("offset", offset);
+    if(querys)
+      for (const que in querys)
+        if(querys[que])
+          params = params.set(que,querys[que]);
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
+      //'Authorization':`Bearer ${environment.token}`
+    });
+    console.log(headers)
+    return this.http.get(url,{params:params,headers:headers});
+  }
+
   public emergencyContent(model:string='', params=''): Observable<any>{
     const url = environment.baseUrl+`content?` + params + '&model=' + model;
     console.log('URL:',url)
@@ -86,7 +109,7 @@ export class ApiService {
 
   public content(model:string="", where:string="", orderby:string="",limit:number=-1, offset:number=-1, querys:Object=null): Observable<any>{
     const url = environment.baseUrl+`content`;
-    //const url = 'https://api.escudofiscal.alphadev.io/v1/content?model=articulos&id_articulo=89&more=1'
+    //const url = 'https://apief.globalbusiness.com.mx/v1/content?model=articulos&id_articulo=89&more=1'
     let params = new HttpParams();
     if(model) params = params.set("model",model);
     if(where) params =  params.set("where",where);
@@ -115,7 +138,7 @@ export class ApiService {
   public dates(params:HttpParams):Observable<any>{
     console.log(params)
     //const url = 'http://192.168.100.154:3000/v1/getAll?model=obligaciones'
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones'
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=obligaciones'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -126,7 +149,7 @@ export class ApiService {
   public historial(params:HttpParams):Observable<any>{
     console.log(params)
     //const url = 'http://192.168.100.154:3000/v1/getAll?model=obligaciones'
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones_historial'
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=obligaciones_historial'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -139,17 +162,14 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones&where='+ momento +'&id_usuario=' + this.id
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=obligaciones&where='+ momento +'&id_usuario=' + this.id
     //&where='+ momento +'&id_usuario=' + this.id
     return this.http.get(url,{headers:headers});
   }
 
   public login(body: any): Observable<any> {
-    //console.log("body",body)
-    const encryptedBody = this.encrypt(body, '');
-    //console.log("encrybtedBody", encryptedBody)
-    //console.log("llave",this.publicKey)
-    return this.http.post(environment.baseUrl + 'login', {"text":encryptedBody}, {});
+    console.log(body)
+    return this.http.post(this.apiUrlv2 + 'login', body, {});
   }
 
   public postResetPass(data: any): Observable<any>{
@@ -172,7 +192,7 @@ export class ApiService {
   }
 
   public getUsers():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/user'
+    const url = 'https://apief.globalbusiness.com.mx/v2/user'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -181,7 +201,7 @@ export class ApiService {
   }
 
   public getConversation(from: string, to: string): Observable<any> {
-    const url = `https://api.escudofiscal.alphadev.io/v2/mensajes/conversation?from=${from}&to=${to}`;
+    const url = `https://apief.globalbusiness.com.mx/v2/mensajes/conversation?from=${from}&to=${to}`;
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -190,7 +210,7 @@ export class ApiService {
   }
 
   public getUnread(from: string, to: string): Observable<any> {
-    const url = `https://api.escudofiscal.alphadev.io/v2/mensajes/unread?from=${from}&to=${to}`;
+    const url = `https://apief.globalbusiness.com.mx/v2/mensajes/unread?from=${from}&to=${to}`;
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -201,7 +221,7 @@ export class ApiService {
   
 
   public getUserById(id:number):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v1/usuarios?id=' + id
+    const url = 'https://apief.globalbusiness.com.mx/v1/usuarios?id=' + id
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -210,7 +230,7 @@ export class ApiService {
   }
 
   public deleteUser(userId: number): Observable<any> {
-    const url = `https://api.escudofiscal.alphadev.io/v2/user/delete`; 
+    const url = `https://apief.globalbusiness.com.mx/v2/user/delete`; 
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -241,7 +261,7 @@ export class ApiService {
     })
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
+      'Authorization': `Bearer ${this.getTokenSpecial()}`
     });
     return this.http.post(url, body, { headers });
   }
@@ -254,7 +274,7 @@ export class ApiService {
     })
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
+      'Authorization': `Bearer ${this.getTokenSpecial()}`
     });
     return this.http.put(url, body, { headers });
   }
@@ -297,7 +317,7 @@ export class ApiService {
   }
 
   public postModule(data: any): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/module'; 
+    const url = 'https://apief.globalbusiness.com.mx/v2/module'; 
     console.log(data)
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -314,10 +334,10 @@ export class ApiService {
   */
 
   public getPeriods():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=obligaciones_periodos'
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=obligaciones_periodos'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get(url,{headers:headers})
   }
@@ -327,9 +347,19 @@ export class ApiService {
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
       this.id = res.id
-      // if(res.token) return res.token;
-      // else return environment.token;
-      return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
+      if(res.token) return res.token;
+      else return environment.token;
+      //return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
+    }
+  }
+
+  private getTokenSpecial(){
+    if(localStorage[this.TOKEN]){
+      let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
+      this.id = res.id
+      //if(res.token) return res.token;
+      //else return environment.token;
+       return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNhcmlvIjoiR2FicmllbCBDb250cmVyYSIsImNvcnJlbyI6ImdhYm9AYWxwaGFkZXYuaW8iLCJpYXQiOjE3MjEzMjc4ODV9.R_V2DS9_Wum5ATURfVa19UtArAYHdhgVsx9FG9zNSF4'
     }
   }
 
@@ -418,7 +448,7 @@ export class ApiService {
   
 
   public getDocumentations(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=documentaciones'
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=documentaciones'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -427,57 +457,57 @@ export class ApiService {
   }
 
   public getDocuments(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1'
+    const url = 'https://apief.globalbusiness.com.mx/v1/documentos?estatus=1'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<Documents[]>(url,{headers:headers});
   }
 
   public getSections(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=articulo_secciones'
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=articulo_secciones'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<Documents[]>(url,{headers:headers});
   }
 
   public getAllArticles(model:string,params?:HttpParams, queries:string = ''):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=' + model + queries
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=' + model + queries
     console.log(url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<any>(url,{params:params,headers:headers})
   }
 
   public getClassifications(): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/getAll?model=clasificaciones&estatus=1'
+    const url = 'https://apief.globalbusiness.com.mx/v1/getAll?model=clasificaciones&estatus=1'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<Classifications[]>(url,{headers:headers});
   }
 
   public searchArticle(id: number, request: string): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/content?model=articulos&id_documento=' + id + '&where=' + request;
+    const url = 'https://apief.globalbusiness.com.mx/v1/content?model=articulos&id_documento=' + id + '&where=' + request;
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get(url ,{headers:headers});
   }
 
   public searchArticleInEndpointArticle(id: number, request: string): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id_documento=' + id + '&where=' + request;
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulos?id_documento=' + id + '&where=' + request;
     console.log('URL', url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get(url ,{headers:headers});
   }
@@ -489,7 +519,7 @@ export class ApiService {
   public saveArticle(request: Article): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model: this.models.articulos,data: {
@@ -513,7 +543,7 @@ export class ApiService {
   public saveClasification(name: string | undefined): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model: this.models.clasificaciones,data:{nombre: name,}};
@@ -524,7 +554,7 @@ export class ApiService {
   public saveArticleChapter(request:Article_Chapter):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model:this.models.articulo_capitulos,data:{nombre:request.nombre, id_documento:request.id_documento,id_titulo:request.id_titulo,fecha_creacion:request.fecha_creacion,fecha_modificacion:request.fecha_modificacion}};
@@ -535,7 +565,7 @@ export class ApiService {
   public saveParagraph(request:Paragraph):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert
     const body = {model:'articulo_parafo',data:{indicador:request.indicador, orden:request.orden, id_articulo:request.id_articulo, contenido:request.contenido,tipo:request.tipo,numero:request.numero,nombre:request.nombre, relaciones:request.relaciones}};
@@ -547,7 +577,7 @@ export class ApiService {
   public saveDocument(request: Documents): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model: this.models.documentos,data: {titulo:request.titulo, editorial:request.editorial, abreviatura:request.abreviatura, num_articulos:request.num_articulos, ayo:request.ayo, fecha_modificacion:request.fecha_modificacion, fecha_creacion:request.fecha_creacion, clasificacion:request.clasificacion}};
@@ -572,9 +602,9 @@ export class ApiService {
   public saveArticleTitle(request:Article_Title):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_titulo'
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulo_titulo'
     const body = {data:{nombre: request.nombre, id_documento:request.id_documento}};
     console.log(body)
     const encryptedBody = this.encrypt(body, 'private');
@@ -584,7 +614,7 @@ export class ApiService {
   public saveSection(request:Article_Section):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     const url = this.insert;
     const body = {model:this.models.articulo_secciones,data:{id_capitulo: request.id_capitulo, id_titulo:request.id_titulo, id_documento:request.id_documento, nombre:request.nombre}};
@@ -594,7 +624,7 @@ export class ApiService {
   }
 
   public delete(model:string,id:number):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v1/'+model+'?&id=' + id
+    const url = 'https://apief.globalbusiness.com.mx/v1/'+model+'?&id=' + id
     console.log('URL:',url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
@@ -606,9 +636,9 @@ export class ApiService {
   public getCapacitations(): Observable<any> {
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/capacitaciones?id_usuario=' + this.id;
+    const url = 'https://apief.globalbusiness.com.mx/v1/capacitaciones?id_usuario=' + this.id;
     console.log(url)
     return this.http.get<Capacitations[]>(url, {headers:headers});
   }
@@ -632,7 +662,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/capacitaciones_usuarios_tiempo'
+    const url = 'https://apief.globalbusiness.com.mx/v1/capacitaciones_usuarios_tiempo'
     const body = {
       data:{
         id_usuario:request.id_usuario,
@@ -649,7 +679,7 @@ export class ApiService {
   }
 
   public getCumplimientosControl(params?:HttpParams):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_control';
+    const url = 'https://apief.globalbusiness.com.mx/v1/cumplimiento_control';
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -660,9 +690,9 @@ export class ApiService {
   public getArticleById(id):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id=' + id
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulos?id=' + id
     return this.http.get(url, {headers:headers});  
   }
 
@@ -671,7 +701,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/temario'
+    const url = 'https://apief.globalbusiness.com.mx/v1/temario'
     return this.http.get(url, {headers:headers});  
   }
 
@@ -680,7 +710,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/documentaciones_obligaciones'
+    const url = 'https://apief.globalbusiness.com.mx/v1/documentaciones_obligaciones'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.post(url, {text:encryptedBody},{headers:headers});  
   }
@@ -690,7 +720,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/capacitaciones';
+    const url = 'https://apief.globalbusiness.com.mx/v1/capacitaciones';
     console.log(url)
     return this.http.get(url, {headers:headers});
   }
@@ -700,7 +730,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/cumplimiento_capacitaciones'
+    const url = 'https://apief.globalbusiness.com.mx/v1/cumplimiento_capacitaciones'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.post(url, {text:encryptedBody},{headers:headers});  
   }
@@ -710,7 +740,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos?id='+id_articulo;
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulos?id='+id_articulo;
     console.log(url)
     return this.http.get(url, {headers:headers});
   }
@@ -718,9 +748,9 @@ export class ApiService {
   public getParrafo():Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_parafo';
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulo_parafo';
     console.log(url)
     return this.http.get(url, {headers:headers});
   }
@@ -731,7 +761,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/cumplimiento_control'
+    const url = 'https://apief.globalbusiness.com.mx/v2/cumplimiento_control'
     //const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {body},{headers:headers});  
   }
@@ -739,28 +769,28 @@ export class ApiService {
   public getAllDocuments(params?):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = `https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1&id=${params}`;
+    const url = `https://apief.globalbusiness.com.mx/v1/documentos?estatus=1&id=${params}`;
     return this.http.get(url, {headers:headers});
   }
 
   public getAllChapters(model:string,params?:HttpParams, id:string = ''):Observable<any>{
-    const url = `https://api.escudofiscal.alphadev.io/v1/getAll?model=articulo_capitulos`
+    const url = `https://apief.globalbusiness.com.mx/v1/getAll?model=articulo_capitulo`
     console.log('URL',url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<any>(url,{params:params,headers:headers})
   }
 
   public getAllSections(model:string,params?:HttpParams, id:string = ''):Observable<any>{
-    const url = `https://api.escudofiscal.alphadev.io/v1/getAll?model=articulo_secciones`
+    const url = `https://apief.globalbusiness.com.mx/v1/getAll?model=articulo_secciones`
     console.log(url)
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
     return this.http.get<any>(url,{params:params,headers:headers})
   }
@@ -768,18 +798,18 @@ export class ApiService {
   public getAllDocuments2(params?):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = `https://api.escudofiscal.alphadev.io/v1/documentos?estatus=1`;
+    const url = `https://apief.globalbusiness.com.mx/v1/documentos?estatus=1`;
     return this.http.get(url, {headers:headers});
   }
 
   public editDoc(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/documentos'
+    const url = 'https://apief.globalbusiness.com.mx/v1/documentos'
     const encryptedBody = this.encrypt(body,'private')
     console.log(encryptedBody)
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
@@ -788,9 +818,9 @@ export class ApiService {
   public editTit(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_titulo'
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulo_titulo'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers}); 
   }
@@ -798,9 +828,9 @@ export class ApiService {
   public editClassif(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/clasificaciones'
+    const url = 'https://apief.globalbusiness.com.mx/v1/clasificaciones'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
@@ -808,9 +838,9 @@ export class ApiService {
   public editChapter(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_capitulo'
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulo_capitulo'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
@@ -819,9 +849,9 @@ export class ApiService {
   public editSection(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_secciones'
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulo_secciones'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
@@ -829,9 +859,9 @@ export class ApiService {
   public editArticle(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulos'
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulos'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
@@ -839,9 +869,9 @@ export class ApiService {
   public editParagraph(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getToken()}`
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v1/articulo_parafo'
+    const url = 'https://apief.globalbusiness.com.mx/v1/articulo_parafo'
     const encryptedBody = this.encrypt(body,'private')
     return this.http.put(url, {text:encryptedBody},{headers:headers});  
   }
@@ -851,7 +881,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = "https://api.escudofiscal.alphadev.io/v1/getAll?model=capacitaciones_preguntas&id_video=" + id;
+    const url = "https://apief.globalbusiness.com.mx/v1/getAll?model=capacitaciones_preguntas&id_video=" + id;
     console.log(url)
     return this.http.get<Questionnaire[]>(url,{headers:headers});
   }
@@ -903,7 +933,7 @@ export class ApiService {
   //ENDPOINTS PARA PERFILES
 
   public getProfiles():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/profile'
+    const url = 'https://apief.globalbusiness.com.mx/v2/profile'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -916,14 +946,14 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/profile'
+    const url = 'https://apief.globalbusiness.com.mx/v2/profile'
     return this.http.post(url, body,{headers:headers}); 
   }
 
   //ENDPOINTS PARA MÓDULOS
 
   public getModules():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/module'
+    const url = 'https://apief.globalbusiness.com.mx/v2/module'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -932,7 +962,7 @@ export class ApiService {
   }
 
   public postModules(body:any):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/module'
+    const url = 'https://apief.globalbusiness.com.mx/v2/module'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -941,7 +971,7 @@ export class ApiService {
   }
 
   public putModules(body:any):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/module'
+    const url = 'https://apief.globalbusiness.com.mx/v2/module'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -950,7 +980,7 @@ export class ApiService {
   }
 
   public putPerfilesModulos(body:any):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/perfiles_modulos'
+    const url = 'https://apief.globalbusiness.com.mx/v2/perfiles_modulos'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -959,7 +989,7 @@ export class ApiService {
   }
 
   public addProfileModulos(body:any):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/module/add_profile'
+    const url = 'https://apief.globalbusiness.com.mx/v2/module/add_profile'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -968,7 +998,7 @@ export class ApiService {
   }
 
   public deleteProfileModule(body:any):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/module/delete_profile'
+    const url = 'https://apief.globalbusiness.com.mx/v2/module/delete_profile'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -979,7 +1009,7 @@ export class ApiService {
   //ENDPOINTS PARA CUMPLIMIENTO CONTROL
 
   public getCumplimientos(start:number, end:number):Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/task/dates?start=' + start + '&end=' + end
+    const url = 'https://apief.globalbusiness.com.mx/v2/task/dates?start=' + start + '&end=' + end
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -993,13 +1023,13 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     body = JSON.stringify(body)
-    const url = 'https://api.escudofiscal.alphadev.io/v2/task'
+    const url = 'https://apief.globalbusiness.com.mx/v2/task'
     console.log(body)
     return this.http.put(url, body,{headers:headers});  
   }
 
   public getMissing():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/task/uncompleted_tasks'
+    const url = 'https://apief.globalbusiness.com.mx/v2/task/uncompleted_tasks'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1010,7 +1040,7 @@ export class ApiService {
   //ENDPOINTS PARA LOS DÍAS FESTIVOS
 
   public getDiasFestivos():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/dia_festivo'
+    const url = 'https://apief.globalbusiness.com.mx/v2/dia_festivo'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1023,7 +1053,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/dia_festivo'
+    const url = 'https://apief.globalbusiness.com.mx/v2/dia_festivo'
     return this.http.post(url, body,{headers:headers});  
   }
 
@@ -1032,14 +1062,14 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/dia_festivo/delete'
+    const url = 'https://apief.globalbusiness.com.mx/v2/dia_festivo/delete'
     return this.http.put(url, body,{headers:headers});  
   }
 
   //ENDPOINTS PARA LAS EMPRESAS
 
   public getEmpresas():Observable<any>{
-    const url = 'https://api.escudofiscal.alphadev.io/v2/empresa'
+    const url = 'https://apief.globalbusiness.com.mx/v2/empresa'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1052,7 +1082,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/empresa'
+    const url = 'https://apief.globalbusiness.com.mx/v2/empresa'
     return this.http.post(url, body,{headers:headers});  
   }
 
@@ -1061,7 +1091,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/empresa'
+    const url = 'https://apief.globalbusiness.com.mx/v2/empresa'
     return this.http.put(url, body,{headers:headers});  
   }
 
@@ -1070,14 +1100,14 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/empresa/delete'
+    const url = 'https://apief.globalbusiness.com.mx/v2/empresa/delete'
     return this.http.put(url, body,{headers:headers});  
   }
 
   //ENDPOINTS PARA LAS OBLIGACIONES
 
   public postObligations( data: any): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation';
+    const url = 'https://apief.globalbusiness.com.mx/v2/obligation';
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -1086,7 +1116,7 @@ export class ApiService {
   }
 
   public putObligations( data: any ): Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation';
+    const url = 'https://apief.globalbusiness.com.mx/v2/obligation';
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -1097,7 +1127,7 @@ export class ApiService {
   //ENDPOINTS PARA VIDEOS
 
   public getVideos(type:string):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/video?category=' + type
+    const url = 'https://apief.globalbusiness.com.mx/v2/video?category=' + type
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1106,7 +1136,7 @@ export class ApiService {
   }
 
   public getAllVideos():Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/video'
+    const url = 'https://apief.globalbusiness.com.mx/v2/video'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1115,7 +1145,7 @@ export class ApiService {
   }
 
   public getNews():Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/video?category=news&orderby=date:desc&limit=12'
+    const url = 'https://apief.globalbusiness.com.mx/v2/video?category=news&orderby=date:desc&limit=12'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1124,7 +1154,7 @@ export class ApiService {
   }
 
   public async watch(name:string):Promise<Blob> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/video/watch?route=' + name
+    const url = 'https://apief.globalbusiness.com.mx/v2/video/watch?route=' + name
     console.log(url)
     // let headers = new HttpHeaders({
     //   //'Content-type':'application/json',
@@ -1147,7 +1177,7 @@ export class ApiService {
   }
 
   public postVideos(data:FormData):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/video'
+    const url = 'https://apief.globalbusiness.com.mx/v2/video'
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1155,7 +1185,7 @@ export class ApiService {
   }
 
   public putVideos(data:FormData):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/video'
+    const url = 'https://apief.globalbusiness.com.mx/v2/video'
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1163,7 +1193,7 @@ export class ApiService {
   }
 
   public deleteVideos(data:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/video'  
+    const url = 'https://apief.globalbusiness.com.mx/v2/video'  
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1174,7 +1204,7 @@ export class ApiService {
   //ENDPOINTS PARA CAPACITACIONES
 
   public getAllCapacitations():Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/capacitaciones'
+    const url = 'https://apief.globalbusiness.com.mx/v2/capacitaciones'
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1182,7 +1212,7 @@ export class ApiService {
   }
 
   public postCapacitations(data:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/capacitaciones'
+    const url = 'https://apief.globalbusiness.com.mx/v2/capacitaciones'
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1190,7 +1220,7 @@ export class ApiService {
   }
 
   public putCapacitations(data:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/capacitaciones'
+    const url = 'https://apief.globalbusiness.com.mx/v2/capacitaciones'
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1198,7 +1228,7 @@ export class ApiService {
   }
 
   public deleteCapacitation(id:number):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/capacitaciones/' + id
+    const url = 'https://apief.globalbusiness.com.mx/v2/capacitaciones/' + id
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1206,7 +1236,7 @@ export class ApiService {
   }
 
   public postQuestionAndAnswer(body:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/questionarie'
+    const url = 'https://apief.globalbusiness.com.mx/v2/questionarie'
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1214,7 +1244,7 @@ export class ApiService {
   }
 
   public getQuestionAndAnswer(id:number):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/questionarie/' + id
+    const url = 'https://apief.globalbusiness.com.mx/v2/questionarie/' + id
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1223,7 +1253,7 @@ export class ApiService {
   }
 
   public putQuestionAndAnswer(body:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/questionarie'
+    const url = 'https://apief.globalbusiness.com.mx/v2/questionarie'
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1233,7 +1263,7 @@ export class ApiService {
   //ENDPOINTS PARA LIGAR OBLIGACIONES CON COSAS
 
   public relateCumplimientoArticulo(body:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/add_articles'
+    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/add_articles'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1242,7 +1272,7 @@ export class ApiService {
   }
 
   public deleteCumplimientoArticulo(body:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/delete_articles'
+    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/delete_articles'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1251,7 +1281,7 @@ export class ApiService {
   }
 
   public relateCumplimientoParrafo(body:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/add_paragraphs'
+    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/add_paragraphs'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1260,7 +1290,7 @@ export class ApiService {
   }
 
   public deleteCumplimientoParrafo(body:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/delete_paragraphs'
+    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/delete_paragraphs'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1273,12 +1303,12 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/add_subjects'
+    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/add_subjects'
     return this.http.put(url, body,{headers:headers});  
   }
 
   public deleteCumplimientoTopics(body:any):Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/obligation/delete_subjects'
+    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/delete_subjects'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1289,11 +1319,76 @@ export class ApiService {
   //ENDPOINTS PARA LOGS
 
   public getAllLogs():Observable<any> {
-    const url = 'https://api.escudofiscal.alphadev.io/v2/action'
+    const url = 'https://apief.globalbusiness.com.mx/v2/action'
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
     return this.http.get(url, {headers: headers});  
+  }
+
+  //ENDPOINTS PARA CAPACITACIONES
+
+  public getTrainings(id:any):Observable<any> {
+    const url = this.apiUrlv2 + `capacitaciones?id_usuario=${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public getQuestions(id:string):Observable<any> {
+    const url = this.apiUrlv2 + `questionarie/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getTokenSpecial()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }  
+
+public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any> {
+    const url = this.apiUrlv2 + `capacitaciones/get-video-location?id_user=${id_user}&id_capacitacion=${id_capacitacion}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public startCapacitation(data: any): Observable<any> {
+    const url = `${this.apiUrlv2}capacitaciones/start-capacitation`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, data, { headers: headers });
+  }
+
+  public registerVideoAdvancement(data: any): Observable<any> {
+    const url = `${this.apiUrlv2}capacitaciones/register-video-advancement`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, data, { headers: headers });
+  }
+
+  public startQuestionarie(data: any): Observable<any> {
+    const url = `${this.apiUrlv2}capacitaciones/start-questionarie`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, data, { headers: headers });
+  }
+
+  public grades(id: any, data: any): Observable<any> {
+    const url = `${this.apiUrlv2}capacitaciones/grade/${id}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, data, { headers: headers });
   }
 }

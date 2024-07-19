@@ -21,7 +21,7 @@
           <div>
             <h6 style="text-align: center;">{{ formatDate( time.date ) || '' }}</h6>
           </div>
-          <img [src]="time.address_image === 'https://api.escudofiscal.alphadev.io/uploads/null' ? 'https://www.aliatuniversidades.com.mx/hubfs/Imported_Blog_Media/ETAC-Cuales-son-los-requisitos-para-entrar-a-la-licenciatura-en-Contaduria-Publica-1-1.jpg' : time.address_image" alt="" style="width: 100%; height: auto; aspect-ratio: 16 / 9;" [ngClass]="{'b-red':time.selected}">
+          <img [src]="time.address_image === 'https://apief.globalbusiness.com.mx/uploads/null' ? 'https://www.aliatuniversidades.com.mx/hubfs/Imported_Blog_Media/ETAC-Cuales-son-los-requisitos-para-entrar-a-la-licenciatura-en-Contaduria-Publica-1-1.jpg' : time.address_image" alt="" style="width: 100%; height: auto; aspect-ratio: 16 / 9;" [ngClass]="{'b-red':time.selected}">
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
 
     <div fxLayout="row reverse" style="flex-direction: row;">
       <div #scrollElement fxFlex.gt-sm="25" *ngFor="let time of mytimelines;let indexTime=index;" class="dates" fxFlex="100" style="z-index: 1;padding-left: .1em;padding-right: .1em;">
-        <mat-card class="oh text-center little-profile" (click)="playNew(time,indexTime)" *ngIf="time.address_image !== 'https://api.escudofiscal.alphadev.io/uploads/null'">
+        <mat-card class="oh text-center little-profile" (click)="playNew(time,indexTime)" *ngIf="time.address_image !== 'https://apief.globalbusiness.com.mx/uploads/null'">
           <mat-card-content [ngStyle]="{'background-image':'url('+time.address_image+')'}" style="background-repeat: no-repeat; background-size: cover; min-height: 30vh; cursor: pointer;" >
             <!--<h3 class="m-b-0 noticiero_fiscal">NOTICIERO FISCAL</h3>-->
             <div class="fecha_noticiero_fiscal">
@@ -41,7 +41,7 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="oh text-center little-profile" (click)="playNew(time,indexTime)" *ngIf="time.address_image === 'https://api.escudofiscal.alphadev.io/uploads/null'">
+        <mat-card class="oh text-center little-profile" (click)="playNew(time,indexTime)" *ngIf="time.address_image === 'https://apief.globalbusiness.com.mx/uploads/null'">
           <mat-card-content style="background-repeat: no-repeat; background-size: cover; min-height: 30vh; cursor: pointer; background-image: url('https://www.aliatuniversidades.com.mx/hubfs/Imported_Blog_Media/ETAC-Cuales-son-los-requisitos-para-entrar-a-la-licenciatura-en-Contaduria-Publica-1-1.jpg');" >
             <!--<h3 class="m-b-0 noticiero_fiscal">NOTICIERO FISCAL</h3>-->
             <div class="fecha_noticiero_fiscal">

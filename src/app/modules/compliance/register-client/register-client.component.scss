@@ -159,7 +159,7 @@ a:hover{
 
 .custom-tooltip {
     position: absolute;
-    top: 25px;
+    top: 15px;
     left: 50%; /* Opcional: para centrarlo horizontalmente */
     transform: translateX(-90%); /* Opcional: para centrarlo horizontalmente */
     //max-height: calc(1.2em * 2); /* Altura máxima de dos líneas */
@@ -229,3 +229,12 @@ td{
     scrollbar-width: none;  /* Firefox */
     padding: 8px;
 }
+
+.scroll-invisible ::-webkit-scrollbar {
+    display: none;
+}
+  
+.scroll-invisible{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }

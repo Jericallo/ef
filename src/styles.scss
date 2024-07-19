@@ -3,3 +3,23 @@
     padding-right: 0px !important;
     padding-left:10px !important;
   }
+
+body {
+  font-size: medium !important;
+}
+
+/* Para navegadores basados en WebKit (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 0px;  /* Oculta el scrollbar vertical */
+  height: 0px; /* Oculta el scrollbar horizontal */
+}
+
+/* Para Firefox */
+body {
+  scrollbar-width: none; /* Oculta el scrollbar */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Oculta el scrollbar */
+}

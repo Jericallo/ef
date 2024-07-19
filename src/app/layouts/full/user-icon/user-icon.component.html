@@ -3,7 +3,7 @@
   <div class="notification-bubble" *ngIf="notification_amount > 0">{{notification_amount}}</div>
   <div class="menu-container" [ngStyle]="{ 'display': isMenuOpen ? 'flex' : 'none' }">
     <ul>
-      <li *ngIf="user.nombre_perfil === 'Administrador de Global Business'"><a id="config" routerLink="/config/menu">Configuraciones</a></li>
+      <li><a id="config" routerLink="/config/menu">Configuraciones</a></li>
       <li>
         <a id="notifications" (click)="toggleNotification()" [ngClass]="{'disabled-link': notifications.length === 0}">
           Notificaciones

@@ -127,6 +127,7 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   anio = this.d.getFullYear().toString()
 
   mesMostrar = 'Mes actual'
+  anioMostrar = ''
 
   isModalOpen = false //Detecta si la modal ya está abierta, para evitar abrir varias.
   
@@ -173,8 +174,7 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onScrollEvent($event){
-    // console.log($event['Window']);
-     console.log("ayuda");
+
   }
 
   ngOnInit(): void {
@@ -190,7 +190,6 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngAfterViewChecked(): void {
     // Verifica si hay un scroll pendiente y la vista se ha actualizado
     if (this.scrollPending) {
-      console.log('scroleando')
       this.scrollElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
 
       // Restablece la bandera de scroll pendiente
@@ -198,7 +197,6 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     if (this.scrollToTopPending) {
-      console.log('scroleando')
       this.scrollCalendar.nativeElement.scrollIntoView({ behavior: 'smooth' });
 
       // Restablece la bandera de scroll pendiente
@@ -312,10 +310,16 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
     const today = new Date()
 
     this.sendableDate.setMonth(this.sendableDate.getMonth()+1)
-    if(this.sendableDate.getMonth() === today.getMonth()){
+    if(this.sendableDate.getMonth() === today.getMonth() && this.sendableDate.getFullYear() === today.getFullYear()){
       this.mesMostrar = 'Mes Actual'
     } else {
       this.mesMostrar = this.month[this.sendableDate.getMonth()]
+    }
+
+    if(this.sendableDate.getFullYear() !== today.getFullYear()){
+      this.anioMostrar = this.sendableDate.getFullYear().toString()
+    } else {
+      this.anioMostrar = ''
     }
 
     this.events = []
@@ -326,10 +330,16 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
     const today = new Date()
 
     this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
-    if(this.sendableDate.getMonth() === today.getMonth()){
+    if(this.sendableDate.getMonth() === today.getMonth() && this.sendableDate.getFullYear() === today.getFullYear()){
       this.mesMostrar = 'Mes Actual'
     } else {
       this.mesMostrar = this.month[this.sendableDate.getMonth()]
+    }
+
+    if(this.sendableDate.getFullYear() !== today.getFullYear()){
+      this.anioMostrar = this.sendableDate.getFullYear().toString()
+    } else {
+      this.anioMostrar = ''
     }
 
     this.events = []
@@ -337,7 +347,6 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   isFechaMaxima(element: any, column: number): string {
-    console.log(element)
     if (column === 0) {
       return 'transparent';
     }
@@ -387,6 +396,8 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
           if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis >= objeto.fecha_completado) {}
           else if (milis >= objeto.urgent_date_start && milis <= objeto.urgent_date_end) {
             contador++;
+          } else if ((objeto.urgent_date_start - objeto.urgent_date_end) < 86400000) {
+            if(milis < objeto.urgent_date_start && (parseInt(milis) + 86400000).toString() > objeto.urgent_date_end) contador ++
           }
         }
 
@@ -401,6 +412,8 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
           if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis >= objeto.fecha_completado) {}
           else if (milis >= objeto.close_date_start && milis <= objeto.close_date_end) {
             contador++;
+          } else if ((objeto.close_date_start - objeto.close_date_end) < 86400000) {
+            if(milis < objeto.close_date_start && (parseInt(milis) + 86400000).toString() > objeto.close_date_end) contador ++
           }
         }
 
@@ -416,6 +429,8 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
           if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis >= objeto.fecha_completado) {}
           else if (milis >= objeto.recommended_date_start && milis <= objeto.recommended_date_end) {
             contador++;
+          } else if ((objeto.recommended_date_start - objeto.recommended_date_end) < 86400000) {
+            if(milis < objeto.recommended_date_start && (parseInt(milis) + 86400000).toString() > objeto.recommended_date_end) contador ++
           }
         }
 
@@ -429,6 +444,8 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
           if((objeto.completado === 1 || objeto.completado === 2 || objeto.completado === 3) && milis >= objeto.fecha_completado) {}
           else if (milis >= objeto.ideal_date_start && milis <= objeto.ideal_date_end ) {
             contador++;
+          } else if ((objeto.ideal_date_start - objeto.ideal_date_end) < 86400000) {
+            if(milis < objeto.ideal_date_start && (parseInt(milis) + 86400000).toString() > objeto.ideal_date_end) contador ++
           }
         }
 
@@ -554,13 +571,14 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   modalIsFechaMaxima(element: any, column: any): string {
+    console.log('almost')
     column = (column.getTime()).toString()
     if (column === 0) {
       return 'transparent';
     }
     let fechaColumna = column;
     let fechaCumplimiento = element.fecha_completado
-
+    
 
     //****NUEVA FORMA****//
 
@@ -579,6 +597,16 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
         if(fechaCumplimiento >= (parseInt(fechaColumna) + 86399999).toString()) return 'transparent' //SI ESTÁ MÁS ALLÁ DEL RECUADRO. HACE QUE EL DE FECHA COMPLETADO SEA EL ULTIMO
       }
     }
+    //SI ESTAN VARIAS EN UN MISMO DIA
+    if(element.ideal_date_end - element.ideal_date_start < 86400000) {
+      if(element.close_date_start > fechaColumna && element.close_date_end < (parseInt(fechaColumna) + 86400000).toString){
+        return 'red'
+      }
+      if(element.ideal_date_start > fechaColumna && element.recommended_date_end < (parseInt(fechaColumna) + 86400000).toString){
+        return '#ffcc0c'
+      }
+    }
+
     //SI ESTÁ POR DETRAS DE LA FECHA MINIMA
     if(element.ideal_date_start > fechaColumna) return 'transparent'
 
@@ -586,6 +614,14 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
     if(element.urgent_date_end >= fechaColumna && element.close_date_start <= fechaColumna) return 'red'
     //PARA ESTAR EN AMARILLO
     if(element.recommended_date_end >= fechaColumna && element.ideal_date_start <= fechaColumna) return '#ffcc0c'
+    if((element.ideal_date_start - element.ideal_date_end) < 86400000){
+      console.log('yes')
+      if(element.urgent_date_end <= (parseInt(fechaColumna) + 86400000) && element.close_date_start >= fechaColumna){
+        return 'red'
+      } else if (element.recommended_date_end <= (parseInt(fechaColumna) + 86400000) && element.ideal_date_start >= fechaColumna) {
+        return '#ffcc0c'
+      }
+    }
 
     return 'transparent'
   }
@@ -593,44 +629,72 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   modalIsRojorapido(element: any, column: any){
     column = (column.getTime()).toString()
     if(column === 0) return false
-    if(element.completado !== 0) return false 
+    //if(element.completado !== 0) return false 
 
     let fechaColumna = column;
 
     if(fechaColumna >= element.urgent_date_start && fechaColumna <= element.urgent_date_end) return true
+
+    if(element.urgent_date_end - element.urgent_date_start < 86400000) {
+      if(fechaColumna < element.urgent_date_start && (parseInt(fechaColumna) + 86400000).toString() > element.urgent_date_end) {
+        return true
+      }
+    }
+
     return false
   }
 
   modalIsRojoLento(element: any, column: any) {
     column = (column.getTime()).toString()
     if(column === 0) return false
-    if(element.completado !== 0) return false 
+    //if(element.completado !== 0) return false 
 
     let fechaColumna = column;
 
     if(fechaColumna >= element.close_date_start && fechaColumna <= element.close_date_end) return true
+
+    if(element.close_date_end - element.close_date_start < 86400000) {
+      if(fechaColumna < element.close_date_start && (parseInt(fechaColumna) + 86400000).toString() > element.close_date_end) {
+        return true
+      }
+    }
+
     return false
   }
 
   modalIsAmarilloRapido(element: any, column: any){
     column = (column.getTime()).toString()
     if(column === 0) return false
-    if(element.completado !== 0) return false 
+    //if(element.completado !== 0) return false 
 
     let fechaColumna = column;
 
     if(fechaColumna >= element.recommended_date_start && fechaColumna <= element.recommended_date_end) return true
+
+    if(element.recommended_date_end - element.recommended_date_start < 86400000) {
+      if(fechaColumna < element.recommended_date_start && (parseInt(fechaColumna) + 86400000).toString() > element.recommended_date_end) {
+        return true
+      }
+    }
+
     return false
   }
 
   modalIsAmarilloLento(element: any, column: any) {
     column = (column.getTime()).toString()
     if(column === 0) return false
-    if(element.completado !== 0) return false 
+    //if(element.completado !== 0) return false 
 
     let fechaColumna = column;
 
     if(fechaColumna >= element.ideal_date_start && fechaColumna <= element.ideal_date_end) return true
+
+    if(element.ideal_date_end - element.ideal_date_start < 86400000) {
+      if(fechaColumna < element.ideal_date_start && (parseInt(fechaColumna) + 86400000).toString() > element.ideal_date_end) {
+        return true
+      }
+    }
+
     return false
   }
 
@@ -650,19 +714,22 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (column === 0) {
       return false;
     }
-    let fechaColumna = column;
-    let fechaCumplimiento = element.fecha_completado
-
-    if(fechaColumna > fechaCumplimiento && fechaColumna < (parseInt(fechaColumna) + 86399999).toString && element.completado === 3) return true
-
+    let fechaColumna = column.toString();
+    if(element.fecha_completado){
+      let fechaCumplimiento = element.fecha_completado.toString()
+      const numero = parseInt(fechaColumna)
+      if(fechaCumplimiento >= fechaColumna && fechaCumplimiento <= (numero + 86399999).toString() && element.completado === 3) return true
+    } else {
+      return false
+    }
+    return false
   }
 
   filterCumplimientos(){
     this.theCumplimientos = []
     let milis = (this.exModalData.date.getTime()).toString()
-
     for (const cumplimiento of this.exModalData.cumplimientos) {
-      if (milis >= cumplimiento.ideal_date_start && milis <= cumplimiento.urgent_date_end) {
+      if ((milis >= cumplimiento.ideal_date_start && milis <= cumplimiento.urgent_date_end && cumplimiento.completado === 0) || (cumplimiento.completado > 0 && cumplimiento.fecha_completado.toString() == milis)) {
         this.theCumplimientos.push(cumplimiento)
       }
     }

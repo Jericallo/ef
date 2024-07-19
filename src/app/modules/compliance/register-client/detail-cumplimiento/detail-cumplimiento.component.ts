@@ -26,6 +26,7 @@ export class DetailCumplimientoComponent implements OnInit {
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
   ngOnInit(): void {
+    console.log(this.data.cumplimiento)
     if((this.data.cumplimiento.ideal_date_start > this.data.fecha ) || 
       (this.data.cumplimiento.fecha_completado !== null && this.data.cumplimiento.fecha_completado !== '0' &&
         this.data.cumplimiento.fecha_completado < this.data.fecha)) this.blanco = false
@@ -48,10 +49,10 @@ export class DetailCumplimientoComponent implements OnInit {
     if(user.nombre_perfil === "Administrador" && (this.data.cumplimiento.completado === 1 || this.data.cumplimiento.completado === 2)) {
       this.disabled = true;
       this.texto = "Esperando confirmación del supervisor"
-    } else if (user.nombre_perfil === "Supervisor" && this.data.cumplimiento.completado === 1){
+    } else if (user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && this.data.cumplimiento.completado === 1){
       this.disabled = false;
       this.texto = "Comenzar a revisar como cumplido"
-    } else if (user.nombre_perfil === "Supervisor" && this.data.cumplimiento.completado === 2){
+    } else if (user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && this.data.cumplimiento.completado === 2){
       this.disabled = false;
       this.texto = "Terminar revisión"
     }
@@ -80,7 +81,7 @@ export class DetailCumplimientoComponent implements OnInit {
         fecha_completado:parseInt(this.data.fecha),
         completado:1
       }
-    } else if (user.nombre_perfil === "Supervisor"){
+    } else if (user.nombre_perfil === "Supervisor de cumplimiento de la empresa"){
       if(this.data.cumplimiento.completado === 1) {
         body = {
           id: this.data.cumplimiento.id,
@@ -99,14 +100,14 @@ export class DetailCumplimientoComponent implements OnInit {
     
     this.apiService.editDates(body).subscribe({
       next: res => {
-        console.log(res)
+        console.log('ENTRA',res)
         this.disabled = true;
-        if(user.nombre_perfil === "Supervisor" && body.obligation.completado === 2){
+        if(user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && body.completado === 2){
           this.data.cumplimiento.completado = 2;
           this.texto = "Terminar revisión..."
           this.disabled = false;
           return
-        } else if(user.nombre_perfil === "Supervisor" && body.obligation.completado === 3){
+        } else if(user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && body.completado === 3){
           this.data.cumplimiento.completado = 3;
           this.data.cumplimiento.fecha_completado = this.data.fecha
           this.showButton = false

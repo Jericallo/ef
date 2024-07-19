@@ -7,7 +7,7 @@ export const environment = {
   baseUrl:"/v1/",
   baseUrl2:"/v2/",
   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNhcmlvIjoiRGFuaWVsIFdpc2UgUnVpeiBWZWxhc2NvIiwiY29ycmVvIjoiZGFuaWVsQGFscGhhZGV2LmlvIiwiaWF0IjoxNjg3NjI4MDI0fQ.9sA2aTYzzmInU9jWjv1wxrphlCSQ0mpg_dcB_yoHOag",
-  url_base:"https://api.escudofiscal.alphadev.io/v1/",
+  url_base:"https://apief.globalbusiness.com.mx/v1/",
   firebase:{
     apiKey: "AIzaSyA6RtQ-7CNwGnHvB4BjBCY7rG3HzVf2LYU",
     authDomain: "escudo-fiscal-2fed1.firebaseapp.com",

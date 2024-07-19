@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ApiService } from 'src/app/shared/services/api.service';
 
 interface answerInterface {
@@ -17,10 +18,11 @@ interface questionInterface {
 export class QuestionCrudComponent implements OnInit {
 
   questions:questionInterface[]
-
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  config_snack = { duration: 3000,verticalPosition: this.verticalPosition}
   id:number
 
-  constructor( public apiService:ApiService) { }
+  constructor( public apiService:ApiService, public snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     console.log(history.state.id)
@@ -88,6 +90,7 @@ export class QuestionCrudComponent implements OnInit {
     this.apiService.putQuestionAndAnswer(body).subscribe({
       next: res => {
         console.log(res)
+        this.snackBar.open('Pregunta borrada exitosamente', '', this.config_snack);
       }, error: err => {
         console.warn(err)
       }
@@ -100,12 +103,25 @@ export class QuestionCrudComponent implements OnInit {
   }
   
   saveQuestion(questionIndex:number) {
+    let flag = false
+    this.questions[questionIndex].respuesta.forEach(response => {
+      if(response.correcta === true) flag = true 
+    })
+
+    if(!flag){
+      this.snackBar.open('Debe seleccionar al menos una respuesta como correcta', '', this.config_snack);
+      return
+    }
+
     if(this.questions[questionIndex].new === true && this.questions[questionIndex].deleted === 0) {
       const body:any = this.questions[questionIndex]
       body.id_capacitacion = this.id
 
       this.apiService.postQuestionAndAnswer(body).subscribe({
         next: res => {
+          this.snackBar.open('Pregunta guardada exitosamente', '', this.config_snack);
+          this.questions[questionIndex].new = false
+          this.questions[questionIndex].id = res.pregunta.id
           console.log(res)
         }, error: err => {
           console.warn(err)
@@ -118,6 +134,7 @@ export class QuestionCrudComponent implements OnInit {
 
       this.apiService.putQuestionAndAnswer(body).subscribe({
         next: res => {
+          this.snackBar.open('Pregunta guardada exitosamente', '', this.config_snack);
           console.log(res)
         }, error: err => {
           console.warn(err)

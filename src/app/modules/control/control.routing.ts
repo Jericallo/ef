@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
 import { CapacitationsComponent } from './capacitations/capacitations.component';
 import { VideosComponent } from "./videos/videos.component";
-import { QuestionarieComponent } from "./questionarie/questionarie.component";
+import { QuestionarieComponent } from "./capacitations/questionarie/questionarie.component";
 import { ChatComponent } from "./chat/chat.component";
 import { ResultsComponent } from "./results/results.component";
 
@@ -16,6 +16,17 @@ export const ControlRoutes: Routes = [
                     title:'Capacitaciones',
                     urls:[
                         {title:'Configuración', url:'/control'},
+                        {title:'Capacitaciones'}
+                    ]
+                }
+            },
+            {
+                path:'questionarie',
+                component:QuestionarieComponent,
+                data: {
+                    title:'Cuestionario',
+                    urls:[
+                        {title:'Cuestionario', url:'/control'},
                         {title:'Capacitaciones'}
                     ]
                 }

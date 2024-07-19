@@ -25,7 +25,7 @@ export class AddModuleDialogComponent implements OnInit {
   }
 
   getModules(){
-    this.apiService.getAll("modulos").subscribe({
+    this.apiService.getAllSpecial("modulos").subscribe({
       next:res => {
         res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()));
         this.moduleList = res.result;

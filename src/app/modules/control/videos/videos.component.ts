@@ -179,12 +179,12 @@ export class VideosComponent implements OnInit {
 
   prevCapacitation() {
     this._router.navigate(['control/capacitaciones']);
-    this.capComponent.prevCapacitation(this.state ? this.state : undefined as any);
+    //this.capComponent.prevCapacitation(this.state ? this.state : undefined as any);
   }
 
   nextCapacitation() {
     this._router.navigate(['control/capacitaciones']);
-    this.capComponent.nextCapacitation(this.state ? this.state : undefined as any);
+    //this.capComponent.nextCapacitation(this.state ? this.state : undefined as any);
   }
 
   ngOnDestroy() {

@@ -24,10 +24,10 @@ export class LoginComponent implements OnInit {
     const username = this.loginForm.controls.username.value;
     const password = this.loginForm.controls.password.value;
 
-    this.apiService.login({ correo: username, contraseña: password }).subscribe({
+    this.apiService.login({ correo: username, contra: password }).subscribe({
       next: (res) => {
-        res = JSON.parse(this.apiService.decrypt(res.message, ''));
-        localStorage.setItem(this.apiService.TOKEN, JSON.stringify(res.data));
+        console.log(res)
+        localStorage.setItem(this.apiService.TOKEN, JSON.stringify(res.user));
         this.routes.navigate(['/main']);
       },
       error: (err) => {

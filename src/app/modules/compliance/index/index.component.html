@@ -21,7 +21,7 @@
                 <mat-icon>chevron_left</mat-icon><span>Anterior</span>
             </button>
             <span style="margin-right: 10px;">
-                {{mesMostrar}}
+                {{mesMostrar}} {{anioMostrar}}
             </span>
             <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (click)="monthNext()">
                 <span>Siguiente</span><mat-icon>chevron_right</mat-icon>
@@ -192,9 +192,7 @@
             
             <div class="container rojos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
                 <div *ngFor="let cumplimiento of cumplimientos; let i = index" class="container rojos" style="display: flex; flex-direction: row;" >
-                    <div class="indicador" style="margin-top: 7px;"
-                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
-                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    <div class="indicador indicador-rapido" style="margin-top: 7px; background-color: red;"
                     *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)" >
@@ -206,9 +204,7 @@
                 </div>
             
                 <div *ngFor="let cumplimiento of cumplimientos; let i = index" class="container rojos" style="display: flex; flex-direction: row;" >
-                    <div class="indicador" style="margin-top: 7px;"
-                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
-                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    <div class="indicador indicador-lento" style="margin-top: 7px; background-color: red;"                    
                     *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)">
@@ -222,9 +218,7 @@
             
             <div class="container amarillos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
                 <div *ngFor="let cumplimiento of cumplimientos; let i = index" class="container amarillos" style="display: flex; flex-direction: row;" >
-                    <div class="indicador" style="margin-top: 7px;"
-                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
-                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    <div class="indicador indicador-rapido" style="margin-top: 7px; background-color: #ffcc0c;"                    
                     *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)">
@@ -236,9 +230,7 @@
                 </div>
             
                 <div *ngFor="let cumplimiento of cumplimientos; let i = index" class="container amarillos" style="display: flex; flex-direction: row;" >
-                    <div class="indicador" style="margin-top: 7px;"
-                    [ngStyle]="{'background-color': modalIsFechaMaxima(cumplimiento, exModalData.date)}"
-                    [ngClass]="{'indicador-lento': modalIsIndicadorLento(cumplimiento, exModalData.date), 'indicador-rapido': modalIsIndicadorRapido(cumplimiento, exModalData.date)}"
+                    <div class="indicador indicador-lento" style="margin-top: 7px; background-color: #ffcc0c;"                    
                     *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)" >

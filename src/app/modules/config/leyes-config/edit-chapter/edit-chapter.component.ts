@@ -78,7 +78,7 @@ export class EditChapterComponent implements OnInit {
   getChapters() {
     this.showSpinner = true;
     this.showMain = false;
-    this.apiService.getAll("articulo_capitulos").subscribe({
+    this.apiService.getAllSpecial("articulo_capitulo").subscribe({
       next: (response) => {
         const decryptedResponse = this.apiService.decrypt(response.message, "private");
         this.chapters = JSON.parse(decryptedResponse).result;

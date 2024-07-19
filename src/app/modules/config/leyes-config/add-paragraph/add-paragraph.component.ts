@@ -537,7 +537,7 @@ export class AddParagraphComponent implements OnInit {
     let httpParams = new HttpParams();
     if(id_documento) httpParams = httpParams.set("id_documento",id_documento)
     if(id_titulo) httpParams = httpParams.set("id_titulo",id_titulo)
-    httpParams.set('model','articulo_capitulos')
+    httpParams.set('model','articulo_capitulo')
     this.apiService.getAllArticles(this.apiService.models.articulo_capitulos,httpParams)
     .subscribe({
       next: response => {
