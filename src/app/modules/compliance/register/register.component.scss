@@ -1,184 +1,43 @@
-/* Estilo para la columna fija */
-.mat-cell,
-.mat-header-cell {
-  // min-width: 100px; /* Ajusta el valor según tus necesidades */
+.table-container {
+  margin: 20px;
 }
 
-.page-content{
-  padding: 0px !important;
-  height: fit-content;
-  overflow: visible;
+.page-content {
+  padding: 0 !important;
+  margin: 0;
 }
 
-.button_month{
-  width: fit-content;
-  margin-right: 20px;
-  margin-left: 20px;
+.mat-elevation-z8 {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
-.container {
-  display: flex;
-  padding: 0px !important;
-  height: 100% !important;
-  min-width: 100%;
-  min-height: 100%;
+/* Estilo para el encabezado */
+.header-row th {
+  background-color: #ffcc0c;
+  text-align: center;
+  border: 1px solid #c0c0c0; /* Borde más oscuro */
 }
 
-.container2 {
-  display: flex;
-  min-width: 10px !important;
-}
-
-
-.celdas {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #81660e;
+/* Estilo para las celdas */
+.mat-cell, .mat-header-cell {
+  text-align: center;
+  border: 1px solid #c0c0c0; /* Borde más oscuro */
+  padding: 0 !important;
   font-size: small;
 }
 
-.celdasAzules {
-  background-color: #177cff;
-  border-color: #1f0e81;
-  color: white;
-}
-
-.celdasVerdes {
-  background-color: lawngreen;
-  border-color: #0e8118;
-}
-
-.celdasRojas {
-  background-color: rgb(181, 0, 0);
-  border-color: #810e0e;
-  color: white;
-}
-
-.fixed-column {
-  height: 100% !important;
-}
-
-.internas{
-  height: 15vh;
-  //min-height: 240px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #e6e6e6;
-  overflow: scroll;
-  text-align: center;
-  scrollbar-width: none;
-}
-
-:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-  background-color: #717171 ;
-}
-
-:host ::ng-deep .mat-slide-toggle:not(.mat-checked) .mat-slide-toggle-bar {
-  background-color: rgb(161, 255, 162)
-}
-
-:host ::ng-deep .mat-slide-toggle:not(.mat-checked) .mat-slide-toggle-thumb {
-  background-color: rgb(47, 231, 50)
-}
-
-:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-  background-color: #ffffff ;
-}
-
-.card_search {
-  position: fixed; 
-  top:130px; left: 390px; 
-  width: 50%; z-index: 4; 
-  max-height: 80vh; 
-  background-color: white; 
-  padding: 10px; 
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); 
-  border-radius: 10px; overflow:scroll;
-}
-
-::-webkit-scrollbar {
-  width: 1px;
-  height: 1px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #afa74c; /* Color del thumb del scrollbar */
-  border-radius: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Color del track del scrollbar */
-}
-
-::-webkit-scrollbar-thumb:horizontal {
-  background-color: #afa74c; /* Color del thumb del scrollbar */
-  border-radius: 6px;
-}
-
-::-webkit-scrollbar-track:horizontal {
-  background-color: #f1f1f1; /* Color del track del scrollbar */
-}
-
-::-webkit-scrollbar {
-  width: 1px;
-  height: 1px;
-}
-::-webkit-scrollbar-track {
-  background: white;
-}
-::-webkit-scrollbar-thumb {
-  background: #ddd;
-  visibility:hidden;
-}
-:hover::-webkit-scrollbar-thumb {
-  visibility:visible;
-}
-::-webkit-scrollbar-track:horizontal {
-  background: white;
-}
-::-webkit-scrollbar-thumb:horizontal {
-  background: #ddd;
-  visibility:hidden;
-}
-:hover::-webkit-scrollbar-thumb:horizontal {
-  visibility:visible;
-}
-
-a {
-  color: #177cff !important;
-  text-decoration: none !important;
-}
-
-a:hover{
-  cursor: pointer;
-}
-
-.custom-fab {
-  background-color: #8c6200;
-  color: #ffffff;
-  width: 30px;
-  height: 30px;
-  display: flex;
+/* Estilo para las primeras dos columnas */
+.sticky-column {
+  background-color: #ffcc0c;
+  position: sticky;
+  left: 0;
+  z-index: 1;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
-  margin-left: 10px;
 }
 
-.circle{
-  height: 20px;
-  width: 20px;
-  border-radius: 20px;
-  margin: auto;
-  margin-top: 50px;
-
-}
-
-.fecha_picker{
-  border-color: transparent;
-  width: 80px;
-}
-
-.thead-permission {
-  text-align: center;
+/* Para la segunda columna */
+.sticky-column + .sticky-column {
+  left: 50px; /* Ajustar según el ancho de la primera columna */
+  z-index: 1;
 }

@@ -218,7 +218,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
     console.log(user)
 
-    if(user.nombre_perfil !== 'Supervisor de cumplimiento de la empresa'){
+    if(user.id_perfil !== 67 && user.id_perfil !== 66){
       if(cumplimiento.completado !== 0) return
       //if(day > cumplimiento.urgent_date_end || day < cumplimiento.ideal_date_start) return
     }
@@ -350,7 +350,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     const fechaHoy = new Date();
     const user = this.apiService.getWholeUser()
     
-    if (user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && element.completado > 0 && element.completado < 3){
+    if ((user.id_perfil === 67 || user.id_perfil === 66) && element.completado > 0 && element.completado < 3){
       this.openCumplimientoDialog(element,column)
       return
     }

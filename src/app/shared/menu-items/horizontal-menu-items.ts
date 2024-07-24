@@ -200,7 +200,7 @@ export class HorizontalMenuItems {
         if(user.nombre_perfil !== 'Administrador de Global Business') {
             const index = MENUITEMS.find(item => item.name === 'Cumplimiento').children.findIndex(child => child.name === 'Registra');
             if (index !== -1) {
-                MENUITEMS.find(item => item.name === 'Cumplimiento').children.splice(index, 1);
+                //MENUITEMS.find(item => item.name === 'Cumplimiento').children.splice(index, 1);
             }
         }
 

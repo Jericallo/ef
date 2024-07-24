@@ -46,13 +46,13 @@ export class DetailCumplimientoComponent implements OnInit {
 
     const user = this.apiService.getWholeUser()
     let body = {}
-    if(user.nombre_perfil === "Administrador" && (this.data.cumplimiento.completado === 1 || this.data.cumplimiento.completado === 2)) {
+    if((user.id_perfil === 1 || user.id_perfil === 64 || user.id_perfil === 65) && (this.data.cumplimiento.completado === 1 || this.data.cumplimiento.completado === 2)) {
       this.disabled = true;
       this.texto = "Esperando confirmación del supervisor"
-    } else if (user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && this.data.cumplimiento.completado === 1){
+    } else if ((user.id_perfil === 66 || user.id_perfil === 67) && this.data.cumplimiento.completado === 1){
       this.disabled = false;
       this.texto = "Comenzar a revisar como cumplido"
-    } else if (user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && this.data.cumplimiento.completado === 2){
+    } else if ((user.id_perfil === 66 || user.id_perfil === 67) && this.data.cumplimiento.completado === 2){
       this.disabled = false;
       this.texto = "Terminar revisión"
     }
@@ -75,13 +75,13 @@ export class DetailCumplimientoComponent implements OnInit {
     const user = this.apiService.getWholeUser()
     console.log(user)
     let body
-    if(user.nombre_perfil === "Administrador de Global Business") {
+    if(user.id_perfil === 1 || user.id_perfil === 64 || user.id_perfil === 65) {
       body = {
         id: this.data.cumplimiento.id,
         fecha_completado:parseInt(this.data.fecha),
         completado:1
       }
-    } else if (user.nombre_perfil === "Supervisor de cumplimiento de la empresa"){
+    } else if (user.id_perfil === 67 || user.id_perfil === 66){
       if(this.data.cumplimiento.completado === 1) {
         body = {
           id: this.data.cumplimiento.id,
@@ -102,12 +102,12 @@ export class DetailCumplimientoComponent implements OnInit {
       next: res => {
         console.log('ENTRA',res)
         this.disabled = true;
-        if(user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && body.completado === 2){
+        if(user.id_perfil === 67 || user.id_perfil === 66 && body.completado === 2){
           this.data.cumplimiento.completado = 2;
           this.texto = "Terminar revisión..."
           this.disabled = false;
           return
-        } else if(user.nombre_perfil === "Supervisor de cumplimiento de la empresa" && body.completado === 3){
+        } else if(user.id_perfil === 67 || user.id_perfil === 66 && body.completado === 3){
           this.data.cumplimiento.completado = 3;
           this.data.cumplimiento.fecha_completado = this.data.fecha
           this.showButton = false

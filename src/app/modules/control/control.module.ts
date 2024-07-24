@@ -19,6 +19,11 @@ import { ChatComponent } from './chat/chat.component';
 import { PdfViewerModalComponent } from './chat/pdf-viewer-modal/pdf-viewer-modal.component';
 import { ResultsComponent } from './results/results.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs);
 
 @NgModule({
   declarations: [
@@ -30,7 +35,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     PdfViewerModalComponent,
     ResultsComponent,
   ],
-  providers: [DatePipe, CapacitationsComponent],
+  providers: [DatePipe, CapacitationsComponent, {provide: LOCALE_ID, useValue: 'es'}],
   imports: [
     CommonModule,
     FormsModule,
