@@ -17,9 +17,9 @@ export class AddCategoryComponent implements OnInit {
   showSpinner = false;
   clasification: string | undefined;
 
-  title = "Agregar clasificacion";
+  title = "Agregar ley";
   
-  constructor(public getDocumentsService: ApiService, public snackBar: MatSnackBar, private globalTitle: ApiService) {
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar, private globalTitle: ApiService) {
     this.globalTitle.updateGlobalTitle(this.title);
   }
 
@@ -36,12 +36,15 @@ export class AddCategoryComponent implements OnInit {
 
   saveCategory() {
     this.showSpinner = true;
-    this.getDocumentsService.saveClasification(this.clasification)
+    const body = {
+      name:this.clasification
+    }
+    this.apiService.addLaw(body)
     .subscribe({
       next: response => {
         console.log(response);
         this.showSpinner = false;
-        this.snackBar.open('Clasificacion guardada correctamente', '', { 
+        this.snackBar.open('Ley guardada correctamente', '', { 
           duration: 3000,
           verticalPosition: this.verticalPosition
         });
@@ -50,7 +53,8 @@ export class AddCategoryComponent implements OnInit {
       },
       error: err => {
         this.showSpinner = false;
-        this.snackBar.open("Error: " + JSON.stringify(err.error.message), '', { 
+        console.log(err)
+        this.snackBar.open("Error al agregar la ley", '', { 
           duration: 3000,
           verticalPosition: this.verticalPosition
         });

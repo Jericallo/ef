@@ -20,22 +20,6 @@ import { MatTooltip } from '@angular/material/tooltip';
 
 registerLocaleData(localeEs);
 
-
-const colors: any = {
-  red: {
-    primary: '#fc4b6c',
-    secondary: '#f9e7eb',
-  },
-  blue: {
-    primary: '#1e88e5',
-    secondary: '#D1E8FF',
-  },
-  yellow: {
-    primary: '#ffb22b',
-    secondary: '#FDF1BA',
-  },
-};
-
 @Component({
   selector: 'app-calendar-dialog',
   templateUrl: './dialog.component.html',
@@ -126,7 +110,7 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   mesiguiente = this.month[this.d.getMonth() === 11 ? 1 : this.d.getMonth()+1]
   anio = this.d.getFullYear().toString()
 
-  mesMostrar = 'Mes actual'
+  mesMostrar = 'Mes Actual'
   anioMostrar = ''
 
   isModalOpen = false //Detecta si la modal ya está abierta, para evitar abrir varias.
@@ -290,17 +274,45 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   getCumplimientos(){
-    let date = new Date(this.sendableDate), y = date.getFullYear(), m = date.getMonth();
-    let firstDay = new Date(y, m, 1);
-    let lastDay = new Date(y, m + 1, 0);
-
-    this.apiService.getCumplimientos(firstDay.getTime(), lastDay.getTime()).subscribe({
+    this.apiService.getAllObligations().subscribe({
       next: res => {
-        this.cumplimientos = res.tasks;
-        this.cumplimientos = this.cumplimientos.concat(res.overdue_tasks)
+        const options = { timeZone: 'America/New_York' };
+        const tasks = res.map(task => {
+            return {
+                id: task.id,
+                id_tipo: 1,
+                id_obligacion: task.id,
+                descripcion: task.name,
+                ideal_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.startPeriod))).getTime()).toString(),
+                ideal_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.firstPeriod))).getTime() - 1).toString(),
+                recommended_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.firstPeriod))).getTime()).toString(),
+                recommended_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.secondPeriod))).getTime() - 1).toString(),
+                close_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.secondPeriod))).getTime()).toString(),
+                close_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.thirdPeriod))).getTime() - 1).toString(),
+                urgent_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.thirdPeriod))).getTime()).toString(),
+                urgent_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.fourthPeriod))).getTime()).toString(),
+                fecha_creacion: new Date(),
+                fecha_modificacion: null,
+                deleted: 0,
+                prioridad: 1,
+                impuesto_isr: 0,
+                impuesto_iva: 0,
+                impuesto_nomina: 0,
+                impuesto_otro: 0,
+                completado: 0,
+                fecha_completado: null,
+                obligations: {
+                    nombre: task.name,
+                    descripcion: task.name
+                }
+            }
+        });
+
+        this.cumplimientos = tasks;
         this.cumplimientos.forEach(element => {
           element.obligations.respaldo =''
         });
+        console.log(this.cumplimientos)
         this.cdr.detectChanges();
       }
     });
@@ -328,8 +340,8 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   monthPrevious(){
     const today = new Date()
-
-    this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
+    this.sendableDate.setMonth(this.sendableDate.getMonth() - 1); // Restamos uno al mes capturado
+    
     if(this.sendableDate.getMonth() === today.getMonth() && this.sendableDate.getFullYear() === today.getFullYear()){
       this.mesMostrar = 'Mes Actual'
     } else {
@@ -624,6 +636,23 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     return 'transparent'
+  }
+
+  modalIsRojoSolido(element: any, column: any){
+    column = (column.getTime()).toString()
+    if(column === 0) return false
+
+    let fechaColumna = column;
+
+    if(fechaColumna >= element.urgent_date_end) return true
+
+    if(element.urgent_date_end - element.urgent_date_start < 86400000) {
+      if(fechaColumna < element.urgent_date_start && (parseInt(fechaColumna) + 86400000).toString() > element.urgent_date_end) {
+        return true
+      }
+    }
+
+    return false
   }
 
   modalIsRojorapido(element: any, column: any){

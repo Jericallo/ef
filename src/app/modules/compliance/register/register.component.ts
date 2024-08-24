@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { RegisterTable } from 'src/app/shared/interfaces/register-table-interface';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,9 @@ import { RegisterTable } from 'src/app/shared/interfaces/register-table-interfac
 })
 
 export class RegisterComponent implements OnInit {
+
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  config_snack = { duration: 3000,verticalPosition: this.verticalPosition}
   
   displayedColumns: string[] = [
     'number', 
@@ -28,358 +32,269 @@ export class RegisterComponent implements OnInit {
     '5minute',
     'exam_questions',
     'correct_answers',
+    'exam_questions_five_minutes',
+    'correct_answers_five_minutes',
     'incorrect_answers',
     'incomplete_sanctions'
   ];
 
-  dataSource: RegisterTable[] = [
-    {
-      num: '1',
-      name: "Declaración provisional mensual del Impuesto Sobre la Renta",
-      first_period: "13 del mes siguiente",
-      second_period: "14 del mes siguiente",
-      third_period: "15 del mes siguiente",
-      fourth_period: "16 del mes siguiente",
-      outside_period: "17 del mes siguiente",
-      legal_founding: "Art. 14 LISR",
-      snitching_supervisor: "16 del mes siguiente",
-      evidence: "Acuse, declaración y evidencia",
-      one_minute: "SI",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '2',
-      name: "Declaración definitiva mensual del Impuesto al Valor Agregado",
-      first_period: "13 del mes siguiente",
-      second_period: "14 del mes siguiente",
-      third_period: "15 del mes siguiente",
-      fourth_period: "16 del mes siguiente",
-      outside_period: "17 del mes siguiente",
-      legal_founding: "Art. 5-D LIVA",
-      snitching_supervisor: "16 del mes siguiente",
-      evidence: "Acuse, declaración y evidencia de pago",
-      one_minute: "SI",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '3',
-      name: "Presentación de DIOT (Declaración Informativa de Operaciones con Terceros)",
-      first_period: "26 del mes siguiente",
-      second_period: "27 del mes siguiente",
-      third_period: "28 del mes siguiente",
-      fourth_period: "29 del mes siguiente",
-      outside_period: "30 al 31 del mes siguiente",
-      legal_founding: "Art. 32 fracción VIII LIVA",
-      snitching_supervisor: "29 del mes siguiente",
-      evidence: "Acuse de envío",
-      one_minute: "SI",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '4',
-      name: "Autorización IMSS ante el IMSS (REPSE)",
-      first_period: "",
-      second_period: "",
-      third_period: "",
-      fourth_period: "",
-      outside_period: "",
-      legal_founding: "",
-      snitching_supervisor: "",
-      evidence: "",
-      one_minute: "",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '5',
-      name: "Vigencia de sellos para facturar (Certificado de Sellos Digitales)",
-      first_period: "",
-      second_period: "",
-      third_period: "",
-      fourth_period: "",
-      outside_period: "",
-      legal_founding: "",
-      snitching_supervisor: "",
-      evidence: "",
-      one_minute: "",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '6',
-      name: "Opinión de cumplimiento del SAT",
-      first_period: "",
-      second_period: "",
-      third_period: "",
-      fourth_period: "",
-      outside_period: "",
-      legal_founding: "",
-      snitching_supervisor: "",
-      evidence: "",
-      one_minute: "",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '7',
-      name: "Revisión de buzón tributario",
-      first_period: "",
-      second_period: "",
-      third_period: "",
-      fourth_period: "",
-      outside_period: "",
-      legal_founding: "",
-      snitching_supervisor: "",
-      evidence: "",
-      one_minute: "",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8',
-      name: "Pre-cierre contable semanal, validando el IVA a esta fecha",
-      first_period: "",
-      second_period: "",
-      third_period: "",
-      fourth_period: "",
-      outside_period: "",
-      legal_founding: "",
-      snitching_supervisor: "",
-      evidence: "",
-      one_minute: "",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8.1',
-      name: "Primer lunes del mes para contabilizar hasta el día anterior",
-      first_period: "9:00 a.m.",
-      second_period: "10:30 a.m.",
-      third_period: "12:00 p.m.",
-      fourth_period: "1:30 p.m.",
-      outside_period: "12:00 a.m.",
-      legal_founding: "N/A",
-      snitching_supervisor: "12:00 a.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8.2',
-      name: "Segundo lunes del mes para contabilizar hasta el día anterior",
-      first_period: "9:00 a.m.",
-      second_period: "10:30 a.m.",
-      third_period: "12:00 p.m.",
-      fourth_period: "1:30 p.m.",
-      outside_period: "12:00 a.m.",
-      legal_founding: "N/A",
-      snitching_supervisor: "12:00 a.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8.3',
-      name: "Tercer lunes del mes para contabilizar hasta el día anterior",
-      first_period: "9:00 a.m.",
-      second_period: "10:30 a.m.",
-      third_period: "12:00 p.m.",
-      fourth_period: "1:30 p.m.",
-      outside_period: "12:00 a.m.",
-      legal_founding: "N/A",
-      snitching_supervisor: "12:00 a.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8.4',
-      name: "Cuarto lunes del mes para contabilizar hasta el día anterior",
-      first_period: "9:00 a.m.",
-      second_period: "10:30 a.m.",
-      third_period: "12:00 p.m.",
-      fourth_period: "1:30 p.m.",
-      outside_period: "12:00 a.m.",
-      legal_founding: "N/A",
-      snitching_supervisor: "12:00 a.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8.5',
-      name: "Antepenúltimo día del mes para contabilizar hasta el día anterior",
-      first_period: "9:00 a.m.",
-      second_period: "10:30 a.m.",
-      third_period: "12:00 p.m.",
-      fourth_period: "1:30 p.m.",
-      outside_period: "12:00 a.m.",
-      legal_founding: "N/A",
-      snitching_supervisor: "2:00 p.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8.6',
-      name: "Penúltimo día del mes para contabilizar hasta el día anterior",
-      first_period: "9:00 a.m.",
-      second_period: "10:30 a.m.",
-      third_period: "12:00 p.m.",
-      fourth_period: "1:30 p.m.",
-      outside_period: "12:00 a.m.",
-      legal_founding: "N/A",
-      snitching_supervisor: "12:00 a.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8.7',
-      name: "Último día del mes para contabilizar hasta el día anterior",
-      first_period: "9:00 a.m.",
-      second_period: "10:30 a.m.",
-      third_period: "11:00 a.m.",
-      fourth_period: "",
-      outside_period: "",
-      legal_founding: "N/A",
-      snitching_supervisor: "11:00 a.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '8.7.1',
-      name: "Último día del mes para contabilizar los movimientos del día ocurridos hasta las 12pm",
-      first_period: "12:00 p.m.",
-      second_period: "12:30 p.m.",
-      third_period: "1:00 p.m.",
-      fourth_period: "1:30 p.m.",
-      outside_period: "2:00 p.m.",
-      legal_founding: "N/A",
-      snitching_supervisor: "1:30 p.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num:' 8.7.2',
-      name: "Último día del mes para contabilizar los movimientos del día ocurridos hasta las 4pm",
-      first_period: "4:00 p.m.",
-      second_period: "4:15 p.m.",
-      third_period: "4:30 p.m.",
-      fourth_period: "4:45 p.m.",
-      outside_period: "5:00 p.m.",
-      legal_founding: "N/A",
-      snitching_supervisor: "4:30 p.m.",
-      evidence: "Estado de cuenta, conciliación bancaria, auxiliares de IVA y pre-determinación de IVA a esta fecha",
-      one_minute: "Maricela",
-      five_minute: "Angélica",
-      exam_questions: "3 preguntas para video de 1 minuto y 20 preguntas para video de 5 minutos",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '9',
-      name: "Emisión de recibos de pago conforme se realice el cobro",
-      first_period: "",
-      second_period: "",
-      third_period: "",
-      fourth_period: "",
-      outside_period: "",
-      legal_founding: "",
-      snitching_supervisor: "",
-      evidence: "",
-      one_minute: "",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  },
-  {
-      num: '10',
-      name: "Vigencia de la e.firma (antes FIEL)",
-      first_period: "",
-      second_period: "",
-      third_period: "",
-      fourth_period: "",
-      outside_period: "",
-      legal_founding: "Art. 29-A fracción VII inciso b) CFF",
-      snitching_supervisor: "",
-      evidence: "",
-      one_minute: "",
-      five_minute: "",
-      exam_questions: "",
-      correct_answers: "",
-      incorrect_answers: "",
-      incomplete_sanctions: ""
-  }
-  ];
+  //VARIABLES FOR THE PERIODS
+  public minDate: moment.Moment;
+  public maxDate: moment.Moment;
+  public disabled = false;
+  showSpinners = true;
+  public showSeconds = true;
+  public stepHour = 1;
+  public stepMinute = 1;
+  public stepSecond = 1;
+  public touchUi = false;
+  public enableMeridian = false;
+  public color: ThemePalette = 'primary';
+  public hideTime = false;
+  public disableMinute = false;
 
-  constructor(private apiService:ApiService, public dialog: MatDialog, public snackBar: MatSnackBar, private cdr: ChangeDetectorRef,) {}
+  //VARIABLES FOR LAWS MODAL
+  public isShownLawsModal = false
+
+  //VARIABLES FOR DOCUMENTATIONS MODAL
+  public isShownDocumentationsModal = false
+  public sentDocumentations = null
+
+  //FUNDAMENTAL VARIABLES
+  universalRow:RegisterTable
+  dataSource: RegisterTable[] = [];
+
+  constructor(private apiService: ApiService, public dialog: MatDialog, public snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {}
+
+  //---------------------------------------UNIVERSAL FUNCTIONS--------------------------------------------//
 
   ngOnInit(): void {
+    this.fetchObligations();
+  }
 
+  fetchObligations(): void {
+    this.apiService.getAllObligations().subscribe({
+      next: res => {
+        console.log(res)
+        this.dataSource = res.map(obligation => {
+          return {
+            num: obligation.id,
+            name: obligation.name,
+            first_period: new Date(obligation.startPeriod) || null,
+            second_period: new Date(obligation.firstPeriod) || null,
+            third_period: new Date(obligation.secondPeriod) || null,
+            fourth_period: new Date(obligation.thirdPeriod) || null,
+            outside_period: new Date(obligation.fourthPeriod) || null,
+            legal_founding: [],
+            snitching_supervisor: new Date(obligation.supervisorWarning) || null,
+            evidence: null,
+            one_minute: obligation.oneMinVidAuthor,
+            five_minute: obligation.fiveMinVidAuthor,
+            exam_questions: null,
+            correct_answers: null,
+            exam_questions_five_minutes: null,
+            correct_answers_five_minutes: null,
+            incorrect_answers: null,
+            incomplete_sanctions: obligation.sanction
+          };
+        });
+        
+        this.cdr.detectChanges(); // Forzar la detección de cambios
+        console.log('FONTANA DU DATOS', this.dataSource);
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
+
+  addObligation(): void {
+    const today = new Date();
+    
+    today.setUTCHours(0, 0, 0, 0);
+    const isoString = today.toISOString();
+    const body = {
+      name:'Nueva obligación',
+      startPeriod: isoString,
+      firstPeriod: isoString,
+      secondPeriod: isoString,
+      thirdPeriod: isoString,
+      fourthPeriod: isoString,
+      supervisorWarning: isoString,
+      oneMinVidAuthor: 'No especificado',
+      fiveMinVidAuthor: 'No especificado',
+      sanction: 'No especificado'
+    }
+    console.log(body)
+    this.apiService.addObligation(body).subscribe({
+      next: res => {
+        this.snackBar.open('Obligación nueva agregada', '', this.config_snack);
+        this.fetchObligations()
+      }, error: err => {
+        console.error(err)
+      }
+    })
+  }
+
+  closePanel(close: boolean){
+    this.isShownLawsModal = false
+    this.isShownDocumentationsModal = false
+    this.fetchObligations()
+  }
+
+  //---------------------------------------FOR MODIFICATIONS OF DATE--------------------------------------//
+
+  onDateSelected(event: any, tipo:number, id:number) {
+    console.log(event.value, tipo, id)
+
+    const fecha = new Date(event.value)
+    const isoString = fecha.toISOString()
+    let body = null
+
+    switch(tipo){
+      case 1: 
+        body = {startPeriod: isoString}
+        break
+      case 2: 
+        body = {firstPeriod: isoString}
+        break
+      case 3:
+        body = {secondPeriod: isoString}
+        break
+      case 4:
+        body = {thirdPeriod: isoString}
+        break
+      case 5:
+        body = {fourthPeriod: isoString}
+        break
+      case 6:
+        body = {supervisorWarning: isoString}
+        break;
+      default:
+        body = {firstPeriod: isoString}
+    }
+    this.apiService.editObligation(body, id).subscribe({
+      next: res => {
+        console.log(res, body)
+        this.snackBar.open('Fecha editada correctamente', '', this.config_snack);
+      }, error: err => {
+        this.snackBar.open('Ocurrió un error editando la fecha', '', this.config_snack);
+      }
+    })
+
+  }
+
+  //---------------------------------------FOR MODIFICATIONS OF LEGAL FOUNDING----------------------------//
+
+  openLegalFounding(row:RegisterTable){
+    this.universalRow = row
+    if(this.isShownLawsModal == true){
+      this.isShownLawsModal = false
+    } else {
+      this.isShownLawsModal = true
+    }
+  }
+
+  artReceived(art: any[]) {
+    console.log(art)
+  }
+
+  parRecieved(par:any[]){
+    console.log(par)
+  }
+
+  delArtRecieved(del:any[]){
+    console.log(del)
+  }
+
+  delParRecieved(del:any[]){
+    console.log(del)
+  }
+
+  articleClicked(a:any){
+    console.log(a)
+  }
+
+  //---------------------------------------FOR MODIFICATIONS OF DOCUMENTATIONS----------------------------//
+
+  openDocumentations(row:any){
+    if(this.isShownDocumentationsModal == true){
+      this.isShownDocumentationsModal = false
+    } else {
+      this.isShownDocumentationsModal = true
+    }
+
+    this.universalRow = row
+  }
+
+  onDataReceived(data: any[]) {
+    this.sentDocumentations = data
+    console.log(this.sentDocumentations)
+  }
+
+  documentationReceived() {
+    console.log(this.sentDocumentations)
+  }
+
+  //---------------------------------------FOR MODIFICATIONS OF NAME------------------------------------//
+
+  editName(text, id:number){
+    const body = {
+      name: text
+    }
+
+    this.apiService.editObligation(body, id).subscribe({
+      next: res => {
+        this.snackBar.open('Nombre editado exitosamente', '', this.config_snack);
+      }, error: err => {
+        this.snackBar.open('Ocurrió un error editando el nombre', '', this.config_snack);
+      }
+    })
+  }
+
+  //---------------------------------------FOR MODIFICATIONS OF VIDEOS----------------------------------//
+
+  editOneMinuteVid(text, id:number){
+    const body = {
+      oneMinVidAuthor: text
+    }
+
+    this.apiService.editObligation(body, id).subscribe({
+      next: res => {
+        this.snackBar.open('Video de 1 minuto editado exitosamente', '', this.config_snack);
+      }, error: err => {
+        this.snackBar.open('Ocurrió un error editando el video de 1 minuto', '', this.config_snack);
+      }
+    })
+  }
+
+  editFiveMinuteVid(text, id:number){
+    const body = {
+      fiveMinVidAuthor: text
+    }
+
+    this.apiService.editObligation(body, id).subscribe({
+      next: res => {
+        this.snackBar.open('Video de 5 minutos editado exitosamente', '', this.config_snack);
+      }, error: err => {
+        this.snackBar.open('Ocurrió un error editando el video de 5 minutos', '', this.config_snack);
+      }
+    })
+  }
+
+  //---------------------------------------FOR MODIFICATIONS OF SANCTIONS-----------------------------//
+
+  editSanctions(text, id:number){
+    const body = {
+      sanction: text
+    }
+
+    this.apiService.editObligation(body, id).subscribe({
+      next: res => {
+        this.snackBar.open('Sanciones editadas exitosamente', '', this.config_snack);
+      }, error: err => {
+        this.snackBar.open('Ocurrió un error editando las sanciones', '', this.config_snack);
+      }
+    })
   }
 }

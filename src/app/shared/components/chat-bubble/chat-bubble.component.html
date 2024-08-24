@@ -7,6 +7,12 @@
   <section class="chat-section" style="position: relative; width: 100%;">
 
     <div class="chat-contact-container">
+      <button mat-icon-button class="closeButton" (click)="closeTab()">
+        <mat-icon style="display: flex; align-items: center; cursor: pointer;">close</mat-icon>
+      </button> 
+      <div class="profile-div">
+        <span style="font-size: x-small;">El usuario {{me_user}} se está comunicando con el {{profile?.nombre}} {{selectedUser?.nombre}}</span>
+      </div>
       <div class="profile-div">
         <span style="font-size: x-small;">{{profile?.nombre}} </span>
       </div>

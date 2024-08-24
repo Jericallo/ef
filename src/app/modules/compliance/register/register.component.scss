@@ -24,6 +24,8 @@
   border: 1px solid #c0c0c0; /* Borde más oscuro */
   padding: 0 !important;
   font-size: small;
+  max-height: 50px;
+  overflow: auto; /* Habilitar scroll */
 }
 
 /* Estilo para las primeras dos columnas */
@@ -40,4 +42,51 @@
 .sticky-column + .sticky-column {
   left: 50px; /* Ajustar según el ancho de la primera columna */
   z-index: 1;
+}
+
+.inner-div {
+  display: flex;
+  flex-direction: column;
+  max-height: 50px;
+  overflow: scroll;
+  gap: 10px;
+  text-align: left;
+  padding-left: 10px; 
+  padding-right: 10px;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+
+.inner-div::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-fab {
+  background-color: #8c6200;
+  color: #ffffff;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+mat-form-field{
+  padding: 10px;
+}
+
+.add-obligation-button {
+  margin-top: 10px;
+  margin-right: 90px;
+  align-self: flex-end;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }

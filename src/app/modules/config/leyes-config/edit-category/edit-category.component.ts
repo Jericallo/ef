@@ -22,7 +22,7 @@ export class EditCategoryComponent implements OnInit {
   }
 
   setDoc(doc) {
-    this.selectedNombre = doc.nombre;
+    this.selectedNombre = doc.name;
     this.selectedDocId = doc.id; 
     console.log(this.selectedNombre);
   }
@@ -30,12 +30,11 @@ export class EditCategoryComponent implements OnInit {
   getClassifications() {
     this.showSpinner = true
     this.showMain = false
-    this.apiService.getClassifications().subscribe({
+    this.apiService.getLeyes().subscribe({
       next: response => {
         this.showSpinner = false
         this.showMain = true
-        const decryptedResponse = this.apiService.decrypt(response.message, "private");
-        this.classifications = JSON.parse(decryptedResponse).result;
+        this.classifications = response;
         console.log(this.classifications);
       },
       error: err => {
@@ -60,14 +59,13 @@ export class EditCategoryComponent implements OnInit {
     }
     if (this.selectedDocId) {
       const body = {
-        id: this.selectedDocId,
-        nombre: inputValue
+        name: inputValue
       }
       console.log(body)
-      this.apiService.editClassif({data:body}).subscribe({
+      this.apiService.editLaw(body, this.selectedDocId).subscribe({
         next: response => {
           this.getClassifications()
-          this.snackBar.open('Clasificación actualizada.', '', { 
+          this.snackBar.open('Ley actualizada.', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition
           });
@@ -80,17 +78,18 @@ export class EditCategoryComponent implements OnInit {
           })        
         }
       });
+    }else{
+      this.snackBar.open('Debes seleccionar una Ley', '', {
+        duration:3000,
+        verticalPosition:this.verticalPosition
+      })        
     }
   }
 
   deleteCategory() {
     if (this.selectedDocId) {
-      let body = {
-        id: this.selectedDocId,
-        estatus: 0
-      }
-      console.log(body)
-      this.apiService.editClassif({data:body}).subscribe({
+
+      this.apiService.deleteLaw(this.selectedDocId).subscribe({
         next: response => {
           this.getClassifications()
         },
@@ -103,7 +102,7 @@ export class EditCategoryComponent implements OnInit {
         }
       });
     }else{
-      this.snackBar.open('Debes seleccionar una clasificación', '', {
+      this.snackBar.open('Debes seleccionar una Ley', '', {
         duration:3000,
         verticalPosition:this.verticalPosition
       })        

@@ -13,67 +13,193 @@
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef class="sticky-column" style="min-width: 350px;"> Mini Matriz </th>
-        <td mat-cell *matCellDef="let element" class="sticky-column" style="min-width: 350px;"> {{element.name}} </td>
+        <td mat-cell *matCellDef="let element" class="sticky-column" style="min-width: 350px;">
+          <input 
+            type="text" 
+            [(ngModel)]="element.name" 
+            (input)="editName(element.name, element.num)" 
+            class="editable-input" 
+            style="width: 100%; border: none; background: transparent;" />
+        </td>
       </ng-container>
+      
 
       <ng-container matColumnDef="first_period">
-        <th mat-header-cell *matHeaderCellDef  style="min-width: 150px;"> Periodo para iniciar </th>
-        <td mat-cell *matCellDef="let element"  style="min-width: 150px;"> {{element.first_period}} </td>
+        <th mat-header-cell *matHeaderCellDef style="min-width: 150px;"> Periodo para iniciar </th>
+        <td mat-cell *matCellDef="let element" style="min-width: 150px;">
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Inicio del periodo"
+                   [(ngModel)]="element.first_period"
+                   [min]="minDate" [max]="maxDate" [disabled]="disabled"
+                   (dateChange)="onDateSelected($event, 1, element.num)">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker1 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                     [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                     [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
+                                     [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="second_period">
         <th mat-header-cell *matHeaderCellDef  style="min-width: 150px;"> Periodo recomendado </th>
-        <td mat-cell *matCellDef="let element"  style="min-width: 150px;"> {{element.second_period}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 150px;">
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Inicio del periodo"
+                   [(ngModel)]="element.second_period"
+                   [min]="minDate" [max]="maxDate" [disabled]="disabled"
+                   (dateChange)="onDateSelected($event, 2, element.num)">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker2 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                     [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                     [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
+                                     [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="third_period">
         <th mat-header-cell *matHeaderCellDef  style="min-width: 150px;"> Vencimiento próximo </th>
-        <td mat-cell *matCellDef="let element"  style="min-width: 150px;"> {{element.third_period}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 150px;">
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker3" placeholder="Inicio del periodo"
+                   [(ngModel)]="element.third_period"
+                   [min]="minDate" [max]="maxDate" [disabled]="disabled"
+                   (dateChange)="onDateSelected($event, 3, element.num)">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker3 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                     [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                     [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
+                                     [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="fourth_period">
         <th mat-header-cell *matHeaderCellDef  style="min-width: 150px;"> Muy urgente </th>
-        <td mat-cell *matCellDef="let element"  style="min-width: 150px;"> {{element.fourth_period}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 150px;">
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker4" placeholder="Inicio del periodo"
+                   [(ngModel)]="element.fourth_period"
+                   [min]="minDate" [max]="maxDate" [disabled]="disabled"
+                   (dateChange)="onDateSelected($event, 4, element.num)">
+            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker4 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                     [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                     [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
+                                     [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="outside_period">
         <th mat-header-cell *matHeaderCellDef  style="min-width: 150px;"> Fuera de tiempo para lo apropiado </th>
-        <td mat-cell *matCellDef="let element"  style="min-width: 150px;"> {{element.outside_period}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 150px;">
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker5" placeholder="Inicio del periodo"
+                   [(ngModel)]="element.outside_period"
+                   [min]="minDate" [max]="maxDate" [disabled]="disabled"
+                   (dateChange)="onDateSelected($event, 5, element.num)">
+            <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker5 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                     [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                     [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
+                                     [disableMinute]="disableMinute" [hideTime]="hideTime">
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="legal_founding">
         <th mat-header-cell *matHeaderCellDef style="min-width: 200px;"> Fundamento Legal </th>
-        <td mat-cell *matCellDef="let element" style="min-width: 200px;"> {{element.legal_founding}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 200px;">
+          <button (click)="openLegalFounding(element)" mat-fab color="primary" class="custom-fab">
+            <mat-icon style="font-size:22px;">bookmark</mat-icon>
+          </button>       
+          <div class="inner-div" >
+            <span *ngFor="let founding of element.legal_founding"><strong>Artículo {{founding.articulos.articulo}}</strong>.- {{founding.articulos.nombre}}</span>
+          </div>
+          <span *ngIf="element.legal_founding.length === 0"> N/A </span>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="snitching_supervisor">
         <th mat-header-cell *matHeaderCellDef style="min-width: 200px;"> Cuando dar aviso al supervisor </th>
-        <td mat-cell *matCellDef="let element" style="min-width: 200px;"> {{element.snitching_supervisor}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 200px;">
+          <mat-form-field>
+          <input matInput [ngxMatDatetimePicker]="picker6" placeholder="Inicio del periodo"
+                  [(ngModel)]="element.snitching_supervisor"
+                  [min]="minDate" [max]="maxDate" [disabled]="disabled"
+                  (dateChange)="onDateSelected($event, 6, element.num)">
+          <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker6 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                    [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                    [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
+                                    [disableMinute]="disableMinute" [hideTime]="hideTime">
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+
+
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="evidence">
         <th mat-header-cell *matHeaderCellDef style="min-width: 400px;"> Qué evidencia debe subir </th>
-        <td mat-cell *matCellDef="let element" style="min-width: 400px;"> {{element.evidence}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 400px;">
+          <button (click)="openDocumentations(element)" mat-fab color="primary" class="custom-fab">
+            <mat-icon style="font-size:22px;">attach_file</mat-icon>
+          </button>      
+           {{element.evidence}} 
+          </td>
       </ng-container>
 
       <ng-container matColumnDef="1minute">
         <th mat-header-cell *matHeaderCellDef style="min-width: 150px;"> Video de 1 minuto </th>
-        <td mat-cell *matCellDef="let element" style="min-width: 150px;"> {{element.one_minute}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 150px;">
+           <input 
+            type="text" 
+            [(ngModel)]="element.one_minute" 
+            (input)="editOneMinuteVid(element.one_minute, element.num)" 
+            class="editable-input" 
+            style="width: 100%; border: none; background: transparent;" />
+          
+          </td>
       </ng-container>
 
       <ng-container matColumnDef="5minute">
         <th mat-header-cell *matHeaderCellDef style="min-width: 150px;"> Video de 5 minutos </th>
-        <td mat-cell *matCellDef="let element" style="min-width: 150px;"> {{element.five_minute}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 150px;">
+          <input 
+            type="text" 
+            [(ngModel)]="element.five_minute" 
+            (input)="editFiveMinuteVid(element.five_minute, element.num)" 
+            class="editable-input" 
+            style="width: 100%; border: none; background: transparent;" />
+          </td>
       </ng-container>
 
       <ng-container matColumnDef="exam_questions">
-        <th mat-header-cell *matHeaderCellDef style="min-width: 200px;"> Preguntas de exámen </th>
+        <th mat-header-cell *matHeaderCellDef style="min-width: 200px;"> Preguntas de exámen 3 preguntas para video de 1 minuto</th>
         <td mat-cell *matCellDef="let element" style="min-width: 200px;"> {{element.exam_questions}} </td>
       </ng-container>
 
       <ng-container matColumnDef="correct_answers">
-        <th mat-header-cell *matHeaderCellDef style="min-width: 150px;"> Respuesta correcta </th>
+        <th mat-header-cell *matHeaderCellDef style="min-width: 150px;"> Respuestas correctas a 10 preguntas</th>
         <td mat-cell *matCellDef="let element" style="min-width: 150px;"> {{element.correct_answers}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="exam_questions_five_minutes">
+        <th mat-header-cell *matHeaderCellDef style="min-width: 200px;"> Preguntas de exámen 20 preguntas para video de 5 minutos</th>
+        <td mat-cell *matCellDef="let element" style="min-width: 200px;"> {{element.exam_questions_five_minutes}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="correct_answers_five_minutes">
+        <th mat-header-cell *matHeaderCellDef style="min-width: 150px;"> Respuestas correctas a 20 preguntas</th>
+        <td mat-cell *matCellDef="let element" style="min-width: 150px;"> {{element.correct_answers_five_minutes}} </td>
       </ng-container>
 
       <ng-container matColumnDef="incorrect_answers">
@@ -83,13 +209,65 @@
 
       <ng-container matColumnDef="incomplete_sanctions">
         <th mat-header-cell *matHeaderCellDef style="min-width: 200px;"> Sanciones por incumplimiento </th>
-        <td mat-cell *matCellDef="let element" style="min-width: 200px;"> {{element.incomplete_sanctions}} </td>
+        <td mat-cell *matCellDef="let element" style="min-width: 200px;">
+           <input 
+           type="text" 
+           [(ngModel)]="element.incomplete_sanctions" 
+           (input)="editSanctions(element.incomplete_sanctions, element.num)" 
+           class="editable-input" 
+           style="width: 100%; border: none; background: transparent;" />
+          </td>
       </ng-container>
 
       <!-- Encabezado de la tabla -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
       <!-- Filas de la tabla -->
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="max-height: 50px !important;"></tr>
     </table>
+  </div>
+  <div class="button-container">
+    <button mat-icon-button color="primary" class="add-obligation-button" (click)="addObligation()">
+      Agregar obligación
+    </button>
+  </div>
+  
+</div>
+
+
+
+<!-- COMPONENTS FOR CHOOSING THINGIES -->
+
+<!-- LEGAL FOUNDING -->
+<div style="position: fixed; 
+top:130px; left: 390px; 
+width: 50%; z-index: 400; 
+max-height: 80vh; 
+background-color: white; 
+padding: 10px; 
+box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); 
+border-radius: 10px; overflow:scroll;" 
+*ngIf="isShownLawsModal">
+    <h5>Relacionar con artículos.</h5>
+  <app-search-document-and-paragraph
+  (sendingArticles)="artReceived($event)" 
+  (sendingParagraphs) = "parRecieved($event)"
+  (sendingDeleted) = "delArtRecieved($event)"
+  (sendingDeletedParagraphs) = "delArtRecieved($event)"
+  (closingPanel)="closePanel($event)" 
+  [articlesPrevRelated]="universalRow.legal_founding"
+  [parragraphsPrevRelated]="universalRow.legal_founding"></app-search-document-and-paragraph> 
+</div>
+
+<!-- DOCUMENTATIONS -->
+<div style="position: fixed; 
+top:130px; 
+left: 390px; 
+width: 50%; 
+z-index: 4;">
+  <div style="max-height: 70vh; overflow: scroll; background-color: white; padding: 10px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); border-radius: 10px;" *ngIf="isShownDocumentationsModal">
+    <h5>Relacionar con documentaciones.</h5>
+    <app-search-documentation (closingPanel)="closePanel($event)" (sendingDocumentations)="onDataReceived($event)"></app-search-documentation>
+    <button mat-raised-button color="primary" style="margin: 22px;" (click)="documentationReceived()">Relacionar</button>&nbsp;
+    <button mat-raised-button color="secondary" (click)="closePanel()">Cancelar</button>
   </div>
 </div>

@@ -28,6 +28,18 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         console.log(res)
         localStorage.setItem(this.apiService.TOKEN, JSON.stringify(res.user));
+      },
+      error: (err) => {
+        err = JSON.parse(this.apiService.decrypt(err.error.message,''));
+        console.log(err);
+        this.msg = 'Correo o contraseña incorrectos';
+      }
+    });
+
+    this.apiService.loginv3({ email: username, password: password }).subscribe({
+      next: (res) => {
+        console.log(res)
+        localStorage.setItem(this.apiService.TOKEN_V3, JSON.stringify(res));
         this.routes.navigate(['/main']);
       },
       error: (err) => {
@@ -86,8 +98,11 @@ export class LoginComponent implements OnInit {
       password: new FormControl('', Validators.required)
     });  
     const rememberMe = localStorage.getItem('rememberMe');
-    if (rememberMe === 'true') {
+    const token_user = localStorage.getItem(this.apiService.TOKEN)
+    if (rememberMe === 'true' && token_user) {
       this.routes.navigate(['/main']);
+    } else {
+      localStorage.removeItem(this.apiService.TOKEN)
     }
   }
 }

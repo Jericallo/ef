@@ -14,8 +14,10 @@ registerLocaleData(localeEs, "es");
 })
 export class DetailCumplimientoComponent implements OnInit {
   disabled = false
-  texto = "Marcar como cumplido"
-  showButton = true
+
+  text_for_accountant = "Marcar como cumplido"
+  showAccountant = true
+  showSupervisor = false
   mostrarLeyenda = false
 
   blanco = true;
@@ -26,106 +28,60 @@ export class DetailCumplimientoComponent implements OnInit {
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
   ngOnInit(): void {
-    console.log(this.data.cumplimiento)
-    if((this.data.cumplimiento.ideal_date_start > this.data.fecha ) || 
-      (this.data.cumplimiento.fecha_completado !== null && this.data.cumplimiento.fecha_completado !== '0' &&
-        this.data.cumplimiento.fecha_completado < this.data.fecha)) this.blanco = false
+    console.log(this.data)
 
-    if((this.data.cumplimiento.fecha_completado !== null && 
-      this.data.cumplimiento.fecha_completado < this.data.fecha && 
-      this.data.cumplimiento.completado !== 3) ||
-      this.data.cumplimiento.urgent_date_end < this.data.fecha) this.mensaje_blanco = "Cumplimieto aún no realizado"
+    const user = this.apiService.getWholeUserV3()
+    console.log(user)
 
-    if( this.data.cumplimiento.fecha_completado !== null ){ //Si ya fue completado el cumplimiento
-      if(this.data.cumplimiento.fecha_completado <= this.data.fecha && this.data.cumplimiento.completado === 1) {
-        if(parseInt(this.data.fecha) >= parseInt(this.data.cumplimiento.fecha_completado) + 86400000 ) this.mensaje_blanco = "Cumplimiento pendiente de revisión retrasado 24 horas. Favor de contactar al supervisor"
-        else this.mensaje_blanco = "Cumplimiento pendiente de revisión";
+    if(user.roles.includes('PayrollComplianceSupervisorRole' || 'PLDComplianceSupervisorRole' || 'GeneralComplianceSupervisorRole')) {
+      this.showAccountant = true
+      this.showSupervisor = false
+      if(this.data.cumplimiento.completado > 0) {
+        this.disabled = true
+        this.text_for_accountant = 'Esperando aprobación del supervisor'
       }
+    } else if(user.roles.includes('GlobalBusinessComplianceSupervisorRole', 'CompanyComplianceSupervisorRole')) {
+      this.showAccountant = false
+      this.showSupervisor = true
     }
-
-
-    const user = this.apiService.getWholeUser()
-    let body = {}
-    if((user.id_perfil === 1 || user.id_perfil === 64 || user.id_perfil === 65) && (this.data.cumplimiento.completado === 1 || this.data.cumplimiento.completado === 2)) {
-      this.disabled = true;
-      this.texto = "Esperando confirmación del supervisor"
-    } else if ((user.id_perfil === 66 || user.id_perfil === 67) && this.data.cumplimiento.completado === 1){
-      this.disabled = false;
-      this.texto = "Comenzar a revisar como cumplido"
-    } else if ((user.id_perfil === 66 || user.id_perfil === 67) && this.data.cumplimiento.completado === 2){
-      this.disabled = false;
-      this.texto = "Terminar revisión"
-    }
-
-    if(this.data.cumplimiento.completado === true){
-      this.disabled = true;
-      this.texto = "Esperando confirmación del supervisor"
-    }
-    const today = Date.now()
-    const fechaHoy = new Date();
-    fechaHoy.setHours(0, 0, 0, 0);
-    fechaHoy.setTime(fechaHoy.getTime() - 1);
-    
-    if(this.data.cumplimiento.completado === 3 || parseInt(this.data.fecha) > today + 86400000) this.showButton = false
-    if(this.data.fecha < fechaHoy.getTime()) this.mostrarLeyenda = true
-    
   }
 
-  changeStatus(){
-    const user = this.apiService.getWholeUser()
-    console.log(user)
-    let body
-    if(user.id_perfil === 1 || user.id_perfil === 64 || user.id_perfil === 65) {
-      body = {
-        id: this.data.cumplimiento.id,
-        fecha_completado:parseInt(this.data.fecha),
-        completado:1
-      }
-    } else if (user.id_perfil === 67 || user.id_perfil === 66){
-      if(this.data.cumplimiento.completado === 1) {
-        body = {
-          id: this.data.cumplimiento.id,
-          fecha_completado:parseInt(this.data.fecha),
-          completado:2
-        }
-      } else {
-        body = {
-          id: this.data.cumplimiento.id,
-          fecha_completado:parseInt(this.data.fecha),
-          completado:3
-        }
-      }
-      
+  changeStatusAccountant(){
+    const body = {
+      status: 'FinishedStatus'
     }
-    
-    this.apiService.editDates(body).subscribe({
+    this.apiService.changeObligationStatus(body, this.data.cumplimiento.id).subscribe({
       next: res => {
-        console.log('ENTRA',res)
         this.disabled = true;
-        if(user.id_perfil === 67 || user.id_perfil === 66 && body.completado === 2){
-          this.data.cumplimiento.completado = 2;
-          this.texto = "Terminar revisión..."
-          this.disabled = false;
-          return
-        } else if(user.id_perfil === 67 || user.id_perfil === 66 && body.completado === 3){
-          this.data.cumplimiento.completado = 3;
-          this.data.cumplimiento.fecha_completado = this.data.fecha
-          this.showButton = false
-        }
-        this.texto = "Esperando confirmación del supervisor"
-      },
-      error: err => {
-        console.log(err);
+        this.text_for_accountant = 'Esperando aprobación del supervisor'
+      }, error: err => {
+        console.error(err)
       }
     })
   }
 
-  isFechaMaxima(element = this.data.cumplimiento, column = this.data.fecha): string {
-    if (column === 0) {
-      return 'transparent';
+  changeStatusSupervisor(status:string){
+    const body = {
+      status
     }
-    if(element.completado === 1 || element.completado === 2) return '#ffcc0c'
-    else if(element.completado === 3) return 'green'
-    else return 'transparent'
+    this.apiService.changeObligationStatusSueprvisor(body, this.data.cumplimiento.id).subscribe({
+      next: res => {
+        switch(status){
+          case 'PendingStatus':
+            this.data.cumplimiento.completado = 0
+            break;
+          case 'WaitingValidationStatus':
+            this.data.cumplimiento.completado = 2
+            break;
+          case 'ValidatedStatus':
+            this.data.cumplimiento.completado = 3
+            break;
+          default:
+            this.data.cumplimiento.completado = 0
+        }
+      }, error: err => {
+        console.error(err)
+      }
+    })
   }
 }

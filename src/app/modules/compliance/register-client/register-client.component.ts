@@ -147,10 +147,65 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     let firstDay = new Date(y, m, 1);
     let lastDay = new Date(y, m + 1, 0);
 
-    this.apiService.getCumplimientos(firstDay.getTime(), lastDay.getTime()).subscribe({
+    this.apiService.getAllObligations().subscribe({
       next: res => {
-        this.tableData = res.tasks;
-        this.tableData = this.tableData.concat(res.overdue_tasks)
+        const options = { timeZone: 'America/New_York' };
+        console.log('RESULT',res)
+        
+        const tasks = res.map(task => {
+          let status = 0
+          switch(task.status){
+            case 'PendingStatus':
+              status = 0
+              break;
+            case 'FinishedStatus':
+              status = 1
+              break;
+            case 'WaitingValidationStatus':
+              status = 2
+              break;
+            case 'ValidatedStatus':
+              status = 3
+              break;
+            default:
+              status =0
+          }
+
+          let finish_date = null
+          if(task.finishedAt){
+            finish_date = (new Date( new Intl.DateTimeFormat('en-US', options).format(new Date(task.finishedAt))).getTime()).toString()
+          }
+          return {
+            id: task.id,
+            id_tipo: 1,
+            id_obligacion: task.id,
+            descripcion: task.name,
+            ideal_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.startPeriod))).getTime()).toString(),
+            ideal_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.firstPeriod))).getTime() - 1).toString(),
+            recommended_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.firstPeriod))).getTime()).toString(),
+            recommended_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.secondPeriod))).getTime() - 1).toString(),
+            close_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.secondPeriod))).getTime()).toString(),
+            close_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.thirdPeriod))).getTime() - 1).toString(),
+            urgent_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.thirdPeriod))).getTime()).toString(),
+            urgent_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(task.fourthPeriod))).getTime()).toString(),
+            fecha_creacion: new Date(),
+            fecha_modificacion: null,
+            deleted: 0,
+            prioridad: 1,
+            impuesto_isr: 0,
+            impuesto_iva: 0,
+            impuesto_nomina: 0,
+            impuesto_otro: 0,
+            completado: status,
+            fecha_completado: finish_date,
+            obligations: {
+                nombre: task.name,
+                descripcion: task.name
+            }
+          }
+        });
+        this.tableData = tasks;
+        //this.tableData = this.tableData.concat(res.overdue_tasks)
         console.log(this.tableData)
       }
     });
@@ -174,6 +229,27 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     let fechaIdeal = element.close_date_start
 
     const fechaHoy = new Date().getTime()
+    if((parseFloat(element.urgent_date_end) - parseFloat(element.urgent_date_start)) < 64800000){
+      const now = new Date();
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());      
+      const startOfDayTimestamp = startOfDay.getTime();      
+      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);      
+      const endOfDayTimestamp = endOfDay.getTime();
+      
+      if(parseFloat(element.urgent_date_end) >= parseFloat(fechaColumna.toString()) && parseFloat(element.ideal_date_start) <= parseFloat(fechaColumna.toString()) + 86400000){
+        if(parseFloat(element.urgent_date_end) > endOfDayTimestamp || parseFloat(element.ideal_date_start) < startOfDayTimestamp  ){
+          if(parseFloat(element.urgent_date_end) < Date.now() || parseFloat(element.close_date_start) > Date.now()){
+            return 'red' //red
+          } else {
+            return 'yellow' //yellow
+          }
+        } else {
+          return 'orange' //orange
+        }
+      } else {
+        return 'transparent' //transparent
+      }
+    }
 
     if((element.completado === 1 || element.completado === 2) && fechaCumplimiento !== null) {
       if(fechaCumplimiento.toString() === fechaColumna.toString()) return '#ffcc0c'
@@ -218,10 +294,6 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
     console.log(user)
 
-    if(user.id_perfil !== 67 && user.id_perfil !== 66){
-      if(cumplimiento.completado !== 0) return
-      //if(day > cumplimiento.urgent_date_end || day < cumplimiento.ideal_date_start) return
-    }
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
       width: '500px',
       height: '170px',
@@ -243,6 +315,15 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     let fechaIdealFin = element.close_date_end
 
     const DateToday = new Date();
+
+    if(parseFloat(fechaColumna.toString()) <= DateToday.getTime() && parseFloat(fechaColumna.toString()) + 64800000 >= DateToday.getTime()) {
+      if(parseFloat(element.urgent_date_end) - parseFloat(element.urgent_date_start) < 64800000) {
+        console.log(DateToday.getTime())
+        if(DateToday.getTime() >= parseFloat(element.ideal_date_start) && DateToday.getTime() <= parseFloat(element.ideal_date_end)) return true
+        if(DateToday.getTime() >= parseFloat(element.close_date_start) && DateToday.getTime() <= parseFloat(element.close_date_end)) return true
+      }
+    }
+
     DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
     DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
     
@@ -267,6 +348,14 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
     let fechaInicioCumplimientoFin = element.recommended_date_end;
 
     const DateToday = new Date();
+    
+    if(parseFloat(fechaColumna.toString()) <= DateToday.getTime() && parseFloat(fechaColumna.toString()) + 64800000 >= DateToday.getTime()) {
+      if(parseFloat(element.urgent_date_end) - parseFloat(element.urgent_date_start) < 64800000) {
+        if(DateToday.getTime() >= parseFloat(element.recommended_date_start) && DateToday.getTime() <= parseFloat(element.recommended_date_end)) return true
+        if(DateToday.getTime() >= parseFloat(element.urgent_date_start) && DateToday.getTime() <= parseFloat(element.urgent_date_end)) return true
+      }
+    }
+
     DateToday.setHours(0, 0, 0, 0); // Establecer a las 00:00:00
     DateToday.setTime(DateToday.getTime() - 1); // Restar un milisegundo
 

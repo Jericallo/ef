@@ -1,7 +1,7 @@
 .table-container {
     max-height: 85vh;
     max-width: 160vw;
-    overflow-y: auto;
+    overflow: scroll;
 }
 
 .month-navigation{
@@ -61,15 +61,14 @@ th, td {
     padding-right: 0px !important; 
 }
 
-th.date-column, td.date-column {
-    min-width: 40px;
-    text-align: center;
-    //background: #ffcc0c;
-    flex: 1;
-    max-width: 30vw;
-    background-color: transparent;
-    overflow: scroll;
+th {
+    position: sticky;
+    top: 0;
+    z-index: 0; 
+    background-color: white !important;
 }
+
+
 
 mat-header-row, mat-row {
     display: flex;
@@ -89,18 +88,33 @@ mat-header-row, mat-row {
     overflow: scroll;
     padding: 10px;
     white-space: nowrap;
-    //background: white !important;
 }
 
-th.mat-column-nombre {
-    background: #ffcc0c !important;
-}
 
 .sticky-column {
     position: sticky;
     left: 0;
-    z-index: 1;
+    z-index: 2; /* Asegúrate de que el z-index sea mayor que el de las otras columnas */
+    background-color: white; /* Para mantener el fondo blanco */
 }
+
+/* Ajustar el z-index de las demás columnas */
+th.date-column, td.date-column {
+    z-index: 1;
+    min-width: 40px;
+    text-align: center;
+    flex: 1;
+    max-width: 30vw;
+    background-color: transparent;
+    overflow: visible;
+}
+
+/* Asegurar que el encabezado de la columna de "Cumplimiento" también tenga un z-index alto */
+th.mat-column-nombre {
+    z-index: 3; /* Un valor más alto que el z-index de las columnas de días */
+    background: #ffcc0c !important;
+}
+
 
 .indicador {
     height: 20px;
@@ -162,7 +176,6 @@ a:hover{
     top: 15px;
     left: 50%; /* Opcional: para centrarlo horizontalmente */
     transform: translateX(-90%); /* Opcional: para centrarlo horizontalmente */
-    //max-height: calc(1.2em * 2); /* Altura máxima de dos líneas */
     max-height: 80px;
     width:max-content;
     padding: 2px;
@@ -188,7 +201,6 @@ td{
     width: max-content;
     height: auto;
     background-color: rgba(0, 0, 0, 0.7);
-    //background-color: red;
     color: white;
     border-radius: 3px;
     display: none;
@@ -238,3 +250,62 @@ td{
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+
+  /* Agrega estos estilos a tu archivo CSS o SCSS */
+
+.legend-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.legend-ball {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.blink-fast {
+    animation: blink-fast 0.3s infinite;
+}
+
+.blink-slow {
+    animation: blink-slow 3s infinite;
+}
+
+.solid-fast {
+    background-color: red;
+}
+
+.solid-slow {
+    background-color: #ffcc0c;
+}
+
+@keyframes blink-fast {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes blink-slow {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

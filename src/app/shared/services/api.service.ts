@@ -20,6 +20,7 @@ import { Questionnaire, QuestionnaireSave } from '../interfaces/questionnaire-in
 export class ApiService {
   
   apiUrlv2= 'https://apief.globalbusiness.com.mx/v2/'
+  apiUrlv3= 'https://apiefv3.globalbusiness.com.mx/v3/'
   id = 0
   get:string = `${environment.url_base}getAll?model=`
   insert: string = 'https://apief.globalbusiness.com.mx/v1/insert';
@@ -34,6 +35,7 @@ export class ApiService {
     
 
   public readonly TOKEN = "token_escudo";
+  public readonly TOKEN_V3 = "token_escudo_v3";
 
    readonly MODELS = {articles:"articulos",article_title:"articulo_titulo",
     article_chapter:"articulo_capitulo", article_sections:"articulo_secciones",
@@ -170,6 +172,11 @@ export class ApiService {
   public login(body: any): Observable<any> {
     console.log(body)
     return this.http.post(this.apiUrlv2 + 'login', body, {});
+  }
+
+  public loginv3(body: any): Observable<any> {
+    console.log(body)
+    return this.http.post(this.apiUrlv3 + 'auth/login', body, {});
   }
 
   public postResetPass(data: any): Observable<any>{
@@ -353,6 +360,15 @@ export class ApiService {
     }
   }
 
+  private getTokenV3(){
+    if(localStorage[this.TOKEN]){
+      let res = JSON.parse(localStorage.getItem(this.TOKEN_V3) || "");
+      if(res.token) return res.token;
+      else return environment.token;
+      //return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoyLCJpYXQiOjE3MTQ0NTA2NDh9.1vVf38Moc3dt-KCSJEVDz7j0aZT_TUo55mikizCLB88'
+    }
+  }
+
   private getTokenSpecial(){
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
@@ -374,6 +390,13 @@ export class ApiService {
     if(localStorage[this.TOKEN]){
       let res = JSON.parse(localStorage.getItem(this.TOKEN) || "");
       return res
+    }
+  }
+
+  public getWholeUserV3(){
+    if(localStorage[this.TOKEN]){
+      let res = JSON.parse(localStorage.getItem(this.TOKEN_V3) || "");
+      return res.user
     }
   }
 
@@ -1037,6 +1060,35 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
+  public getAllObligations():Observable<any>{
+    const url = 'https://apiefv3.globalbusiness.com.mx/v3/obligation'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
+  public addObligation(body):Observable<any>{
+    const url = 'https://apiefv3.globalbusiness.com.mx/v3/obligation'
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    body = JSON.stringify(body)
+    return this.http.post(url, body, {headers:headers})
+  }
+
+  public editObligation(body, id:number):Observable<any>{
+    const url = `https://apiefv3.globalbusiness.com.mx/v3/obligation/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    body = JSON.stringify(body)
+    return this.http.put(url, body, {headers:headers})
+  }
+
   //ENDPOINTS PARA LOS DÍAS FESTIVOS
 
   public getDiasFestivos():Observable<any>{
@@ -1120,6 +1172,24 @@ export class ApiService {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.put(url, data, { headers: headers })
+  }
+
+  public changeObligationStatus( data: { status:string }, id:number):Observable<any> {
+    const url = `${this.apiUrlv3}obligation/accountant-status/${id}`
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.put(url, data, { headers: headers })
+  }
+
+  public changeObligationStatusSueprvisor( data: { status:string }, id:number):Observable<any> {
+    const url = `${this.apiUrlv3}obligation/supervisor-status/${id}`
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
     });
     return this.http.put(url, data, { headers: headers })
   }
@@ -1390,5 +1460,45 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
       'Authorization': `Bearer ${this.getToken()}`
     });
     return this.http.put(url, data, { headers: headers });
+  }
+
+  //ENDPOINTS PARA LEYES
+
+  public getLeyes():Observable<any>{
+    const url = `https://apiefv3.globalbusiness.com.mx/v3/law`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addLaw(body):Observable<any>{
+    const url = `https://apiefv3.globalbusiness.com.mx/v3/law`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    body = JSON.stringify(body)
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public editLaw(body, id):Observable<any>{
+    const url = `https://apiefv3.globalbusiness.com.mx/v3/law/${id}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    body = JSON.stringify(body)
+    return this.http.put(url, body, { headers: headers });
+  }
+
+  public deleteLaw(id):Observable<any>{
+    const url = `https://apiefv3.globalbusiness.com.mx/v3/law/${id}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.delete(url, { headers: headers });
   }
 }

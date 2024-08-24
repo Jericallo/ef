@@ -39,7 +39,7 @@ Main sidebar
         background: none;
 
         > a {
-          color: $themecolor;
+          color: black;
         }
       }
     }
@@ -88,7 +88,7 @@ Main sidebar
     }
 
     &.selected .sub-item .mat-list-item-content a.selected {
-      background: transparent;
+      //background: transparent;
       color: white !important;
       font-weight: 500;
     }

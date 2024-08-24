@@ -15,14 +15,20 @@
 <div class="table-container">
     <table mat-table [dataSource]="tableData" class="mat-elevation-z8">
         <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
-            <th mat-header-cell *matHeaderCellDef class="date-column" [ngClass]="{'sticky-column': i === 0, 'cumplimiento-header': column === 'nombre'}">
-                <ng-container *ngIf="column === 'nombre'; else dateColumn">
-                    Cumplimiento
+            <th mat-header-cell *matHeaderCellDef class="date-column sticky-header" [ngClass]="{'sticky-column': i === 0, 'cumplimiento-header': column === 'nombre'}">
+                <ng-container *ngIf="column === 'nombre'; else dateColumn" style="display: flex;">
+                    <div style="height: 50px; align-items: center; justify-content: center; display: flex; z-index: 10 !important; position: relative;">
+                        <span>Cumplimiento</span>
+                    </div>
+                    
                 </ng-container>
         
                 <ng-template #dateColumn>
                     <ng-container *ngIf="column !== 'descripcion'; else descColumn">
-                        <a (click)="openDayDialog(column)">{{ column | date:'dd' }}</a>
+                        <div style="position: relative;">
+                            <a (click)="openDayDialog(column)" style=" z-index: 5; position: relative; color: rgb(1, 143, 209); text-decoration-line:underline;">{{ column | date:'dd' }}</a>
+                        </div>
+                        
                     </ng-container>
                 </ng-template>
 
@@ -35,7 +41,7 @@
 
                 <ng-container *ngIf="column === 'nombre'; else dateCell" class="coso scroll-invisible">
                     <p (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearTooltips()" (click)="prueba(element, column)"
-                    class="paragraph">{{ element.obligations.nombre }}</p>
+                    class="paragraph">{{ element.obligations.nombre}}</p>
                     <div class="custom-tooltip-column" [id]="'tooltip-'+element.id+'-'+column" >
                         {{element.obligations.descripcion}} 
                     </div>
@@ -53,9 +59,9 @@
                         <div class="indicador"
                              [ngStyle]="{'background-color': isFechaMaxima(element, column)}"
                              [ngClass]="{'indicador-lento': isIndicadorLento(element, column), 'indicador-rapido': isIndicadorRapido(element, column)}"
-                             (mouseenter)="startHoverTimer(element, column)" (mouseleave)="clearTooltips()" (click)="prueba(element, column)">
+                             (click)="prueba(element, column)">
                         </div>
-                        <div class="custom-tooltip" [id]="'tooltip-'+element.id+'-'+column" (mouseenter)="prueba(element, column)" (mouseleave)="clearTooltips()">
+                        <div class="custom-tooltip" [id]="'tooltip-'+element.id+'-'+column" (mouseenter)="prueba(element, column)" >
                             {{messageTooltip(element, column)}} 
                             <button *ngIf="showChatButton" class="chat-button" (click)="openChatDirective()">Ir al chat</button>
                         </div>
@@ -72,4 +78,38 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <div style="position: fixed; bottom: 0; width: 100%; font-size: small;">
+        <div class="legend-container">
+            <div class="legend-item">
+                <div class="legend-ball blink-slow" style="background-color: #ffcc0c;"></div>
+                <span>Periodo ideal para iniciar el cumplimiento</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-ball blink-fast" style="background-color: #ffcc0c;"></div>
+                <span>Periodo ideal para terminar el cumplimiento </span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-ball blink-slow" style="background-color: red;"></div>
+                <span> Periodo para cumplirlo con vencimiento próximo</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-ball blink-fast" style="background-color: red;"></div>
+                <span>Periodo para cumplirlo muy urgente</span>
+            </div>
+        
+            <div class="legend-item">
+                <div class="legend-ball" style="background-color: red;"></div>
+                <span>Cumplimiento aun no realizado</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-ball" style="background-color: #ffcc0c;"></div>
+                <span>En supervisión</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-ball" style="background-color: green;"></div>
+                <span>Cumplido</span>
+            </div>
+        </div>
+    </div>
 </div>

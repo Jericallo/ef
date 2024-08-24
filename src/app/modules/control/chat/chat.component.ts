@@ -40,6 +40,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   isTyping: boolean = false;
   profile: any;
   me_user: "";
+  me_role: "";
+  other_role:any;
   userId: any;
   scrolledToBottom: boolean = true;
 
@@ -59,7 +61,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
 
     const me = apiService.getWholeUser();
+    console.log(me)
     this.me_user = me.nombre;
+    this.me_role = me.perfil.nombre
 
     if (this.userId !== null) {
       this.socket = io("wss://apief.globalbusiness.com.mx", {
@@ -311,6 +315,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     this.messages = [];
     this.selectedUser = user;
+    this.apiService.getProfiles().subscribe({
+      next: res => {
+        console.log(res)
+        this.other_role = res.find(role => role.id === this.selectedUser.id_perfil)
+        console.log(this.other_role)
+      }
+    })
     const userId = this.userId;
     this.socket.off("conversation");
     const conversationBody = {

@@ -16,8 +16,8 @@
                             [matAutocomplete]="auto"
                         />
                         <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option *ngFor="let classification of classifications" [value]="classification.nombre" (click)="setDoc(classification)">
-                                {{ classification.nombre }}
+                            <mat-option *ngFor="let classification of classifications" [value]="classification.name" (click)="setDoc(classification)">
+                                {{ classification.name }}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
