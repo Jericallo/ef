@@ -15,6 +15,7 @@ export class UserIconComponent implements OnInit {
   notification_amount = 0
   notifications = []
   user:any
+  user2:any
   showNotification = false
   isMenuOpen = false;
 
@@ -23,7 +24,8 @@ export class UserIconComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.apiService.getWholeUser()
-    console.log(parseInt(this.apiService.getUnreadNotificationsAmmount()))
+    this.user2 = this.apiService.getWholeUserV3()
+    console.log('WHOLE USER 2', this.user2)
     this.notification_amount = parseInt(this.apiService.getUnreadNotificationsAmmount())
     this.notifications = this.apiService.getUnreadNotifications()
     if(this.notifications === undefined) this.notifications = []
@@ -43,11 +45,6 @@ export class UserIconComponent implements OnInit {
       this.apiService.postUnreadNotifications([])
     }
   }
-
-  // closeMenu() {
-  //   this.isMenuOpen = false;
-  //   this.showNotification = false;
-  // }
 
   logOut(){
     this.routes.navigate(['/logout']);
@@ -90,5 +87,28 @@ export class UserIconComponent implements OnInit {
       })
       this.apiService.postUnreadNotifications(this.notifications)
     });
+  }
+
+  roleConverter(role:string):string{
+    switch(role){
+      case 'PayrollComplianceSupervisorRole':
+        return 'Responsable de cumplimiento de nóminas';
+      case 'GlobalBusinessAdminRole':
+        return 'Administrador de Global Business'
+      case 'GlobalBusinessTechManagerRole':
+        return 'Gerente técnico de Globar Business'
+      case 'GlobalBusinessComplianceSupervisorRole':
+        return 'Supervisor de cumplimiento de Global Business'
+      case 'CompanyDirectorRole':
+        return 'Director de la empresa';
+      case 'CompanyComplianceSupervisorRole':
+        return 'Supervisor de cumplimiento de la empresa'
+      case 'PLDComplianceSupervisorRole':
+        return 'Responsable de cumplimientos de PLD'
+      case 'GeneralComplianceSupervisorRole':
+        return 'Responsable de cumplimiento general'
+      default:
+        return 'Responsable'
+    }
   }
 }

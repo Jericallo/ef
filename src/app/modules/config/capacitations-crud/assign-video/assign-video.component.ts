@@ -14,6 +14,8 @@ export class AssignVideoComponent implements OnInit {
   capacitaciones = null
   id_cap:number
   textButton = 'Guardar'
+  file:any
+  photo:any
 
   constructor(public dialogRef:MatDialogRef<AssignVideoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private apiService: ApiService) { }
 
@@ -31,14 +33,21 @@ export class AssignVideoComponent implements OnInit {
   }
 
   assignVideo(){
-    this.textButton = 'Guardando...'
-    const body ={
-      id: this.data.capacitation.id,
-      id_video: this.id_cap
+    if(!this.photo || !this.file){
+      alert('Por favor seleccione la media que desea subir');
+      return
     }
-    this.apiService.putCapacitations(body).subscribe({
+
+    this.textButton = 'Guardando...'
+    const formData = new FormData();
+    formData.append('trainingId', this.data.capacitation.id.toString())
+    formData.append('trainingVideo', this.file)
+    formData.append('trainingImage', this.photo)
+
+    console.log(formData)
+
+    this.apiService.uploadCapacitationVideo(formData).subscribe({
       next:res => {
-        console.log(res)
         Swal.fire('Asignado exitosamente')
         this.dialogRef.close()
       }, error: (error) => {
@@ -48,6 +57,31 @@ export class AssignVideoComponent implements OnInit {
     })
     this.textButton = 'Guardar'
   }
+
+  seleccionarArchivo(event: any) {
+    const archivoSeleccionado = event.target.files[0];
+    if (archivoSeleccionado) {
+      const nombreArchivo = archivoSeleccionado.name;
+      if (nombreArchivo.endsWith('.mp4')) {
+        this.file = event.target.files[0]
+      } else {
+        alert('Por favor seleccione un archivo .mp4');
+      }
+    }
+  }
+
+  seleccionarArchivoFoto(event: any) {
+    const archivoSeleccionado = event.target.files[0];
+    if (archivoSeleccionado) {
+      const nombreArchivo = archivoSeleccionado.name;
+      console.log(nombreArchivo);
+      if (nombreArchivo.endsWith('.png') || nombreArchivo.endsWith('.jpg') || nombreArchivo.endsWith('.jpeg')) {
+        this.photo = archivoSeleccionado;
+      } else {
+        alert('Por favor seleccione un archivo de fotografía válido');
+      }
+    }
+  }  
 
   close(){
     this.dialogRef.close()

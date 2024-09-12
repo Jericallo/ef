@@ -3,56 +3,32 @@
     <div class="grid-container">
         <div class="grid-item">
             <mat-form-field>
-                <input matInput required placeholder="Titulo" [(ngModel)]="titulo">
+                <input matInput required placeholder="Titulo" [(ngModel)]="name">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder="Descripción" [(ngModel)]="descripcion">
+                <input matInput required placeholder="Descripción" [(ngModel)]="description">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder="Tiempo Limite (en segundos) para completar el cuestionario" [(ngModel)]="tiempo_limite" (input)="validateNumberInput($event)">
+                <input matInput required placeholder="Tiempo Limite (en segundos) para completar el cuestionario" [(ngModel)]="length" (input)="validateNumberInput($event)">
             </mat-form-field>                    
 
             <mat-form-field>
-                <mat-label>Capacitación padre</mat-label>
-                <mat-select [(value)]="pertenece_a">
-                    <mat-option [value]="novo" >
-                        Nueva capacitación
-                    </mat-option>
-                    <mat-option *ngFor="let cap of filteredCapacitaciones" [value]="cap.nivel_1 + '/' + cap.nivel_2 + '/' + cap.nivel_3" >
-                        <div *ngIf="!cap!.nivel_3 || 0 > 0">
-                            <span *ngIf="cap!.nivel_1 || 0 > 0">{{cap.nivel_1 || ''}}</span>
-                            <span *ngIf="cap!.nivel_2 || 0 > 0">{{'.' + cap.nivel_2 || ''}}</span>
-                            <span *ngIf="cap!.nivel_3 || 0 > 0">{{'.' + cap.nivel_3 || ''}}</span>
-                            {{ cap.titulo }}
-                        </div>
-                    </mat-option>
-            </mat-select>
-            </mat-form-field>
-
-            <div class="grid-item" style="margin-top: 20px;">
-                <h4 mat-dialog-title>Subir video</h4>
-                <div class="grid-item">
-                    <input type="file" (change)="seleccionarArchivo($event)" accept=".mp4">
-                </div>
-            </div>
-            <mat-form-field style="margin-top: 10px;">
                 <mat-label>Duración del video</mat-label>
-                <select matNativeControl required [(ngModel)]="duration">
-                    <option value="min1">1 minuto</option>
-                    <option value="min5">5 minutos</option>
-                    <option value="min10">10 minutos</option>
-                    <option value="min15">15 minutos</option>
-                    <option value="min30">30 minutos</option>
-                    <option value="hour1">1 hora</option>
-                </select>
+                <mat-select [(value)]="type">
+                    <mat-option *ngFor="let option of types" [value]="option.value" >
+                        {{option.label}}
+                    </mat-option>
+                </mat-select>
             </mat-form-field>
-            <div class="grid-item">
-                <h4 mat-dialog-title>Subir miniatura</h4>
-                <div class="grid-item">
-                    <input type="file" (change)="seleccionarImagen($event)" accept=".jpg, .jpeg, .png">
-                </div>
-            </div>
 
+            <mat-form-field>
+                <mat-label>Obligación asociada</mat-label>
+                <mat-select [(value)]="obligationId">
+                    <mat-option *ngFor="let obligation of allObligations" [value]="obligation.id" >
+                        {{obligation.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
         
     </div>

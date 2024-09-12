@@ -114,22 +114,6 @@
   content: '';
 }
 
-.cumplimiento-menu:hover::after {
-  right: -19px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 27px 0 27px 20px; /* Tamaño de la flecha */
-  border-color: transparent transparent transparent rgb(227, 152, 1); /* Flecha derecha */
-}
-.cumplimiento-menu:hover::before {
-  left: 0px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 27px 0 27px 10px; /* Tamaño de la flecha más angosta */
-  border-color: transparent transparent transparent rgb(249, 222, 21);
-}
 
 .sub2-item{
   color:red;

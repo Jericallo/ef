@@ -60,6 +60,12 @@ export class RegisterComponent implements OnInit {
   public isShownDocumentationsModal = false
   public sentDocumentations = null
 
+  //VARIABLES FOR TRAININGS
+  public oneMinuteTrainings = []
+  public fiveMinuteTrainings = []
+  public tenMinuteTrainings = []
+  public fifteenMinuteTrainings = []
+
   //FUNDAMENTAL VARIABLES
   universalRow:RegisterTable
   dataSource: RegisterTable[] = [];
@@ -70,6 +76,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchObligations();
+    this.fetchAllVideos()
   }
 
   fetchObligations(): void {
@@ -95,7 +102,8 @@ export class RegisterComponent implements OnInit {
             exam_questions_five_minutes: null,
             correct_answers_five_minutes: null,
             incorrect_answers: null,
-            incomplete_sanctions: obligation.sanction
+            incomplete_sanctions: obligation.sanction,
+            trainings: obligation.trainings
           };
         });
         
@@ -106,6 +114,12 @@ export class RegisterComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  fetchAllVideos():void {
+    this.apiService.getTrainings('oneMin').subscribe({ next:res => { this.oneMinuteTrainings = res }, error: err => { console.error(err) }})
+    this.apiService.getTrainings('fiveMin').subscribe({ next:res => { this.fiveMinuteTrainings = res }, error: err => { console.error(err) }})
+    this.apiService.getTrainings('tenMin').subscribe({ next:res => { this.tenMinuteTrainings = res }, error: err => { console.error(err) }})
   }
 
   addObligation(): void {
@@ -254,30 +268,28 @@ export class RegisterComponent implements OnInit {
 
   //---------------------------------------FOR MODIFICATIONS OF VIDEOS----------------------------------//
 
-  editOneMinuteVid(text, id:number){
-    const body = {
-      oneMinVidAuthor: text
+  editVideo(type:string, id:string, oldId:string = '-1', obligationId:string, obligation:any){
+    console.log(obligation)
+    const id_to_remove = obligation.trainings.find(train => train.type === type)
+    if(id_to_remove) oldId = id_to_remove.id
+
+    if(oldId !== '-1'){
+      const oldBody = {obligationId:''}
+      this.apiService.editCapacitations(oldId, oldBody).subscribe({
+        next: res => {
+          console.log(res)
+        }, error: err => {
+          console.error(err)
+        }
+      })
     }
 
-    this.apiService.editObligation(body, id).subscribe({
+    const newBody = {obligationId:obligationId}
+    this.apiService.editCapacitations(id, newBody).subscribe({
       next: res => {
-        this.snackBar.open('Video de 1 minuto editado exitosamente', '', this.config_snack);
+        console.log(res)
       }, error: err => {
-        this.snackBar.open('Ocurrió un error editando el video de 1 minuto', '', this.config_snack);
-      }
-    })
-  }
-
-  editFiveMinuteVid(text, id:number){
-    const body = {
-      fiveMinVidAuthor: text
-    }
-
-    this.apiService.editObligation(body, id).subscribe({
-      next: res => {
-        this.snackBar.open('Video de 5 minutos editado exitosamente', '', this.config_snack);
-      }, error: err => {
-        this.snackBar.open('Ocurrió un error editando el video de 5 minutos', '', this.config_snack);
+        console.error(err)
       }
     })
   }

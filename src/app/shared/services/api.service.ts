@@ -661,8 +661,7 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getTokenSpecial()}`
     });
-    const url = 'https://apief.globalbusiness.com.mx/v1/capacitaciones?id_usuario=' + this.id;
-    console.log(url)
+    const url = `${this.apiUrlv3}training`;
     return this.http.get<Capacitations[]>(url, {headers:headers});
   }
 
@@ -1246,6 +1245,23 @@ export class ApiService {
     return data;
   }
 
+  public createCapacitations(data:{name:string, description:string, type:string, length:string, obligationId:string}):Observable<any> {
+    const url = `${this.apiUrlv3}training`
+    let headers = new HttpHeaders({
+      'Authorization':`Bearer ${this.getTokenV3()}`
+    });
+    return this.http.post(url, data, {headers:headers})
+  }
+
+  public editCapacitations(id:string, data):Observable<any> {
+    const url = `${this.apiUrlv3}training/${id}`
+    let headers = new HttpHeaders({
+      'Authorization':`Bearer ${this.getTokenV3()}`,
+      'Content-type':'application/json'
+    });
+    return this.http.put(url, data, {headers:headers})
+  }
+
   public postVideos(data:FormData):Observable<any> {
     const url = 'https://apief.globalbusiness.com.mx/v2/video'
     let headers = new HttpHeaders({
@@ -1289,16 +1305,16 @@ export class ApiService {
     return this.http.post(url, data, {headers:headers})
   }
 
-  public putCapacitations(data:any):Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/capacitaciones'
+  public uploadCapacitationVideo(data:any):Observable<any> {
+    const url = `${this.apiUrlv3}training-video`
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
-    return this.http.put(url, data, {headers:headers})
+    return this.http.post(url, data, {headers:headers})
   }
 
   public deleteCapacitation(id:number):Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/capacitaciones/' + id
+    const url = `${this.apiUrlv3}training/${id}`
     let headers = new HttpHeaders({
       'Authorization':`Bearer ${this.getToken()}`
     });
@@ -1399,8 +1415,8 @@ export class ApiService {
 
   //ENDPOINTS PARA CAPACITACIONES
 
-  public getTrainings(id:any):Observable<any> {
-    const url = this.apiUrlv2 + `capacitaciones?id_usuario=${id}`
+  public getTrainings(type:string):Observable<any> {
+    const url = this.apiUrlv3 + `training?type=${type}`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`

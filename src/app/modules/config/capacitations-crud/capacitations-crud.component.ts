@@ -23,15 +23,13 @@ export class CapacitationsCrudComponent implements OnInit {
 
   capacitaciones = null
 
-  columnsToDisplay = ['titulo', 'descripcion','tiempo_limite', 'cantidad_preguntas', 'nivel', 'video', 'preguntas', 'acciones'];
+  columnsToDisplay = ['titulo', 'descripcion','tiempo_limite', 'media', 'preguntas', 'acciones'];
 
   columnNames = {
     titulo: 'Título',
     descripcion: 'Descripción',     
     tiempo_limite: 'Tiempo limite',
-    cantidad_preguntas: "Cantidad de Preguntas",
-    nivel:'Nivel',
-    video:'Video',
+    media:'Media',
     preguntas: 'Cuestionario',
     acciones:'Acciones'
   };
@@ -46,19 +44,14 @@ export class CapacitationsCrudComponent implements OnInit {
   getCapacitaciones(){
     this.apiService.getCapacitations().subscribe({
       next:res => {
-        
-        res = JSON.parse(this.apiService.decrypt(res.message, 'private'))
-        this.dataSource = res.result
-        console.log(res.result)
-        this.capacitaciones = res.result
-
+        this.dataSource = res
+        console.log(res, this.dataSource)
+        this.capacitaciones = res
       }
     })
   }
 
-
-  deleteCapacitation(profileId: number) {
-    console.log(profileId)
+  deleteCapacitation(capacitationId: number) {
     Swal.fire({
       title: "¿Seguro que desea borrar la capacitación?",
       showDenyButton: true,
@@ -69,7 +62,7 @@ export class CapacitationsCrudComponent implements OnInit {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isDenied) {
-        this.apiService.deleteCapacitation(profileId).subscribe({
+        this.apiService.deleteCapacitation(capacitationId).subscribe({
           next:res => {
             console.log(res)
             //res = JSON.parse(this.apiService.decrypt(res.message,this.apiService.getPrivateKey()))
@@ -92,11 +85,11 @@ export class CapacitationsCrudComponent implements OnInit {
     });
   }
 
-  openAssign(element){
+  openAssign(id:number){
     console.log({ capacitations:this.capacitaciones })
     const dialogRef = this.dialog.open(AssignVideoComponent, {
       width: '600px',
-      data: { capacitation:element }
+      data: { capacitation:id }
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.getCapacitaciones()
@@ -122,7 +115,11 @@ export class CapacitationsCrudComponent implements OnInit {
   }
 
   abrirVideo(link:string){
-    window.open(link, '_blank');
+    window.open(`https://apiefv3.globalbusiness.com.mx/src/uploads/videos/${link}`, '_blank');
+  }
+
+  abrirImagen(link:string){
+    window.open(`https://apiefv3.globalbusiness.com.mx/src/uploads/images/${link}`, '_blank');
   }
   
   openQuestions(id:number){

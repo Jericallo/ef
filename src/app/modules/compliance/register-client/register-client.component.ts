@@ -116,7 +116,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
       current = addDays(current, 1);
     }
 
-    this.displayedColumns = ['nombre', ...this.dateRange.map(date => this.formatDateInSpanish(date)), 'descripcion'];
+    this.displayedColumns = ['nombre', ...this.dateRange.map(date => this.formatDateInSpanish(date)), 'descripcion', 'fiveMinute','fifteenMinute','thirtyMinute','sixtyMinute'];
   }
 
   getCurrentMonthText(): string {
@@ -247,7 +247,12 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
           return 'orange' //orange
         }
       } else {
-        return 'transparent' //transparent
+        if(element.completado === 0 && parseFloat(fechaColumna.toString()) > parseFloat(element.urgent_date_end) && parseFloat(fechaColumna.toString()) < Date.now()){
+          return 'red'
+        }
+        else {
+          return 'transparent'
+        }
       }
     }
 
@@ -318,7 +323,6 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
     if(parseFloat(fechaColumna.toString()) <= DateToday.getTime() && parseFloat(fechaColumna.toString()) + 64800000 >= DateToday.getTime()) {
       if(parseFloat(element.urgent_date_end) - parseFloat(element.urgent_date_start) < 64800000) {
-        console.log(DateToday.getTime())
         if(DateToday.getTime() >= parseFloat(element.ideal_date_start) && DateToday.getTime() <= parseFloat(element.ideal_date_end)) return true
         if(DateToday.getTime() >= parseFloat(element.close_date_start) && DateToday.getTime() <= parseFloat(element.close_date_end)) return true
       }

@@ -2,6 +2,7 @@
   <i class="material-icons user-icon" (click)="toggleMenu()">person</i>
   <div class="notification-bubble" *ngIf="notification_amount > 0">{{notification_amount}}</div>
   <div class="menu-container" [ngStyle]="{ 'display': isMenuOpen ? 'flex' : 'none' }">
+    <span class="role" *ngFor="let role of user2.roles">{{roleConverter(role)}}</span>
     <ul>
       <li *ngIf="user.id_perfil === 1 || user.id_perfil === 64 || user.id_perfil === 65"><a id="config" routerLink="/config/menu">Configuraciones</a></li>
       <li>
