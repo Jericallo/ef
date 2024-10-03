@@ -26,6 +26,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { VideoIntroComponent } from './video-intro/video-intro.component';
 import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MyCompanyComponent } from './my-company/my-company.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ResponseComponent,
     VideoIntroComponent,
     CountdownModalComponent,
+    MyCompanyComponent,
   ],
   imports: [
     CommonModule,
