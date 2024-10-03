@@ -1,57 +1,58 @@
-<div class="container" *ngIf="blanco">
+<div class="container">
     <div style="display: flex; flex-direction: row;">
-        
-        <h4>{{data.cumplimiento.nombre}}</h4>
-        <!-- <div class="indicador" [ngStyle]="{'background-color': isFechaMaxima()}" 
-        ></div> -->
+        <h4>{{data.cumplimiento.obligations.nombre}}</h4>
     </div>
     
-    <!--<h6>{{data.cumplimiento.descripcion}}</h6>-->
-    <div *ngIf="showButton">
-        <span class="leyenda">Clic para marcar como cumplido</span><br/>
-        <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c; cursor: pointer;" 
-        (click)="changeStatus()" [disabled]="disabled">{{texto}}</button>
-        <br/><span class="leyenda" *ngIf="mostrarLeyenda"><strong>Precaución:</strong> al dar clic se marcará como cumplido un día en el <strong>pasado</strong></span>
+    <div *ngIf="showAccountant">
+        <div *ngIf="data.cumplimiento.completado !== 3">
+            <span class="leyenda">Clic para marcar como cumplido</span><br/>
+            <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c; cursor: pointer;" 
+            (click)="changeStatusAccountant()" [disabled]="disabled">{{text_for_accountant}}</button>
+            <br/><span class="leyenda" *ngIf="mostrarLeyenda"><strong>Precaución:</strong> al dar clic se marcará como cumplido un día en el <strong>pasado</strong></span>
+        </div>
+        <div *ngIf="data.cumplimiento.completado === 3">
+            <h6>¡Cumplimiento totalmente realizado!</h6>
+            <span>El supervisor ya dio el visto bueno a la evidencia del cumplimiento.</span>
+            <ul>
+                <li>Fecha en que se cumplió: {{data.cumplimiento.fecha_completado | date}}</li>
+            </ul>
+            <div class="divisor"></div>
+        </div>
     </div>
-    
-    <div *ngIf="data.cumplimiento.completado === 3">
-        <h6>¡Cumplimiento totalmente realizado!</h6>
-        <span>El supervisor ya dio el visto bueno a la evidencia del cumplimiento.</span>
-        <ul>
-            <li>Fecha en que se cumplió: {{data.cumplimiento.fecha_completado | date}}</li>
-        </ul>
-        <div class="divisor"></div>
-    </div>
-    <!--
-    <div>
-        <ul>
-            <li>Fecha de inicio del cumplimiento: {{data.cumplimiento.fecha_inicio_cumplimiento | date}}</li>
-            <li>Fecha de inicio ideal del cumplimiento: {{data.cumplimiento.fecha_inicio_ideal | date}}</li>
-            <li>Fecha de inicio ideal del cumplimiento: {{data.cumplimiento.fecha_inicio_ideal | date}}</li>
-            <li>Fecha ideal de cumplimiento: {{data.cumplimiento.fecha_ideal | date}}</li>
-            <li>Fecha máxima de cumplimiento: {{data.cumplimiento.fecha_maxima | date}}</li>
-        </ul>
-        Impuesto: <span *ngIf="data.cumplimiento.impuestos.impuesto_isr == 1"><strong>ISR</strong></span>
-        <span *ngIf="data.cumplimiento.impuestos.impuesto_iva == 1"><strong>IVA</strong></span>
-        <span *ngIf="data.cumplimiento.impuestos.impuesto_nomina == 1"><strong>Nómina</strong></span>
-        <span *ngIf="data.cumplimiento.impuestos.impuesto_otro == 1"><strong>Otro</strong></span>
-        <br/>
-        Fundamento Legal:
-        <ul>
-            <li *ngFor="let fund of data.cumplimiento.fundamento_legal">Art. {{fund.art.articulo}} .- {{fund.art.nombre}}</li>
-        </ul>
-        <div class="divisor"></div>
-    </div>
-    <div>
-        <h6>Envío de documentación de evidencia</h6>
-        Documentación faltante:
-        <ul>
-            <li *ngFor="let doc of data.cumplimiento.documentos_evidencia.documentacion_faltante">{{doc}}</li>
-        </ul>
-    </div>
-    -->
-</div>
 
-<div class="container" *ngIf="!blanco">
-    <h4>{{mensaje_blanco}}</h4>
+    <div *ngIf="showSupervisor">
+
+        <div *ngIf="data.cumplimiento.completado === 0">
+            <span>El responsable todavía no termina esta obligación.</span>
+        </div>
+
+        <div *ngIf="data.cumplimiento.completado === 1">
+            <span class="leyenda">Clic para comenzar con la validación</span><br/>
+            <button mat-raised-button color="#ffcc0c" style="background-color: #ffcc0c; cursor: pointer;" 
+            (click)="changeStatusSupervisor('WaitingValidationStatus')">Empezar a validar</button>
+        </div>
+
+        <div *ngIf="data.cumplimiento.completado === 2" class="button-container">
+            <div>
+                <span class="leyenda">Clic para rechazar la validación</span><br/>
+                <button mat-raised-button color="#ffcc0c" style="background-color: #7a0606; cursor: pointer; color: white;" 
+                (click)="changeStatusSupervisor('PendingStatus')">Rechazar</button>
+            </div>
+            
+            <div>
+                <span class="leyenda">Clic para marcar como validado</span><br/>
+                <button mat-raised-button color="#ffcc0c" style="background-color: #08ad0d; cursor: pointer; color: white;" 
+                (click)="changeStatusSupervisor('ValidatedStatus')">Validar</button>
+            </div>
+        </div>
+
+        <div *ngIf="data.cumplimiento.completado === 3">
+            <h6>¡Cumplimiento totalmente realizado!</h6>
+            <span>El supervisor ya dio el visto bueno a la evidencia del cumplimiento.</span>
+            <ul>
+                <li>Fecha en que se cumplió: {{data.cumplimiento.fecha_completado | date}}</li>
+            </ul>
+            <div class="divisor"></div>
+        </div>
+    </div>
 </div>

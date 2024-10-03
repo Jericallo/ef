@@ -103,7 +103,9 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
     }
   }
   
-
+  closeTab():void {
+    this.openChat = false
+  }
   
 
 

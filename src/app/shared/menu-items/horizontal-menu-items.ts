@@ -51,6 +51,7 @@ const MENUITEMS = [
         class: 'inicio-menu',
         children:[
             {state:'intro', name:'Intro',type:'link',icon:'home', class:'homeid'},
+            {state:'myCompany', name:'Mi empresa',type:'link',icon:'business'},
             {state:'news',name:'Noticias',type:'link', icon:'newspaper'},
             {state:'laws',name:'Leyes',type:'link', icon:'library_books'},
             {state:'topics',name:'Temario',type:'link', icon:'list_alt'},
@@ -66,9 +67,9 @@ const MENUITEMS = [
         icon: '',
         class: 'cumplimiento-menu',
         children:[
-            {state:'index', name:'Calendario',type:'link', icon:'event'},
+            {state:'index', name:'Resumen de cumplimiento',type:'link', icon:'event'},
             {state:'register', name:'Registra',type:'link', icon:'input'},
-            {state:'register-client', name:'Registra Cliente',type:'link', icon:'input'},
+            {state:'register-client', name:'Calendario',type:'link', icon:'input'},
             {state:'', name:'Impuestos',type:'link',icon:'monetization_on'},
             {state:'', name:'Informativas',type:'link',icon:'inbox'},
             {state:'', name:'P.L.D.',type:'link',icon:'security'},
@@ -200,7 +201,7 @@ export class HorizontalMenuItems {
         if(user.nombre_perfil !== 'Administrador de Global Business') {
             const index = MENUITEMS.find(item => item.name === 'Cumplimiento').children.findIndex(child => child.name === 'Registra');
             if (index !== -1) {
-                MENUITEMS.find(item => item.name === 'Cumplimiento').children.splice(index, 1);
+                //MENUITEMS.find(item => item.name === 'Cumplimiento').children.splice(index, 1);
             }
         }
 

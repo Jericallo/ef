@@ -10,25 +10,28 @@
                     <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
                     <mat-cell *matCellDef="let element; let i = index" class="table-element">
                         <ng-container [ngSwitch]="column">
-                            <ng-container *ngSwitchCase="'titulo'">{{ element.titulo }}</ng-container>
-                            <ng-container *ngSwitchCase="'descripcion'">  {{ element.descripcion }}</ng-container>
-                            <ng-container *ngSwitchCase="'tiempo_limite'">{{ element.tiempo_limite }}</ng-container>
-                            <ng-container *ngSwitchCase="'cantidad_preguntas'">{{ element.numero_de_preguntas }}</ng-container>
-                            <ng-container *ngSwitchCase="'nivel'">{{ calculadorDeNivel(element) }}</ng-container>
-                            <ng-container *ngSwitchCase="'video'">
-                                <button mat-icon-button (click)="abrirVideo(element.url)" *ngIf="element.url !== null">
+                            <ng-container *ngSwitchCase="'titulo'">{{ element.name }}</ng-container>
+                            <ng-container *ngSwitchCase="'descripcion'">  {{ element.description }}</ng-container>
+                            <ng-container *ngSwitchCase="'tiempo_limite'">{{ element.length }}</ng-container>
+                            <ng-container *ngSwitchCase="'media'">
+                                <button mat-icon-button (click)="abrirVideo(element.video.videoFileName)" *ngIf="element.video">
                                     <mat-icon>video_library</mat-icon>
                                 </button>
 
-                                <button mat-raised-button color="primary" (click)="openAssign(element)" *ngIf="element.url === null">
+                                <button mat-icon-button (click)="abrirImagen(element.video.imageFileName)" *ngIf="element.video">
+                                    <mat-icon>insert_photo</mat-icon>
+                                </button>
+
+                                <button mat-raised-button color="primary" (click)="openAssign(element)" *ngIf="!element.video">
                                     Asignar video
                                 </button> 
 
                             </ng-container>
                             <ng-container *ngSwitchCase="'preguntas'">
-                                <button mat-raised-button color="primary" (click)="openQuestions(element.id)">
+                                <!-- <button mat-raised-button color="primary" (click)="openQuestions(element.id)">
                                     Ver preguntas
-                                </button> 
+                                </button>  -->
+                                
                             </ng-container>
                             <ng-container *ngSwitchCase="'acciones'">
                                 

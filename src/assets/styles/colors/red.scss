@@ -22,12 +22,12 @@ $white:#fff;
         .mat-list-item-content {
             &:hover {
                 > a {
-                    color: $themecolor;
+                    color: black;
                 }
             }
         }
         &.selected > .mat-list-item-content > a {
-            background: $themecolor-alt;
+            background: black-alt;
             color: $white;
         }
     }

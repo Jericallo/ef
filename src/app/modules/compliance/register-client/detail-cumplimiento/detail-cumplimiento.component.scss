@@ -32,3 +32,9 @@
 .indicador-rapido{
     animation: parpadeo 0.3s infinite;
 }
+
+.button-container{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}

@@ -34,15 +34,15 @@ export class CapacitationsComponent implements OnInit {
 
   getTrainings() {
     this.loading = true;
-    this.apiService.getTrainings(this.user.id).subscribe(
-      (data) => {
-        this.trainings = data.allCapacitations;
-        this.loading = false;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    // this.apiService.getTrainings(this.user.id).subscribe(
+    //   (data) => {
+    //     this.trainings = data.allCapacitations;
+    //     this.loading = false;
+    //   },
+    //   (error) => {
+    //     console.error(error);
+    //   }
+    // );
   }
 
   getLastAttempt(training: any) {

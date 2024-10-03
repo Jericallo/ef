@@ -17,5 +17,4 @@ export class RemoveUserDialogComponent implements OnInit {
   cancel(): void {
     this.dialogRef.close();
   }
-
 }

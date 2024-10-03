@@ -191,6 +191,19 @@
             </div>
             
             <div class="container rojos" style="display: flex; flex-direction: column; margin: 0px; border-radius: 10px; margin-top: 10px; margin-bottom: 5px; margin-bottom: 10px;">
+
+                <div *ngFor="let cumplimiento of cumplimientos; let i = index" class="container rojos" style="display: flex; flex-direction: row;" >
+                    <div class="indicador" style="margin-top: 7px; background-color: red;"
+                    *ngIf="modalIsRojoSolido(cumplimiento, exModalData.date)"> 
+                    </div>
+                    <span *ngIf="modalIsRojoSolido(cumplimiento, exModalData.date)" >
+                        <strong (click)="overrideBackup(i)" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
+                            {{cumplimiento.obligations.nombre}}
+                        </strong>
+                        {{cumplimiento.obligations.respaldo}}
+                    </span>
+                </div>
+
                 <div *ngFor="let cumplimiento of cumplimientos; let i = index" class="container rojos" style="display: flex; flex-direction: row;" >
                     <div class="indicador indicador-rapido" style="margin-top: 7px; background-color: red;"
                     *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"> 

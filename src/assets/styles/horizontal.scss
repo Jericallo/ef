@@ -114,29 +114,19 @@
   content: '';
 }
 
-.cumplimiento-menu:hover::after {
-  right: -19px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 27px 0 27px 20px; /* Tamaño de la flecha */
-  border-color: transparent transparent transparent rgb(227, 152, 1); /* Flecha derecha */
-}
-.cumplimiento-menu:hover::before {
-  left: 0px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 27px 0 27px 10px; /* Tamaño de la flecha más angosta */
-  border-color: transparent transparent transparent rgb(249, 222, 21);
-}
 
 .sub2-item{
   color:red;
 }
 
 .sub-item .mat-list-item-content a.selected{
-    background:$themecolor !important;
+  //background:$themecolor !important;
+    .inicio-menu{
+      background:$themecolor !important;
+    }
+    .cumplimiento-menu {
+      background: red !important;
+    }
   span{
    color: white !important;
    text-shadow: 2px 2px 1px rgba(0,0,0,0.75);
@@ -278,9 +268,21 @@
                 /*margin-top: 6px;*/
                 margin-bottom: 0px;
                 border: solid 2px rgba(176, 176, 176, 0.504);
-                &.selected {
-                  background: green;
-                  color: $themecolor;
+                &.selected.inicio-menu {
+                  background: $themecolor;
+                  color: black;
+                }
+                &.selected.cumplimiento-menu{
+                  background: rgb(255, 183, 40);
+                  color: black;
+                }
+                &.selected.control-menu{
+                  background: rgb(66, 231, 21);
+                  color: black;
+                }
+                &.selected.precaucion-menu{
+                  background: rgb(219, 14, 14);
+                  color: black;
                 }
               }
             }
@@ -288,7 +290,7 @@
               background: transparent;
               transition-delay: 0s;
               > a {
-                color: $themecolor;
+                color: black;
               }
               .sub-item {
                 display: flex;
@@ -310,7 +312,7 @@
               color: $sidebar-text;
               max-width: 100%;//178px - GCG
               &:hover {
-                color: $themecolor;
+                color: black;
               }
               mat-icon:not(.dd-icon) {
                 margin-right: 0px;
@@ -329,7 +331,7 @@
               }
             }
             &.selected > .mat-list-item-content > a {
-            //  background: $themecolor;
+            //  background: black;
               mat-icon {
                 color: black;
               }
@@ -359,7 +361,7 @@
       mat-sidenav {
         width: 240px;
         padding-top: 0px;
-        background: $themecolor;
+        background: black;
       }
       #snav {
         box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
@@ -374,7 +376,7 @@
             &:hover {
               background: none;
               > a {
-                color: $themecolor;
+                color: black;
               }
             }
           }

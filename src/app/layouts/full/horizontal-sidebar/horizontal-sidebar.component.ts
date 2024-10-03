@@ -49,31 +49,36 @@ export class HorizontalAppSidebarComponent implements OnDestroy, OnInit {
   a = null
   intervalo = null
 
-  funcion(object:any){
-    if(this.a !== null) {
-      let arreglo = Array.prototype.slice.call(this.a)
-      console.log(arreglo, Array.prototype.slice.call(this.a), this.a)
-      arreglo[0].style.overflow = 'hidden'
-      if(this.intervalo !== null){
-        clearInterval(this.intervalo)
+  funcion(object: any) {
+    if (this.a !== null) {
+      let arreglo = Array.prototype.slice.call(this.a);
+      if (arreglo[0]) {
+        arreglo[0].style.overflow = 'hidden';
+        if (this.intervalo !== null) {
+          clearInterval(this.intervalo);
+        }
       }
-
-      this.a = null
+    } else {
+      this.a = document.getElementsByClassName('juice-item-' + object);
     }
-    this.a = document.getElementsByClassName('juice-item-'+object)//.addEventListener('mouseover',(event) => {console.log('hola')})
-    let arreglo = Array.prototype.slice.call(this.a)
-    arreglo[0].style.overflow = 'visible'
-    arreglo[0].style.left = '-90px'
-    arreglo[0].style.marginTop = '6px'
-    this.intervalo = setInterval(()=>{
-      this.contador++
-      if(this.contador >= 1 ) {
-        clearInterval(this.intervalo)
-        arreglo[0].style.overflow = 'hidden'
-      }
-    },
-    10000)
+  
+    this.a = document.getElementsByClassName('juice-item-' + object);
+    let arreglo = Array.prototype.slice.call(this.a);
     
+    if (arreglo[0]) {
+      arreglo[0].style.overflow = 'visible';
+      arreglo[0].style.left = '-90px';
+      arreglo[0].style.marginTop = '6px';
+      this.intervalo = setInterval(() => {
+        this.contador++;
+        if (this.contador >= 1) {
+          clearInterval(this.intervalo);
+          arreglo[0].style.overflow = 'hidden';
+        }
+      }, 10000);
+    } else {
+      console.error('Element not found');
+    }
   }
 
   ngOnDestroy(): void {

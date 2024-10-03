@@ -36,7 +36,7 @@ export class PasswordChangeComponent implements OnInit {
 
     const body = { model: "usuarios", data: { contra: this.newPassword, id:this.data.user.id } }
       console.log(body)
-      this.apiService.putUser(body).subscribe(
+      this.apiService.putUser(body, this.data.user.id).subscribe(
         (response) => {
           Swal.fire({
             title: 'Contraseña cambiada exitosamente!',

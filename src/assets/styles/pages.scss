@@ -419,7 +419,7 @@ Smart table
 
 .ng2-smart-action-add-add {
   color: $white !important;
-  background: $themecolor;
+  background: black;
   padding: 8px 15px;
   border-radius: $radius;
   white-space: nowrap;
@@ -486,7 +486,7 @@ Overall Responsive table
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: $themecolor;
+  color: black;
   background-color: $white;
   border: 1px solid $border;
 }
@@ -523,8 +523,8 @@ Overall Responsive table
 .page-item.active .page-link {
   z-index: 1;
   color: $white;
-  background-color: $themecolor;
-  border-color: $themecolor;
+  background-color: black;
+  border-color: black;
 }
 
 .page-item.disabled .page-link {

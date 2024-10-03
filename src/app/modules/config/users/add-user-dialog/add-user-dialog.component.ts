@@ -4,12 +4,12 @@ import { ApiService } from 'src/app/shared/services/api.service';
 import Swal from 'sweetalert2';
 
 interface Usuario {
-  id_perfil: number;
-  correo: string;
-  nombre: string;
-  telefono: string; 
-  contra: string;
-  estatus: number; 
+  id: string;
+  email: string;
+  password: string;
+  name: string; 
+  phoneNumber: string;
+  role: string; 
 }
 
 
@@ -20,13 +20,13 @@ interface Usuario {
 })
 export class AddUserDialogComponent implements OnInit {
 
-  nuevoUsuario: Usuario = {
-    id_perfil: 1, 
-    correo: '',
-    nombre: '',
-    telefono:'', 
-    contra: '',
-    estatus: 1 
+  editedUser: Usuario = {
+    id: '',
+    email: '',
+    password:'', 
+    name: '',
+    phoneNumber: '',
+    role:''
   };
 
   perfiles = []
@@ -62,10 +62,10 @@ export class AddUserDialogComponent implements OnInit {
 
   saveUser() {
     if (this.camposSonValidos()) {
-      const body = { model: "usuarios", data: this.nuevoUsuario }
+      const body = this.editedUser
+      body.phoneNumber = body.phoneNumber.toString()
       this.apiService.postUser(body).subscribe(
         (response) => {
-          console.log('Usuario agregado exitosamente', response);
           Swal.fire({
             title: 'Usuario agregado exitosamente!',
             icon: 'success',
@@ -86,19 +86,14 @@ export class AddUserDialogComponent implements OnInit {
     }
   }
   
-
-  onPerfilChange(event: any) {
-    const selectedValue = +event.value;
-    this.nuevoUsuario.id_perfil = selectedValue;
-  }
-
   camposSonValidos(): boolean {
     return (
-      this.nuevoUsuario.id_perfil &&
-      this.emailPattern.test(this.nuevoUsuario.correo.trim()) &&
-      this.nuevoUsuario.nombre.trim() !== '' &&
-      this.phonePattern.test(this.nuevoUsuario.telefono.toString()) &&
-      this.passwordPattern.test(this.nuevoUsuario.contra.trim())
-    );
+      this.emailPattern.test(this.editedUser.email.trim()) &&
+      this.editedUser.name.trim() !== '' &&
+      this.phonePattern.test(this.editedUser.phoneNumber.toString()));
+  }
+
+  onPerfilChange(event) {
+    this.editedUser.role = event.value
   }
 }

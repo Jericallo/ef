@@ -50,7 +50,7 @@ a.link {
   text-decoration: none;
   &:hover,
   &:focus {
-    color: $themecolor;
+    color: black;
   }
 }
 .img-responsive {
@@ -638,7 +638,7 @@ html body {
     color: $bodytext;
   }
   .text-themecolor {
-    color: $themecolor;
+    color: black;
   }
   .text-center {
     text-align: center;
@@ -678,7 +678,7 @@ html body {
     background-color: $megna;
   }
   .bg-theme {
-    background-color: $themecolor;
+    background-color: black;
   }
 
   .bg-inverse {
@@ -1096,12 +1096,12 @@ ul.list-style-none {
   li {
     list-style: none;
     a {
-      color: $themecolor;
+      color: black;
       padding: 8px 0px;
       display: block;
       text-decoration: none;
       &:hover {
-        color: $themecolor;
+        color: black;
       }
     }
   }

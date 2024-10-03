@@ -17,16 +17,16 @@ export class MenuComponent implements OnInit {
       descripcion: 'Ver todos',
       path: 'users'
     },
-    {
-      icon: 'assignment_ind',
-      descripcion: 'Perfiles',
-      path: 'profiles'
-    },
-    {
-      icon: 'view_module',
-      descripcion: 'Módulos',
-      path: 'modules'
-    },
+    // {
+    //   icon: 'assignment_ind',
+    //   descripcion: 'Perfiles',
+    //   path: 'profiles'
+    // },
+    // {
+    //   icon: 'view_module',
+    //   descripcion: 'Módulos',
+    //   path: 'modules'
+    // },
     {
       icon: 'store',
       descripcion: 'Compañías',
@@ -37,48 +37,48 @@ export class MenuComponent implements OnInit {
   leyes: any[] = [
     {
       icon: 'widgets',
-      descripcion: 'Categorías',
+      descripcion: 'Leyes',
       path1: 'categories',
       path2: 'categories-edit'
 
     },
-    {
-      icon: 'insert_drive_file',
-      descripcion: 'Documentos',
-      path1: 'documents',
-      path2: 'documents-edit'
-    },
-    {
-      icon: 'text_fields',
-      descripcion: 'Títulos',
-      path1: 'titles',
-      path2: 'titles-edit'
-    },
-    {
-      icon: 'book',
-      descripcion: 'Capítulos',
-      path1: 'chapters',
-      path2: 'chapters-edit',
+    // {
+    //   icon: 'insert_drive_file',
+    //   descripcion: 'Documentos',
+    //   path1: 'documents',
+    //   path2: 'documents-edit'
+    // },
+    // {
+    //   icon: 'text_fields',
+    //   descripcion: 'Títulos',
+    //   path1: 'titles',
+    //   path2: 'titles-edit'
+    // },
+    // {
+    //   icon: 'book',
+    //   descripcion: 'Capítulos',
+    //   path1: 'chapters',
+    //   path2: 'chapters-edit',
       
-    },
-    {
-      icon: 'bookmark',
-      descripcion: 'Secciones',
-      path1:'sections',
-      path2: 'sections-edit',
-    },
-    {
-      icon: 'description',
-      descripcion: 'Artículos',
-      path1:'articles',
-      path2:'articles-edit'
-    },
-    {
-      icon: 'format_align_left',
-      descripcion: 'Parrafos',
-      path1:'paragraphs',
-      path2:'paragraphs-edit'
-    }
+    // },
+    // {
+    //   icon: 'bookmark',
+    //   descripcion: 'Secciones',
+    //   path1:'sections',
+    //   path2: 'sections-edit',
+    // },
+    // {
+    //   icon: 'description',
+    //   descripcion: 'Artículos',
+    //   path1:'articles',
+    //   path2:'articles-edit'
+    // },
+    // {
+    //   icon: 'format_align_left',
+    //   descripcion: 'Parrafos',
+    //   path1:'paragraphs',
+    //   path2:'paragraphs-edit'
+    // }
   ];
 
   cumplimiento: any[] = [
@@ -91,6 +91,11 @@ export class MenuComponent implements OnInit {
       icon: 'calendar_today',
       descripcion: 'Días Festivos',
       path: 'festive-days'
+    },
+    {
+      icon: 'insert_drive_file',
+      descripcion: 'Catálogo de documentaciones',
+      path: 'documentations-catalog'
     },
   ];
 

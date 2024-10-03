@@ -1,12 +1,13 @@
 <div>
-    <mat-form-field>
-        <mat-label>Seleccionar video</mat-label>
-        <mat-select [(value)]="id_cap">
-            <mat-option *ngFor="let cap of capacitaciones" [value]="cap.id" >
-                <span>{{cap.nombre}}</span>
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+    <h4>Subir video</h4>
+    <div class="grid-item">
+        <input type="file" (change)="seleccionarArchivo($event)" accept=".mp4">
+    </div>
+
+    <h4 style="margin-top: 10px;">Subir miniatura</h4>
+    <div class="grid-item">
+        <input type="file" (change)="seleccionarArchivoFoto($event)" accept=".png, .jpg, .jpeg">
+    </div>
     <mat-dialog-actions>
         <button mat-button (click)="close()">Cancelar</button>
         <button mat-button color="primary" (click)="assignVideo()">{{textButton}}</button>

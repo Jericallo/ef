@@ -1,0 +1,21 @@
+export interface RegisterTable {
+    num: number,
+    name: string,
+    first_period: Date,
+    second_period: Date,
+    third_period: Date,
+    fourth_period: Date,
+    outside_period: string,
+    legal_founding: any[],
+    snitching_supervisor: string,
+    evidence: any[],
+    one_minute: string,
+    five_minute: string,
+    exam_questions: string,
+    correct_answers: string,
+    exam_questions_five_minutes?: string,
+    correct_answers_five_minutes?: string,
+    incorrect_answers: string,
+    incomplete_sanctions: string,
+    trainings:[]
+}

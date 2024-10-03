@@ -53,7 +53,8 @@
     top: 55px;
     right: 0;
     z-index: 4;
-    min-width: 130px;
+    min-width: 180px;
+    flex-direction: column;
   }
   
   .menu-container ul {
@@ -119,6 +120,12 @@
     pointer-events: none; /* Evita que el enlace sea clickeable */
     cursor:default;
     color: rgb(185, 185, 185) !important;
+  }
+
+  .role{
+    margin-bottom: 10px;
+    font-size: smaller;
+    color: #848484;
   }
   
   
