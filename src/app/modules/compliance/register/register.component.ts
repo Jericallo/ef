@@ -100,7 +100,7 @@ export class RegisterComponent implements OnInit {
             outside_period: new Date(obligation.fourthPeriod) || null,
             legal_founding: [],
             snitching_supervisor: new Date(obligation.supervisorWarning) || null,
-            evidence: [],
+            evidence: obligation.requiredDocuments,
             one_minute: obligation.oneMinVidAuthor,
             five_minute: obligation.fiveMinVidAuthor,
             exam_questions: null,
@@ -267,12 +267,17 @@ export class RegisterComponent implements OnInit {
   }
 
   setSelection(event, id) {
-    console.log(event, id)
+    this.apiService.relateObligationDocumentation({id:event}, id).subscribe({
+      next: res => {
+        const documentation = this.allDocumentations.find(documentation => parseInt(documentation.id) === parseInt(event))
+        const index = this.dataSource.findIndex(obligation => obligation.num === id)
 
-    const documentation = this.allDocumentations.find(documentation => parseInt(documentation.id) === parseInt(event))
-    const index = this.dataSource.findIndex(obligation => obligation.num === id)
-
-    this.dataSource[index].evidence.push(documentation)
+        this.dataSource[index].evidence.push(documentation)
+        this.snackBar.open('Documento agregado exitosamente', '', this.config_snack);
+      }, error: err => {
+        this.snackBar.open('Error al agregar el documento', '', this.config_snack);
+      }
+    })    
   }
 
   removePill(evidence, id) {
@@ -280,7 +285,16 @@ export class RegisterComponent implements OnInit {
     if (index !== -1) {
       const evidenceIndex = this.dataSource[index].evidence.findIndex(ev => ev.id === evidence.id);
       if (evidenceIndex !== -1) {
-        this.dataSource[index].evidence.splice(evidenceIndex, 1); // Eliminar la evidence
+
+        this.apiService.deleteObligationDocumentation({id:evidence.id}, id).subscribe({
+          next: res => {
+            this.snackBar.open('Documento borrado exitosamente', '', this.config_snack);
+            this.dataSource[index].evidence.splice(evidenceIndex, 1); // Eliminar la evidence
+          }, error: err => {
+            this.snackBar.open('Error al borrar el documento', '', this.config_snack);
+          }
+        })  
+       
       }
     }
   }

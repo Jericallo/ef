@@ -1391,6 +1391,24 @@ export class ApiService {
     return this.http.delete(url, { headers: headers, body: body });  
   }
 
+  public relateObligationDocumentation(body:{id:string}, id:string):Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = `${this.apiUrlv3}obligation/required-document/add/${id}`
+    return this.http.put(url, body,{headers:headers});  
+  }
+
+  public deleteObligationDocumentation(body:{id:string}, id:string):Observable<any> {
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    const url = `${this.apiUrlv3}obligation/required-document/remove/${id}`
+    return this.http.put(url, body,{headers:headers});  
+  }
+
   //ENDPOINTS PARA LOGS
 
   public getAllLogs():Observable<any> {
