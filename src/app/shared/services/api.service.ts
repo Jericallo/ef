@@ -199,7 +199,7 @@ export class ApiService {
   }
 
   public getUsers():Observable<any>{
-    const url = 'https://apief.globalbusiness.com.mx/v2/user'
+    const url = `${this.apiUrlv3}user/get-users`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -237,15 +237,12 @@ export class ApiService {
   }
 
   public deleteUser(userId: number): Observable<any> {
-    const url = `https://apief.globalbusiness.com.mx/v2/user/delete`; 
+    const url = `${this.apiUrlv3}user/${userId}`; 
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
     });  
-    const body = {
-      id: userId
-    }
-    return this.http.put(url, body);
+    return this.http.delete(url);
   }
 
   public deleteProfile(userId: number): Observable<any> {
@@ -261,29 +258,21 @@ export class ApiService {
   }
 
   public postUser(data: any): Observable<any> {
-    const url = environment.baseUrl + 'insert'; 
-    const encryptedData = this.encrypt(data, "1")
-    let body = ({
-      text:encryptedData
-    })
+    const url = `${this.apiUrlv3}auth/register`; 
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getTokenSpecial()}`
     });
-    return this.http.post(url, body, { headers });
+    return this.http.post(url, data, { headers });
   }
 
-  public putUser(data: any): Observable<any> {
-    const url = environment.baseUrl + 'update'; 
-    const encryptedData = this.encrypt(data, "1")
-    let body = ({
-      text:encryptedData
-    })
+  public putUser(data: any, id:string): Observable<any> {
+    const url = `${this.apiUrlv3}user/${id}`
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getTokenSpecial()}`
     });
-    return this.http.put(url, body, { headers });
+    return this.http.put(url, data, { headers });
   }
 
   public post(data: any): Observable<any> {
@@ -955,7 +944,7 @@ export class ApiService {
   //ENDPOINTS PARA PERFILES
 
   public getProfiles():Observable<any>{
-    const url = 'https://apief.globalbusiness.com.mx/v2/profile'
+    const url = `${this.apiUrlv3}user/get-roles`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1059,8 +1048,8 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
-  public getAllObligations():Observable<any>{
-    const url = 'https://apiefv3.globalbusiness.com.mx/v3/obligation'
+  public getAllObligations(month:number, year:number):Observable<any>{
+    const url = `${this.apiUrlv3}obligation/by-month?month=${month}&year=${year}`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1515,6 +1504,44 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
       'Content-type':'application/json',
       'Authorization': `Bearer ${this.getToken()}`
     });
+    return this.http.delete(url, { headers: headers });
+  }
+
+  //ENDPOINTS PARA DOCUMENTACIONES
+
+  public getAllDocumentations():Observable<any>{
+    const url = `${this.apiUrlv3}document-catalog`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addDocumentation(body:{name:string}):Observable<any>{
+    const url = `${this.apiUrlv3}document-catalog`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public editDocumentations(body:{name:string}, id:string):Observable<any>{
+    const url = `${this.apiUrlv3}document-catalog/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.put(url, body, { headers: headers });
+  }
+
+  public deleteDocumentations(id:string):Observable<any>{
+    const url = `${this.apiUrlv3}document-catalog/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
     return this.http.delete(url, { headers: headers });
   }
 }

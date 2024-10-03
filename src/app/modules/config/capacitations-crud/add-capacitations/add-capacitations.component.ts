@@ -33,7 +33,9 @@ export class AddCapacitationsComponent implements OnInit {
   }
 
   fetchObligations() {
-    this.apiService.getAllObligations().subscribe({
+    let date = new Date(), y = date.getFullYear(), m = date.getMonth();
+
+    this.apiService.getAllObligations(m, y).subscribe({
       next: res => {
         this.allObligations = res
       }, error: err => {

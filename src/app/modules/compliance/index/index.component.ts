@@ -274,10 +274,12 @@ export class IndexComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   getCumplimientos(){
-    this.apiService.getAllObligations().subscribe({
+    let date = new Date(this.sendableDate), y = date.getFullYear(), m = date.getMonth();
+
+    this.apiService.getAllObligations(m, y).subscribe({
       next: res => {
         const options = { timeZone: 'America/New_York' };
-        const tasks = res.map(task => {
+        const tasks = res.obligations.map(task => {
             return {
                 id: task.id,
                 id_tipo: 1,

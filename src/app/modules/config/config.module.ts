@@ -77,6 +77,9 @@ import { QuestionCrudComponent } from './capacitations-crud/question-crud/questi
 
 import localeEsAr from '@angular/common/locales/es-AR';
 import { LogsComponent } from './logs/logs.component';
+import { DocumentationsCatalogComponent } from './documentations-catalog/documentations-catalog.component';
+import { AddDocumentationsDialogComponent } from './documentations-catalog/add-documentations-dialog/add-documentations-dialog.component';
+import { EditDocumentationsDialogComponent } from './documentations-catalog/edit-documentations-dialog/edit-documentations-dialog.component';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -141,7 +144,10 @@ registerLocaleData(localeEsAr, 'es-Ar');
     AddCapacitationsComponent,
     AssignVideoComponent,
     QuestionCrudComponent,
-    LogsComponent
+    LogsComponent,
+    DocumentationsCatalogComponent,
+    AddDocumentationsDialogComponent,
+    EditDocumentationsDialogComponent
   ],
   providers: [DatePipe, CapacitationsComponent,
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},

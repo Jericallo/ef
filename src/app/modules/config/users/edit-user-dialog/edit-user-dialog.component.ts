@@ -4,12 +4,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from 'src/app/shared/services/api.service';
 
 interface Usuario {
-  id_perfil: number;
-  correo: string;
-  nombre: string;
-  telefono: number; 
-  contra: string;
-  estatus: number; 
+  id: string;
+  email: string;
+  password: string;
+  name: string; 
+  phoneNumber: string;
+  roles: string[]; 
 }
 
 @Component({
@@ -19,15 +19,15 @@ interface Usuario {
 })
 export class EditUserDialogComponent implements OnInit {
   perfiles = []
-  selectedOption: number = 1
+  selectedOption: string = ''
 
   editedUser: Usuario = {
-    id_perfil: 1, 
-    correo: '',
-    nombre: '',
-    telefono:null, 
-    contra: '',
-    estatus: 1 
+    id: '',
+    email: '',
+    password:'', 
+    name: '',
+    phoneNumber: '',
+    roles:[] 
   };
 
   camposInvalidos: boolean = false;
@@ -49,7 +49,6 @@ export class EditUserDialogComponent implements OnInit {
   getProfiles(){
     this.apiService.getProfiles().subscribe(
       (response) => {
-        console.log('Perfiles', response);
         this.perfiles = response
         this.selectProfile()
       },
@@ -60,12 +59,10 @@ export class EditUserDialogComponent implements OnInit {
   }
 
   selectProfile() {
-
-      if (this.editedUser && this.perfiles) {
-        console.log('seleccionando...')
-        this.selectedOption = this.editedUser.id_perfil;
-      }
-
+    if (this.editedUser && this.perfiles) {
+      console.log('seleccionando...')
+      this.selectedOption = this.editedUser.roles[0];
+    }
   }
 
   cancel(): void {
@@ -74,9 +71,10 @@ export class EditUserDialogComponent implements OnInit {
 
   saveUser() {
     if (this.camposSonValidos()) {
-      const body = { model: "usuarios", data: this.editedUser }
+      const body:Usuario = this.editedUser
+      body.phoneNumber = (body.phoneNumber).toString()
       console.log(body)
-      this.apiService.putUser(body).subscribe(
+      this.apiService.putUser(body, body.id).subscribe(
         (response) => {
           console.log('Usuario editado exitosamente', response);
           this.dialogRef.close()
@@ -89,19 +87,16 @@ export class EditUserDialogComponent implements OnInit {
       this.camposInvalidos = true;
     }
   }
-  
-
-  onPerfilChange(event: any) {
-    const selectedValue = +event.value;
-    this.editedUser.id_perfil = selectedValue;
-  }
 
   camposSonValidos(): boolean {
     return (
-      this.editedUser.id_perfil &&
-      this.emailPattern.test(this.editedUser.correo.trim()) &&
-      this.editedUser.nombre.trim() !== '' &&
-      this.phonePattern.test(this.editedUser.telefono.toString()));
+      this.emailPattern.test(this.editedUser.email.trim()) &&
+      this.editedUser.name.trim() !== '' &&
+      this.phonePattern.test(this.editedUser.phoneNumber.toString()));
+  }
+
+  onPerfilChange(event) {
+    this.editedUser.roles[0] = event.value
   }
 }
 

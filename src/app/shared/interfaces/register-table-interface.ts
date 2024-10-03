@@ -8,7 +8,7 @@ export interface RegisterTable {
     outside_period: string,
     legal_founding: any[],
     snitching_supervisor: string,
-    evidence: string,
+    evidence: any[],
     one_minute: string,
     five_minute: string,
     exam_questions: string,

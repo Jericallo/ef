@@ -74,7 +74,8 @@ export class UsersComponent implements OnInit {
   getUsers(){
     this.apiService.getUsers().subscribe({
       next:res => {
-        this.usersList = res.result;
+        console.log(res)
+        this.usersList = res;
         this.dataSource = new MatTableDataSource<any>(this.usersList);
         console.log(res.result)
       }
@@ -90,6 +91,17 @@ export class UsersComponent implements OnInit {
         console.error('Error al eliminar el usuario:', error);
       }
     );
+  }
+
+  parseRoles(role:string):string{
+    switch(role){
+      case 'GlobalBusinessComplianceSupervisorRole':
+        return 'Supervisor de cumplimiento de Global Business'
+      case 'PayrollComplianceSupervisorRole':
+        return 'Encargado de nóminas'
+      default:
+        return role
+    }
   }
   
 }

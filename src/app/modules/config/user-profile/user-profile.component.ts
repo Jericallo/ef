@@ -43,7 +43,7 @@ export class UserProfileComponent implements OnInit {
     if (this.camposSonValidos()) {
       const body = { model: "usuarios", data: this.editedUser }
       console.log(body)
-      this.apiService.putUser(body).subscribe(
+      this.apiService.putUser(body, "1").subscribe(
         (response) => {
           console.log('Usuario editado exitosamente', response);
           Swal.fire({

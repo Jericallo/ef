@@ -4,36 +4,36 @@
     <div class="grid-item">
       <mat-form-field>
         <mat-select matInput placeholder="Perfil" required (selectionChange)="onPerfilChange($event)">
-          <mat-option *ngFor="let perfil of perfiles" value="{{perfil.id}}">{{perfil.nombre}}</mat-option>
+          <mat-option *ngFor="let perfil of perfiles" value="{{perfil.name}}">{{perfil.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div class="grid-item">
       <mat-form-field>
-        <input matInput [(ngModel)]="nuevoUsuario.correo" required placeholder="Correo" >
+        <input matInput [(ngModel)]="editedUser.email" required placeholder="Correo" >
       </mat-form-field>
-      <mat-error *ngIf="camposInvalidos && !emailPattern.test(nuevoUsuario.correo.trim())">
+      <mat-error *ngIf="camposInvalidos && !emailPattern.test(editedUser.email.trim())">
          Por favor, ingrese un correo electrónico válido.
       </mat-error>
     </div>
     <div class="grid-item">
       <mat-form-field>
-        <input matInput [(ngModel)]="nuevoUsuario.nombre" required placeholder="Nombre">
+        <input matInput [(ngModel)]="editedUser.name" required placeholder="Nombre">
       </mat-form-field>
     </div>
     <div class="grid-item">
       <mat-form-field>
-        <input matInput [(ngModel)]="nuevoUsuario.telefono" placeholder="Teléfono" type="number" required>
+        <input matInput [(ngModel)]="editedUser.phoneNumber" placeholder="Teléfono" type="number" required>
       </mat-form-field>
-      <mat-error *ngIf="camposInvalidos && !phonePattern.test(nuevoUsuario.telefono.toString())">
+      <mat-error *ngIf="camposInvalidos && !phonePattern.test(editedUser.phoneNumber.toString())">
         Por favor, ingrese un número de teléfono válido (8 o 10 dígitos).
       </mat-error>
     </div>
     <div class="grid-item">
       <mat-form-field>
-        <input matInput [(ngModel)]="nuevoUsuario.contra" required placeholder="Contraseña">
+        <input matInput [(ngModel)]="editedUser.password" required placeholder="Contraseña">
       </mat-form-field>
-      <mat-error *ngIf="camposInvalidos && !passwordPattern.test(nuevoUsuario.contra.trim())">
+      <mat-error *ngIf="camposInvalidos && !passwordPattern.test(editedUser.password.trim())">
         La contraseña debe contener mayúsculas, minúsculas, números y carácteres especiales.
       </mat-error>
     </div>

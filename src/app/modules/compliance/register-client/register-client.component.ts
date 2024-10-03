@@ -144,15 +144,14 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   getCompliance(): void {
 
     let date = new Date(this.sendableDate), y = date.getFullYear(), m = date.getMonth();
-    let firstDay = new Date(y, m, 1);
-    let lastDay = new Date(y, m + 1, 0);
 
-    this.apiService.getAllObligations().subscribe({
+    console.log(y,m)
+    this.apiService.getAllObligations(m +1, y).subscribe({
       next: res => {
         const options = { timeZone: 'America/New_York' };
         console.log('RESULT',res)
         
-        const tasks = res.map(task => {
+        const tasks = res.obligations.map(task => {
           let status = 0
           switch(task.status){
             case 'PendingStatus':
@@ -247,7 +246,10 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
           return 'orange' //orange
         }
       } else {
-        if(element.completado === 0 && parseFloat(fechaColumna.toString()) > parseFloat(element.urgent_date_end) && parseFloat(fechaColumna.toString()) < Date.now()){
+        if(element.completado === 3 && parseFloat(fechaColumna.toString()) >= fechaCumplimiento){
+          return 'green'
+        }
+        if( parseFloat(fechaColumna.toString()) > parseFloat(element.urgent_date_end) && parseFloat(fechaColumna.toString()) < Date.now()){
           return 'red'
         }
         else {

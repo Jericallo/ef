@@ -60,6 +60,9 @@ export class RegisterComponent implements OnInit {
   public isShownDocumentationsModal = false
   public sentDocumentations = null
 
+  //VARIABLES FOR DOCUMENTATIONS
+  public allDocumentations = []
+
   //VARIABLES FOR TRAININGS
   public oneMinuteTrainings = []
   public fiveMinuteTrainings = []
@@ -77,13 +80,16 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.fetchObligations();
     this.fetchAllVideos()
+    this.getDocumentations()
   }
 
   fetchObligations(): void {
-    this.apiService.getAllObligations().subscribe({
+    let date = new Date(), y = date.getFullYear(), m = date.getMonth();
+
+    this.apiService.getAllObligations(m +1, y).subscribe({
       next: res => {
-        console.log(res)
-        this.dataSource = res.map(obligation => {
+        console.log('REPSONSE',res)
+        this.dataSource = res.obligations.map(obligation => {
           return {
             num: obligation.id,
             name: obligation.name,
@@ -94,7 +100,7 @@ export class RegisterComponent implements OnInit {
             outside_period: new Date(obligation.fourthPeriod) || null,
             legal_founding: [],
             snitching_supervisor: new Date(obligation.supervisorWarning) || null,
-            evidence: null,
+            evidence: [],
             one_minute: obligation.oneMinVidAuthor,
             five_minute: obligation.fiveMinVidAuthor,
             exam_questions: null,
@@ -114,6 +120,16 @@ export class RegisterComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  getDocumentations(): void {
+    this.apiService.getAllDocumentations().subscribe({
+      next: res => {
+        this.allDocumentations = res
+      }, error: err => {
+        console.error(err)
+      }
+    })
   }
 
   fetchAllVideos():void {
@@ -248,6 +264,25 @@ export class RegisterComponent implements OnInit {
 
   documentationReceived() {
     console.log(this.sentDocumentations)
+  }
+
+  setSelection(event, id) {
+    console.log(event, id)
+
+    const documentation = this.allDocumentations.find(documentation => parseInt(documentation.id) === parseInt(event))
+    const index = this.dataSource.findIndex(obligation => obligation.num === id)
+
+    this.dataSource[index].evidence.push(documentation)
+  }
+
+  removePill(evidence, id) {
+    const index = this.dataSource.findIndex(obligation => obligation.num === id)
+    if (index !== -1) {
+      const evidenceIndex = this.dataSource[index].evidence.findIndex(ev => ev.id === evidence.id);
+      if (evidenceIndex !== -1) {
+        this.dataSource[index].evidence.splice(evidenceIndex, 1); // Eliminar la evidence
+      }
+    }
   }
 
   //---------------------------------------FOR MODIFICATIONS OF NAME------------------------------------//

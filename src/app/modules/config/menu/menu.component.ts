@@ -17,16 +17,16 @@ export class MenuComponent implements OnInit {
       descripcion: 'Ver todos',
       path: 'users'
     },
-    {
-      icon: 'assignment_ind',
-      descripcion: 'Perfiles',
-      path: 'profiles'
-    },
-    {
-      icon: 'view_module',
-      descripcion: 'Módulos',
-      path: 'modules'
-    },
+    // {
+    //   icon: 'assignment_ind',
+    //   descripcion: 'Perfiles',
+    //   path: 'profiles'
+    // },
+    // {
+    //   icon: 'view_module',
+    //   descripcion: 'Módulos',
+    //   path: 'modules'
+    // },
     {
       icon: 'store',
       descripcion: 'Compañías',
@@ -91,6 +91,11 @@ export class MenuComponent implements OnInit {
       icon: 'calendar_today',
       descripcion: 'Días Festivos',
       path: 'festive-days'
+    },
+    {
+      icon: 'insert_drive_file',
+      descripcion: 'Catálogo de documentaciones',
+      path: 'documentations-catalog'
     },
   ];
 
