@@ -51,7 +51,7 @@ const MENUITEMS = [
         class: 'inicio-menu',
         children:[
             {state:'intro', name:'Intro',type:'link',icon:'home', class:'homeid'},
-            {state:'myCompany', name:'Mi empresa',type:'link',icon:'business'},
+            {state:'my-company', name:'Mi empresa',type:'link',icon:'business'},
             {state:'news',name:'Noticias',type:'link', icon:'newspaper'},
             {state:'laws',name:'Leyes',type:'link', icon:'library_books'},
             {state:'topics',name:'Temario',type:'link', icon:'list_alt'},

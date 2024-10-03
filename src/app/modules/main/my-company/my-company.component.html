@@ -1,1 +1,128 @@
-<p>my-company works!</p>
+<mat-tab-group>
+  <mat-tab label="Dar de alta la empresa">
+    
+    <form [formGroup]="empresaForm">
+      <!-- Razón Social -->
+       <div>
+        <label for="razonSocial">Razón Social:</label>
+        <input id="razonSocial" formControlName="razonSocial" maxlength="100" />
+       </div>
+      
+
+      <!-- RFC -->
+      <div>
+        <label for="rfc">RFC:</label>
+        <input id="rfc" formControlName="rfc" maxlength="14" />
+      </div>
+      
+
+      <!-- Regimen Fiscal -->
+      <div>
+        <label for="regimenFiscal">Regimen Fiscal:</label>
+        <select id="regimenFiscal" formControlName="regimenFiscal">
+          <option *ngFor="let regimen of regimenes" [value]="regimen">
+            {{ regimen }}
+          </option>
+        </select>
+      </div>
+     
+
+      <!-- Actividad -->
+       <div>
+        <label for="actividad">Actividad:</label>
+        <select id="actividad" formControlName="actividad">
+          <option *ngFor="let actividad of actividades" [value]="actividad">
+            {{ actividad }}
+          </option>
+        </select>
+       </div>
+      
+
+      <!-- Domicilio Fiscal -->
+      <div>
+        <label for="calle">Calle:</label>
+        <input id="calle" formControlName="calle" maxlength="100" />
+      </div>
+      <div>
+        <label for="noExterior">No. Exterior:</label>
+        <input id="noExterior" formControlName="noExterior" maxlength="5" />
+      </div>
+      <div>
+        <label for="noInterior">No. Interior:</label>
+        <input id="noInterior" formControlName="noInterior" maxlength="5" />
+      </div>
+      <div>
+        <label for="cp">CP:</label>
+        <input id="cp" formControlName="cp" maxlength="5" />
+      </div>
+      <div>
+        <label for="ciudad">Ciudad:</label>
+        <input id="ciudad" formControlName="ciudad" maxlength="100" />
+      </div>
+      <div>
+        <label for="estado">Estado:</label>
+        <input id="estado" formControlName="estado" maxlength="100" />
+      </div>
+
+      <!-- Fiel -->
+      <fieldset>
+        <legend>Fiel</legend>
+        <label for="certificadoFiel">Certificado (.CER):</label>
+        <input
+          type="file"
+          id="certificadoFiel"
+          formControlName="certificadoFiel"
+          accept=".cer"
+        />
+
+        <label for="llavePrivadaFiel">Llave Privada (.KEY):</label>
+        <input
+          type="file"
+          id="llavePrivadaFiel"
+          formControlName="llavePrivadaFiel"
+          accept=".key"
+        />
+
+        <label for="contrasenaFiel">Contraseña:</label>
+        <input
+          type="password"
+          id="contrasenaFiel"
+          formControlName="contrasenaFiel"
+          maxlength="20"
+        />
+      </fieldset>
+
+      <!-- Sellos -->
+      <fieldset>
+        <legend>Sellos</legend>
+        <label for="certificadoSellos">Certificado (.CER):</label>
+        <input
+          type="file"
+          id="certificadoSellos"
+          formControlName="certificadoSellos"
+          accept=".cer"
+        />
+
+        <label for="llavePrivadaSellos">Llave Privada (.KEY):</label>
+        <input
+          type="file"
+          id="llavePrivadaSellos"
+          formControlName="llavePrivadaSellos"
+          accept=".key"
+        />
+
+        <label for="contrasenaSellos">Contraseña:</label>
+        <input
+          type="password"
+          id="contrasenaSellos"
+          formControlName="contrasenaSellos"
+          maxlength="20"
+        />
+      </fieldset>
+      <button type="submit" [disabled]="!empresaForm.valid">Submit</button>
+    </form>
+  </mat-tab>
+  <mat-tab label="Cuestionario de diagnóstico">
+    <div></div>
+  </mat-tab>
+</mat-tab-group>
