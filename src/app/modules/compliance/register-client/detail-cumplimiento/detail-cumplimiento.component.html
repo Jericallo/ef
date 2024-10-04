@@ -33,17 +33,25 @@
         </div>
 
         <div *ngIf="data.cumplimiento.completado === 2" class="button-container">
-            <div>
-                <span class="leyenda">Clic para rechazar la validación</span><br/>
-                <button mat-raised-button color="#ffcc0c" style="background-color: #7a0606; cursor: pointer; color: white;" 
-                (click)="changeStatusSupervisor('PendingStatus')">Rechazar</button>
+            <div class="real-container">
+                <div>
+                    <a class="anchor" (click)="downloadFiles(data.cumplimiento.documents)">Descargar archivos subidos por el responsable</a>
+                </div>
+                <div class="button-container">
+                    <div>
+                        <span class="leyenda">Clic para rechazar la validación</span><br/>
+                        <button mat-raised-button color="#ffcc0c" style="background-color: #7a0606; cursor: pointer; color: white;" 
+                        (click)="changeStatusSupervisor('PendingStatus')">Rechazar</button>
+                    </div>
+                    
+                    <div>
+                        <span class="leyenda">Clic para marcar como validado</span><br/>
+                        <button mat-raised-button color="#ffcc0c" style="background-color: #08ad0d; cursor: pointer; color: white;" 
+                        (click)="changeStatusSupervisor('ValidatedStatus')">Validar</button>
+                    </div>
+                </div>
             </div>
             
-            <div>
-                <span class="leyenda">Clic para marcar como validado</span><br/>
-                <button mat-raised-button color="#ffcc0c" style="background-color: #08ad0d; cursor: pointer; color: white;" 
-                (click)="changeStatusSupervisor('ValidatedStatus')">Validar</button>
-            </div>
         </div>
 
         <div *ngIf="data.cumplimiento.completado === 3">

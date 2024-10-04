@@ -38,3 +38,10 @@
     flex-direction: row;
     gap: 15px;
 }
+
+.anchor {
+    color: rgb(38, 99, 146);
+    text-decoration: underline;
+}.anchor:hover{
+    cursor: pointer;
+}

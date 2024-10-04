@@ -200,7 +200,8 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
             obligations: {
                 nombre: task.name,
                 descripcion: task.name
-            }
+            },
+            documents: task.documents
           }
         });
         this.tableData = tasks;
@@ -240,7 +241,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
           if(parseFloat(element.urgent_date_end) < Date.now() || parseFloat(element.close_date_start) > Date.now()){
             return 'red' //red
           } else {
-            return 'yellow' //yellow
+            return '#ffcc0c' //yellow
           }
         } else {
           return 'orange' //orange
@@ -249,7 +250,10 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
         if(element.completado === 3 && parseFloat(fechaColumna.toString()) >= fechaCumplimiento){
           return 'green'
         }
-        if( parseFloat(fechaColumna.toString()) > parseFloat(element.urgent_date_end) && parseFloat(fechaColumna.toString()) < Date.now()){
+        if((element.completado === 2 || element.completado === 1)  && parseFloat(fechaColumna.toString()) == fechaCumplimiento){
+          return '#ffcc0c'
+        }
+        if( parseFloat(fechaColumna.toString()) > parseFloat(element.urgent_date_end) && parseFloat(fechaColumna.toString()) < Date.now() && element.completado === 0){
           return 'red'
         }
         else {
