@@ -135,7 +135,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
 
   
   getUsers() {
-    this.apiService.getUsers().subscribe(
+    this.apiService.getUsersV2().subscribe(
       (data: any) => {
         this.users = data.result;
         this.filteredUsers = this.users; 
@@ -168,7 +168,7 @@ export class ChatBubbleComponent implements OnInit, AfterViewChecked {
   selectUser(user: any) {
     const selectedUser = this.filteredUsers.findIndex(u => u.id === user.id);
     this.filteredUsers[selectedUser].unread_messages = 0
-    this.apiService.getProfiles().subscribe(
+    this.apiService.getProfilesV2().subscribe(
       (data:any) => {
         this.profile = data.find((element) => element.id === user.id_perfil)
       },

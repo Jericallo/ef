@@ -207,6 +207,15 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
+  public getUsersV2():Observable<any>{
+    const url = `${this.apiUrlv2}user`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
   public getConversation(from: string, to: string): Observable<any> {
     const url = `https://apief.globalbusiness.com.mx/v2/mensajes/conversation?from=${from}&to=${to}`;
     let headers = new HttpHeaders({
@@ -391,14 +400,14 @@ export class ApiService {
 
   public getUnreadNotifications(){
     if(localStorage['ef_notifications_unread']){
-      let res = JSON.parse(localStorage.getItem('ef_notifications_unread' || '{[]}'))
+      let res = JSON.parse(localStorage.getItem('ef_notifications_unread'))
       return res
     }
   }
 
   public getUnreadNotificationsAmmount(){
     if(localStorage['ef_notifications_unread_ammount']){
-      let res = JSON.parse(localStorage.getItem('ef_notifications_unread_ammount' || '0'))
+      let res = JSON.parse(localStorage.getItem('ef_notifications_unread_ammount'))
       return res
     } else{
       return '0'
@@ -952,6 +961,15 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
+  public getProfilesV2():Observable<any>{
+    const url = `${this.apiUrlv2}profile`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization':`Bearer ${this.getToken()}`
+    });
+    return this.http.get(url,{headers:headers})
+  }
+
   public createProfile(body):Observable<any>{
     let headers = new HttpHeaders({
       'Content-type':'application/json',
@@ -1209,6 +1227,21 @@ export class ApiService {
       'Authorization':`Bearer ${this.getToken()}`
     });
     return this.http.get(url,{headers:headers})
+  }
+
+  public deleteNews(id: number): Observable<any> {
+    const url = `${this.apiUrlv2}video`;
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+  
+    const body = { id }; // Enviar el ID en el cuerpo
+  
+    return this.http.request('DELETE', url, { 
+      headers: headers, 
+      body: body 
+    });
   }
 
   public async watch(name:string):Promise<Blob> {

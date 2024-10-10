@@ -89,4 +89,8 @@ export class DetailCumplimientoComponent implements OnInit {
   downloadFiles(archivos: { fileName: string }[]) {
     this.fileService.downloadFilesAsZip(archivos)
   }
+
+  downloadSingleFile(archivos: { fileName: string }) {
+    this.fileService.downloadFilesAsZip([archivos])
+  }
 }

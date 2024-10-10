@@ -41,7 +41,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   profile: any;
   me_user: "";
   me_role: "";
-  other_role:any;
+  other_role:any = '';
   userId: any;
   scrolledToBottom: boolean = true;
 
@@ -219,7 +219,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   getUsers() {
     const userId = this.userId;
-    this.apiService.getUsers().subscribe(
+    this.apiService.getUsersV2().subscribe(
       (data: any) => {
         this.users = data.result.map((user: any) => ({
           ...user,
@@ -302,7 +302,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     const selectedUser = this.filteredUsers.findIndex((u) => u.id === user.id);
     this.filteredUsers[selectedUser].unread_messages = 0;
     this.isSelectedUser = (u) => u === user;
-    this.apiService.getProfiles().subscribe(
+    this.apiService.getProfilesV2().subscribe(
       (data: any) => {
         this.profile = data.find(
           (element: any) => element.id === user.id_perfil
@@ -315,9 +315,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     this.messages = [];
     this.selectedUser = user;
-    this.apiService.getProfiles().subscribe({
+    this.apiService.getProfilesV2().subscribe({
       next: res => {
-        console.log(res)
+        console.log(res, this.selectedUser)
         this.other_role = res.find(role => role.id === this.selectedUser.id_perfil)
         console.log(this.other_role)
       }

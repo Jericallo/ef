@@ -34,8 +34,12 @@
 
         <div *ngIf="data.cumplimiento.completado === 2" class="button-container">
             <div class="real-container">
-                <div>
-                    <a class="anchor" (click)="downloadFiles(data.cumplimiento.documents)">Descargar archivos subidos por el responsable</a>
+                <div *ngIf="data.cumplimiento.documents.length > 0">
+                    <a class="anchor" (click)="downloadFiles(data.cumplimiento.documents)">Descargar todos los archivos subidos por el responsable</a>
+                    <div class="document-container" >
+                        <span style="font-size: small;">Descargar archivos de manera individual</span>
+                        <a class="anchor" (click)="downloadSingleFile(document)" *ngFor="let document of data.cumplimiento.documents">{{document.name}}</a>
+                    </div>
                 </div>
                 <div class="button-container">
                     <div>

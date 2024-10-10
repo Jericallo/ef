@@ -307,7 +307,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
     const dialogRef = this.dialogRef.open(DetailCumplimientoComponent, { 
       width: '500px',
-      height: '170px',
+      height: 'auto',
       data: {cumplimiento:cumplimiento, fecha:day} 
     });
 

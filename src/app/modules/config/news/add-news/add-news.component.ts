@@ -31,8 +31,8 @@ export class AddNewsComponent implements OnInit {
 
   name:String
   length:String
-  file:any
-  image:any
+  file:any = null
+  image:any = null
 
   date:String;
   dateDate:Date
@@ -98,6 +98,14 @@ export class AddNewsComponent implements OnInit {
     this.dateForMillis = normalizedMonthAndYear.getTime()
     datepicker.close();
     this.isDateSelected = true;
+  }
+
+  verifyNews():boolean {
+    if(this.name !== '' && this.isDateSelected && this.file !== null && this.image !== null){
+      return false
+    } else {
+      return true
+    }
   }
 
 }
