@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { RegisterTable } from 'src/app/shared/interfaces/register-table-interface';
 import { ThemePalette } from '@angular/material/core';
+import { addDays, addMonths, format, isSameMonth } from 'date-fns';
+import { es } from 'date-fns/locale';  
 
 @Component({
   selector: 'app-register',
@@ -72,6 +74,9 @@ export class RegisterComponent implements OnInit {
   //FUNDAMENTAL VARIABLES
   universalRow:RegisterTable
   dataSource: RegisterTable[] = [];
+  currentMonth: Date = new Date();
+  dateRange: number[] = [];
+  sendableDate: Date = new Date();
 
   constructor(private apiService: ApiService, public dialog: MatDialog, public snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {}
 
@@ -84,7 +89,7 @@ export class RegisterComponent implements OnInit {
   }
 
   fetchObligations(): void {
-    let date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    let date = new Date(this.sendableDate), y = date.getFullYear(), m = date.getMonth();
 
     this.apiService.getAllObligations(m +1, y).subscribe({
       next: res => {
@@ -109,7 +114,8 @@ export class RegisterComponent implements OnInit {
             correct_answers_five_minutes: null,
             incorrect_answers: null,
             incomplete_sanctions: obligation.sanction,
-            trainings: obligation.trainings
+            trainings: obligation.trainings,
+            status: obligation.status
           };
         });
         
@@ -170,6 +176,28 @@ export class RegisterComponent implements OnInit {
     this.isShownLawsModal = false
     this.isShownDocumentationsModal = false
     this.fetchObligations()
+  }
+
+  navigateMonth(offset: number): void {
+    if( offset > 0 ) this.sendableDate.setMonth(this.sendableDate.getMonth()+1)
+    else this.sendableDate.setMonth(this.sendableDate.getMonth()-1)
+    this.currentMonth = addMonths(this.currentMonth, offset);
+    //this.updateDateRange();
+    this.fetchObligations();
+  }
+
+  formatDateInSpanish(date: number): string {
+    return date.toString()
+  }
+
+  getCurrentMonthText(): string {
+    const currentMonthText = format(this.currentMonth, 'MMMM / yy', { locale: es });
+    const today = new Date();
+
+    if (isSameMonth(this.currentMonth, today)) {
+    }
+
+    return currentMonthText.charAt(0).toUpperCase() + currentMonthText.slice(1);
   }
 
   //---------------------------------------FOR MODIFICATIONS OF DATE--------------------------------------//

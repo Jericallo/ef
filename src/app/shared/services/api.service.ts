@@ -1521,7 +1521,7 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
   //ENDPOINTS PARA LEYES
 
   public getLeyes():Observable<any>{
-    const url = `https://apiefv3.globalbusiness.com.mx/v3/law`;
+    const url = `${this.apiUrlv3}law`;
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -1556,6 +1556,15 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
       'Authorization': `Bearer ${this.getToken()}`
     });
     return this.http.delete(url, { headers: headers });
+  }
+
+  public addBook(body:{number:string, name:string, lawId:string}):Observable<any> {
+    const url = `${this.apiUrlv3}book`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url,body,  { headers: headers });
   }
 
   //ENDPOINTS PARA DOCUMENTACIONES
@@ -1594,5 +1603,70 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
       'Authorization': `Bearer ${this.getToken()}`
     })
     return this.http.delete(url, { headers: headers });
+  }
+
+  //ENDPOINTS PARA MI COMPAÑIA
+
+  public createMyCompany(body:{rfc:string, taxRegime:string, activity:string, bussinesName:string}):Observable<any> {
+    const url = `${this.apiUrlv3}company`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public createFiscalDirection(body:{street:string, city:string, state:string, extNumber:string, intNumber?:string, zipcode:string, companyId:string}):Observable<any> {
+    const url = `${this.apiUrlv3}fiscal-address`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public fetchMyCompany(id:number):Observable<any> {
+    const url = `${this.apiUrlv3}company?id=${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.get(url, { headers: headers });
+  }
+
+  public updateMyCompany(id:string, body:{rfc:string, taxRegime:string, activity:string, bussinesName:string}):Observable<any> {
+    const url = `${this.apiUrlv3}company/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.put(url, body, { headers: headers });
+  }
+
+  public updateFiscalDirection(id:string, body:{street:string, city:string, state:string, extNumber:string, intNumber?:string, zipcode:string, companyId:string}):Observable<any> {
+    const url = `${this.apiUrlv3}fiscal-address/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.put(url, body, { headers: headers });
+  }
+
+  public addElectronicSignature(id:string, body):Observable<any> {
+    const url = `${this.apiUrlv3}company/electronic-signature/${id}`
+    let headers = new HttpHeaders({
+      //'Content-type':'multipart/form-data',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public addSeal(id:string, body):Observable<any> {
+    const url = `${this.apiUrlv3}company/electronic-seal/${id}`
+    let headers = new HttpHeaders({
+      //'Content-type':'multipart/form-data',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.post(url, body, { headers: headers });
   }
 }

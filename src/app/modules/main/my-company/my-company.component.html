@@ -1,3 +1,8 @@
+<div class="app-user-container">
+  <app-user-icon></app-user-icon>
+</div>
+<app-traffic-light></app-traffic-light>
+
 <mat-tab-group>
   <mat-tab label="Dar de alta la empresa">
     
@@ -71,7 +76,7 @@
         <input
           type="file"
           id="certificadoFiel"
-          formControlName="certificadoFiel"
+          (change)="onFileChange($event, 'certificadoFiel')"
           accept=".cer"
         />
 
@@ -79,7 +84,7 @@
         <input
           type="file"
           id="llavePrivadaFiel"
-          formControlName="llavePrivadaFiel"
+          (change)="onFileChange($event, 'llavePrivadaFiel')"
           accept=".key"
         />
 
@@ -99,7 +104,7 @@
         <input
           type="file"
           id="certificadoSellos"
-          formControlName="certificadoSellos"
+          (change)="onFileChange($event, 'certificadoSellos')"
           accept=".cer"
         />
 
@@ -107,7 +112,7 @@
         <input
           type="file"
           id="llavePrivadaSellos"
-          formControlName="llavePrivadaSellos"
+          (change)="onFileChange($event, 'llavePrivadaSellos')"
           accept=".key"
         />
 
@@ -119,7 +124,7 @@
           maxlength="20"
         />
       </fieldset>
-      <button type="submit" [disabled]="!empresaForm.valid">Submit</button>
+      <button [disabled]="!empresaForm.valid" (click)="submitMyCompany()">Actualizar</button>
     </form>
   </mat-tab>
   <mat-tab label="Cuestionario de diagnóstico">

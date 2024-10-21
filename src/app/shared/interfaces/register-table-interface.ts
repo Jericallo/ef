@@ -17,5 +17,6 @@ export interface RegisterTable {
     correct_answers_five_minutes?: string,
     incorrect_answers: string,
     incomplete_sanctions: string,
-    trainings:[]
+    trainings:[],
+    status:string
 }

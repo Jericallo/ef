@@ -80,6 +80,7 @@ import { LogsComponent } from './logs/logs.component';
 import { DocumentationsCatalogComponent } from './documentations-catalog/documentations-catalog.component';
 import { AddDocumentationsDialogComponent } from './documentations-catalog/add-documentations-dialog/add-documentations-dialog.component';
 import { EditDocumentationsDialogComponent } from './documentations-catalog/edit-documentations-dialog/edit-documentations-dialog.component';
+import { AddBookComponent } from './leyes-config/add-book/add-book.component';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -147,7 +148,8 @@ registerLocaleData(localeEsAr, 'es-Ar');
     LogsComponent,
     DocumentationsCatalogComponent,
     AddDocumentationsDialogComponent,
-    EditDocumentationsDialogComponent
+    EditDocumentationsDialogComponent,
+    AddBookComponent
   ],
   providers: [DatePipe, CapacitationsComponent,
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},

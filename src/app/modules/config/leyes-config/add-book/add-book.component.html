@@ -1,0 +1,38 @@
+<div class="mainDiv">
+    <mat-card class="mainCard">
+        <a routerLink="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <p style="font-weight: 700;">{{ title }}</p>
+        </div>
+        <mat-card-content>
+            <div class="flex-container" style="display: flex; gap: 20px; align-items: center; width: 100%;">
+                <form style="flex: 1;">
+                    <mat-label>Ley</mat-label>
+                    <mat-select (selectionChange)="setLaw($event.value)">
+                        <mat-option *ngFor="let law of laws" [value]="law.id">
+                            {{ law.name }}
+                        </mat-option>
+                    </mat-select>
+                </form>
+                <form style="flex: 1;">
+                    <mat-form-field class="category-full-width">
+                        <mat-label>Nombre</mat-label>
+                        <input type="text" matInput (input)="changeName($event.target.value)" required>
+                    </mat-form-field>
+                </form>
+                <form style="flex: 1;">
+                    <mat-form-field class="category-full-width">
+                        <mat-label>Número</mat-label>
+                        <input type="number" matInput (input)="changeNumber($event.target.value)" required>
+                    </mat-form-field>
+                </form>
+            </div>
+        </mat-card-content>
+        <div style="display: flex; align-items: center; justify-content: end; margin-right: 120px; margin-top: -20px; margin-bottom: 20px;">
+            <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="saveAssignation()">Guardar</button>
+        </div>
+    </mat-card>
+</div>
+<div class="spinner" *ngIf="showSpinner">
+    <mat-spinner></mat-spinner>
+</div>

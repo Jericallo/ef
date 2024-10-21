@@ -76,6 +76,7 @@ export class NewsComponent implements OnInit {
       },
       (error) => {
         console.error('Error al eliminar el perfil:', error);
+        this.snackBar.open('Ocurrió un error al borrar las noticias');
       }
     );
   }

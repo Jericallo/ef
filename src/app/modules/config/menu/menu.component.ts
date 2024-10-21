@@ -42,12 +42,12 @@ export class MenuComponent implements OnInit {
       path2: 'categories-edit'
 
     },
-    // {
-    //   icon: 'insert_drive_file',
-    //   descripcion: 'Documentos',
-    //   path1: 'documents',
-    //   path2: 'documents-edit'
-    // },
+    {
+      icon: 'insert_drive_file',
+      descripcion: 'Libros',
+      path1: 'books',
+      path2: 'books-edit'
+    },
     // {
     //   icon: 'text_fields',
     //   descripcion: 'Títulos',

@@ -103,3 +103,34 @@ mat-form-field{
   gap: 5px;
   flex-wrap: nowrap;
 }
+
+.month-navigation{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding: 10px;
+  background: #ffcc0c;
+  border-bottom: .5px solid #81660e;
+  position: fixed
+}
+
+.button-next{
+  background: none ;
+  border: none;
+  padding-left: 30px;
+  padding-top: 10px;
+  font-weight: 500;
+  padding-bottom: 10px;
+}
+
+.button-prev{
+  background: none ;
+  border: none;
+  padding-right: 30px;
+  font-weight: 500;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  position: relative;
+}
