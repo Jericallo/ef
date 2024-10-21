@@ -1,6 +1,15 @@
 <app-user-icon></app-user-icon>
 <app-traffic-light></app-traffic-light>
 
+<div class="month-navigation">
+  <mat-icon>chevron_left</mat-icon> <button (click)="navigateMonth(-1)"class="button-prev">
+      Anterior
+  </button>
+  <span class="pasado-faltante" *ngIf="false">*PENDIENTES EN EL PASADO, VERIFICAR*</span>
+  <span>{{ getCurrentMonthText() }}</span>
+  <button (click)="navigateMonth(1)" class="button-next">Siguiente</button><mat-icon>chevron_right</mat-icon>
+</div>
+
 <div class="page-content">
   <table mat-table [dataSource]="dataSource" class="mat-table">
 
@@ -35,7 +44,7 @@
           <ngx-mat-datetime-picker #picker1 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
                                   [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
                                   [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
-                                  [disableMinute]="disableMinute" [hideTime]="hideTime">
+                                  [disableMinute]="disableMinute" [hideTime]="hideTime" [disabled]="element.status !== 'PendingStatus'">
           </ngx-mat-datetime-picker>
         </mat-form-field>
       </td>
@@ -53,7 +62,7 @@
           <ngx-mat-datetime-picker #picker2 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
                                   [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
                                   [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
-                                  [disableMinute]="disableMinute" [hideTime]="hideTime">
+                                  [disableMinute]="disableMinute" [hideTime]="hideTime" [disabled]="element.status !== 'PendingStatus'">
           </ngx-mat-datetime-picker>
         </mat-form-field>
       </td>
@@ -71,7 +80,7 @@
           <ngx-mat-datetime-picker #picker3 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
                                   [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
                                   [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
-                                  [disableMinute]="disableMinute" [hideTime]="hideTime">
+                                  [disableMinute]="disableMinute" [hideTime]="hideTime" [disabled]="element.status !== 'PendingStatus'">
           </ngx-mat-datetime-picker>
         </mat-form-field>
       </td>
@@ -89,7 +98,7 @@
           <ngx-mat-datetime-picker #picker4 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
                                   [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
                                   [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
-                                  [disableMinute]="disableMinute" [hideTime]="hideTime">
+                                  [disableMinute]="disableMinute" [hideTime]="hideTime" [disabled]="element.status !== 'PendingStatus'">
           </ngx-mat-datetime-picker>
         </mat-form-field>
       </td>
@@ -107,7 +116,7 @@
           <ngx-mat-datetime-picker #picker5 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
                                   [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
                                   [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
-                                  [disableMinute]="disableMinute" [hideTime]="hideTime">
+                                  [disableMinute]="disableMinute" [hideTime]="hideTime" [disabled]="element.status !== 'PendingStatus'">
           </ngx-mat-datetime-picker>
         </mat-form-field>
       </td>

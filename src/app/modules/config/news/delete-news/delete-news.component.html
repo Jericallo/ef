@@ -1,1 +1,8 @@
-<p>delete-news works!</p>
+<h2 mat-dialog-title>Eliminar Noticias</h2>
+<mat-dialog-content>
+  <p>¿Estás seguro de que quieres eliminar la noticia?</p>
+</mat-dialog-content>
+<mat-dialog-actions style="justify-content: end;">
+  <button mat-raised-button color="primary" [mat-dialog-close]="true">Eliminar</button>
+  <button mat-button (click)="cancel()">Cancelar</button>
+</mat-dialog-actions>

@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import localeEs from "@angular/common/locales/es";
 import { registerLocaleData } from "@angular/common";
+import { FileServiceService } from '../../../../shared/services/file-service.service';
 registerLocaleData(localeEs, "es");
 
 @Component({
@@ -25,7 +26,7 @@ export class DetailCumplimientoComponent implements OnInit {
 
   color = 'transparent'
 
-  constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any ) { }
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any, private fileService: FileServiceService ) { }
 
   ngOnInit(): void {
     console.log(this.data)
@@ -33,7 +34,7 @@ export class DetailCumplimientoComponent implements OnInit {
     const user = this.apiService.getWholeUserV3()
     console.log(user)
 
-    if(user.roles.includes('PayrollComplianceSupervisorRole' || 'PLDComplianceSupervisorRole' || 'GeneralComplianceSupervisorRole')) {
+    if(user.roles.includes('PayrollComplianceSupervisorRole') || user.roles.includes('PLDComplianceSupervisorRole') || user.roles.includes('GeneralComplianceSupervisorRole')) {
       this.showAccountant = true
       this.showSupervisor = false
       if(this.data.cumplimiento.completado > 0) {
@@ -83,5 +84,13 @@ export class DetailCumplimientoComponent implements OnInit {
         console.error(err)
       }
     })
+  }
+
+  downloadFiles(archivos: { fileName: string }[]) {
+    this.fileService.downloadFilesAsZip(archivos)
+  }
+
+  downloadSingleFile(archivos: { fileName: string }) {
+    this.fileService.downloadFilesAsZip([archivos])
   }
 }

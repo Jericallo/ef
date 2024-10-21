@@ -7,6 +7,7 @@ import {SearchComponent} from './search/search.component'
 import { ResponseComponent } from './response/response.component';
 import { VideoIntroComponent } from './video-intro/video-intro.component';
 import { ProfileGuard } from 'src/app/shared/services/profile.guard';
+import { MyCompanyComponent } from './my-company/my-company.component';
 
 export const MainRoutes: Routes = [
     {
@@ -106,7 +107,19 @@ export const MainRoutes: Routes = [
                 ]
             },
             canActivate:[ProfileGuard]
-        }
+        },
+        {
+            path: 'my-company',
+            component: MyCompanyComponent,
+            data: {
+                title: 'Mi compañía',
+                urls: [
+                    { title: 'Inicio', url: '/main' },
+                    { title: 'Respuesta' }
+                ]
+            },
+            canActivate:[ProfileGuard]
+        },
         ]
     }
   ];

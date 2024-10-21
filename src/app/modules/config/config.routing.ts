@@ -32,6 +32,7 @@ import { QuestionCrudComponent } from './capacitations-crud/question-crud/questi
 import { ProfileGuard } from 'src/app/shared/services/profile.guard';
 import { LogsComponent } from './logs/logs.component';
 import { DocumentationsCatalogComponent } from './documentations-catalog/documentations-catalog.component';
+import { AddBookComponent } from './leyes-config/add-book/add-book.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -386,6 +387,17 @@ export const ConfigRoutes: Routes = [
                 component: DocumentationsCatalogComponent,
                 data: {
                     title: 'Catálogo de documentaciones',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'books',
+                component: AddBookComponent,
+                data: {
+                    title: 'Libros',
                     urls: [
                         { title: 'Configuración', url: '/config' },
                         { title: 'user-profile' }
