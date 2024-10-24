@@ -1,192 +1,107 @@
-<!-- Evento -->
-<div class="mainDiv" style="max-height: 90vh;">
-  <mat-card class="mainCard">
-  <div class="mainCard">
-    <a href="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
+<div class="form-container">
+  <div style="display: flex; flex-direction: row; align-items: center; width: 100%; gap: 10px;">
+    <a routerLink="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
     <div style="display: flex; align-items: center; justify-content: center;">
-      <p style="font-weight: 700;">Agregar parrafo</p>
-      </div>
-    <div ><!--class="artlet-container"-->
-      <section class="example-section">
-        <label class="example-margin bold">Tipo:&nbsp;&nbsp;</label>
-        <mat-radio-group [(ngModel)]="tipo" (change)="changeRadio($event)" class="quarter-width-mr">
-          <mat-radio-button style="margin-right: 10px;" value="0">Parrafo</mat-radio-button>
-          <mat-radio-button class="example-margin" value="1">Fracción</mat-radio-button>
-        </mat-radio-group>
-      </section>
-      <!--<form *ngIf="type=='1'">
-        <mat-form-field class="arlet-new-container" >
-          <mat-label>Indicador</mat-label>
-          <input type="text" matInput [formControl]="myControlMain" [matAutocomplete]="autoMain" (change)="handleEmptyMai($event)">
-          <mat-autocomplete #autoMain="matAutocomplete" [displayWith]="displayMain" (optionSelected)="selectedMai($event)">
-            <mat-option *ngFor="let option of filteredMaiOptions | async" [value]="option">
-              {{option.main}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>-->
-      <!-- Mayuscula -->
-      <!--<form *ngIf="showMay">
-        <mat-form-field class="arlet-new-container" >
-          <mat-label>{{ optMay }}</mat-label>
-          <input type="text" matInput [formControl]="myControlLetter" [matAutocomplete]="autoC" (change)="handleEmptyLet($event)">
-          <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayLetter" (optionSelected)="selectedLet($event)">
-            <mat-option *ngFor="let option of filteredLetOptions | async" [value]="option">
-              {{option.lett}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>-->
-
-      <!-- Minuscula -->
-      <!--<form *ngIf="showMis">
-        <mat-form-field class="arlet-new-container" >
-          <mat-label>{{ optMis }}</mat-label>
-          <input type="text" matInput [formControl]="myControlLetterMis" [matAutocomplete]="autoMis" (change)="handleEmptyLetMis($event)">
-          <mat-autocomplete #autoMis="matAutocomplete" [displayWith]="displayLetterMis" (optionSelected)="selectedLetMis($event)">
-            <mat-option *ngFor="let option of filteredLetMisOptions | async" [value]="option">
-              {{option.lett}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>-->
-
-      <!-- Numero -->
-      <!--<form *ngIf="showNum">
-        <mat-form-field class="arlet-new-container" >
-          <mat-label>{{ optNum }}</mat-label>
-          <input type="text" matInput [formControl]="myControlNumber" [matAutocomplete]="autoD" (change)="handleEmptyNum($event)">
-          <mat-autocomplete #autoD="matAutocomplete" [displayWith]="displayNumber" (optionSelected)="selectedNum($event)">
-            <mat-option *ngFor="let option of filteredNumOptions | async" [value]="option">
-              {{option.num}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>-->
-
-      <!-- Romano -->
-      <!--<form *ngIf="showRom">
-        <mat-form-field class="arlet-new-container" >
-          <mat-label>{{ optRom }}</mat-label>
-          <input type="text" matInput [formControl]="myControlNumberRom" [matAutocomplete]="autoRom" (change)="handleEmptyNumRom($event)">
-          <mat-autocomplete #autoRom="matAutocomplete" [displayWith]="displayNumberRom" (optionSelected)="selectedNumRom($event)">
-            <mat-option *ngFor="let option of filteredNumRomOptions | async" [value]="option">
-              {{option.num}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>-->
+        <p style="font-weight: 700;">{{ title }}</p>
     </div>
-    <div class="artlet-container">
-      <div>
-        <mat-checkbox class="example-margin" [(ngModel)]="useDoc">Seguir utilizando</mat-checkbox>
-        <mat-form-field class="quarter-width-mr" >
-          <mat-label>Documento</mat-label>
-          <input type="text" matInput [formControl]="myControlDocuments" [matAutocomplete]="auto" (change)="handleEmptyDoc($event)" required>
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDocuments" (optionSelected)="selectedDoc($event)">
-            <mat-option *ngFor="let option of filteredDocOptions | async" [value]="option">
-              {{option.titulo}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-checkbox class="example-margin" [(ngModel)]="useTit">Seguir utilizando</mat-checkbox>
-        <mat-form-field class="quarter-width-mr" >
-          <mat-label>Titulo</mat-label>
-          <input type="text" matInput [formControl]="myControlTitles" [matAutocomplete]="autoT" (change)="handleEmptyTit($event)">
-          <mat-autocomplete #autoT="matAutocomplete" [displayWith]="displayTitles" (optionSelected)="selectedTit($event)">
-            <mat-option *ngFor="let option of filteredTitOptions | async" [value]="option">
-              {{option.nombre}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-checkbox class="example-margin" [(ngModel)]="useCap">Seguir utilizando</mat-checkbox>
-        <mat-form-field class="quarter-width-mr" >
-          <mat-label>Capitulo</mat-label>
-          <input type="text" matInput [formControl]="myControlChapters" [matAutocomplete]="autoC" (change)="handleEmptyCha($event)" >
-          <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayChapters" (optionSelected)="selectedCha($event)">
-            <mat-option *ngFor="let option of filteredChaOptions | async" [value]="option">
-              {{option.nombre}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-checkbox class="example-margin" [(ngModel)]="useSec">Seguir utilizando</mat-checkbox>
-        <mat-form-field class="quarter-width-mr" >
-          <mat-label>Sección</mat-label>
-          <input type="text" matInput [formControl]="myControlSections" [matAutocomplete]="autoS" (change)="handleEmptySec($event)" >
-          <mat-autocomplete #autoS="matAutocomplete" [displayWith]="displaySections" (optionSelected)="selectedSec($event)">
-            <mat-option *ngFor="let option of filteredSecOptions | async" [value]="option">
-              {{option.nombre}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-    </div>
-    <section class="example-section">
-      <div style="display: flex; justify-content: center; align-items: center; width: 91%;">
-      <form>
-          <mat-form-field  style="margin-right:10px; width: 500px;" >
-            <mat-label>Articulo</mat-label>
-            <input (keypress)="numberOnly($event)" type="text" matInput [formControl]="myControlArticle" [matAutocomplete]="autoA" (change)="handleEmptyArticle($event)" required>
-            <mat-autocomplete #autoA="matAutocomplete" [displayWith]="displayArticle" (optionSelected)="selectedArt($event)">
-              <mat-option *ngFor="let option of filteredArtOptions | async" [value]="option">
-                Articulo {{option.id_articulo}} | {{option.nombre}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-      </form>
-      <mat-form-field class="quarter-width-mr" style="margin-right: 10px;"  >
-        <mat-label>Orden</mat-label>
-        <input type="text" matInput [formControl]="myControlOrder" [matAutocomplete]="autoO" (change)="handleEmptyOrd($event)" required [(ngModel)]="orden">
-        <mat-autocomplete #autoO="matAutocomplete" [displayWith]="displayOrder" (optionSelected)="selectedOrd($event)">
-          <mat-option *ngFor="let option of filteredOrdOptions | async" [value]="option">
-            {{option.num}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-
-      <mat-form-field class="quarter-width-mr" >
-        <mat-label>Indicador</mat-label>
-        <input type="text" matInput [(ngModel)]="indicator" [(ngModel)]="indicador">
-      </mat-form-field>
-    </div>
-    </section>
-    <section class="example-section">
-      <div style="display: flex; justify-content: center; align-items: center; width: 91%;">
-      <mat-form-field  *ngIf="type=='0'" style="margin-right: 10px;">
-        <mat-label>Numero de Parrafo</mat-label>
-        <input (keypress)="numberOnly($event)" type="number" matInput [(ngModel)]="number" placeholder="1,2,3..." min="1" max="100" [(ngModel)]="numero">
-      </mat-form-field>
-      <mat-form-field class="quarter-width-mr"  *ngIf="type=='0'">
-        <mat-label>Nombre</mat-label>
-        <input type="text" matInput [(ngModel)]="name" [(ngModel)]="nombre">
-      </mat-form-field>
-    </div>
-    </section>
-    <!-- Editor Texto -->
-    <div class="toolkit">
-      <div style="display: flex; justify-content: center; align-items: center; width: 100%; flex-direction: column;">
-        <mat-label style="font-weight: 700;">Contenido</mat-label>
-        <angular-editor style="width: 91%;" [(ngModel)]="contenido" [config]="editorConfig" required></angular-editor>
-      </div>
-      </div>
-    <!--Relaciones-->
-
-    <button mat-raised-button color="primary" [disabled]="checkValues()" (click)="addEvent()">Guardar</button>&nbsp;
-    <button mat-raised-button color="basic" (click)="showSearchComponent()">Relaciones</button>&nbsp;
-      <div style="position: absolute; top:230px; left: 390px; width: 50%;">
-        <div *ngIf="isShownComponent" style="background: rgb(0, 0, 0); width: 100%; height: 100%; border-radius: 40px; position: absolute; top: 0; left: 0;">
-        </div>
-        <ng-container style="border: solid 20px black;" *ngIf="isShownComponent">
-          <app-search-document (sendingArticles)="artReceived($event)" (closingPanel)="closePanel($event)"></app-search-document>
-        </ng-container>
-      </div>
-      <!-- Botones -->
   </div>
-</mat-card>
-</div>
+    
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="ley">Ley</label>
+        <select id="ley" formControlName="ley" (change)="onLeyChange($event)">
+          <option value="">Seleccione una Ley</option>
+          <option *ngFor="let ley of leyes" [value]="ley.id">{{ ley.name }}</option>
+        </select>
+        <div>
+            <input type="checkbox" id="conservarLey" [(ngModel)]="conservarLey">
+            <label for="conservarLey" class="checkbox-label">Conservar</label>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="libro">Libro</label>
+        <select id="libro" formControlName="libro" [disabled]="!libroHabilitado">
+          <option value="">Seleccione un Libro</option>
+          <option *ngFor="let libro of libros" [value]="libro.id">{{ libro.name }}</option>
+        </select>
+        <div>
+            <input type="checkbox" id="conservarLibro" [(ngModel)]="conservarLibro">
+            <label for="conservarLibro" class="checkbox-label">Conservar</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="titulo">Titulo</label>
+        <select id="titulo" formControlName="titulo" [disabled]="!tituloHabilitado">
+          <option value="">Seleccione un título</option>
+          <option *ngFor="let titulo of titulos" [value]="titulo.id">{{ titulo.name }}</option>
+        </select>
+        <div>
+            <input type="checkbox" id="conservarTitulo" [(ngModel)]="conservarTitulo">
+            <label for="conservarTitulo" class="checkbox-label">Conservar</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="capitulo">Capítulo</label>
+        <select id="capitulo" formControlName="capitulo" [disabled]="!capituloHabilitado">
+          <option value="">Seleccione un capítulo</option>
+          <option *ngFor="let capitulo of capitulos" [value]="capitulo.id">{{ capitulo.name }}</option>
+        </select>
+        <div>
+            <input type="checkbox" id="conservarCapitulo" [(ngModel)]="conservarCapitulo">
+            <label for="conservarCapitulo" class="checkbox-label">Conservar</label>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="seccion">Sección</label>
+        <select id="seccion" formControlName="seccion" [disabled]="!seccionHabilitado">
+          <option value="">Seleccione una sección</option>
+          <option *ngFor="let seccion of secciones" [value]="seccion.id">{{ seccion.name }}</option>
+        </select>
+        <div>
+            <input type="checkbox" id="conservarSeccion" [(ngModel)]="conservarSeccion">
+            <label for="conservarSeccion" class="checkbox-label">Conservar</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="articulo">Artículo</label>
+        <select id="articulo" formControlName="articulo" [disabled]="!articuloHabilitados">
+          <option value="">Seleccione un artículo</option>
+          <option *ngFor="let articulo of articulos" [value]="articulo.id">{{ articulo.completeNumber }}</option>
+        </select>
+        <div>
+            <input type="checkbox" id="conservarArticulo" [(ngModel)]="conservarArticulo">
+            <label for="conservarArticulo" class="checkbox-label">Conservar</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="parte">Parte</label>
+        <select id="parte" formControlName="parte" [disabled]="!parteHabilitados">
+          <option value="">Seleccione una Parte</option>
+          <option *ngFor="let parte of partes" [value]="parte.id">{{ parte.letter }}</option>
+        </select>
+        <div>
+            <input type="checkbox" id="conservarParte" [(ngModel)]="conservarParte">
+            <label for="conservarParte" class="checkbox-label">Conservar</label>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="numero">Número</label>
+        <input id="numero" type="text" formControlName="numero" [disabled]="!inputsHabilitados" placeholder="Ingrese un número">
+      </div>
+
+      <div class="form-group">
+        <label for="contenido">Contenido</label>
+        <input id="contenido" type="text" formControlName="contenido" [disabled]="!inputsHabilitados" placeholder="Ingrese el contenido">
+      </div>
+  
+      <button type="submit" [disabled]="myForm.invalid" class="btn-submit">Guardar</button>
+    </form>
+  </div>
+  

@@ -8,7 +8,6 @@ import { AddDocumentComponent } from './leyes-config/add-document/add-document.c
 import { AddTitleComponent } from './leyes-config/add-title/add-title.component';
 import { AddSectionComponent } from './leyes-config/add-section/add-section.component';
 import { AddParagraphComponent } from './leyes-config/add-paragraph/add-paragraph.component';
-import { DialogTemplate } from './leyes-config/add-article/add-article.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfigRoutes } from './config.routing';
 import { RouterModule } from '@angular/router';
@@ -81,6 +80,9 @@ import { DocumentationsCatalogComponent } from './documentations-catalog/documen
 import { AddDocumentationsDialogComponent } from './documentations-catalog/add-documentations-dialog/add-documentations-dialog.component';
 import { EditDocumentationsDialogComponent } from './documentations-catalog/edit-documentations-dialog/edit-documentations-dialog.component';
 import { AddBookComponent } from './leyes-config/add-book/add-book.component';
+import { AddPartComponent } from './leyes-config/add-part/add-part.component';
+import { AddFractionComponent } from './leyes-config/add-fraction/add-fraction.component';
+import { AddPointComponent } from './leyes-config/add-point/add-point.component';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -91,7 +93,6 @@ registerLocaleData(localeEsAr, 'es-Ar');
     AddCategoryComponent,
     AddChapterComponent,
     AddDocumentComponent,
-    DialogTemplate,
     AddTitleComponent,
     AddSectionComponent,
     AddParagraphComponent,
@@ -149,7 +150,10 @@ registerLocaleData(localeEsAr, 'es-Ar');
     DocumentationsCatalogComponent,
     AddDocumentationsDialogComponent,
     EditDocumentationsDialogComponent,
-    AddBookComponent
+    AddBookComponent,
+    AddPartComponent,
+    AddFractionComponent,
+    AddPointComponent
   ],
   providers: [DatePipe, CapacitationsComponent,
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},

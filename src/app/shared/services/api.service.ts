@@ -1567,6 +1567,150 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
     return this.http.post(url,body,  { headers: headers });
   }
 
+  public fetchBooks(params:string):Observable<any> {
+    const url = `${this.apiUrlv3}book${params}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addTitle(body:{name:string, number:string, lawId?:string, bookId?:string}):Observable<any> {
+    const url = `${this.apiUrlv3}title`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url,body,  { headers: headers });
+  }
+
+  public fetchTitles(params:string):Observable<any> {
+    const url = `${this.apiUrlv3}title${params}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addChapter(body:{name:string, number:string, lawId?:string, titleId?:string}):Observable<any> {
+    const url = `${this.apiUrlv3}chapter`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url,body,  { headers: headers });
+  }
+
+  public fetchChapters(params:string):Observable<any> {
+    const url = `${this.apiUrlv3}chapter${params}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addSection(body:any):Observable<any> {
+    const url = `${this.apiUrlv3}section`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url,body,  { headers: headers });
+  }
+
+  public fetchSections(params:string):Observable<any> {
+    const url = `${this.apiUrlv3}section${params}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addArticle(body:any):Observable<any> {
+    const url = `${this.apiUrlv3}article`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url,body,  { headers: headers });
+  }
+
+  public fetchArticle(params:string):Observable<any> {
+    const url = `${this.apiUrlv3}article${params}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addPart(body:any):Observable<any> {
+    const url = `${this.apiUrlv3}part`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public fetchPart(params:string):Observable<any> {
+    const url = `${this.apiUrlv3}part${params}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addParragraph(body:{number:string, content:string, articleId?:string, partId?:string}):Observable<any> {
+    const url = `${this.apiUrlv3}paragraph`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public fetchParragraph(params:string):Observable<any> {
+    const url = `${this.apiUrlv3}paragraph${params}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+  
+  public addFraction(body:{paragraphId:string, arabicNumber:string, romanNumber:string, completeNumber:string, content:string}):Observable<any> {
+    const url = `${this.apiUrlv3}fraction`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public fetchFractions(params:string):Observable<any> {
+    const url = `${this.apiUrlv3}fraction${params}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public addPoint(body:{letter:string, content:string, fractionId:string}):Observable<any> {
+    const url = `${this.apiUrlv3}point`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+    return this.http.post(url, body, { headers: headers });
+  }
+
   //ENDPOINTS PARA DOCUMENTACIONES
 
   public getAllDocumentations():Observable<any>{

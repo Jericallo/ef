@@ -40,19 +40,37 @@ export class AddBookComponent implements OnInit {
   }
 
   saveAssignation(){
-    
+    const body = {
+      lawId: this.selectedLaw,
+      name: this.name, 
+      number: this.number
+    }
+    console.log(body)
+    this.apiService.addBook(body).subscribe({
+      next: res => {
+        this.snackBar.open('Libro guardado correctamente', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al guardar el libro', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
   }
 
   checkValues() {
-    const numberRegex = /^[0-9]+$/; 
+    const numberRegex = /^\d+$/; 
     if(this.name === ''){
       return true
     }
     if(this.selectedLaw === '') {
       return true
     }
-    console.log( !numberRegex.test(this.number))
-    if(this.number === '' || numberRegex.test(this.number)) {
+    if(this.number === '' || !numberRegex.test(this.number)) {
       return true
     }
 
@@ -68,6 +86,6 @@ export class AddBookComponent implements OnInit {
   }
 
   changeNumber(value:string) {
-    this.name = value
+    this.number = value.toString()
   }
 }

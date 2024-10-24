@@ -4,32 +4,45 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 import { ApiService } from 'src/app/shared/services/api.service';
 
 @Component({
-  selector: 'app-add-chapter',
-  templateUrl: './add-chapter.component.html',
-  styleUrls: ['./add-chapter.component.css']
+  selector: 'app-add-part',
+  templateUrl: './add-part.component.html',
+  styleUrls: ['./add-part.component.scss']
 })
-export class AddChapterComponent implements OnInit {
-  title = "Agregar Capítulo de Documento";
+export class AddPartComponent implements OnInit {
+
+  title = "Agregar Parte del artículo";
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   myForm: FormGroup;
   leyes = [];
   libros = []; 
   titulos = [];
+  capitulos = [];
+  secciones = [];
+  articulos = [];
   libroHabilitado = false; // Controla si el combo de libro está habilitado
   tituloHabilitado = false;
+  capituloHabilitado = false;
+  seccionHabilitado = false;
   inputsHabilitados = false; // Controla si los inputs están habilitados
+  articuloHabilitados = false
   conservarLey = false;
   conservarLibro = false;
   conservarTitulo = false;
+  conservarCapitulo = false;
+  conservarSeccion = false;
+  conservarArticulo = false;
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private fb: FormBuilder) { 
     this.myForm = this.fb.group({
       ley: ['', Validators.required],
       libro: [''], // Opcional
       titulo: [''], // Opcional
-      nombre: ['', Validators.required],
-      numero: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
+      capitulo: [''], //Opcional
+      seccion: [''], //Opcional
+      articulo: ['', [Validators.required]], //Opcional
+      letra: ['', [Validators.required]],
+      contenido: ['', [Validators.required]]
     });
   }
 
@@ -40,6 +53,8 @@ export class AddChapterComponent implements OnInit {
       if (value) {
         this.fetchBooks(value); // Solo se ejecuta si hay un valor de ley seleccionado
         this.fetchTitles(value)
+        this.fetchChapters(value)
+        this.fetchArticles(value)
       }
     });
 
@@ -48,6 +63,26 @@ export class AddChapterComponent implements OnInit {
         console.log('entro en libro')
         this.fetchTitles(null, value)
         //this.fetchChapters(null, value)
+      }
+    });
+
+    this.myForm.get('titulo')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.fetchChapters(null, null, value)
+        this.fetchArticles(null, null, value)
+      }
+    });
+
+    this.myForm.get('capitulo')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.fetchSections(null, null, null, value)
+        this.fetchArticles(null, null, null, value)
+      }
+    });
+
+    this.myForm.get('seccion')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.fetchArticles(null, null, null, null, value)
       }
     });
 
@@ -81,7 +116,7 @@ export class AddChapterComponent implements OnInit {
     })
   }
 
-  fetchTitles(lawId:string, bookId?:string) {
+  fetchTitles(lawId?:string, bookId?:string) {
     let params = ''
     if(bookId) {
       params = `?bookId=${bookId}`
@@ -99,7 +134,81 @@ export class AddChapterComponent implements OnInit {
         });
       }
     })
-    
+  }
+
+  fetchChapters(lawId?:string, bookId?:string, titleId?:string) {
+    let params = ''
+    if(bookId) {
+      params = `?bookId=${bookId}`
+    } else if (titleId){
+      params = `?titleId=${titleId}`
+    } else {
+      params = `?lawId=${lawId}`
+    }
+
+    this.apiService.fetchChapters(params).subscribe({
+      next:res => {
+        this.capitulos = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar los capítulos', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
+  }
+
+  fetchSections(lawId?:string, bookId?:string, titleId?:string, chapterId?:string) {
+    let params = ''
+    if(bookId) {
+      params = `?bookId=${bookId}`
+    } else if (titleId){
+      params = `?titleId=${titleId}`
+    } else if (chapterId) {
+      params = `?chapterId=${chapterId}`
+    } else {
+      params = `?lawId=${lawId}`
+    }
+
+    this.apiService.fetchSections(params).subscribe({
+      next:res => {
+        this.secciones = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar las secciones', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
+  }
+
+  fetchArticles = (lawId?:string, bookId?:string, titleId?:string, chapterId?:string, sectionId?:string) => {
+    let params = ''
+    if(bookId) {
+      params = `?bookId=${bookId}`
+    } else if (titleId){
+      params = `?titleId=${titleId}`
+    } else if (chapterId) {
+      params = `?chapterId=${chapterId}`
+    } else if (sectionId) {
+      params = `?sectionId=${sectionId}`
+    } else {
+      params = `?lawId=${lawId}`
+    }
+
+    this.apiService.fetchArticle(params).subscribe({
+      next: res => {
+        this.articulos = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar los artículos', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
   }
 
   onLeyChange(event: any): void {
@@ -117,22 +226,14 @@ export class AddChapterComponent implements OnInit {
     if (this.myForm.valid) {
       const values = this.myForm.value
       const body = {
-        name: values.nombre.toString(),
-        number:values.numero.toString(),
-        lawId:values.ley.toString(),
-        titleId: values.titulo === '' ? null : values.titulo.toString()
+        letter:values.letra.toString(),
+        content:values.contenido.toString(),
+        articleId: values.articulo.toString(),
       }
 
       console.log(body)
 
-      if(body.titleId === null) {
-        delete body.titleId
-      } else {
-        delete body.lawId
-      }
-
-      console.log(body)
-      this.apiService.addChapter(body).subscribe({
+      this.apiService.addPart(body).subscribe({
         next: res => {
           if (!this.conservarLey) {
             this.myForm.get('ley')?.reset('');
@@ -146,23 +247,18 @@ export class AddChapterComponent implements OnInit {
           // Deshabilitar inputs si no hay ley seleccionada
           this.libroHabilitado = false;
           this.inputsHabilitados = false;
-          this.snackBar.open('Capítulo guardado correctamente', '', { 
+          this.snackBar.open('Parte guardada correctamente', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition
           });
         }, error: err => {
           console.error(err)
-          this.snackBar.open('Ocurrió un erro al guardar el capítulo', '', { 
+          this.snackBar.open('Ocurrió un erro al guardar la parte', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition
           });
         }
-      })
-
-
-      // Limpiar campos
-      
+      })      
     }
   }
-
 }

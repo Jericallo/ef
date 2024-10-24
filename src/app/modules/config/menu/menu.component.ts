@@ -48,37 +48,54 @@ export class MenuComponent implements OnInit {
       path1: 'books',
       path2: 'books-edit'
     },
-    // {
-    //   icon: 'text_fields',
-    //   descripcion: 'Títulos',
-    //   path1: 'titles',
-    //   path2: 'titles-edit'
-    // },
-    // {
-    //   icon: 'book',
-    //   descripcion: 'Capítulos',
-    //   path1: 'chapters',
-    //   path2: 'chapters-edit',
-      
-    // },
-    // {
-    //   icon: 'bookmark',
-    //   descripcion: 'Secciones',
-    //   path1:'sections',
-    //   path2: 'sections-edit',
-    // },
-    // {
-    //   icon: 'description',
-    //   descripcion: 'Artículos',
-    //   path1:'articles',
-    //   path2:'articles-edit'
-    // },
-    // {
-    //   icon: 'format_align_left',
-    //   descripcion: 'Parrafos',
-    //   path1:'paragraphs',
-    //   path2:'paragraphs-edit'
-    // }
+    {
+      icon: 'text_fields',
+      descripcion: 'Títulos',
+      path1: 'titles',
+      path2: 'titles-edit'
+    },
+    {
+      icon: 'book',
+      descripcion: 'Capítulos',
+      path1: 'chapters',
+      path2: 'chapters-edit',
+    },
+    {
+      icon: 'bookmark',
+      descripcion: 'Secciones',
+      path1:'sections',
+      path2: 'sections-edit',
+    },
+    {
+      icon: 'description',
+      descripcion: 'Artículos',
+      path1:'articles',
+      path2:'articles-edit'
+    },
+    {
+      icon: 'pie_chart',
+      descripcion: 'Partes',
+      path1:'parts',
+      path2:'parts'
+    },
+    {
+      icon: 'format_align_left',
+      descripcion: 'Párrafos',
+      path1:'paragraphs',
+      path2:'paragraphs-edit'
+    },
+    {
+      icon: 'line_style',
+      descripcion: 'Fracciones',
+      path1:'fractions',
+      path2:'fractions'
+    },
+    {
+      icon: 'list',
+      descripcion: 'Puntos',
+      path1:'points',
+      path2:'points'
+    }
   ];
 
   cumplimiento: any[] = [
