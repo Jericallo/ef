@@ -22,54 +22,52 @@ export class AddFractionComponent implements OnInit {
   articulos = [];
   partes = [];
   parrafos = []
-  libroHabilitado = false; // Controla si el combo de libro está habilitado
-  tituloHabilitado = false;
-  capituloHabilitado = false;
-  seccionHabilitado = false;
-  inputsHabilitados = false; // Controla si los inputs están habilitados
-  articuloHabilitados = false
-  parteHabilitados = false
-  parrafoHabilitados = false
-  conservarLey = false;
-  conservarLibro = false;
-  conservarTitulo = false;
-  conservarCapitulo = false;
-  conservarSeccion = false;
-  conservarArticulo = false;
-  conservarParte = false;
-  conservarParrafo = false
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private fb: FormBuilder) { 
     this.myForm = this.fb.group({
       ley: ['', Validators.required],
-      libro: [''], // Opcional
-      titulo: [''], // Opcional
-      capitulo: [''], //Opcional
-      seccion: [''], //Opcional
-      articulo: ['', [Validators.required]], //Opcional
-      parte: [''],
-      parrafo:['', [Validators.required]],
-      numero: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      romano:['', [Validators.required, Validators.pattern('^(?=[MDCLXVI])M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$')]],
-      contenido: ['', [Validators.required]]
+      conservarLey:[false],
+      libro: [{value:'', disabled:true}], // Opcional
+      conservarLibro:[false],
+      titulo: [{value:'', disabled:true}], // Opcional
+      conservarTitulo:[false],
+      capitulo: [{value:'', disabled:true}], //Opcional
+      conservarCapitulo:[false],
+      seccion: [{value:'', disabled:true}], //Opcional
+      conservarSeccion:[false],
+      articulo: [{value:'', disabled:true}, [Validators.required]], //Opcional
+      conservarArticulo:[false],
+      parte: [{value:'', disabled:true}],
+      conservarParte:[false],
+      parrafo:[{value:'', disabled:true}, [Validators.required]],
+      conservarParrafo:[false],
+      numero: [{value:'', disabled:true}, [Validators.required, Validators.pattern('^[0-9]+$')]],
+      romano:[{value:'', disabled:true}, [Validators.required, Validators.pattern('^(?=[MDCLXVI])M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$')]],
+      contenido: [{value:'', disabled:true}, [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this.myForm.get('ley')?.valueChanges.subscribe(value => {
-      this.libroHabilitado = !!value; // Habilita el combo de libro si hay una ley seleccionada
-      this.inputsHabilitados = !!value; // Habilita los inputs si hay una ley seleccionada
       if (value) {
+        this.myForm.get('libro')?.enable()
+        this.myForm.get('titulo')?.enable()
+        this.myForm.get('capitulo')?.enable()
+        this.myForm.get('articulo')?.enable()
         this.fetchBooks(value); // Solo se ejecuta si hay un valor de ley seleccionado
         this.fetchTitles(value)
         this.fetchChapters(value)
         this.fetchArticles(value)
+      } else {
+        this.myForm.get('libro')?.disable()
+        this.myForm.get('titulo')?.disable()
+        this.myForm.get('capitulo')?.disable()
+        this.myForm.get('articulo')?.disable()
       }
     });
 
     this.myForm.get('libro')?.valueChanges.subscribe(value => {
       if (value) {
-        console.log('entro en libro')
         this.fetchTitles(null, value)
         //this.fetchChapters(null, value)
       }
@@ -84,8 +82,11 @@ export class AddFractionComponent implements OnInit {
 
     this.myForm.get('capitulo')?.valueChanges.subscribe(value => {
       if (value) {
+        this.myForm.get('seccion')?.enable()
         this.fetchSections(null, null, null, value)
         this.fetchArticles(null, null, null, value)
+      } else {
+        this.myForm.get('seccion')?.disable()
       }
     });
 
@@ -97,8 +98,13 @@ export class AddFractionComponent implements OnInit {
 
     this.myForm.get('articulo')?.valueChanges.subscribe(value => {
       if (value) {
+        this.myForm.get('parte')?.enable()
+        this.myForm.get('parrafo')?.enable()
         this.fetchParts(value)
         this.fetchParrafos(value)
+      } else {
+        this.myForm.get('parte')?.disable()
+        this.myForm.get('parrafo')?.disable()
       }
     });
 
@@ -107,6 +113,18 @@ export class AddFractionComponent implements OnInit {
         this.fetchParrafos(null, value)
       }
     });
+
+    this.myForm.get('parrafo')?.valueChanges.subscribe(value => {
+      if(value) {
+        this.myForm.get('numero').enable()
+        this.myForm.get('romano').enable()
+        this.myForm.get('contenido').enable()
+      } else {
+        this.myForm.get('numero').disable()
+        this.myForm.get('romano').disable()
+        this.myForm.get('contenido').disable()
+      }
+    })
 
     this.fetchLaws()
   }
@@ -271,17 +289,6 @@ export class AddFractionComponent implements OnInit {
     })
   }
 
-  onLeyChange(event: any): void {
-    const leySeleccionada = event.target.value;
-    if (leySeleccionada) {
-      this.libroHabilitado = true;
-      this.inputsHabilitados = true;
-    } else {
-      this.libroHabilitado = false;
-      this.inputsHabilitados = false;
-    }
-  }
-
   onSubmit(): void {
     if (this.myForm.valid) {
       const values = this.myForm.value
@@ -297,18 +304,43 @@ export class AddFractionComponent implements OnInit {
 
       this.apiService.addFraction(body).subscribe({
         next: res => {
-          if (!this.conservarLey) {
+          if (!values.conservarLey) {
             this.myForm.get('ley')?.reset('');
+            this.myForm.get('libro')?.reset('');
+            this.myForm.get('titulo')?.reset('');
+            this.myForm.get('capitulo')?.reset('');
+            this.myForm.get('seccion')?.reset('');
+            this.myForm.get('articulo')?.reset('');
+            this.myForm.get('parte')?.reset('');
           }
-          if (!this.conservarLibro) {
+          if (!values.conservarLibro) {
             this.myForm.get('libro')?.reset('');
           }
-          this.myForm.get('nombre')?.reset('');
+          if (!values.conservarTitulo) {
+            this.myForm.get('titulo')?.reset('');
+          }
+          if (!values.conservarCapitulo) {
+            this.myForm.get('capitulo')?.reset('');
+            this.myForm.get('seccion')?.reset('');
+          }
+          if (!values.conservarSeccion) {
+            this.myForm.get('seccion')?.reset('');
+          }
+          if (!values.conservarArticulo) {
+            this.myForm.get('articulo')?.reset('');
+            this.myForm.get('parte')?.reset('');
+            this.myForm.get('parrafo')?.reset('');
+          }
+          if (!values.conservarParte) {
+            this.myForm.get('parte')?.reset('');
+          }
+          if (!values.conservarParrafo) {
+            this.myForm.get('parrafo')?.reset('');
+          }
+          this.myForm.get('contenido')?.reset('');
           this.myForm.get('numero')?.reset('');
+          this.myForm.get('romano')?.reset('');
           
-          // Deshabilitar inputs si no hay ley seleccionada
-          this.libroHabilitado = false;
-          this.inputsHabilitados = false;
           this.snackBar.open('Fracción guardada correctamente', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition

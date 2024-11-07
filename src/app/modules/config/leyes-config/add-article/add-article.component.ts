@@ -19,24 +19,19 @@ export class AddArticleComponent implements OnInit{
   titulos = [];
   capitulos = [];
   secciones = [];
-  libroHabilitado = false; // Controla si el combo de libro está habilitado
-  tituloHabilitado = false;
-  capituloHabilitado = false;
-  seccionHabilitado = false;
-  inputsHabilitados = false; // Controla si los inputs están habilitados
-  conservarLey = false;
-  conservarLibro = false;
-  conservarTitulo = false;
-  conservarCapitulo = false;
-  conservarSeccion = false;
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private fb: FormBuilder) { 
     this.myForm = this.fb.group({
       ley: ['', Validators.required],
-      libro: [''], // Opcional
-      titulo: [''], // Opcional
-      capitulo: [''], //Opcional
-      seccion: [''], //Opcional
+      conservarLey: [false],
+      libro: [{value:'',disabled:true}], // Opcional
+      conservarLibro: [false],
+      titulo: [{value:'',disabled:true}], // Opcional
+      conservarTitulo: [false],
+      capitulo: [{value:'',disabled:true}], //Opcional
+      conservarCapitulo: [false],
+      seccion: [{value:'',disabled:true}], //Opcional
+      conservarSeccion: [false],
       numero: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       subIndice: ['', [Validators.required]]
     });
@@ -44,12 +39,17 @@ export class AddArticleComponent implements OnInit{
 
   ngOnInit(): void {
     this.myForm.get('ley')?.valueChanges.subscribe(value => {
-      this.libroHabilitado = !!value; // Habilita el combo de libro si hay una ley seleccionada
-      this.inputsHabilitados = !!value; // Habilita los inputs si hay una ley seleccionada
       if (value) {
+        this.myForm.get('libro')?.enable()
+        this.myForm.get('titulo')?.enable()
+        this.myForm.get('capitulo')?.enable()
         this.fetchBooks(value); // Solo se ejecuta si hay un valor de ley seleccionado
         this.fetchTitles(value)
         this.fetchChapters(value)
+      } else {
+        this.myForm.get('libro')?.disable()
+        this.myForm.get('titulo')?.disable()
+        this.myForm.get('capitulo')?.disable()
       }
     });
 
@@ -69,7 +69,10 @@ export class AddArticleComponent implements OnInit{
 
     this.myForm.get('capitulo')?.valueChanges.subscribe(value => {
       if (value) {
+        this.myForm.get('seccion')?.enable()
         this.fetchSections(null, null, null, value)
+      } else {
+        this.myForm.get('seccion')?.disable()
       }
     });
 
@@ -171,20 +174,10 @@ export class AddArticleComponent implements OnInit{
     })
   }
 
-  onLeyChange(event: any): void {
-    const leySeleccionada = event.target.value;
-    if (leySeleccionada) {
-      this.libroHabilitado = true;
-      this.inputsHabilitados = true;
-    } else {
-      this.libroHabilitado = false;
-      this.inputsHabilitados = false;
-    }
-  }
-
   onSubmit(): void {
     if (this.myForm.valid) {
       const values = this.myForm.value
+      console.log(values)
       const body = {
         baseNumber:values.numero.toString(),
         completeNumber:values.numero.toString() + values.subIndice.toString(),
@@ -203,18 +196,31 @@ export class AddArticleComponent implements OnInit{
       if(body.subIndex === '') delete body.subIndex 
       this.apiService.addArticle(body).subscribe({
         next: res => {
-          if (!this.conservarLey) {
+          if (!values.conservarLey) {
             this.myForm.get('ley')?.reset('');
+            this.myForm.get('libro')?.reset('');
+            this.myForm.get('titulo')?.reset('');
+            this.myForm.get('capitulo')?.reset('');
+            this.myForm.get('seccion')?.reset('');
           }
-          if (!this.conservarLibro) {
+          if (!values.conservarLibro) {
             this.myForm.get('libro')?.reset('');
           }
+          if (!values.conservarTitulo) {
+            this.myForm.get('titulo')?.reset('');
+          }
+          if (!values.conservarCapitulo) {
+            this.myForm.get('capitulo')?.reset('');
+            this.myForm.get('seccion')?.reset('');
+          }
+          if (!values.conservarSeccion) {
+            this.myForm.get('seccion')?.reset('');
+          }
+          
           this.myForm.get('nombre')?.reset('');
           this.myForm.get('numero')?.reset('');
           
           // Deshabilitar inputs si no hay ley seleccionada
-          this.libroHabilitado = false;
-          this.inputsHabilitados = false;
           this.snackBar.open('Artículo guardado correctamente', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition

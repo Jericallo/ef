@@ -1,92 +1,92 @@
 <div class="form-container">
     <div style="display: flex; flex-direction: row; align-items: center; width: 100%; gap: 10px;">
       <a routerLink="/config/menu" class="return"><mat-icon style="font-weight: 700; font-size: 40px; overflow: visible; padding: 20px;">arrow_back</mat-icon></a>
-      <div style="display: flex; align-items: center; justify-content: center;">
-          <p style="font-weight: 700;">{{ title }}</p>
-      </div>
+      <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+        <p style="font-weight: 700;">{{ title }}</p>
+    </div>
     </div>
       
       <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="ley">Ley</label>
-          <select id="ley" formControlName="ley" (change)="onLeyChange($event)">
+          <select id="ley" formControlName="ley">
             <option value="">Seleccione una Ley</option>
             <option *ngFor="let ley of leyes" [value]="ley.id">{{ ley.name }}</option>
           </select>
           <div>
-              <input type="checkbox" id="conservarLey" [(ngModel)]="conservarLey">
+              <input type="checkbox" id="conservarLey" formControlName="conservarLey">
               <label for="conservarLey" class="checkbox-label">Conservar</label>
           </div>
         </div>
     
         <div class="form-group">
           <label for="libro">Libro</label>
-          <select id="libro" formControlName="libro" [disabled]="!libroHabilitado">
+          <select id="libro" formControlName="libro">
             <option value="">Seleccione un Libro</option>
             <option *ngFor="let libro of libros" [value]="libro.id">{{ libro.name }}</option>
           </select>
           <div>
-              <input type="checkbox" id="conservarLibro" [(ngModel)]="conservarLibro">
+              <input type="checkbox" id="conservarLibro" formControlName="conservarLibro">
               <label for="conservarLibro" class="checkbox-label">Conservar</label>
           </div>
         </div>
   
         <div class="form-group">
           <label for="titulo">Titulo</label>
-          <select id="titulo" formControlName="titulo" [disabled]="!tituloHabilitado">
+          <select id="titulo" formControlName="titulo">
             <option value="">Seleccione un título</option>
             <option *ngFor="let titulo of titulos" [value]="titulo.id">{{ titulo.name }}</option>
           </select>
           <div>
-              <input type="checkbox" id="conservarTitulo" [(ngModel)]="conservarTitulo">
+              <input type="checkbox" id="conservarTitulo" formControlName="conservarTitulo">
               <label for="conservarTitulo" class="checkbox-label">Conservar</label>
           </div>
         </div>
   
         <div class="form-group">
           <label for="capitulo">Capítulo</label>
-          <select id="capitulo" formControlName="capitulo" [disabled]="!capituloHabilitado">
+          <select id="capitulo" formControlName="capitulo">
             <option value="">Seleccione un capítulo</option>
             <option *ngFor="let capitulo of capitulos" [value]="capitulo.id">{{ capitulo.name }}</option>
           </select>
           <div>
-              <input type="checkbox" id="conservarCapitulo" [(ngModel)]="conservarCapitulo">
+              <input type="checkbox" id="conservarCapitulo" formControlName="conservarCapitulo">
               <label for="conservarCapitulo" class="checkbox-label">Conservar</label>
           </div>
         </div>
     
         <div class="form-group">
           <label for="seccion">Sección</label>
-          <select id="seccion" formControlName="seccion" [disabled]="!seccionHabilitado">
+          <select id="seccion" formControlName="seccion">
             <option value="">Seleccione una sección</option>
             <option *ngFor="let seccion of secciones" [value]="seccion.id">{{ seccion.name }}</option>
           </select>
           <div>
-              <input type="checkbox" id="conservarSeccion" [(ngModel)]="conservarSeccion">
+              <input type="checkbox" id="conservarSeccion" formControlName="conservarSeccion">
               <label for="conservarSeccion" class="checkbox-label">Conservar</label>
           </div>
         </div>
 
         <div class="form-group">
             <label for="articulo">Artículo</label>
-            <select id="articulo" formControlName="articulo" [disabled]="!articuloHabilitados">
+            <select id="articulo" formControlName="articulo">
               <option value="">Seleccione un artículo</option>
               <option *ngFor="let articulo of articulos" [value]="articulo.id">{{ articulo.completeNumber }}</option>
             </select>
             <div>
-                <input type="checkbox" id="conservarArticulo" [(ngModel)]="conservarArticulo">
+                <input type="checkbox" id="conservarArticulo" formControlName="conservarArticulo">
                 <label for="conservarArticulo" class="checkbox-label">Conservar</label>
             </div>
           </div>
     
         <div class="form-group">
           <label for="letra">Letra</label>
-          <input id="letra" type="text" formControlName="letra" [disabled]="!inputsHabilitados" placeholder="Ingrese una letra">
+          <input id="letra" type="text" formControlName="letra" placeholder="Ingrese una letra">
         </div>
   
         <div class="form-group">
           <label for="contenido">Contenido</label>
-          <input id="contenido" type="text" formControlName="contenido" [disabled]="!inputsHabilitados" placeholder="Ingrese el contenido">
+          <input id="contenido" type="text" formControlName="contenido" placeholder="Ingrese el contenido">
         </div>
     
         <button type="submit" [disabled]="myForm.invalid" class="btn-submit">Guardar</button>

@@ -21,44 +21,44 @@ export class AddParagraphComponent implements OnInit {
   secciones = [];
   articulos = [];
   partes = [];
-  libroHabilitado = false; // Controla si el combo de libro está habilitado
-  tituloHabilitado = false;
-  capituloHabilitado = false;
-  seccionHabilitado = false;
-  inputsHabilitados = false; // Controla si los inputs están habilitados
-  articuloHabilitados = false
-  parteHabilitados = false
-  conservarLey = false;
-  conservarLibro = false;
-  conservarTitulo = false;
-  conservarCapitulo = false;
-  conservarSeccion = false;
-  conservarArticulo = false;
-  conservarParte = false;
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private fb: FormBuilder) { 
     this.myForm = this.fb.group({
       ley: ['', Validators.required],
-      libro: [''], // Opcional
-      titulo: [''], // Opcional
-      capitulo: [''], //Opcional
-      seccion: [''], //Opcional
-      articulo: ['', [Validators.required]], //Opcional
-      parte: [''],
-      numero: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      contenido: ['', [Validators.required]]
+      conservarLey:[false],
+      libro: [{value:'', disabled:true}], // Opcional
+      conservarLibro:[false],
+      titulo: [{value:'', disabled:true}], // Opcional
+      conservarTitulo:[false],
+      capitulo: [{value:'', disabled:true}], //Opcional
+      conservarCapitulo:[false],
+      seccion: [{value:'', disabled:true}], //Opcional
+      conservarSeccion:[false],
+      articulo: [{value:'', disabled:true}, [Validators.required]], //Opcional
+      conservarArticulo:[false],
+      parte: [{value:'', disabled:true}],
+      conservarParte:[false],
+      numero: [{value:'', disabled:true}, [Validators.required, Validators.pattern('^[0-9]+$')]],
+      contenido: [{value:'', disabled:true}, [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this.myForm.get('ley')?.valueChanges.subscribe(value => {
-      this.libroHabilitado = !!value; // Habilita el combo de libro si hay una ley seleccionada
-      this.inputsHabilitados = !!value; // Habilita los inputs si hay una ley seleccionada
       if (value) {
+        this.myForm.get('libro')?.enable()
+        this.myForm.get('titulo')?.enable()
+        this.myForm.get('capitulo')?.enable()
+        this.myForm.get('articulo')?.enable()
         this.fetchBooks(value); // Solo se ejecuta si hay un valor de ley seleccionado
         this.fetchTitles(value)
         this.fetchChapters(value)
         this.fetchArticles(value)
+      } else {
+        this.myForm.get('libro')?.disable()
+        this.myForm.get('titulo')?.disable()
+        this.myForm.get('capitulo')?.disable()
+        this.myForm.get('articulo')?.disable()
       }
     });
 
@@ -79,8 +79,11 @@ export class AddParagraphComponent implements OnInit {
 
     this.myForm.get('capitulo')?.valueChanges.subscribe(value => {
       if (value) {
+        this.myForm.get('seccion')?.enable()
         this.fetchSections(null, null, null, value)
         this.fetchArticles(null, null, null, value)
+      } else {
+        this.myForm.get('seccion')?.disable()
       }
     });
 
@@ -92,7 +95,14 @@ export class AddParagraphComponent implements OnInit {
 
     this.myForm.get('articulo')?.valueChanges.subscribe(value => {
       if (value) {
+        this.myForm.get('parte')?.enable()
+        this.myForm.get('numero')?.enable()
+        this.myForm.get('contenido')?.enable()
         this.fetchParts(value)
+      } else {
+        this.myForm.get('contenido')?.disable()
+        this.myForm.get('parte')?.disable()
+        this.myForm.get('numero')?.disable()
       }
     });
 
@@ -237,17 +247,6 @@ export class AddParagraphComponent implements OnInit {
     })
   }
 
-  onLeyChange(event: any): void {
-    const leySeleccionada = event.target.value;
-    if (leySeleccionada) {
-      this.libroHabilitado = true;
-      this.inputsHabilitados = true;
-    } else {
-      this.libroHabilitado = false;
-      this.inputsHabilitados = false;
-    }
-  }
-
   onSubmit(): void {
     if (this.myForm.valid) {
       const values = this.myForm.value
@@ -263,18 +262,39 @@ export class AddParagraphComponent implements OnInit {
 
       this.apiService.addParragraph(body).subscribe({
         next: res => {
-          if (!this.conservarLey) {
+          if (!values.conservarLey) {
             this.myForm.get('ley')?.reset('');
+            this.myForm.get('libro')?.reset('');
+            this.myForm.get('titulo')?.reset('');
+            this.myForm.get('capitulo')?.reset('');
+            this.myForm.get('seccion')?.reset('');
+            this.myForm.get('articulo')?.reset('');
+            this.myForm.get('parte')?.reset('');
           }
-          if (!this.conservarLibro) {
+          if (!values.conservarLibro) {
             this.myForm.get('libro')?.reset('');
           }
+          if (!values.conservarTitulo) {
+            this.myForm.get('titulo')?.reset('');
+          }
+          if (!values.conservarCapitulo) {
+            this.myForm.get('capitulo')?.reset('');
+            this.myForm.get('seccion')?.reset('');
+          }
+          if (!values.conservarSeccion) {
+            this.myForm.get('seccion')?.reset('');
+          }
+          if (!values.conservarArticulo) {
+            this.myForm.get('articulo')?.reset('');
+            this.myForm.get('parte')?.reset('');
+          }
+          if (!values.conservarParte) {
+            this.myForm.get('parte')?.reset('');
+          }
           this.myForm.get('nombre')?.reset('');
-          this.myForm.get('numero')?.reset('');
+          this.myForm.get('contenido')?.reset('');
           
           // Deshabilitar inputs si no hay ley seleccionada
-          this.libroHabilitado = false;
-          this.inputsHabilitados = false;
           this.snackBar.open('Párrafo guardado correctamente', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition

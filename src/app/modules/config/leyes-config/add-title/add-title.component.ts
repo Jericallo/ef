@@ -1,11 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { debounceTime, map, Observable, startWith } from 'rxjs';
-import { Documents } from 'src/app/shared/interfaces/documents-interface';
 import { ApiService } from 'src/app/shared/services/api.service';
-import { Article_Title } from 'src/app/shared/interfaces/article-interface';
 
 
 @Component({
@@ -20,26 +16,29 @@ export class AddTitleComponent implements OnInit {
   myForm: FormGroup;
   leyes = [];
   libros = []; 
-  libroHabilitado = false; // Controla si el combo de libro está habilitado
-  inputsHabilitados = false; // Controla si los inputs están habilitados
-  conservarLey = false;
-  conservarLibro = false;
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private fb: FormBuilder) { 
     this.myForm = this.fb.group({
       ley: ['', Validators.required],
-      libro: [''], // Opcional
-      nombre: ['', Validators.required],
-      numero: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
+      conservarLey:[false],
+      libro: [{value:'', disabled:true}], // Opcional
+      conservarLibro:[false],
+      nombre: [{value:'', disabled:true}, Validators.required],
+      numero: [{value:'', disabled:true}, [Validators.required, Validators.pattern('^[0-9]+$')]]
     });
   }
 
   ngOnInit(): void {
     this.myForm.get('ley')?.valueChanges.subscribe(value => {
-      this.libroHabilitado = !!value; // Habilita el combo de libro si hay una ley seleccionada
-      this.inputsHabilitados = !!value; // Habilita los inputs si hay una ley seleccionada
       if (value) {
+        this.myForm.get('libro')?.enable()
+        this.myForm.get('nombre')?.enable()
+        this.myForm.get('numero')?.enable()
         this.fetchBooks(value); // Solo se ejecuta si hay un valor de ley seleccionado
+      } else {
+        this.myForm.get('libro')?.disable()
+        this.myForm.get('nombre')?.disable()
+        this.myForm.get('numero')?.disable()
       }
     });
 
@@ -73,17 +72,6 @@ export class AddTitleComponent implements OnInit {
     })
   }
 
-  onLeyChange(event: any): void {
-    const leySeleccionada = event.target.value;
-    if (leySeleccionada) {
-      this.libroHabilitado = true;
-      this.inputsHabilitados = true;
-    } else {
-      this.libroHabilitado = false;
-      this.inputsHabilitados = false;
-    }
-  }
-
   onSubmit(): void {
     if (this.myForm.valid) {
       const values = this.myForm.value
@@ -102,18 +90,21 @@ export class AddTitleComponent implements OnInit {
 
       this.apiService.addTitle(body).subscribe({
         next: res => {
-          if (!this.conservarLey) {
+          if (!values.conservarLey) {
             this.myForm.get('ley')?.reset('');
+            this.myForm.get('nombre')?.disable();
+            this.myForm.get('numero')?.disable();
+            this.myForm.get('libro')?.disable()
+            this.myForm.get('libro')?.reset('')
           }
-          if (!this.conservarLibro) {
+
+          if (!values.conservarLibro) {
             this.myForm.get('libro')?.reset('');
           }
+
           this.myForm.get('nombre')?.reset('');
           this.myForm.get('numero')?.reset('');
           
-          // Deshabilitar inputs si no hay ley seleccionada
-          this.libroHabilitado = false;
-          this.inputsHabilitados = false;
           this.snackBar.open('título guardado correctamente', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition

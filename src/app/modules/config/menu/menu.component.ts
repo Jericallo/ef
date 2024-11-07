@@ -38,8 +38,8 @@ export class MenuComponent implements OnInit {
     {
       icon: 'widgets',
       descripcion: 'Leyes',
-      path1: 'categories',
-      path2: 'categories-edit'
+      path1: 'documents',
+      path2: 'documents-edit'
 
     },
     {

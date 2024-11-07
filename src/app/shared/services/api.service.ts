@@ -595,17 +595,6 @@ export class ApiService {
     return this.http.post(url,{text:encrybtedBody},{headers:headers});
   }
 
-  public saveDocument(request: Documents): Observable<any> {
-    let headers = new HttpHeaders({
-      'Content-type':'application/json',
-      'Authorization':`Bearer ${this.getTokenSpecial()}`
-    });
-    const url = this.insert;
-    const body = {model: this.models.documentos,data: {titulo:request.titulo, editorial:request.editorial, abreviatura:request.abreviatura, num_articulos:request.num_articulos, ayo:request.ayo, fecha_modificacion:request.fecha_modificacion, fecha_creacion:request.fecha_creacion, clasificacion:request.clasificacion}};
-    const encryptedBody = this.encrypt(body,'private');
-    return this.http.post(url, {text:encryptedBody},{headers:headers});
-  }
-
   public save(request:any, model:any):Observable<any>{
     if(request && model){
       let headers = new HttpHeaders({
