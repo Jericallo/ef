@@ -1,0 +1,34 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100">
+        <div style="display: flex; align-items: center;">
+            <a routerLink="/config/menu" class="return"><mat-icon  style="font-weight: 700; font-size: 40px; overflow: visible; margin-left: 20px;">arrow_back</mat-icon></a>
+            <button mat-raised-button color="primary" style="margin-left: 30px;"(click)="openAdd()">Agregar pregunta</button> 
+        </div>
+        <mat-card>
+            <mat-table [dataSource]="dataSource">
+                <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
+                    <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" class="table-element">
+                        <ng-container [ngSwitch]="column">
+                            <ng-container *ngSwitchCase="'pregunta'">{{ element.name }}</ng-container>
+                            <ng-container *ngSwitchCase="'agregado_por'">{{ element.email }}</ng-container>
+                            <ng-container *ngSwitchCase="'fecha'">{{ element.phoneNumber }}</ng-container>
+                            <ng-container *ngSwitchCase="'acciones'">
+                                <button mat-icon-button (click)="openEdit(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-icon-button color="warn" (click)="openRemove(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </ng-container>
+                        </ng-container>
+                    </mat-cell>
+                </ng-container>
+    
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    
+                <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+            </mat-table>
+        </mat-card>
+    </div>
+</div>

@@ -36,6 +36,7 @@ import { AddBookComponent } from './leyes-config/add-book/add-book.component';
 import { AddPartComponent } from './leyes-config/add-part/add-part.component';
 import { AddFractionComponent } from './leyes-config/add-fraction/add-fraction.component';
 import { AddPointComponent } from './leyes-config/add-point/add-point.component';
+import { MonthlyQuestionarComponent } from './monthly-questionar/monthly-questionar.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -434,6 +435,17 @@ export const ConfigRoutes: Routes = [
                 component: AddPointComponent,
                 data: {
                     title: 'Puntos',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'monthly-questions',
+                component: MonthlyQuestionarComponent,
+                data: {
+                    title: 'Preguntas mensuales',
                     urls: [
                         { title: 'Configuración', url: '/config' },
                         { title: 'user-profile' }

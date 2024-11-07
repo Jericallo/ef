@@ -127,6 +127,11 @@ export class MenuComponent implements OnInit {
       descripcion: 'Acciones',
       path: 'logs'
     },
+    {
+      icon:'question_answer',
+      descripcion: 'Preguntas mensuales',
+      path:'monthly-questions'
+    }
   ]
 
   videos: any[] = [

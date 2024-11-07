@@ -83,6 +83,10 @@ import { AddBookComponent } from './leyes-config/add-book/add-book.component';
 import { AddPartComponent } from './leyes-config/add-part/add-part.component';
 import { AddFractionComponent } from './leyes-config/add-fraction/add-fraction.component';
 import { AddPointComponent } from './leyes-config/add-point/add-point.component';
+import { MonthlyQuestionarComponent } from './monthly-questionar/monthly-questionar.component';
+import { AddQuestionDialogComponent } from './monthly-questionar/add-question-dialog/add-question-dialog.component';
+import { EditQuestionDialogComponent } from './monthly-questionar/edit-question-dialog/edit-question-dialog.component';
+import { RemoveQuestionComponent } from './monthly-questionar/remove-question/remove-question.component';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -153,7 +157,11 @@ registerLocaleData(localeEsAr, 'es-Ar');
     AddBookComponent,
     AddPartComponent,
     AddFractionComponent,
-    AddPointComponent
+    AddPointComponent,
+    MonthlyQuestionarComponent,
+    AddQuestionDialogComponent,
+    EditQuestionDialogComponent,
+    RemoveQuestionComponent
   ],
   providers: [DatePipe, CapacitationsComponent,
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
