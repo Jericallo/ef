@@ -1,16 +1,16 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ApiService } from 'src/app/shared/services/api.service';
 
 @Component({
-  selector: 'app-add-paragraph',
-  templateUrl: './add-paragraph.component.html',
-  styleUrls: ['./add-paragraph.component.css']
+  selector: 'app-add-point',
+  templateUrl: './add-point.component.html',
+  styleUrls: ['./add-point.component.scss']
 })
-export class AddParagraphComponent implements OnInit {
-  
-  title = "Agregar Párrafo del artículo";
+export class AddPointComponent implements OnInit {
+
+  title = "Agregar punto de la fracción";
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   myForm: FormGroup;
@@ -21,24 +21,30 @@ export class AddParagraphComponent implements OnInit {
   secciones = [];
   articulos = [];
   partes = [];
+  parrafos = []
+  fracciones = []
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private fb: FormBuilder) { 
     this.myForm = this.fb.group({
       ley: ['', Validators.required],
-      conservarLey:[false],
+      conservarLey: [false],
       libro: [{value:'', disabled:true}], // Opcional
-      conservarLibro:[false],
+      conservarLibro: [false],
       titulo: [{value:'', disabled:true}], // Opcional
-      conservarTitulo:[false],
+      conservarTitulo: [false],
       capitulo: [{value:'', disabled:true}], //Opcional
-      conservarCapitulo:[false],
+      conservarCapitulo: [false],
       seccion: [{value:'', disabled:true}], //Opcional
-      conservarSeccion:[false],
-      articulo: [{value:'', disabled:true}, [Validators.required]], //Opcional
-      conservarArticulo:[false],
+      conservarSeccion: [false],
+      articulo: [{value:'', disabled:true}], //Opcional
+      conservarArticulo: [false],
       parte: [{value:'', disabled:true}],
-      conservarParte:[false],
-      numero: [{value:'', disabled:true}, [Validators.required, Validators.pattern('^[0-9]+$')]],
+      conservarParte: [false],
+      parrafo:[{value:'', disabled:true}],
+      conservarParrafo: [false],
+      fraccion: [{value:'', disabled:true}, [Validators.required]],
+      conservarFraccion: [false],
+      letra: [{value:'', disabled:true}, [Validators.required]],
       contenido: [{value:'', disabled:true}, [Validators.required]]
     });
   }
@@ -64,7 +70,6 @@ export class AddParagraphComponent implements OnInit {
 
     this.myForm.get('libro')?.valueChanges.subscribe(value => {
       if (value) {
-        console.log('entro en libro')
         this.fetchTitles(null, value)
         //this.fetchChapters(null, value)
       }
@@ -96,13 +101,37 @@ export class AddParagraphComponent implements OnInit {
     this.myForm.get('articulo')?.valueChanges.subscribe(value => {
       if (value) {
         this.myForm.get('parte')?.enable()
-        this.myForm.get('numero')?.enable()
-        this.myForm.get('contenido')?.enable()
+        this.myForm.get('parrafo')?.enable()
         this.fetchParts(value)
+        this.fetchParrafos(value)
       } else {
-        this.myForm.get('contenido')?.disable()
         this.myForm.get('parte')?.disable()
-        this.myForm.get('numero')?.disable()
+        this.myForm.get('parrafo')?.disable()
+      }
+    });
+
+    this.myForm.get('parte')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.fetchParrafos(null, value)
+      }
+    });
+
+    this.myForm.get('parrafo')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.myForm.get('fraccion')?.enable()
+        this.fetchFracciones(value)
+      } else {
+        this.myForm.get('fraccion')?.disable()
+      }
+    });
+
+    this.myForm.get('fraccion')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.myForm.get('letra')?.enable()
+        this.myForm.get('contenido')?.enable()
+      } else {
+        this.myForm.get('letra')?.disable()
+        this.myForm.get('contenido')?.disable()
       }
     });
 
@@ -247,21 +276,57 @@ export class AddParagraphComponent implements OnInit {
     })
   }
 
+  fetchParrafos = (articleId:string, partId?:string) => {
+    let params = ''
+    if(partId) {
+      params = `?partId=${partId}`
+    } else {
+      params = `?articleId=${articleId}`
+    }
+
+    console.log(params)
+    this.apiService.fetchParragraph(params).subscribe({
+      next: res => {
+        this.parrafos = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar los párrafos', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
+  }
+
+  fetchFracciones = (paragraphId:string) => {
+    const params = `?paragraphId=${paragraphId}`
+
+    this.apiService.fetchFractions(params).subscribe({
+      next: res => {
+        this.fracciones = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar las fracciones', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
+  }
+
   onSubmit(): void {
     if (this.myForm.valid) {
       const values = this.myForm.value
       const body = {
-        number:values.numero.toString(),
+        letter:values.letra.toString(),
         content:values.contenido.toString(),
-        articleId: values.articulo.toString(),
-        partId: values.parte.toString()
+        fractionId: values.fraccion.toString(),
       }
 
-      if(body.partId !== '') delete body.articleId; else delete body.partId
-      console.log(body)
 
-      this.apiService.addParragraph(body).subscribe({
+      this.apiService.addPoint(body).subscribe({
         next: res => {
+          console.log(values)
           if (!values.conservarLey) {
             this.myForm.get('ley')?.reset('');
             this.myForm.get('libro')?.reset('');
@@ -270,6 +335,7 @@ export class AddParagraphComponent implements OnInit {
             this.myForm.get('seccion')?.reset('');
             this.myForm.get('articulo')?.reset('');
             this.myForm.get('parte')?.reset('');
+            this.myForm.get('fraccion')?.reset('');
           }
           if (!values.conservarLibro) {
             this.myForm.get('libro')?.reset('');
@@ -287,21 +353,26 @@ export class AddParagraphComponent implements OnInit {
           if (!values.conservarArticulo) {
             this.myForm.get('articulo')?.reset('');
             this.myForm.get('parte')?.reset('');
+            this.myForm.get('parrafo')?.reset('');
+            this.myForm.get('fraccion')?.reset('');
           }
           if (!values.conservarParte) {
             this.myForm.get('parte')?.reset('');
           }
-          this.myForm.get('nombre')?.reset('');
+          if (!values.conservarParrafo) {
+            this.myForm.get('parrafo')?.reset('');
+            this.myForm.get('fraccion')?.reset('');
+          }
+          this.myForm.get('letra')?.reset('');
           this.myForm.get('contenido')?.reset('');
           
-          // Deshabilitar inputs si no hay ley seleccionada
-          this.snackBar.open('Párrafo guardado correctamente', '', { 
+          this.snackBar.open('Punto guardado correctamente', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition
           });
         }, error: err => {
           console.error(err)
-          this.snackBar.open('Ocurrió un erro al guardar el párrafo', '', { 
+          this.snackBar.open('Ocurrió un erro al guardar el punto', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition
           });
@@ -309,6 +380,5 @@ export class AddParagraphComponent implements OnInit {
       })      
     }
   }
+
 }
-
-

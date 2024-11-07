@@ -1,12 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { debounceTime, map, Observable, startWith } from 'rxjs';
-import { Documents } from 'src/app/shared/interfaces/documents-interface';
 import { ApiService } from 'src/app/shared/services/api.service';
-import { Article_Chapter, Article_Title } from 'src/app/shared/interfaces/article-interface';
-import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-chapter',
@@ -14,163 +9,153 @@ import { HttpParams } from '@angular/common/http';
   styleUrls: ['./add-chapter.component.css']
 })
 export class AddChapterComponent implements OnInit {
-  @Output() dataEvent = new EventEmitter<number>();
-  title = "Agregar Capitulo de Documento";
-
-  /*Document Control */
-  myControlDocuments= new FormControl();
-  optionsDocuments: Documents[] = [];
-  filteredDocOptions: Observable<Documents[]> | undefined;
-  
-  /*Title Control */
-  myControlTitles= new FormControl();
-  optionsTitles: Article_Title[] = [];
-  filteredTitOptions: Observable<Article_Title[]> | undefined;
-
-  /*Name Control */
-  myControlName = new FormControl('');
-  name: string | undefined;
-
-  showMain = true;
-  showSpinner = false;
-
-  /*Snackbar */
+  title = "Agregar Capítulo de Documento";
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  config_snack = { duration: 3000,verticalPosition: this.verticalPosition}
 
-  selectedDocument: number = 0;
-  selectedTitle:number = 0;
-  sendingData: Article_Chapter = {
-    id:0, nombre:"", id_documento:0, id_titulo:0
-  }
+  myForm: FormGroup;
+  leyes = [];
+  libros = []; 
+  titulos = [];
 
-  constructor(public apiService: ApiService, public snackBar: MatSnackBar) {
-    this.apiService.getDocuments()
-    .subscribe({
-      next: response => {
-        response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-        this.showMain = true;this.showSpinner = false;
-        this.optionsDocuments = response.result;
-      },
-      error: err => { this.errorHandling(err);}
+  constructor(public apiService: ApiService, public snackBar: MatSnackBar, private fb: FormBuilder) { 
+    this.myForm = this.fb.group({
+      ley: ['', Validators.required],
+      conservarLey:[false],
+      libro: [{value:'', disabled:true}], // Opcional
+      conservarLibro:[false],
+      titulo: [{value:'', disabled:true}], // Opcional
+      conservarTitulo:[],
+      nombre: [{value:'', disabled:true}, Validators.required],
+      numero: [{value:'', disabled:true}, [Validators.required, Validators.pattern('^[0-9]+$')]]
     });
-   }
+  }
 
   ngOnInit(): void {
-    this.filteredDocOptions = this.myControlDocuments.valueChanges.pipe(
-      startWith(''),debounceTime(300),
-      map(value => {
-        const title = typeof value === 'string' ? value : value?.titulo;
-        return title ? this._filterDoc(title as string) : this.optionsDocuments.slice();
-      }),
-    );
-    this.myControlTitles.disable()
-  }
-
-  /*Document Control Functions */
-  private _filterDoc(doc: string): Documents[] {
-    return this.optionsDocuments.filter(option => option.titulo?.toLowerCase().includes(doc.toLowerCase()));
-  }
-  
-  displayDocument(doc: Documents): string {
-    return doc && doc.titulo ? doc.titulo : '';
-  }
-
-  selectedDoc(opt: MatAutocompleteSelectedEvent) {
-    this.myControlTitles.reset();
-    this.selectedDocument = opt.option.value.id;
-    this.sendingData.id_documento = opt.option.value.id;
-    this.getTitles(opt.option.value.id);
-  }
-
-  getTitles(id_document:number){
-    this.myControlTitles.disable();
-    this.optionsTitles = [];
-    this.filteredTitOptions = undefined
-    this.apiService
-    .getAllArticles(this.apiService.models.articulo_titulos,new HttpParams().set("id_documento",id_document))
-  .subscribe({
-    next: response => {
-      response = JSON.parse(this.apiService.decrypt(response.message,"private"));
-      this.showMain = true;this.showSpinner = false;
-      this.optionsTitles = response.result;
-      this.filteredTitOptions = this.myControlTitles.valueChanges.pipe(
-        startWith(''),debounceTime(300),
-        map(value => {
-          const name = typeof value === 'string' ? value : value?.nombre;
-          return name ? this._filterTit(name as string) : this.optionsTitles.slice();
-        }),
-      );
-      this.myControlTitles.enable();
-    },
-    error: err => { this.errorHandling(err);}
-  });
-  }
-
-  handleEmptyDoc(event: any) {
-    if(event.target.value === '') {
-    }
-  }
-
-  /*Title Control Functions */
-  private _filterTit(tit: string): Article_Title[] {
-    return this.optionsTitles.filter(option => option.nombre?.toLowerCase().includes(tit.toLowerCase()));
-  }
-  
-  displayTitle(tit: Article_Title): string {
-    return tit && tit.nombre ? tit.nombre : '';
-  }
-
-  selectedTit(opt: MatAutocompleteSelectedEvent) {
-    this.selectedTitle = opt.option.value.id;
-    this.sendingData.id_titulo = opt.option.value.id;
-  }
-
-  handleEmptyTit(event: any) {
-    if(event.target.value === '') {}
-  }
-
-  /*Form to Save Functions*/
-
-  checkValues() {
-    return !(this.selectedDocument !== 0 && this.selectedDocument !== undefined && this.myControlName.valid)
-  }
-
-  saveAssignation() {
-    this.showSpinner = true;
-    this.sendingData.nombre = this.name || ""
-    this.apiService.saveArticleChapter(this.sendingData)
-    .subscribe({
-      next: response => {
-        this.showSpinner = false;
-        this.snackBar.open('Capitulo guardado correctamente', '', this.config_snack);
-        this.resetFields();
-        this.dataEvent.emit(1)
-      },
-      error: err => {
-        this.showSpinner = false;
-        this.snackBar.open("Error: " + JSON.stringify(err.error.message), '', this.config_snack);
-        this.resetFields();
+    this.myForm.get('ley')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.myForm.get('libro')?.enable()
+        this.myForm.get('titulo')?.enable()
+        this.myForm.get('nombre')?.enable()
+        this.myForm.get('numero')?.enable()
+        this.fetchBooks(value); // Solo se ejecuta si hay un valor de ley seleccionado
+        this.fetchTitles(value)
+      } else {
+        this.myForm.get('libro')?.disable()
+        this.myForm.get('titulo')?.disable()
+        this.myForm.get('nombre')?.disable()
+        this.myForm.get('numero')?.disable()
       }
     });
+
+    this.myForm.get('libro')?.valueChanges.subscribe(value => {
+      if (value) {
+        console.log('entro en libro')
+        this.fetchTitles(null, value)
+        //this.fetchChapters(null, value)
+      }
+    });
+
+    this.fetchLaws()
   }
 
-  resetFields() {
-    this.myControlDocuments.reset();
-    this.selectedDocument = 0;
-    this.myControlTitles.reset();
-    this.selectedTitle = 0;
-    this.sendingData.id_titulo = 0;
-    this.name = "";
+  fetchLaws():void {
+    this.apiService.getLeyes().subscribe({
+      next: res => {
+        this.leyes = res
+      }, error: err => {
+        this.snackBar.open('Ocurrió un error al recuperar las leyes', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
   }
 
-  errorHandling(err: any) {
-    if(err.status != 400){
-      this.showMain = true;
-      this.showSpinner = false;
-      this.snackBar.open('Error al cargar los Documentos', '', this.config_snack);
+  fetchBooks(id:string):void {
+    this.apiService.fetchBooks(`?lawId=${id}`).subscribe({
+      next: res => {
+        this.libros = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar los libros', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
+  }
+
+  fetchTitles(lawId:string, bookId?:string) {
+    let params = ''
+    if(bookId) {
+      params = `?bookId=${bookId}`
+    } else {
+      params = `?lawId=${lawId}`
     }
-    console.log(err);
+    this.apiService.fetchTitles(params).subscribe({
+      next:res => {
+        this.titulos = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar los títulos', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
+    
+  }
+
+  onSubmit(): void {
+    if (this.myForm.valid) {
+      const values = this.myForm.value
+      const body = {
+        name: values.nombre.toString(),
+        number:values.numero.toString(),
+        lawId:values.ley.toString(),
+        titleId: values.titulo === '' ? null : values.titulo.toString()
+      }
+
+      console.log(body)
+
+      if(body.titleId === null) {
+        delete body.titleId
+      } else {
+        delete body.lawId
+      }
+
+      console.log(body)
+      this.apiService.addChapter(body).subscribe({
+        next: res => {
+          if (!values.conservarLey) {
+            this.myForm.get('ley')?.reset('');
+            this.myForm.get('libro')?.reset('');
+          }
+
+          if (!values.conservarLibro) {
+            this.myForm.get('libro')?.reset('');
+          }
+
+          this.myForm.get('nombre')?.reset('');
+          this.myForm.get('numero')?.reset('');
+          
+          this.snackBar.open('Capítulo guardado correctamente', '', { 
+            duration: 3000,
+            verticalPosition: this.verticalPosition
+          });
+        }, error: err => {
+          console.error(err)
+          this.snackBar.open('Ocurrió un erro al guardar el capítulo', '', { 
+            duration: 3000,
+            verticalPosition: this.verticalPosition
+          });
+        }
+      })
+
+
+      // Limpiar campos
+      
+    }
   }
 
 }

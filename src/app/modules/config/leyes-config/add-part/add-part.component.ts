@@ -4,32 +4,39 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 import { ApiService } from 'src/app/shared/services/api.service';
 
 @Component({
-  selector: 'app-add-section',
-  templateUrl: './add-section.component.html',
-  styleUrls: ['./add-section.component.css']
+  selector: 'app-add-part',
+  templateUrl: './add-part.component.html',
+  styleUrls: ['./add-part.component.scss']
 })
-export class AddSectionComponent implements OnInit {
-  title = "Agregar Sección de Documento";
+export class AddPartComponent implements OnInit {
+
+  title = "Agregar Parte del artículo";
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   myForm: FormGroup;
   leyes = [];
   libros = []; 
   titulos = [];
-  capitulos = []
+  capitulos = [];
+  secciones = [];
+  articulos = [];
 
   constructor(public apiService: ApiService, public snackBar: MatSnackBar, private fb: FormBuilder) { 
     this.myForm = this.fb.group({
       ley: ['', Validators.required],
-      conservarLey:[false],
+      conservarLey: [false],
       libro: [{value:'', disabled:true}], // Opcional
-      conservarLibro:[false],
+      conservarLibro: [false],
       titulo: [{value:'', disabled:true}], // Opcional
-      conservarTitulo:[false],
-      capitulo: [{value:'', disabled:true}, Validators.required],
-      conservarCapitulo:[false],
-      nombre: [{value:'', disabled:true}, Validators.required],
-      numero: [{value:'', disabled:true}, [Validators.required, Validators.pattern('^[0-9]+$')]]
+      conservarTitulo: [false],
+      capitulo: [{value:'', disabled:true}], //Opcional
+      conservarCapitulo: [false],
+      seccion: [{value:'', disabled:true}], //Opcional
+      conservarSeccion: [false],
+      articulo: [{value:'', disabled:true}, [Validators.required]], //Opcional
+      conservarArticulo: [false],
+      letra: [{value:'', disabled:true}, [Validators.required]],
+      contenido: [{value:'', disabled:true}, [Validators.required]]
     });
   }
 
@@ -39,19 +46,21 @@ export class AddSectionComponent implements OnInit {
         this.myForm.get('libro')?.enable()
         this.myForm.get('titulo')?.enable()
         this.myForm.get('capitulo')?.enable()
+        this.myForm.get('articulo')?.enable()
         this.fetchBooks(value); // Solo se ejecuta si hay un valor de ley seleccionado
         this.fetchTitles(value)
         this.fetchChapters(value)
+        this.fetchArticles(value)
       } else {
         this.myForm.get('libro')?.disable()
         this.myForm.get('titulo')?.disable()
         this.myForm.get('capitulo')?.disable()
+        this.myForm.get('articulo')?.disable()
       }
     });
 
     this.myForm.get('libro')?.valueChanges.subscribe(value => {
       if (value) {
-        console.log('entro en libro')
         this.fetchTitles(null, value)
         //this.fetchChapters(null, value)
       }
@@ -59,20 +68,36 @@ export class AddSectionComponent implements OnInit {
 
     this.myForm.get('titulo')?.valueChanges.subscribe(value => {
       if (value) {
-        console.log('entro en titulo')
         this.fetchChapters(null, null, value)
+        this.fetchArticles(null, null, value)
       }
     });
 
     this.myForm.get('capitulo')?.valueChanges.subscribe(value => {
-      if(value) {
-        this.myForm.get('nombre')?.enable()
-        this.myForm.get('numero')?.enable()
+      if (value) {
+        this.myForm.get('seccion')?.enable()
+        this.fetchSections(null, null, null, value)
+        this.fetchArticles(null, null, null, value)
       } else {
-        this.myForm.get('nombre')?.disable()
-        this.myForm.get('numero')?.disable()
+        this.myForm.get('seccion')?.disable()
       }
-    })
+    });
+
+    this.myForm.get('seccion')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.fetchArticles(null, null, null, null, value)
+      }
+    });
+
+    this.myForm.get('articulo')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.myForm.get('letra')?.enable()
+        this.myForm.get('contenido')?.enable()
+      } else {
+        this.myForm.get('letra')?.disable()
+        this.myForm.get('contenido')?.disable()
+      }
+    });
 
     this.fetchLaws()
   }
@@ -147,47 +172,106 @@ export class AddSectionComponent implements OnInit {
     })
   }
 
+  fetchSections(lawId?:string, bookId?:string, titleId?:string, chapterId?:string) {
+    let params = ''
+    if(bookId) {
+      params = `?bookId=${bookId}`
+    } else if (titleId){
+      params = `?titleId=${titleId}`
+    } else if (chapterId) {
+      params = `?chapterId=${chapterId}`
+    } else {
+      params = `?lawId=${lawId}`
+    }
+
+    this.apiService.fetchSections(params).subscribe({
+      next:res => {
+        this.secciones = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar las secciones', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
+  }
+
+  fetchArticles = (lawId?:string, bookId?:string, titleId?:string, chapterId?:string, sectionId?:string) => {
+    let params = ''
+    if(bookId) {
+      params = `?bookId=${bookId}`
+    } else if (titleId){
+      params = `?titleId=${titleId}`
+    } else if (chapterId) {
+      params = `?chapterId=${chapterId}`
+    } else if (sectionId) {
+      params = `?sectionId=${sectionId}`
+    } else {
+      params = `?lawId=${lawId}`
+    }
+
+    this.apiService.fetchArticle(params).subscribe({
+      next: res => {
+        this.articulos = res
+      }, error: err => {
+        console.error(err)
+        this.snackBar.open('Ocurrió un erro al recuperar los artículos', '', { 
+          duration: 3000,
+          verticalPosition: this.verticalPosition
+        });
+      }
+    })
+  }
+
   onSubmit(): void {
     if (this.myForm.valid) {
       const values = this.myForm.value
       const body = {
-        name: values.nombre.toString(),
-        number:values.numero.toString(),
-        chapterId:values.capitulo.toString(),
+        letter:values.letra.toString(),
+        content:values.contenido.toString(),
+        articleId: values.articulo.toString(),
       }
 
-      this.apiService.addSection(body).subscribe({
+      console.log(body)
+
+      this.apiService.addPart(body).subscribe({
         next: res => {
           if (!values.conservarLey) {
             this.myForm.get('ley')?.reset('');
             this.myForm.get('libro')?.reset('');
             this.myForm.get('titulo')?.reset('');
-            this.myForm.get('capitulo')?.reset('');
+            this.myForm.get('seccion')?.reset('');
+            this.myForm.get('articulo')?.reset('');
           }
           if (!values.conservarLibro) {
             this.myForm.get('libro')?.reset('');
-            this.myForm.get('titulo')?.reset('');
-            this.myForm.get('capitulo')?.reset('');
           }
-          if(!values.conservarTitulo) {
+          if (!values.conservarTitulo) {
             this.myForm.get('titulo')?.reset('');
-            this.myForm.get('capitulo')?.reset('');
           }
-          if(!values.conservarCapitulo) {
+          if (!values.conservarCapitulo) {
             this.myForm.get('capitulo')?.reset('');
+            this.myForm.get('seccion')?.reset('');
+          }
+          if (!values.conservarSeccion) {
+            this.myForm.get('seccion')?.reset('');
+          }
+          if (!values.conservarArticulo) {
+            this.myForm.get('articulo')?.reset('');
           }
 
-          this.myForm.get('nombre')?.reset('');
-          this.myForm.get('numero')?.reset('');
+          this.myForm.get('letra')?.reset('');
+          this.myForm.get('contenido')?.reset('');
           
           // Deshabilitar inputs si no hay ley seleccionada
-          this.snackBar.open('Capítulo guardado correctamente', '', { 
+          this.snackBar.open('Parte guardada correctamente', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition
           });
         }, error: err => {
           console.error(err)
-          this.snackBar.open('Ocurrió un erro al guardar el capítulo', '', { 
+          this.snackBar.open('Ocurrió un erro al guardar la parte', '', { 
             duration: 3000,
             verticalPosition: this.verticalPosition
           });

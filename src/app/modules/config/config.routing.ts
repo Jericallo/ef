@@ -33,6 +33,9 @@ import { ProfileGuard } from 'src/app/shared/services/profile.guard';
 import { LogsComponent } from './logs/logs.component';
 import { DocumentationsCatalogComponent } from './documentations-catalog/documentations-catalog.component';
 import { AddBookComponent } from './leyes-config/add-book/add-book.component';
+import { AddPartComponent } from './leyes-config/add-part/add-part.component';
+import { AddFractionComponent } from './leyes-config/add-fraction/add-fraction.component';
+import { AddPointComponent } from './leyes-config/add-point/add-point.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -398,6 +401,39 @@ export const ConfigRoutes: Routes = [
                 component: AddBookComponent,
                 data: {
                     title: 'Libros',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'parts',
+                component: AddPartComponent,
+                data: {
+                    title: 'Partes',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'fractions',
+                component: AddFractionComponent,
+                data: {
+                    title: 'Fracciones',
+                    urls: [
+                        { title: 'Configuración', url: '/config' },
+                        { title: 'user-profile' }
+                    ]
+                }
+            },
+            {
+                path: 'points',
+                component: AddPointComponent,
+                data: {
+                    title: 'Puntos',
                     urls: [
                         { title: 'Configuración', url: '/config' },
                         { title: 'user-profile' }
