@@ -10,9 +10,9 @@
                     <mat-header-cell *matHeaderCellDef>{{ columnNames[column] }}</mat-header-cell>
                     <mat-cell *matCellDef="let element; let i = index" class="table-element">
                         <ng-container [ngSwitch]="column">
-                            <ng-container *ngSwitchCase="'pregunta'">{{ element.name }}</ng-container>
-                            <ng-container *ngSwitchCase="'agregado_por'">{{ element.email }}</ng-container>
-                            <ng-container *ngSwitchCase="'fecha'">{{ element.phoneNumber }}</ng-container>
+                            <ng-container *ngSwitchCase="'pregunta'">{{ element.question }}</ng-container>
+                            <!-- <ng-container *ngSwitchCase="'agregado_por'">{{ element.email }}</ng-container>
+                            <ng-container *ngSwitchCase="'fecha'">{{ element.phoneNumber }}</ng-container> -->
                             <ng-container *ngSwitchCase="'acciones'">
                                 <button mat-icon-button (click)="openEdit(element)">
                                     <mat-icon>edit</mat-icon>
