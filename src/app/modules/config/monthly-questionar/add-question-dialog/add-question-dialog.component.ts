@@ -26,25 +26,24 @@ export class AddQuestionDialogComponent implements OnInit {
 
   saveUser() {
     if (this.camposSonValidos()) {
-      // const body = this.editedUser
-      // body.phoneNumber = body.phoneNumber.toString()
-      // this.apiService.postUser(body).subscribe(
-      //   (response) => {
-      //     Swal.fire({
-      //       title: 'Usuario agregado exitosamente!',
-      //       icon: 'success',
-      //       showDenyButton: false,
-      //       showCancelButton: false,
-      //       showConfirmButton:true,
-      //       confirmButtonText:"Aceptar",
-      //       confirmButtonColor: "#109ff5"
-      //     })
+      const body = {content:this.question}
+      this.apiService.postMonthlyQuestions(body).subscribe(
+        (response) => {
+          Swal.fire({
+            title: 'Pregunta agregada exitosamente!',
+            icon: 'success',
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton:true,
+            confirmButtonText:"Aceptar",
+            confirmButtonColor: "#109ff5"
+          })
           this.dialogRef.close()
-      //   },
-      //   (error) => {
-      //     console.error('Error al agregar el usuario', error);
-      //   }
-      // );
+        },
+        (error) => {
+          console.error('Error al agregar el usuario', error);
+        }
+      );
     } else {
       this.camposInvalidos = true;
     }

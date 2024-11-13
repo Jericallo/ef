@@ -22,7 +22,7 @@ export class MonthlyQuestionarComponent implements OnInit {
 
   dataSource!: MatTableDataSource<any>;
   usersList = []
-  columnsToDisplay = ['pregunta', 'agregado_por', 'fecha', 'acciones'];
+  columnsToDisplay = ['pregunta', 'acciones'];
 
   columnNames = {
     pregunta: 'Pregunta',   
@@ -34,7 +34,7 @@ export class MonthlyQuestionarComponent implements OnInit {
   constructor(private apiService: ApiService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getUsers()
+    this.getQuestions()
   }
 
   openAdd() {
@@ -42,7 +42,7 @@ export class MonthlyQuestionarComponent implements OnInit {
       width: '1000px',
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.getUsers();
+      this.getQuestions();
     });
   }
   
@@ -65,12 +65,12 @@ export class MonthlyQuestionarComponent implements OnInit {
       data: { user }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.getUsers()
+      this.getQuestions()
     });
   }
 
-  getUsers(){
-    this.apiService.getUsers().subscribe({
+  getQuestions(){
+    this.apiService.getMonthlyQuestions().subscribe({
       next:res => {
         console.log(res)
         this.usersList = res;
@@ -80,10 +80,10 @@ export class MonthlyQuestionarComponent implements OnInit {
     })
   }
 
-  deleteUser(userId: number) {
-    this.apiService.deleteUser(userId).subscribe(
+  deleteUser(userId: string) {
+    this.apiService.deleteMonthlyQuestions(userId).subscribe(
       () => {
-        this.getUsers();
+        this.getQuestions();
       },
       (error) => {
         console.error('Error al eliminar el usuario:', error);
