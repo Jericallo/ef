@@ -76,6 +76,11 @@ export class MonthlyQuestionarComponent implements OnInit {
         this.usersList = res;
         this.dataSource = new MatTableDataSource<any>(this.usersList);
         console.log(res.result)
+      }, error: err => {
+        console.log(err)
+        if(err.status === 404) {
+          this.dataSource = new MatTableDataSource<any>([]);
+        }
       }
     })
   }

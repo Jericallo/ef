@@ -27,6 +27,7 @@ import { VideoIntroComponent } from './video-intro/video-intro.component';
 import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MyCompanyComponent } from './my-company/my-company.component';
+import { ComplianceOpinionHistoryComponent } from './my-company/compliance-opinion-history/compliance-opinion-history.component';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { MyCompanyComponent } from './my-company/my-company.component';
     VideoIntroComponent,
     CountdownModalComponent,
     MyCompanyComponent,
+    ComplianceOpinionHistoryComponent,
   ],
   imports: [
     CommonModule,

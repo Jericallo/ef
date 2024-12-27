@@ -1,0 +1,38 @@
+<div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre de la Compañía</th>
+          <th>RFC</th>
+          <th>Fecha de Opinión</th>
+          <th>Respuesta de Opinión</th>
+          <th>Contenido</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data">
+          <td>{{ item.id }}</td>
+          <td>{{ item.companyName }}</td>
+          <td>{{ item.rfc }}</td>
+          <td>{{ item.date }}</td>
+          <td>{{ item.response }}</td>
+          <td><button (click)="openModal(item)">Abrir</button></td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Modal -->
+    <div class="modal" *ngIf="isModalOpen">
+      <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h2>Detalle</h2>
+        <p>ID: {{ selectedItem?.id }}</p>
+        <p>Nombre de la Compañía: {{ selectedItem?.companyName }}</p>
+        <p>RFC: {{ selectedItem?.rfc }}</p>
+        <p>Fecha de Opinión: {{ selectedItem?.date }}</p>
+        <p>Respuesta de Opinión: {{ selectedItem?.response }}</p>
+      </div>
+    </div>
+  </div>
+  

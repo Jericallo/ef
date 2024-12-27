@@ -1,0 +1,29 @@
+<div class="questionsContainer">
+    <h1>Cuestionario mensual</h1>
+  
+    <div class="container">
+      <div *ngFor="let q of questions; let i = index" class="question-item">
+        <div class="question-content">
+          <span>{{ q.question }}</span>
+        </div>
+  
+        <div class="button-container">
+          <button mat-flat-button
+                  [color]="q.answer === 'no' ? 'primary' : ''"
+                  (click)="selectAnswer(i, 'no')">
+            No
+          </button>
+          <button mat-flat-button
+                  [color]="q.answer === 'yes' ? 'primary' : ''"
+                  (click)="selectAnswer(i, 'yes')">
+            Sí
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div style="width: 100%; display: flex; justify-content: end; gap: 10px;">
+      <button mat-button color="primary" (click)="submitAnswers()">Enviar</button>
+      <button mat-button color="secondary" (click)="closeDialog()">Cancelar</button>
+    </div>
+  </div>

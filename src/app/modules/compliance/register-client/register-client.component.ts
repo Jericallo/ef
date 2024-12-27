@@ -7,6 +7,7 @@ import { DetailDayComponent } from './detail-day/detail-day.component';
 import { DetailCumplimientoComponent } from './detail-cumplimiento/detail-cumplimiento.component';
 import { HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { QuestionnaireModalComponent } from './questionnaire-modal/questionnaire-modal.component';
 
 @Component({
   selector: 'app-register-client',
@@ -204,6 +205,61 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
             documents: task.documents
           }
         });
+        console.log(res)
+
+        let status = 0
+        switch(res.questionnaire.status){
+          case 'PendingStatus':
+            status = 0
+            break;
+          case 'FinishedStatus':
+            status = 1
+            break;
+          case 'WaitingValidationStatus':
+            status = 2
+            break;
+          case 'ValidatedStatus':
+            status = 3
+            break;
+          default:
+            status =0
+        }
+        let finish_date = null
+        if(res.questionnaire.finishedAt){
+          finish_date = (new Date( new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.finishedAt))).getTime()).toString()
+        }
+
+        const questionarieTask = {
+          id: "-1",
+          id_tipo: 1,
+          id_obligacion: "-1",
+          descripcion: "Cuestionario mensual",
+          ideal_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.startPeriod))).getTime()).toString(),
+          ideal_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.firstPeriod))).getTime() - 1).toString(),
+          recommended_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.firstPeriod))).getTime()).toString(),
+          recommended_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.secondPeriod))).getTime() - 1).toString(),
+          close_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.secondPeriod))).getTime()).toString(),
+          close_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.thirdPeriod))).getTime() - 1).toString(),
+          urgent_date_start: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.thirdPeriod))).getTime()).toString(),
+          urgent_date_end: (new Date(new Intl.DateTimeFormat('en-US', options).format(new Date(res.questionnaire.fourthPeriod))).getTime()).toString(),
+          fecha_creacion: new Date(),
+          fecha_modificacion: null,
+          deleted: 0,
+          prioridad: 1,
+          impuesto_isr: 0,
+          impuesto_iva: 0,
+          impuesto_nomina: 0,
+          impuesto_otro: 0,
+          completado: status,
+          fecha_completado: finish_date,
+          obligations: {
+            nombre: "Cuestionario mensual",
+            descripcion: "Cuestionario mensual"
+          },
+          documents: []
+        }
+
+        tasks.push(questionarieTask)
         this.tableData = tasks;
         //this.tableData = this.tableData.concat(res.overdue_tasks)
         console.log(this.tableData)
@@ -439,6 +495,24 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   }
 
   prueba(element:any, column:number) {
+
+    console.log(element)
+
+    if(element.descripcion === 'Cuestionario mensual') {
+      const month = this.sendableDate.getMonth()
+      const year = this.sendableDate.getFullYear()
+
+      const dialogRef = this.dialogRef.open(QuestionnaireModalComponent, { 
+
+        data: {month, year} 
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        this.getCompliance()
+      });
+
+      return
+    }
 
     clearTimeout(this.hoverTimer);
     clearTimeout(this.unhoverTimer);
