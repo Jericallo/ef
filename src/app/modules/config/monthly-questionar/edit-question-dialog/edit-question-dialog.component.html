@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Editar pregunta</h2>
+<mat-dialog-content>
+  <div class="grid-container">
+    <div class="grid-item">
+      <mat-form-field>
+        <input matInput [(ngModel)]="question" required placeholder="Pregunta" >
+      </mat-form-field>
+      <mat-error *ngIf="camposInvalidos">
+         Por favor, ingrese una pregunta de sí o no.
+      </mat-error>
+    </div>
+  </div>
+  <mat-error *ngIf="camposInvalidos" class="error-message">Por favor, complete todos los campos.</mat-error>
+</mat-dialog-content>
+<mat-dialog-actions style="justify-content: end;">
+  <button mat-raised-button color="primary" (click)="saveUser()">Editar</button>
+  <button mat-button (click)="cancel()">Cancelar</button>
+</mat-dialog-actions>

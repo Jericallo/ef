@@ -22,6 +22,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { QuestionnaireHistoryComponent } from './questionnaire-history/questionnaire-history.component';
 
 registerLocaleData(localeEs);
 
@@ -34,6 +35,7 @@ registerLocaleData(localeEs);
     ChatComponent,
     PdfViewerModalComponent,
     ResultsComponent,
+    QuestionnaireHistoryComponent,
   ],
   providers: [DatePipe, CapacitationsComponent, {provide: LOCALE_ID, useValue: 'es'}],
   imports: [

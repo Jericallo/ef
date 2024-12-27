@@ -27,6 +27,7 @@ import { MousePositionService } from './index/mouse-position.service';
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { EditVideoComponent } from './register/edit-video/edit-video.component';
 import { HelipopperModule } from '@ngneat/helipopper';
+import { QuestionnaireModalComponent } from './register-client/questionnaire-modal/questionnaire-modal.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { HelipopperModule } from '@ngneat/helipopper';
     CustomTooltipComponent,
     ModalCalendarDayComponent,
     EditVideoComponent,
+    QuestionnaireModalComponent,
   ],
   imports: [
     CommonModule,

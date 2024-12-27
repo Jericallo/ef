@@ -196,12 +196,13 @@
                     <div class="indicador" style="margin-top: 7px; background-color: red;"
                     *ngIf="modalIsRojoSolido(cumplimiento, exModalData.date)"> 
                     </div>
-                    <span *ngIf="modalIsRojoSolido(cumplimiento, exModalData.date)" >
-                        <strong (click)="overrideBackup(i)" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
-                            {{cumplimiento.obligations.nombre}}
+                    <span *ngIf="modalIsRojoSolido(cumplimiento, exModalData.date)">
+                        <strong (click)="cumplimiento.source === 'questionnaire' ? goToQuestionnaire(i) : overrideBackup()" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
+                            {{ cumplimiento.source === 'questionnaire' ? 'CUESTIONARIO MENSUAL' : cumplimiento.obligations.nombre }}
                         </strong>
-                        {{cumplimiento.obligations.respaldo}}
+                        {{ cumplimiento.obligations.respaldo }}
                     </span>
+                    
                 </div>
 
                 <div *ngFor="let cumplimiento of cumplimientos; let i = index" class="container rojos" style="display: flex; flex-direction: row;" >
@@ -209,8 +210,8 @@
                     *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsRojorapido(cumplimiento, exModalData.date)" >
-                        <strong (click)="overrideBackup(i)" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
-                            {{cumplimiento.obligations.nombre}}
+                        <strong (click)="cumplimiento.source === 'questionnaire' ? goToQuestionnaire(i) : overrideBackup()" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
+                            {{ cumplimiento.source === 'questionnaire' ? 'CUESTIONARIO MENSUAL' : cumplimiento.obligations.nombre }}
                         </strong>
                         {{cumplimiento.obligations.respaldo}}
                     </span>
@@ -221,8 +222,8 @@
                     *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsRojoLento(cumplimiento, exModalData.date)">
-                        <strong (click)="overrideBackup(i)" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
-                            {{cumplimiento.obligations.nombre}}
+                        <strong (click)="cumplimiento.source === 'questionnaire' ? goToQuestionnaire(i) : overrideBackup()" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
+                            {{ cumplimiento.source === 'questionnaire' ? 'CUESTIONARIO MENSUAL' : cumplimiento.obligations.nombre }}
                         </strong>
                         {{cumplimiento.obligations.respaldo}}
                     </span>
@@ -235,8 +236,8 @@
                     *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsAmarilloRapido(cumplimiento, exModalData.date)">
-                        <strong (click)="overrideBackup(i)" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
-                            {{cumplimiento.obligations.nombre}}
+                        <strong (click)="cumplimiento.source === 'questionnaire' ? goToQuestionnaire(i) : overrideBackup()" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
+                            {{ cumplimiento.source === 'questionnaire' ? 'CUESTIONARIO MENSUAL' : cumplimiento.obligations.nombre }}
                         </strong>
                         {{cumplimiento.obligations.respaldo}}
                     </span>
@@ -247,8 +248,8 @@
                     *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsAmarilloLento(cumplimiento, exModalData.date)" >
-                        <strong (click)="overrideBackup(i)" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
-                            {{cumplimiento.obligations.nombre}}
+                        <strong (click)="cumplimiento.source === 'questionnaire' ? goToQuestionnaire(i) : overrideBackup()" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
+                            {{ cumplimiento.source === 'questionnaire' ? 'CUESTIONARIO MENSUAL' : cumplimiento.obligations.nombre }}
                         </strong>
                         {{cumplimiento.obligations.respaldo}}
                     </span>
@@ -261,8 +262,8 @@
                     *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsAmarilloFijo(cumplimiento, exModalData.date)">
-                        <strong (click)="overrideBackup(i)" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
-                            {{cumplimiento.obligations.nombre}}
+                        <strong (click)="cumplimiento.source === 'questionnaire' ? goToQuestionnaire(i) : overrideBackup()" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
+                            {{ cumplimiento.source === 'questionnaire' ? 'CUESTIONARIO MENSUAL' : cumplimiento.obligations.nombre }}
                         </strong>
                         {{cumplimiento.obligations.respaldo}}
                     </span>
@@ -277,8 +278,8 @@
                     *ngIf="modalIsVerde(cumplimiento, exModalData.date)"> 
                     </div>
                     <span *ngIf="modalIsVerde(cumplimiento, exModalData.date)">
-                        <strong (click)="overrideBackup(i)" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
-                            {{cumplimiento.obligations.nombre}}
+                        <strong (click)="cumplimiento.source === 'questionnaire' ? goToQuestionnaire(i) : overrideBackup()" (mouseenter)="startHoverTimer(i)" (mouseleave)="clearHoverTimer()">
+                            {{ cumplimiento.source === 'questionnaire' ? 'CUESTIONARIO MENSUAL' : cumplimiento.obligations.nombre }}
                         </strong>
                         {{cumplimiento.obligations.respaldo}}
                     </span>

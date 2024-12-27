@@ -114,6 +114,11 @@ export class MenuComponent implements OnInit {
       descripcion: 'Catálogo de documentaciones',
       path: 'documentations-catalog'
     },
+    {
+      icon:'question_answer',
+      descripcion: 'Preguntas mensuales',
+      path:'monthly-questions'
+    }
   ];
 
   control: any[] = [
@@ -126,7 +131,7 @@ export class MenuComponent implements OnInit {
       icon: 'list',
       descripcion: 'Acciones',
       path: 'logs'
-    },
+    }
   ]
 
   videos: any[] = [

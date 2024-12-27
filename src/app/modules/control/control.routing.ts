@@ -4,6 +4,7 @@ import { VideosComponent } from "./videos/videos.component";
 import { QuestionarieComponent } from "./capacitations/questionarie/questionarie.component";
 import { ChatComponent } from "./chat/chat.component";
 import { ResultsComponent } from "./results/results.component";
+import { QuestionnaireHistoryComponent } from "./questionnaire-history/questionnaire-history.component";
 
 export const ControlRoutes: Routes = [
     {
@@ -74,6 +75,22 @@ export const ControlRoutes: Routes = [
                     ]
                 }
             },
+
+            { path: 'questionnaire-history', 
+                component: QuestionnaireHistoryComponent, 
+                pathMatch: 'full' },
+    
+                {
+                    path:'questionnaire-history',
+                    component:QuestionnaireHistoryComponent,
+                    data: {
+                        title:'Historial de cuestionarios',
+                        urls:[
+                            {title:'resultado', url:'/control'},
+                            {title:'resultado'}
+                        ]
+                    }
+                },
         ]
     }
 ];

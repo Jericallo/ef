@@ -1802,4 +1802,71 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
     })
     return this.http.post(url, body, { headers: headers });
   }
+
+  //ENDPOINTS PARA CUESTIONARIOS MENSUALES
+
+  public getMonthlyQuestions():Observable<any> {
+    const url = `${this.apiUrlv3}questionnaire-question`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    })
+    return this.http.get(url, { headers: headers });
+  }
+
+  public getMonthlyQuestionsToAnswer(month:number):Observable<any>{
+    const url = `https://apiefv3.globalbusiness.com.mx/v3/questionnaire-question/${month}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+  
+  public postMonthlyQuestions(body:{content:string}):Observable<any> {
+    const url = `${this.apiUrlv3}questionnaire-question`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    })
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public putMonthlyQuestions(body:{content:string}, id:string):Observable<any> {
+    const url = `${this.apiUrlv3}questionnaire-question/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    })
+    return this.http.put(url, body, { headers: headers });
+  }
+
+  public deleteMonthlyQuestions(id:string):Observable<any> {
+    const url = `${this.apiUrlv3}questionnaire-question/soft-delete/${id}`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    })
+    return this.http.delete(url, { headers: headers });
+  }
+
+  public getMonthlyQuestions2(month:number):Observable<any>{
+    const url = `${this,this.apiUrlv3}questionnaire-question/${month}`;
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+
+  public submitMonthlyAnswers(body: any): Observable<any> {
+    const url = `${this,this.apiUrlv3}questionnaire-answer`;
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.post(url, body, { headers: headers });
+  }
+  
 }

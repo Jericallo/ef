@@ -86,26 +86,33 @@ const MENUITEMS = [
         children:[
             {state:'capacitaciones', name:'Capacitación',type:'link',icon:'local_library'},
             {state:'ayuda', name:'Ayuda',type:'link',icon:'help_center'},
-            {state:'', name:'Supervisión',type:'link',icon:'supervisor_account'},
+            {state:'questionnaire-history', name:'Supervisión',type:'link',icon:'supervisor_account'},
             {state:'', name:'Semaforo',type:'link',icon:'traffic'},
             {state:'', name:'Dictámen',type:'link', icon:'book'},
             {state:'', name:'Mejor',type:'link', icon:'star'}
         ]
     },
     {
-        state:'',
+        state:'warning',
         name:'Precaución',
         type:'sub',
         icon:'',
         class: 'precaucion-menu',
         children:[
-            {state:'', name:'Respuesta SAT',type:'link',icon:'archive'},
-            {state:'', name:'Incumplimientos',type:'link',icon:'crisis_alert'},
+            {state:'my-company', name:'Mi empresa',type:'link', icon:'business'},
+            {state:'', name:'Inconsistencias detectadas por el EF',type:'link',icon:'crisis_alert'},
             {state:'', name:'Sanciones',type:'link',icon:'minor_crash'},
-            {state:'', name:'Auditorías',type:'link',icon:'account_balance'},
+            {state:'', name:'Facultades SAT',type:'link',icon:'account_balance'},
+            {state:'', name:'Invitaciones y requerimientos',type:'link',icon:'account_balance'},
+            {state:'', name:'Opinión de cumplimiento negativa',type:'link',icon:'account_balance'},
+            {state:'', name:'Protocolos de respuestas al SAT',type:'link',icon:'account_balance'},
+            {state:'', name:'Sanciones Penales',type:'link',icon:'archive'},
+            {state:'', name:'PLD',type:'link',icon:'account_balance'},
+            {state:'', name:'Pérdidas o preescripción',type:'link',icon:'account_balance'},
             {state:'', name:'Responsabilidad',type:'link',icon:'fact_check'},
             {state:'', name:'Defensa',type:'link',icon:'gpp_maybe'},
-            {state:'', name:'Pendiente',type:'link', icon:'star'}
+            {state:'', name:'Otros pendientes',type:'link', icon:'star'},
+            
         ]
     }
     /*{
