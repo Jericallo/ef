@@ -26,12 +26,15 @@
     <div class="modal" *ngIf="isModalOpen">
       <div class="modal-content">
         <span class="close" (click)="closeModal()">&times;</span>
-        <h2>Detalle</h2>
-        <p>ID: {{ selectedItem?.id }}</p>
-        <p>Nombre de la Compañía: {{ selectedItem?.companyName }}</p>
-        <p>RFC: {{ selectedItem?.rfc }}</p>
-        <p>Fecha de Opinión: {{ selectedItem?.date }}</p>
-        <p>Respuesta de Opinión: {{ selectedItem?.response }}</p>
+        <!-- <pdf-viewer
+          *ngIf="selectedItem?.file"
+          [src]="selectedItem.file"
+          [render-text]="true"
+          [zoom]="1.0"
+          style="display: block; width: 500px; height: 500px; z-index: 30000;"
+        ></pdf-viewer> -->
+        <iframe [src]="selectedItem.file" width="100%" height="100%" frameborder="0"></iframe>
+        <p *ngIf="!selectedItem?.file">No hay archivo disponible.</p>
       </div>
     </div>
   </div>

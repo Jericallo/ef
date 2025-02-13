@@ -1758,13 +1758,22 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
     return this.http.post(url, body, { headers: headers });
   }
 
-  public fetchMyCompany(id:number):Observable<any> {
-    const url = `${this.apiUrlv3}company?id=${id}`
+  public fetchMyCompany():Observable<any> {
+    const url = `${this.apiUrlv3}company`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization': `Bearer ${this.getToken()}`
     })
     return this.http.get(url, { headers: headers });
+  }
+
+  public deleteCompany():Observable<any> {
+    const url = `${this.apiUrlv3}company/all`
+    let headers = new HttpHeaders({
+      'Content-type':'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    return this.http.delete(url, { headers: headers });
   }
 
   public updateMyCompany(id:string, body:{rfc:string, taxRegime:string, activity:string, bussinesName:string}):Observable<any> {
@@ -1868,5 +1877,49 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
     });
     return this.http.post(url, body, { headers: headers });
   }
+
+  public getDeclarations():Observable<any> {
+    const url = `${this,this.apiUrlv3}company-declaration-anual`;
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
   
+  public getNotifications():Observable<any> {
+    const url = `${this,this.apiUrlv3}notifications`;
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public getTaxReturn():Observable<any> {
+    const url = `${this,this.apiUrlv3}tax-returns`;
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public getAllTaxReturn(year:number):Observable<any> {
+    const url = `${this,this.apiUrlv3}tax-returns-month/all?year=${year}`;
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
+
+  public postCompany(body:any):Observable<any> {
+    
+    const url = `${this,this.apiUrlv3}company`;
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.post(url, body, { headers: headers });
+  }
 }

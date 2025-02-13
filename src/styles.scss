@@ -23,3 +23,8 @@ body {
 body::-webkit-scrollbar {
   display: none; /* Oculta el scrollbar */
 }
+
+.custom-snackbar {
+  background-color: #1f8b07 !important; // Color rojo, puedes cambiarlo
+  color: white !important;
+}

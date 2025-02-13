@@ -3,143 +3,250 @@
 </div>
 <app-traffic-light></app-traffic-light>
 
-<mat-tab-group>
-  <mat-tab label="Dar de alta la empresa">
-    
-    <form [formGroup]="empresaForm">
-      <!-- Razón Social -->
-       <div>
-        <label for="razonSocial">Razón Social:</label>
-        <input id="razonSocial" formControlName="razonSocial" maxlength="100" />
-       </div>
-      
-
-      <!-- RFC -->
-      <div>
-        <label for="rfc">RFC:</label>
+<mat-tab-group style="overflow: none">
+  <mat-tab label="Datos de la empresa" style="overflow: none">
+    <form
+      class="tutorial-div"
+      [formGroup]="empresaForm"
+      [ngClass]="{
+        'big-tutorial-div': (step === 1 && company !== null) || step === 3
+      }"
+      *ngIf="!companyInformation"
+    >
+      <div class="step">
+        <legend>Paso 1 - RFC</legend>
         <input id="rfc" formControlName="rfc" maxlength="14" />
       </div>
-      
 
-      <!-- Regimen Fiscal -->
-      <div>
-        <label for="regimenFiscal">Regimen Fiscal:</label>
-        <select id="regimenFiscal" formControlName="regimenFiscal">
-          <option *ngFor="let regimen of regimenes" [value]="regimen">
-            {{ regimen }}
-          </option>
-        </select>
+      <div class="step">
+        <legend>Paso 2 - Subir constancia de situación fiscal</legend>
+        <div
+          class="upload-container"
+          (dragover)="onDragOver($event, 'pdf')"
+          (dragleave)="onDragLeave($event, 'pdf')"
+          (drop)="onDropPDF($event)"
+          [class.dragover]="isDraggingPDF"
+        >
+          <input
+            type="file"
+            id="pdfInput"
+            (change)="onPDFUpload($event)"
+            accept=".pdf"
+            hidden
+          />
+          <label for="pdfInput" class="upload-label">
+            📂 Arrastra un archivo aquí o
+            <span>haz clic para subir un PDF</span>
+          </label>
+        </div>
+        <p *ngIf="fileNamePDF">{{ fileNamePDF }}</p>
+
+        <div class="data-container" *ngIf="company">
+          <span
+            >Denominación/Razón Social:
+            {{ empresaForm.get("name")?.value }}</span
+          >
+          <span
+            >Nombre comercial:
+            {{ empresaForm.get("commercialName")?.value }}</span
+          >
+          <span
+            >Régimen capital:
+            {{ empresaForm.get("capitalRegime")?.value }}</span
+          >
+          <span>RFC: {{ empresaForm.get("rfc")?.value }}</span>
+          <span
+            >Fecha de inicio de operaciones:
+            {{ empresaForm.get("startDate")?.value }}</span
+          >
+          <span
+            >Estatus del padrón: {{ empresaForm.get("status")?.value }}</span
+          >
+          <span
+            >Fecha de último cambio de estado:
+            {{ empresaForm.get("lastUpdateDate")?.value }}</span
+          >
+
+          <span>Código postal: {{ empresaForm.get("postalCode")?.value }}</span>
+          <span
+            >Dirección: {{ empresaForm.get("avenueType")?.value }}
+            {{ empresaForm.get("streetName")?.value }} no.
+            {{ empresaForm.get("exteriorNumber")?.value }} int.
+            {{ empresaForm.get("interiorNumber")?.value }}, entre
+            {{ empresaForm.get("betweenStreets")?.value }} y
+            {{ empresaForm.get("street")?.value }}, col
+            {{ empresaForm.get("neighborhoodName")?.value }},
+            {{ empresaForm.get("municipalityName")?.value }}
+            {{ empresaForm.get("state")?.value }}
+          </span>
+        </div>
       </div>
-     
 
-      <!-- Actividad -->
-       <div>
-        <label for="actividad">Actividad:</label>
-        <select id="actividad" formControlName="actividad">
-          <option *ngFor="let actividad of actividades" [value]="actividad">
-            {{ actividad }}
-          </option>
-        </select>
-       </div>
-      
-
-      <!-- Domicilio Fiscal -->
-      <div>
-        <label for="calle">Calle:</label>
-        <input id="calle" formControlName="calle" maxlength="100" />
-      </div>
-      <div>
-        <label for="noExterior">No. Exterior:</label>
-        <input id="noExterior" formControlName="noExterior" maxlength="5" />
-      </div>
-      <div>
-        <label for="noInterior">No. Interior:</label>
-        <input id="noInterior" formControlName="noInterior" maxlength="5" />
-      </div>
-      <div>
-        <label for="cp">CP:</label>
-        <input id="cp" formControlName="cp" maxlength="5" />
-      </div>
-      <div>
-        <label for="ciudad">Ciudad:</label>
-        <input id="ciudad" formControlName="ciudad" maxlength="100" />
-      </div>
-      <div>
-        <label for="estado">Estado:</label>
-        <input id="estado" formControlName="estado" maxlength="100" />
+      <div class="step">
+        <legend>Paso 3 - ¿La empresa tiene una o varias sucursales?</legend>
+        <div style="display: flex; flex-direction: row; gap: 15px">
+          <span>No</span>
+          <mat-slide-toggle formControlName="moreBranches"></mat-slide-toggle>
+          <span>Si</span>
+        </div>
       </div>
 
-      <!-- Fiel -->
-      <fieldset>
-        <legend>Fiel</legend>
-        <label for="certificadoFiel">Certificado (.CER):</label>
-        <input
-          type="file"
-          id="certificadoFiel"
-          (change)="onFileChange($event, 'certificadoFiel')"
-          accept=".cer"
-        />
+      <div class="step">
+        <legend>Paso 4 - e.firma</legend>
+        <label for="fileCer">Certificado (.CER):</label>
+        <div
+          class="upload-container"
+          (dragover)="onDragOver($event, 'cer')"
+          (dragleave)="onDragLeave($event, 'cer')"
+          (drop)="onDrop($event, 'cer')"
+          [class.dragover]="isDraggingCER"
+        >
+          <input
+            type="file"
+            id="fileCer"
+            (change)="onFileChange($event, 'fileCer')"
+            accept=".cer"
+            hidden
+          />
+          <label for="fileCer" class="upload-label">
+            📂 Arrastra un archivo aquí o
+            <span>haz clic para subir un certificado</span>
+          </label>
+        </div>
+        <p *ngIf="fileNameCER">{{ fileNameCER }}</p>
 
-        <label for="llavePrivadaFiel">Llave Privada (.KEY):</label>
-        <input
-          type="file"
-          id="llavePrivadaFiel"
-          (change)="onFileChange($event, 'llavePrivadaFiel')"
-          accept=".key"
-        />
+        <label for="fileKey">Llave Privada (.KEY):</label>
+        <div
+          class="upload-container"
+          (dragover)="onDragOver($event, 'key')"
+          (dragleave)="onDragLeave($event, 'key')"
+          (drop)="onDrop($event, 'key')"
+          [class.dragover]="isDraggingKEY"
+        >
+          <input
+            type="file"
+            id="fileKey"
+            (change)="onFileChange($event, 'fileKey')"
+            accept=".key"
+            hidden
+          />
+          <label for="fileKey" class="upload-label">
+            📂 Arrastra un archivo aquí o
+            <span>haz clic para subir una llave</span>
+          </label>
+        </div>
+        <p *ngIf="fileNameKEY">{{ fileNameKEY }}</p>
 
-        <label for="contrasenaFiel">Contraseña:</label>
-        <input
-          type="password"
-          id="contrasenaFiel"
-          formControlName="contrasenaFiel"
-          maxlength="20"
-        />
-      </fieldset>
+        <label for="password">Contraseña:</label>
+        <input id="password" formControlName="password" maxlength="20" />
+      </div>
 
-      <!-- Sellos -->
-      <fieldset>
-        <legend>Sellos</legend>
-        <label for="certificadoSellos">Certificado (.CER):</label>
-        <input
-          type="file"
-          id="certificadoSellos"
-          (change)="onFileChange($event, 'certificadoSellos')"
-          accept=".cer"
-        />
-
-        <label for="llavePrivadaSellos">Llave Privada (.KEY):</label>
-        <input
-          type="file"
-          id="llavePrivadaSellos"
-          (change)="onFileChange($event, 'llavePrivadaSellos')"
-          accept=".key"
-        />
-
-        <label for="contrasenaSellos">Contraseña:</label>
-        <input
-          type="password"
-          id="contrasenaSellos"
-          formControlName="contrasenaSellos"
-          maxlength="20"
-        />
-      </fieldset>
-      <button [disabled]="!empresaForm.valid" (click)="submitMyCompany()">Actualizar</button>
+      <button (click)="uploadCompany()" class="stepper" [disabled]="empresaForm.invalid">
+        Subir información
+      </button>      
     </form>
+
+    <div class="company-div" *ngIf="companyInformation">
+      <h2>{{ companyInformation.name }}</h2>
+
+      <div class="container">
+        <div class="section">
+          <h3>Datos de Identificación del Contribuyente:</h3>
+          <table>
+            <tr>
+              <th>RFC:</th>
+              <td>{{ companyInformation.rfc }}</td>
+            </tr>
+            <tr>
+              <th>Denominación/Razón Social:</th>
+              <td>{{ companyInformation.name }}</td>
+            </tr>
+            <tr>
+              <th>Régimen Capital:</th>
+              <td>{{ companyInformation.capitalRegime }}</td>
+            </tr>
+            <tr>
+              <th>Nombre Comercial:</th>
+              <td>{{ companyInformation.commercialName }}</td>
+            </tr>
+            <tr>
+              <th>Fecha inicio de operaciones:</th>
+              <td>{{ companyInformation.startDate }}</td>
+            </tr>
+            <tr>
+              <th>Estatus en el padrón:</th>
+              <td>{{ companyInformation.status }}</td>
+            </tr>
+            <tr>
+              <th>Fecha de último cambio de estado:</th>
+              <td>{{ companyInformation.lastUpdateDate }}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="section">
+          <h3>Datos del domicilio registrado</h3>
+          <table>
+            <tr>
+              <th>Código Postal:</th>
+              <td>{{ companyInformation.postalCode }}</td>
+              <th>Tipo de Vialidad:</th>
+              <td>{{ companyInformation.avenueType }}</td>
+            </tr>
+            <tr>
+              <th>Nombre de Vialidad:</th>
+              <td>{{ companyInformation.streetName }}</td>
+              <th>Número Exterior:</th>
+              <td>{{ companyInformation.exteriorNumber }}</td>
+            </tr>
+            <tr>
+              <th>Número Interior:</th>
+              <td>{{ companyInformation.interiorNumber }}</td>
+              <th>Nombre de la Colonia:</th>
+              <td>{{ companyInformation.neighborhoodName }}</td>
+            </tr>
+            <tr>
+              <th>Nombre de la Localidad:</th>
+              <td>{{ companyInformation.localityName }}</td>
+              <th>Nombre del Municipio o Demarcación Territorial:</th>
+              <td>{{ companyInformation.municipalityName }}</td>
+            </tr>
+            <tr>
+              <th>Nombre de la Entidad Federativa:</th>
+              <td>{{ companyInformation.state }}</td>
+              <th>Entre Calle:</th>
+              <td>{{ companyInformation.betweenStreets }}</td>
+            </tr>
+            <tr>
+              <th>Y Calle:</th>
+              <td>{{ companyInformation.street }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <button class="borrar-button" (click)="deleteCompany()">borrar</button>
+    </div>
   </mat-tab>
   <mat-tab label="Cuestionario de diagnóstico">
     <div></div>
   </mat-tab>
-  <mat-tab label="Historial de claves"></mat-tab>
-  <mat-tab label="Historial de documentación corporativa"></mat-tab>
-  <mat-tab label="Historial de declaraciones presentadas ante el SAT"></mat-tab>
-  <mat-tab label="Historial de avisos presentados ante el SAT"></mat-tab>
-  <mat-tab label="Historial de contratos y convenios"></mat-tab>
 
+  <mat-tab label="Historial de declaraciones presentadas ante el SAT">
+    <app-compliance-tax-return></app-compliance-tax-return>
+  </mat-tab>
 
-  <mat-tab label="Historial de constancia de situación fiscal"></mat-tab>
+  <mat-tab label="Historial de buzón tributario">
+    <app-compliance-notifications></app-compliance-notifications>
+  </mat-tab>
+
   <mat-tab label="Historial de opinión de cumplimiento">
     <app-compliance-opinion-history></app-compliance-opinion-history>
   </mat-tab>
-  <mat-tab label="Historial de buzón tributario"></mat-tab>
+
+  <mat-tab label="Historial de constancia de situación fiscal"></mat-tab>
+  <mat-tab label="Historial de avisos presentados ante el SAT"></mat-tab>
+  <mat-tab label="Historial de documentación corporativa"></mat-tab>
+  <mat-tab label="Historial de contratos y convenios"></mat-tab>
+  <mat-tab label="Historial de claves"></mat-tab>
 </mat-tab-group>

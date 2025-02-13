@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../shared/services/api.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-compliance-opinion-history',
@@ -6,34 +8,48 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./compliance-opinion-history.component.scss']
 })
 export class ComplianceOpinionHistoryComponent implements OnInit {
+  data = [];
 
-  constructor() { }
+  constructor(private apiService:ApiService, private sanitizer: DomSanitizer) { }
 
-  ngOnInit(): void {
-  }
-
-  data = [
-    {
-      id: '1',
-      companyName: 'Empresa ABC',
-      rfc: 'ABC123456XYZ',
-      date: '2024-12-01',
-      response: 'Aprobado',
-    },
-    {
-      id: '2',
-      companyName: 'Compañía XYZ',
-      rfc: 'XYZ654321ABC',
-      date: '2024-12-15',
-      response: 'Rechazado',
-    },
-  ];
   isModalOpen = false;
   selectedItem: any = null;
+
+  ngOnInit(): void {
+    this.getDeclarations()
+  }
+
+  getDeclarations () {
+    this.apiService.getDeclarations().subscribe({
+      next: res => {
+        console.log(res)
+        const result = res.map((element) => {
+          element.urlFile = element.urlFile.replace('mx//','mx/')
+          return {
+            id:element.id,
+            companyName:element.businessName,
+            rfc:element.rfc,
+            date:element.updatedAt,
+            response:element.opinion,
+            taxRegime: element.company.taxRegime,
+            activity: element.company.activity,
+            file:  this.sanitizer.bypassSecurityTrustResourceUrl(element.urlFile),
+          }
+        })
+
+        this.data = result
+      }, error: err => {
+        console.error(err)
+      }
+    })
+  }
+  
 
   openModal(item: any): void {
     this.selectedItem = item;
     this.isModalOpen = true;
+
+    console.log(this.selectedItem)
   }
 
   closeModal(): void {

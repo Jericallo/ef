@@ -1,0 +1,66 @@
+<div class="main-container">
+
+  <div class="rocker-container">
+    <button mat-icon-button class="rocker-button" (click)="previousYear()" [disabled]="nowYear <= 2022">
+      <mat-icon style="display: flex; align-items: center; cursor: pointer;">chevron_left</mat-icon>
+    </button>
+
+    <span>{{nowYear}}</span>
+
+    <button mat-icon-button class="rocker-button" (click)="nextYear()">
+      <mat-icon style="display: flex; align-items: center; cursor: pointer;">chevron_right/mat-icon</mat-icon>
+    </button>
+  </div>
+
+  <div class="tax-return-year-container" *ngIf="showContent">
+    <div style="display: flex; flex: 1; gap: 15px; flex-direction: column; padding-right: 10px;">
+      <span class="header-text">Periodo:</span>
+      <span>{{taxReturnYear.month }}</span>
+      <span class="header-text">Número de operación:</span>
+      <span>{{taxReturnYear.operationNumber}}</span>
+      <span class="header-text">Línea de captura:</span>
+      <span>{{(taxReturnYear.captureLine !== "None" ? taxReturnYear.captureLine : "No aplica") || "No aplica"}}</span>
+    </div>
+
+    <div style="display: flex; flex: 1; gap: 15px; flex-direction: column; padding-left: 10px;">
+      <span class="header-text">Tipo de declaración:</span>
+      <span>{{taxReturnYear.typeOfDeclaration}}</span>
+      <span class="header-text">Tipo de complementos:</span>
+      <span>{{(taxReturnYear.typeOfComplementation !== "None" ? taxReturnYear.typeOfComplementation : "No aplica") || "No aplica"}}</span>
+      <span class="header-text">Fecha de presentación:</span>
+      <span>{{dateParser(taxReturnYear.presentationDate)}}</span>
+    </div>
+  </div>
+
+  <div class="table-container" *ngIf="showContent">
+    <table>
+      <thead>
+        <tr>
+          <th>Periodo</th>
+          <th>Número de operación</th>
+          <th>Línea de captura</th>
+          <th>Tipo de declaración</th>
+          <th>Tipo de complementps</th>
+          <th>Fecha de presentación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of taxReturnMonths">
+          <td>{{ item.period }}</td>
+          <td>{{ item.operationNumber }}</td>
+          <td>{{ item.captureLine }}</td>
+          <td>{{ item.typeOfDeclaration }}</td>
+          <td>{{ item.typeOfComplementation }}</td>
+          <td>{{ item.presentationDate}} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!showContent" class="no-content">
+    <span class="no-content-text">No hay declaraciones para este año</span>
+  </div>
+
+</div>
+
+

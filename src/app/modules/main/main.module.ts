@@ -28,6 +28,8 @@ import { CountdownModalComponent } from './intro/countdown-modal/countdown-modal
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MyCompanyComponent } from './my-company/my-company.component';
 import { ComplianceOpinionHistoryComponent } from './my-company/compliance-opinion-history/compliance-opinion-history.component';
+import { ComplianceNotificationsComponent } from './my-company/compliance-notifications/compliance-notifications.component';
+import { ComplianceTaxReturnComponent } from './my-company/compliance-tax-return/compliance-tax-return.component';
 
 
 @NgModule({
@@ -46,6 +48,8 @@ import { ComplianceOpinionHistoryComponent } from './my-company/compliance-opini
     CountdownModalComponent,
     MyCompanyComponent,
     ComplianceOpinionHistoryComponent,
+    ComplianceNotificationsComponent,
+    ComplianceTaxReturnComponent,
   ],
   imports: [
     CommonModule,
