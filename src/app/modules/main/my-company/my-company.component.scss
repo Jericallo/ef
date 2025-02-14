@@ -203,3 +203,25 @@ th {
   background-color: rgb(130, 17, 17);
   cursor: pointer;
 }
+
+.reminder {
+  display: flex;
+  position: fixed;
+  bottom: 40px;
+  right: 50px;
+  background-color: rgb(224, 255, 216);
+  padding: 40px;
+  border-radius: 15px;
+  z-index: 4;
+  font-weight: 400;
+}
+
+.reminder a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.reminder a:hover {
+  cursor: pointer;
+  color: #4ba2ff;
+}

@@ -248,5 +248,12 @@
   <mat-tab label="Historial de avisos presentados ante el SAT"></mat-tab>
   <mat-tab label="Historial de documentación corporativa"></mat-tab>
   <mat-tab label="Historial de contratos y convenios"></mat-tab>
-  <mat-tab label="Historial de claves"></mat-tab>
+
+  <mat-tab label="Historial de claves">
+    <app-compliance-keys-history></app-compliance-keys-history>
+  </mat-tab>
 </mat-tab-group>
+
+<div class="reminder" *ngIf="showReminder()">
+  <span>Tu e.firma está a punto de expirar. Actualízala <a (click)="openAddEsignModal()">aquí</a></span>
+</div>

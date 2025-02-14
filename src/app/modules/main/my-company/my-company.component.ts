@@ -8,6 +8,8 @@ import {
 import mime from "mime";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.entry";
+import { MatDialog } from "@angular/material/dialog";
+import { UpdateEsignComponent } from "./update-esign/update-esign.component";
 
 interface Regimen {
   regimen: string;
@@ -51,7 +53,8 @@ export class MyCompanyComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -386,8 +389,6 @@ export class MyCompanyComponent implements OnInit {
       }
     });
 
-    console.log(formData);
-
     this.apiService.postCompany(formData).subscribe({
       next: (res) => {
         console.log("RESULT", res);
@@ -554,11 +555,37 @@ export class MyCompanyComponent implements OnInit {
     });
   }
 
+  /**
+   * Deletes the company information by calling the API service.
+   * Upon successful deletion, it sets the company information to null.
+   */
   deleteCompany() {
     this.apiService.deleteCompany().subscribe({
-      next:res => {
-        this.companyInformation = null
-      }
-    })
+      next: (res) => {
+        this.companyInformation = null;
+      },
+    });
+  }
+
+  openAddEsignModal() {
+    const dialogRef = this.dialog.open(UpdateEsignComponent, {
+      width: '40%',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.fetchCompanyInformation()
+    });
+  }
+
+  showReminder():boolean {
+    if(this.companyInformation !== null) {
+      const expirationDate = new Date(this.companyInformation.expireAt)
+      const today = new Date()
+      const diffInMs = expirationDate.getTime() - today.getTime();
+      const diffInDays = (diffInMs / (1000 * 60 * 60 * 24));
+      console.log('diffINDAYS', diffInDays)
+      return diffInDays < 30;
+    }
+    return false
   }
 }

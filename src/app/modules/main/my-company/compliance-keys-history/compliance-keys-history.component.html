@@ -1,0 +1,30 @@
+<div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Llave</th>
+          <th>Certificado</th>
+          <th>Fecha de expiración</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data">
+          <td>{{ item.id }}</td>
+          <td>
+            <button mat-icon-button class="eyeButton" (click)="downloadKey(item.urlKey)">
+                <mat-icon class="icon">vpn_key</mat-icon>
+            </button>    
+          </td>
+          <td>
+            <button mat-icon-button class="eyeButton" (click)="downloadCert(item.urlCer)">
+                <mat-icon class="icon">verified_user</mat-icon>
+            </button>  
+          </td>
+          <td>{{parseDate(item.expirateAt)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  </div>
+  

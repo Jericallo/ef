@@ -1,0 +1,53 @@
+<form [formGroup]="empresaForm">
+    <legend>Nueva e.firma</legend>
+    <label for="fileCer">Certificado (.CER):</label>
+    <div
+      class="upload-container"
+      (dragover)="onDragOver($event, 'cer')"
+      (dragleave)="onDragLeave($event, 'cer')"
+      (drop)="onDrop($event, 'cer')"
+      [class.dragover]="isDraggingCER"
+    >
+      <input
+        type="file"
+        id="fileCer"
+        (change)="onFileChange($event, 'fileCer')"
+        accept=".cer"
+        hidden
+      />
+      <label for="fileCer" class="upload-label">
+        📂 Arrastra un archivo aquí o
+        <span>haz clic para subir un certificado</span>
+      </label>
+    </div>
+    <p *ngIf="fileNameCER">{{ fileNameCER }}</p>
+
+    <label for="fileKey">Llave Privada (.KEY):</label>
+    <div
+      class="upload-container"
+      (dragover)="onDragOver($event, 'key')"
+      (dragleave)="onDragLeave($event, 'key')"
+      (drop)="onDrop($event, 'key')"
+      [class.dragover]="isDraggingKEY"
+    >
+      <input
+        type="file"
+        id="fileKey"
+        (change)="onFileChange($event, 'fileKey')"
+        accept=".key"
+        hidden
+      />
+      <label for="fileKey" class="upload-label">
+        📂 Arrastra un archivo aquí o
+        <span>haz clic para subir una llave</span>
+      </label>
+    </div>
+    <p *ngIf="fileNameKEY">{{ fileNameKEY }}</p>
+
+    <label for="password">Contraseña:</label>
+    <input id="password" formControlName="password" maxlength="20" />
+
+    <button class="stepper" (click)="uploadEsign()">
+      Subir información
+    </button>  
+</form>

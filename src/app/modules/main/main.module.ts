@@ -30,6 +30,8 @@ import { MyCompanyComponent } from './my-company/my-company.component';
 import { ComplianceOpinionHistoryComponent } from './my-company/compliance-opinion-history/compliance-opinion-history.component';
 import { ComplianceNotificationsComponent } from './my-company/compliance-notifications/compliance-notifications.component';
 import { ComplianceTaxReturnComponent } from './my-company/compliance-tax-return/compliance-tax-return.component';
+import { UpdateEsignComponent } from './my-company/update-esign/update-esign.component';
+import { ComplianceKeysHistoryComponent } from './my-company/compliance-keys-history/compliance-keys-history.component';
 
 
 @NgModule({
@@ -50,6 +52,8 @@ import { ComplianceTaxReturnComponent } from './my-company/compliance-tax-return
     ComplianceOpinionHistoryComponent,
     ComplianceNotificationsComponent,
     ComplianceTaxReturnComponent,
+    UpdateEsignComponent,
+    ComplianceKeysHistoryComponent,
   ],
   imports: [
     CommonModule,

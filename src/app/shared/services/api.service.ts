@@ -1922,4 +1922,20 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
     });
     return this.http.post(url, body, { headers: headers });
   }
+
+  public postEsign(body:any):Observable<any> {
+    const url = `${this,this.apiUrlv3}company/update-efirm`;
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.post(url, body, { headers: headers });
+  }
+
+  public getAllKeys():Observable<any> {
+    const url = `${this,this.apiUrlv3}company/allKeys`;
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getTokenV3()}`
+    });
+    return this.http.get(url, { headers: headers });
+  }
 }
