@@ -1,0 +1,194 @@
+.navbar {
+    padding: 10px 20px;
+  }
+  
+  a{
+    cursor: pointer;
+  }
+  
+  .navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .navbar ul li {
+    position: relative;
+    margin-left: 10px;
+  }
+  
+  .navbar ul li:first-child {
+    margin-left: 0; 
+  }
+  
+  .navbar ul li a {
+    background: rgba(177, 177, 177, 0.526);
+    backdrop-filter: blur(5px);
+  
+    color: black;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+    width: max-content;
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  .submenu-list-cumplimiento a{
+    background: rgb(255, 236, 113) !important;
+    color: rgb(72, 55, 0) !important;
+  }
+  
+  .green a{
+    background: rgb(125, 200, 125) !important;
+    color:rgb(0, 47, 0) !important;
+  }
+  
+  .red a{
+    background: rgb(218, 144, 144) !important;
+    color:rgb(47, 0, 0) !important;
+  }
+  
+  .blue a{
+    background: rgb(144, 171, 218) !important;
+    color:rgb(5, 0, 47) !important;
+  }
+  
+  .navbar ul li a:hover {
+    border-radius: 5px;
+    color: white;
+  }
+  
+  
+  
+  .navbar ul li:nth-child(1) a:hover {
+    background-color: blue;
+  
+  }
+  
+  .navbar ul li:nth-child(2) a:hover {
+    background-color: green;
+  }
+  
+  .navbar ul li:nth-child(3) a:hover {
+    background-color: red;
+  }
+  
+  .navbar ul li.yellow a:hover {
+    background-color: rgb(249, 187, 0) !important;
+    color: black;
+  }
+  
+  
+  .submenu {
+    position: absolute;
+    top: 2.5rem;
+    border-radius: 5px;
+    display: none !important;
+    z-index: 1000;
+  }
+  
+  .submenu-list {
+    background: rgb(233, 233, 233);
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;  
+    align-items: center !important;
+    justify-content: center !important;
+    gap:20px;
+    flex-direction: row;
+  }
+  
+  .green-list{
+    background: rgb(204, 255, 204) !important;
+  }
+  
+  .red-list{
+    background: rgb(255, 204, 204) !important;
+  }
+  
+  .blue-list{
+    background: rgb(204, 218, 255) !important;
+  }
+  
+  .submenu-list-cumplimiento {
+    background: rgb(255, 244, 205);
+    display: flex;
+    max-height: 60vh;
+    overflow: scroll;
+    align-items: start !important;
+    justify-content: start !important;
+    gap:10px;
+    width: 15rem;
+    padding: 10px;
+    border-radius: 10px;
+    flex-direction: column;
+  }
+  
+  
+  .navbar ul li:hover .submenu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; 
+  }
+  
+  .navbar a.active {
+    background: blue !important;
+    color: white !important;
+    font-weight: 700;
+  }
+  
+  .navbar a.activeYellow {
+    background: rgb(249, 187, 0) !important;
+    color: black !important;
+    font-weight: 700;
+  
+  }
+  
+  .navbar a.activeGreen {
+    background: green !important;
+    color: white !important;
+    font-weight: 700;
+  }
+  
+  
+  .navbar a.sub-active {
+    font-weight: bold;
+  }
+  
+  
+  .arrow {
+    position: relative;
+    display: inline-block;
+    border-top-left-radius: 5px !important; /* radio de la esquina superior izquierda */
+    border-bottom-left-radius: 5px !important;  
+    border-top-right-radius: 0px !important; 
+    border-bottom-right-radius: 0px !important;
+    padding: 10px 20px;
+    background: rgba(177, 177, 177, 0.526);
+    color: white; 
+    text-decoration: none;
+  }
+  
+  .arrow::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -15px; 
+    margin-top: -24px; 
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+    border-left: 15px solid rgba(177, 177, 177, 0.526); 
+    transition: background-color 0.3s ease-in-out;
+  
+  }
+  
+  .arrow:hover::after{
+    border-left: 15px solid rgb(249, 187, 0);  
+  
+  }

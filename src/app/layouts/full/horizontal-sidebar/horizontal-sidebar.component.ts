@@ -1,92 +1,98 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  HostListener,
-  Directive,
-  AfterViewInit
-} from '@angular/core';
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { HorizontalMenuItems } from '../../../shared/menu-items/horizontal-menu-items';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-horizontal-sidebar',
-  templateUrl: './horizontal-sidebar.component.html',
-  styleUrls: []
+  selector: "app-horizontal-sidebar",
+  templateUrl: "./horizontal-sidebar.component.html",
+  styleUrls: ["./horizontal-sidebar.styles.css"],
 })
+export class HorizontalAppSidebarComponent implements OnInit {
+  isHomeActive: boolean = false;
+  isInicioActive: boolean = false;
+  isCumplimientoActive: boolean = false;
+  isControlActive: boolean = false;
+  showSubMenu: boolean = false;
 
-export class HorizontalAppSidebarComponent implements OnDestroy, OnInit {
-  public config: PerfectScrollbarConfigInterface = {};
-  mobileQuery: MediaQueryList;
-  backgroundColor: string = 'red'
-  subItemVisible:boolean = false
-  
-  private _mobileQueryListener: () => void;
-  
+  isIntroActive: boolean = false;
+  isMyCompanyActive: boolean = false;
+  isNoticiasActive: boolean = false;
+  isLeyesActive: boolean = false;
+  isTemarioActive: boolean = false;
+  isBusquedaActive: boolean = false;
 
-  constructor(
-    changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
-    public menuItems: HorizontalMenuItems
-  ) {
-    this.mobileQuery = media.matchMedia('(min-width: 1024px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+  isResumenCumplimientoActive: boolean = false;
+  isRegisterActive:boolean = false
+  isCalendarioActive: boolean = false;
 
-    
+  isCapacitacionActive: boolean = false;
+  isAyudaActive: boolean = false;
+  isSupervisionActive: boolean = false;
+
+  timer: any;
+  timerInicio: any;
+
+  showSubMenuInicio: boolean = false;
+  showSubMenuCumplimiento: boolean = false;
+  showSubMenuControl: boolean = false;
+  showSubMenuPrecaucion: boolean = false;
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    const currentUrl = this.router.url;
+    this.isHomeActive = currentUrl === "/home";
+    this.isInicioActive = [
+      "/home/intro",
+      "/home/news",
+      "/home/my-company",
+      "/home/laws",
+      "/home/topics",
+      "/home/busqueda"
+    ].includes(currentUrl);
+    this.isCumplimientoActive = [
+      "compliance/index", 
+      "compliance/register",
+      "compliance/register-client"
+    ].includes(
+      currentUrl
+    );
+    this.isControlActive = [
+      "control/capacitaciones", 
+      "control/ayuda",
+      "control/questionnaire-history"
+    ].includes(currentUrl);
+
+    this.isIntroActive = currentUrl === "/home/intro";
+    this.isMyCompanyActive = currentUrl === "/home/my-company";
+    this.isNoticiasActive = currentUrl === "/home/news";
+    this.isLeyesActive = currentUrl === "/home/laws";
+    this.isTemarioActive = currentUrl === "/home/topics";
+    this.isBusquedaActive = currentUrl === "/home/busqueda";
+
+    this.isResumenCumplimientoActive = currentUrl === "/compliance/index";
+    this.isRegisterActive = currentUrl === "/compliance/register";
+    this.isCalendarioActive = currentUrl === "/compliance/register-client";
+
+    this.isCapacitacionActive = currentUrl === "/capacitaciones";
+    this.isAyudaActive = currentUrl === "/ayuda";
+    this.isAyudaActive = currentUrl === "/supervision";
   }
 
-  ngOnInit(): void {
-    let a = document.getElementsByClassName('mat-list-item')//.addEventListener('mouseover',(event) => {console.log('hola')})
+  onMouseEnter() {
+    this.showSubMenu = true;
+
+    this.timer = setTimeout(() => {
+      this.showSubMenu = false;
+    }, 180000);
   }
 
-  subitem = null
-  contador = 0
-  a = null
-  intervalo = null
+  onMouseEnterInicio() {
+    this.showSubMenuInicio = true;
 
-  funcion(object: any) {
-    if (this.a !== null) {
-      let arreglo = Array.prototype.slice.call(this.a);
-      if (arreglo[0]) {
-        arreglo[0].style.overflow = 'hidden';
-        if (this.intervalo !== null) {
-          clearInterval(this.intervalo);
-        }
-      }
-    } else {
-      this.a = document.getElementsByClassName('juice-item-' + object);
-    }
-  
-    this.a = document.getElementsByClassName('juice-item-' + object);
-    let arreglo = Array.prototype.slice.call(this.a);
-    
-    if (arreglo[0]) {
-      arreglo[0].style.overflow = 'visible';
-      arreglo[0].style.left = '-90px';
-      arreglo[0].style.marginTop = '6px';
-      this.intervalo = setInterval(() => {
-        this.contador++;
-        if (this.contador >= 1) {
-          clearInterval(this.intervalo);
-          arreglo[0].style.overflow = 'hidden';
-        }
-      }, 10000);
-    } else {
-      console.error('Element not found');
-    }
-  }
+    console.log(this.showSubMenuInicio);
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+    this.timerInicio = setTimeout(() => {
+      this.showSubMenuInicio = false;
+    }, 100000);
   }
-
-  toggleSubItemVisibility(clase:any){
-    this.subItemVisible = !this.subItemVisible
-  }
-  
 }

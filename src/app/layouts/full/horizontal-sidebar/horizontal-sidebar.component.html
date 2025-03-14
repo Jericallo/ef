@@ -1,41 +1,203 @@
-<!-- ============================================================== -->
-<!-- sidebar -->
-<!-- ============================================================== -->
-
-<mat-nav-list appAccordion>
-    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem(); let i = index" routerLinkActive="selected" group="{{menuitem.state}}" (mouseenter) ="funcion(i)" class="juice-{{i}}">
-        <a class="{{menuitem.class}}"  appAccordionToggle [routerLink]="['/main/videoIntro']" *ngIf="menuitem.type === 'link'">
-            <mat-icon class="icon-circle">{{ menuitem.icon }}</mat-icon>
-            <span>{{ menuitem.name | translate }}</span>
-            <span fxFlex></span>
-            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+<div class="navbar">
+  <ul>
+    <!-- <li>
+        <a 
+          [routerLink]="'/home'" 
+          (mouseenter)="onMouseEnter()" 
+          style="font-family: 'Times New Roman', Times, serif; display: flex; align-items: center; gap: 10px;">
+          <div style="width: 20px; height: 20px; background: blue; border-radius: 20px;"></div>
+          Escudo Fiscal
         </a>
-        <a class="{{menuitem.class}}"  appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'logo'">
-            <mat-icon class="icon-circle">{{ menuitem.icon }}</mat-icon>
-            <span class="circle-name">{{ menuitem.name | translate }}</span>
-            <span fxFlex>xe</span>
-        </a>
+      </li> -->
+    <div style="display: flex; flex-direction: column">
+      <div style="display: flex">
+        <li>
+          <a
+            (mouseenter)="onMouseEnterInicio()"
+            [class.active]="isInicioActive"
+            style="
+              font-family: 'Times New Roman', Times, serif;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            <div
+              style="
+                width: 20px;
+                height: 20px;
+                background: blue;
+                border-radius: 20px;
+                display: flex;
+              "
+            ></div>
+            Global Business
+          </a>
+          <ul class="submenu">
+            <div *ngIf="showSubMenuInicio" class="submenu-list blue blue-list">
+              <a [class.active]="isIntroActive" [routerLink]="'/main/intro'"
+                >Intro</a
+              >
+              <a [class.active]="isMyCompanyActive" [routerLink]="'/main/my-company'"
+                >Mi empresa</a
+              >
+              <a [class.active]="isNoticiasActive" [routerLink]="'/main/news'"
+                >Noticias</a
+              >
+              <a [class.active]="isLeyesActive" [routerLink]="'/main/laws'"
+                >Leyes</a
+              >
+              <a [class.active]="isTemarioActive" [routerLink]="'/main/topics'"
+                >Temario</a
+              >
+              <a [class.active]="isBusquedaActive" [routerLink]="'/main/busqueda'"
+                >Busqueda</a
+              >
+              <a [routerLink]="'/working'">Incentivos</a>
+              <a [routerLink]="'/working'">Números</a>
+            </div>
+          </ul>
+        </li>
 
-       
-        <a class="{{ menuitem.class }}" appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'sub'">
-            <span>{{ menuitem.name | translate }}</span>
-            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
-        </a>
+        <li>
+          <a [class.activeGreen]="isControlActive" [routerLink]="'/working'"
+            >Universidad</a
+          >
+          <ul class="submenu">
+            <div class="submenu-list green green-list">
+              <a
+                [class.activeGreen]="isCapacitacionActive"
+                [routerLink]="'/control/capacitaciones'"
+                >Capacitación</a
+              >
+              <a [class.activeGreen]="isAyudaActive" [routerLink]="'/control/ayuda'"
+                >Ayuda</a
+              >
+              <a [routerLink]="'/working'">Chatbot</a>
+              <a
+                [class.activeGreen]="isSupervisionActive"
+                [routerLink]="'/control/questionnaire-history'"
+                >Supervisión</a
+              >
+              <a [routerLink]="'/working'">Semaforo</a>
+              <a [routerLink]="'/working'">Dictámen</a>
+              <a [routerLink]="'/working'">Mejor</a>
+            </div>
+          </ul>
+        </li>
 
-        <mat-nav-list class="sub-item juice-item-{{i}}"  *ngIf="menuitem.type === 'sub'">
-            <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
-                <a [routerLink]="['/', menuitem.state, childitem.state ]" routerLinkActive="selected" class="{{menuitem.class}}" >
-                    <span>{{childitem.name | translate}}</span>
-                    <mat-icon *ngIf="childitem.icon">{{ childitem.icon }}</mat-icon>
-                    <span fxFlex></span>
-                    <span class="flecha"></span>
-                </a>
-            </mat-list-item>
-        </mat-nav-list>
-        
-        
-        <div class="saperator text-muted" *ngIf="menuitem.type === 'saperator'">
-            <span>{{ menuitem.name | translate }}</span>
-        </div>
-    </mat-list-item>
-</mat-nav-list>
+        <li>
+          <a [routerLink]="'/working'">Precaución</a>
+          <ul class="submenu">
+            <div class="submenu-list red red-list">
+              <a [routerLink]="'/working'">Respuesta SAT</a>
+              <a [routerLink]="'/working'">Incumplimientos</a>
+              <a [routerLink]="'/working'">Sanciones</a>
+              <a [routerLink]="'/working'">Auditorías</a>
+              <a [routerLink]="'/working'">Responsabilidad</a>
+              <a [routerLink]="'/working'">Defensa</a>
+              <a [routerLink]="'/working'">Pendiente</a>
+            </div>
+          </ul>
+        </li>
+      </div>
+
+      <div style="display: flex; margin-top: 0.5rem">
+        <li class="yellow">
+          <a
+            [class.activeYellow]="isCumplimientoActive"
+            [routerLink]="'/working'"
+            >Cumplimiento</a
+          >
+          <ul class="submenu">
+            <div class="submenu-list-cumplimiento">
+              <a
+                [class.activeYellow]="isResumenCumplimientoActive"
+                style="width: 10rem"
+                [routerLink]="'/compliance/index'"
+                >Resumen</a
+              >
+              <a
+                [class.activeYellow]="isRegisterActive"
+                style="width: 10rem"
+                [routerLink]="'/compliance/register'"
+                >Registra</a
+              >
+              <a
+                [class.activeYellow]="isCalendarioActive"
+                style="width: 10rem"
+                [routerLink]="'/compliance/register-client'"
+                >Calendario</a
+              >
+              <a
+                style="margin-left: 2rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Elabora CFDIS</a
+              >
+              <a
+                style="margin-left: 2rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Recaba</a
+              >
+              <a
+                style="margin-left: 3rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Cfdi Rep EdoCta</a
+              >
+              <a
+                style="margin-left: 2rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Contabiliza</a
+              >
+              <a
+                style="margin-left: 2rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Concializa (5)</a
+              >
+              <a
+                style="margin-left: 2rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Cont. Electrónica</a
+              >
+              <a [routerLink]="'/working'" style="width: 10rem">Impuestos</a>
+              <a
+                style="margin-left: 2rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Calcula</a
+              >
+              <a
+                style="margin-left: 3rem; width: 10rem"
+                [routerLink]="'/working'"
+                >ISR</a
+              >
+              <a
+                style="margin-left: 3rem; width: 10rem"
+                [routerLink]="'/working'"
+                >IVA</a
+              >
+              <a
+                style="margin-left: 3rem; width: 10rem"
+                [routerLink]="'/working'"
+                >IEPS</a
+              >
+              <a
+                style="margin-left: 3rem; width: 10rem"
+                [routerLink]="'/working'"
+                >ISAN</a
+              >
+              <a
+                style="margin-left: 3rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Nóminas</a
+              >
+              <a [routerLink]="'/working'" style="width: 10rem">Informativas</a>
+              <a [routerLink]="'/working'" style="width: 10rem">P.I.D</a>
+              <a [routerLink]="'/working'" style="width: 10rem">Legal</a>
+              <a [routerLink]="'/working'" style="width: 10rem">Claves</a>
+            </div>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </ul>
+</div>
