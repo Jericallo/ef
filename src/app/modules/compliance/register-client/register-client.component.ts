@@ -8,6 +8,7 @@ import { DetailCumplimientoComponent } from './detail-cumplimiento/detail-cumpli
 import { HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { QuestionnaireModalComponent } from './questionnaire-modal/questionnaire-modal.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-register-client',
@@ -30,12 +31,20 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
 
   openChat = false;
 
+  id: string | null = '';
+
   @ViewChildren('tooltip') tooltips: QueryList<ElementRef>;
   private tooltipSubscription: Subscription;
 
-  constructor(private apiService: ApiService, public dialogRef: MatDialog, private elementRef: ElementRef) {}
+  constructor(
+    private apiService: ApiService, 
+    public dialogRef: MatDialog, 
+    private elementRef: ElementRef,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id-clasification');
     this.generateDateRange();
     this.getCompliance();
     this.getAllVideosPrueba();
@@ -145,9 +154,9 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   getCompliance(): void {
 
     let date = new Date(this.sendableDate), y = date.getFullYear(), m = date.getMonth();
-
+    const extraParam = this.id !== '' ? `&clasificationObligationId=${this.id}` : ''
     console.log(y,m)
-    this.apiService.getAllObligations(m +1, y).subscribe({
+    this.apiService.getAllObligations(m +1, y, extraParam).subscribe({
       next: res => {
         const options = { timeZone: 'America/New_York' };
         console.log('RESULT',res)

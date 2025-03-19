@@ -35,26 +35,32 @@
           </a>
           <ul class="submenu">
             <div *ngIf="showSubMenuInicio" class="submenu-list blue blue-list">
-              <a [class.active]="isIntroActive" [routerLink]="'/main/intro'"
-                >Intro</a
-              >
-              <a [class.active]="isMyCompanyActive" [routerLink]="'/main/my-company'"
-                >Mi empresa</a
-              >
+              <a [routerLink]="'/working'">Comercial</a>
               <a [class.active]="isNoticiasActive" [routerLink]="'/main/news'"
                 >Noticias</a
               >
-              <a [class.active]="isLeyesActive" [routerLink]="'/main/laws'"
-                >Leyes</a
+              <a [routerLink]="'/working'">ChatBot</a>
+              <a [routerLink]="'/working'">Ayuda</a>
+              <a [class.active]="isBusquedaActive" [routerLink]="'/main/busqueda'"
+                >Busqueda</a
               >
               <a [class.active]="isTemarioActive" [routerLink]="'/main/topics'"
                 >Temario</a
               >
-              <a [class.active]="isBusquedaActive" [routerLink]="'/main/busqueda'"
-                >Busqueda</a
+              <a [class.active]="isLeyesActive" [routerLink]="'/main/laws'"
+                >Leyes</a
+              >
+              <a [class.active]="isIntroActive" [routerLink]="'/main/intro'"
+                >Intro</a
               >
               <a [routerLink]="'/working'">Incentivos</a>
               <a [routerLink]="'/working'">Números</a>
+              <a [class.active]="isMyCompanyActive" [routerLink]="'/main/my-company'"
+                >Mi empresa (Alta e Historial)</a
+              >
+              <a [routerLink]="'/working'">Dictamen</a>
+              <a [routerLink]="'/working'">Mejor</a>
+
             </div>
           </ul>
         </li>
@@ -65,23 +71,19 @@
           >
           <ul class="submenu">
             <div class="submenu-list green green-list">
+              <a [class.activeGreen]="isAyudaActive" [routerLink]="'/control/ayuda'"
+                >Chat</a
+              >
+              <a [routerLink]="'/working'">Telefono</a>
+              <a [routerLink]="'/working'">Video</a>
+              <a [routerLink]="'/working'">Casos Prácticos</a>
+              <a [routerLink]="'/working'">Preguntas Frecuentes</a>
+              <a [routerLink]="'/working'">Usuario</a>
               <a
                 [class.activeGreen]="isCapacitacionActive"
                 [routerLink]="'/control/capacitaciones'"
-                >Capacitación</a
+                >18 Cursos</a
               >
-              <a [class.activeGreen]="isAyudaActive" [routerLink]="'/control/ayuda'"
-                >Ayuda</a
-              >
-              <a [routerLink]="'/working'">Chatbot</a>
-              <a
-                [class.activeGreen]="isSupervisionActive"
-                [routerLink]="'/control/questionnaire-history'"
-                >Supervisión</a
-              >
-              <a [routerLink]="'/working'">Semaforo</a>
-              <a [routerLink]="'/working'">Dictámen</a>
-              <a [routerLink]="'/working'">Mejor</a>
             </div>
           </ul>
         </li>
@@ -112,88 +114,135 @@
           <ul class="submenu">
             <div class="submenu-list-cumplimiento">
               <a
-                [class.activeYellow]="isResumenCumplimientoActive"
-                style="width: 10rem"
-                [routerLink]="'/compliance/index'"
-                >Resumen</a
-              >
-              <a
-                [class.activeYellow]="isRegisterActive"
-                style="width: 10rem"
-                [routerLink]="'/compliance/register'"
-                >Registra</a
-              >
-              <a
                 [class.activeYellow]="isCalendarioActive"
                 style="width: 10rem"
                 [routerLink]="'/compliance/register-client'"
                 >Calendario</a
               >
+              <span>CFDI's y contabilización</span>
               <a
                 style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/working'"
+                [routerLink]="'/compliance/register-client?id-clasification=3'"
                 >Elabora CFDIS</a
               >
               <a
                 style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Recaba</a
-              >
-              <a
-                style="margin-left: 3rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Cfdi Rep EdoCta</a
+                [routerLink]="'/compliance/register-client?id-clasification=4'"
+                >Recaba CFDI Rep EdoCla</a
               >
               <a
                 style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/working'"
+                [routerLink]="'/compliance/register-client?id-clasification=5'"
                 >Contabiliza</a
               >
               <a
                 style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Concializa (5)</a
+                [routerLink]="'/compliance/register-client?id-clasification=6'"
+                >Conciliación 5/7</a
               >
+              <span>Impuesto mes calcula</span>
               <a
-                style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Cont. Electrónica</a
-              >
-              <a [routerLink]="'/working'" style="width: 10rem">Impuestos</a>
-              <a
-                style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Calcula</a
-              >
-              <a
-                style="margin-left: 3rem; width: 10rem"
-                [routerLink]="'/working'"
+                style="margin-left: 4rem; width: 10rem"
+                [routerLink]="'/compliance/register-client?id-clasification=8'"
                 >ISR</a
               >
               <a
-                style="margin-left: 3rem; width: 10rem"
-                [routerLink]="'/working'"
+                style="margin-left: 4rem; width: 10rem"
+                [routerLink]="'/compliance/register-client?id-clasification=9'"
                 >IVA</a
               >
               <a
-                style="margin-left: 3rem; width: 10rem"
+                style="margin-left: 4rem; width: 10rem"
                 [routerLink]="'/working'"
                 >IEPS</a
               >
               <a
-                style="margin-left: 3rem; width: 10rem"
+                style="margin-left: 4rem; width: 10rem"
                 [routerLink]="'/working'"
                 >ISAN</a
               >
               <a
-                style="margin-left: 3rem; width: 10rem"
+                style="margin-left: 4rem; width: 10rem"
                 [routerLink]="'/working'"
                 >Nóminas</a
               >
-              <a [routerLink]="'/working'" style="width: 10rem">Informativas</a>
-              <a [routerLink]="'/working'" style="width: 10rem">P.I.D</a>
-              <a [routerLink]="'/working'" style="width: 10rem">Legal</a>
-              <a [routerLink]="'/working'" style="width: 10rem">Claves</a>
+              <a
+                style="margin-left: 4rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Conciliación 7/7</a
+              >
+              <a
+                style="margin-left: 2rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Declara</a
+              >
+              <a
+                style="margin-left: 2rem; width: 10rem"
+                [routerLink]="'/working'"
+                >Paga</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Contabilidad Electrónica</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Informativas</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Revisar buzón, opinión, claves, sellos</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Cuestionario adicional</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Declaración anual de ISR</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Avisos</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >P.L.D.</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Legal</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Legal laboral</a
+              >
+              <a
+                [class.activeYellow]="isResumenCumplimientoActive"
+                style="width: 10rem"
+                [routerLink]="'/compliance/index'"
+                >Resumen por día</a
+              >
+              <a
+                style="width: 10rem"
+                [routerLink]="'/working'"
+                >Semáforos</a
+              >
+              <!-- <a
+                [class.activeYellow]="isRegisterActive"
+                style="width: 10rem"
+                [routerLink]="'/compliance/register'"
+                >Registra</a
+              > -->
             </div>
           </ul>
         </li>

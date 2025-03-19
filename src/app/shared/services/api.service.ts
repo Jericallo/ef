@@ -1055,8 +1055,8 @@ export class ApiService {
     return this.http.get(url,{headers:headers})
   }
 
-  public getAllObligations(month:number, year:number):Observable<any>{
-    const url = `${this.apiUrlv3}obligation/by-month?month=${month}&year=${year}`
+  public getAllObligations(month:number, year:number, extraParam:string = ''):Observable<any>{
+    const url = `${this.apiUrlv3}obligation/by-month?month=${month}&year=${year}${extraParam}`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
