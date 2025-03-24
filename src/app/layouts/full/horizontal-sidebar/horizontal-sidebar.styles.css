@@ -32,15 +32,12 @@
     text-decoration: none;
     padding: 10px 15px;
     display: inline-block;
-    width: max-content;
+    width: auto;
     text-align: center;
     border-radius: 5px;
   }
   
-  .submenu-list-cumplimiento a{
-    background: rgb(255, 236, 113) !important;
-    color: rgb(72, 55, 0) !important;
-  }
+  
   
   .green a{
     background: rgb(125, 200, 125) !important;
@@ -101,7 +98,10 @@
     gap:20px;
     flex-direction: row;
   }
-  
+  .cumplimiento-container {
+    position: relative;
+}
+
   .green-list{
     background: rgb(204, 255, 204) !important;
   }
@@ -114,19 +114,104 @@
     background: rgb(204, 218, 255) !important;
   }
   
-  .submenu-list-cumplimiento {
-    background: rgb(255, 244, 205);
-    display: flex;
-    max-height: 60vh;
-    overflow: scroll;
-    align-items: start !important;
-    justify-content: start !important;
-    gap:10px;
-    width: 15rem;
-    padding: 10px;
-    border-radius: 10px;
-    flex-direction: column;
+  .cumplimiento-container > a {
+    background: rgba(177, 177, 177, 0.526); /* Gris */
+    width: 280px; /* Para que abarque el ancho */
+    display: block;
+    text-align: left;
+    padding: 12px 20px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+  
+.submenu-list-cumplimiento {
+  background: #fff59d !important; /* Amarillo claro */
+  position: absolute;
+  top: 100%; /* 🔥 Sin espacios en blanco */
+  left: auto;
+
+  right: auto;
+  width: 280px;
+  display: none;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 0; 
+  border-radius: 0 0 10px 10px;
+  flex-direction: column;
+  transition: opacity 0.3s ease-in-out;
+}
+.cumplimiento-container:hover > a {
+  background-color: #fff59d !important; /* Cambia a amarillo cuando el mouse esté encima */
+  color: black !important;
+  border-radius: 10px 10px 0 0; /* Bordes redondeados arriba para fusionar */
+}
+/* Cuando el mouse está sobre el botón o sobre el menú, todo se une */
+.cumplimiento-container:hover > a,
+.cumplimiento-container:hover .submenu-list-cumplimiento {
+    background-color: #fff59d !important; /* Amarillo claro */
+    color: black !important;
+    border-radius: 10px 10px 0 0; /* Bordes redondeados arriba para fusionar */
+}
+
+
+/* Mostrar el submenú cuando el mouse está encima */
+.cumplimiento-container:hover .submenu-list-cumplimiento {
+  display: flex;
+  opacity: 1;
+}
+  .submenu-subtitle {
+    font-weight: bold;
+    color: black;
+    padding: 8px 10px;
+    display: block;
+    margin-left: 5px; /* Alinear subtítulos */
   }
+  .submenu-item {
+    text-decoration: none;
+    color: black !important;
+    padding: 8px 20px;
+    display: block;
+    width: calc(100% - 20px);
+    margin-left: 15px; /* Sangría de los botones */
+    border-radius: 5px;
+    background: transparent !important; /* Elimina el fondo diferente */
+  }
+  
+  /* Resaltar con amarillo fuerte cuando se pasa el mouse */
+  .submenu-item:hover {
+    background-color: #ffd700 !important; /* Amarillo fuerte */
+  }
+
+  .submenu-list-cumplimiento span {
+    font-weight: bold;
+    color: black;
+    padding: 12px 20px;
+    display: block;
+    width: 100%; /* 🔥 Asegurar que el subtítulo ocupe toda la fila */
+    background: transparent !important; /* 🔥 Que los títulos no tengan fondo de hover */
+}
+.submenu-list-cumplimiento span:hover {
+  background: transparent !important;
+}
+.submenu-list-cumplimiento a {
+  text-decoration: none;
+  color: black !important;
+  padding: 12px 20px;
+  display: block;
+  width: 100%; /* 🔥 Hace que el botón abarque toda la fila */
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  margin-left: 70px; /* 🔥 Sangría */
+  padding-right: 100000px; 
+}
+
+.submenu-list-cumplimiento a:hover {
+  background-color: #ffd700 !important; /* Amarillo fuerte */
+  width: 100%; /* 🔥 Asegurar que cubra todo el ancho */
+  display: block;
+}
   
   
   .navbar ul li:hover .submenu {

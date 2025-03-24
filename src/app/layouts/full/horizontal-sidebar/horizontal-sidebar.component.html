@@ -105,154 +105,45 @@
       </div>
 
       <div style="display: flex; margin-top: 0.5rem">
-        <li class="yellow">
-          <a
-            [class.activeYellow]="isCumplimientoActive"
-            [routerLink]="'/working'"
-            >Cumplimiento</a
-          >
+        <li class="yellow cumplimiento-container">
+          <a [class.activeYellow]="isCumplimientoActive" [routerLink]="'/working'">Cumplimiento</a>
           <ul class="submenu">
-            <div class="submenu-list-cumplimiento">
-              <a
-                [class.activeYellow]="isCalendarioActive"
-                style="width: 10rem"
-                [routerLink]="'/compliance/register-client'"
-                >Calendario</a
-              >
-              <span>CFDI's y contabilización</span>
-              <a
-                style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/compliance/register-client'"
-                [queryParams]="{'id-clasification':'3'}"
-                >Elabora CFDIS</a
-              >
-              <a
-                style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/compliance/register-client'"
-                [queryParams]="{'id-clasification':'4'}"
-                >Recaba CFDI Rep EdoCla</a
-              >
-              <a
-                style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/compliance/register-client'"
-                [queryParams]="{'id-clasification':'5'}"
-                >Contabiliza</a
-              >
-              <a
-                style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/compliance/register-client'"
-                [queryParams]="{'id-clasification':'6'}"
-                >Conciliación 5/7</a
-              >
-              <span>Impuesto mes calcula</span>
-              <a
-                style="margin-left: 4rem; width: 10rem"
-                [routerLink]="'/compliance/register-client'"
-                [queryParams]="{'id-clasification':'8'}"
-                >ISR</a
-              >
-              <a
-                style="margin-left: 4rem; width: 10rem"
-                [routerLink]="'/compliance/register-client'"
-                [queryParams]="{'id-clasification':'9'}"
-                >IVA</a
-              >
-              <a
-                style="margin-left: 4rem; width: 10rem"
-                [routerLink]="'/working'"
-                >IEPS</a
-              >
-              <a
-                style="margin-left: 4rem; width: 10rem"
-                [routerLink]="'/working'"
-                >ISAN</a
-              >
-              <a
-                style="margin-left: 4rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Nóminas</a
-              >
-              <a
-                style="margin-left: 4rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Conciliación 7/7</a
-              >
-              <a
-                style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Declara</a
-              >
-              <a
-                style="margin-left: 2rem; width: 10rem"
-                [routerLink]="'/working'"
-                >Paga</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Contabilidad Electrónica</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Informativas</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Revisar buzón, opinión, claves, sellos</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Cuestionario adicional</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Declaración anual de ISR</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Avisos</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >P.L.D.</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Legal</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Legal laboral</a
-              >
-              <a
-                [class.activeYellow]="isResumenCumplimientoActive"
-                style="width: 10rem"
-                [routerLink]="'/compliance/index'"
-                >Resumen por día</a
-              >
-              <a
-                style="width: 10rem"
-                [routerLink]="'/working'"
-                >Semáforos</a
-              >
-              <!-- <a
-                [class.activeYellow]="isRegisterActive"
-                style="width: 10rem"
-                [routerLink]="'/compliance/register'"
-                >Registra</a
-              > -->
-            </div>
+            <li class="submenu-list-cumplimiento">
+              <a class="submenu-item" [routerLink]="'/compliance/register-client'">Calendario</a>
+      
+              <span class="submenu-subtitle">CFDI's y contabilización</span>
+              <a class="submenu-item" [routerLink]="'/compliance/register-client'" [queryParams]="{'id-clasification':'3'}">Elabora CFDIs</a>
+              <a class="submenu-item" [routerLink]="'/compliance/register-client'" [queryParams]="{'id-clasification':'4'}">Recaba CFDI Rep EdoCla</a>
+              <a class="submenu-item" [routerLink]="'/compliance/register-client'" [queryParams]="{'id-clasification':'5'}">Contabiliza</a>
+              <a class="submenu-item" [routerLink]="'/compliance/register-client'" [queryParams]="{'id-clasification':'6'}">Conciliación 5/7</a>
+      
+              <span class="submenu-subtitle">Impuesto mes calcula</span>
+              <a class="submenu-item" [routerLink]="'/compliance/register-client'" [queryParams]="{'id-clasification':'8'}">ISR</a>
+              <a class="submenu-item" [routerLink]="'/compliance/register-client'" [queryParams]="{'id-clasification':'9'}">IVA</a>
+              <a class="submenu-item" [routerLink]="'/working'">IEPS</a>
+              <a class="submenu-item" [routerLink]="'/working'">ISAN</a>
+              <a class="submenu-item" [routerLink]="'/working'">Nóminas</a>
+              <a class="submenu-item" [routerLink]="'/working'">Conciliación 7/7</a>
+      
+              <a class="submenu-item" [routerLink]="'/working'">Declara</a>
+              <a class="submenu-item" [routerLink]="'/working'">Paga</a>
+              <a class="submenu-item" [routerLink]="'/working'">Contabilidad Electrónica</a>
+              <a class="submenu-item" [routerLink]="'/working'">Informativas</a>
+              <a class="submenu-item" [routerLink]="'/working'">Revisar buzón, opinión, claves, sellos</a>
+              <a class="submenu-item" [routerLink]="'/working'">Cuestionario adicional</a>
+              <a class="submenu-item" [routerLink]="'/working'">Declaración anual de ISR</a>
+              <a class="submenu-item" [routerLink]="'/working'">Avisos</a>
+              <a class="submenu-item" [routerLink]="'/working'">P.L.D.</a>
+              <a class="submenu-item" [routerLink]="'/working'">Legal</a>
+              <a class="submenu-item" [routerLink]="'/working'">Legal laboral</a>
+              <a class="submenu-item" [class.activeYellow]="isResumenCumplimientoActive" [routerLink]="'/compliance/index'">Resumen por día</a>
+              <a class="submenu-item" [routerLink]="'/working'">Semáforos</a>
+            </li>
           </ul>
         </li>
       </div>
+      
+      
     </div>
   </ul>
 </div>
