@@ -102,6 +102,22 @@
     position: relative;
 }
 
+.submenu-item-no-indent {
+  text-decoration: none;
+  background: #fff59d !important;
+  padding: 12px 20px;
+  display: block;
+  width: 100%;
+  background: transparent;
+  text-align: left !important;
+  border-radius: 0;
+  margin-left: 0 !important; /* 🚫 Quita sangría */
+}
+
+.submenu-item-no-indent:hover {
+  background-color: #ffd700 !important; /* Amarillo fuerte */
+}
+
   .green-list{
     background: rgb(204, 255, 204) !important;
   }
@@ -130,7 +146,7 @@
   position: absolute;
   top: 100%; /* 🔥 Sin espacios en blanco */
   left: auto;
-
+  
   right: auto;
   width: 280px;
   display: none;
@@ -176,6 +192,7 @@
     margin-left: 15px; /* Sangría de los botones */
     border-radius: 5px;
     background: transparent !important; /* Elimina el fondo diferente */
+    text-align: left !important;
   }
   
   /* Resaltar con amarillo fuerte cuando se pasa el mouse */

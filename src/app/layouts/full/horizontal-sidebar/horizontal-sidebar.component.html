@@ -109,7 +109,7 @@
           <a [class.activeYellow]="isCumplimientoActive" [routerLink]="'/working'">Cumplimiento</a>
           <ul class="submenu">
             <li class="submenu-list-cumplimiento">
-              <a class="submenu-item" [routerLink]="'/compliance/register-client'">Calendario</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/compliance/register-client'">Calendario</a>
       
               <span class="submenu-subtitle">CFDI's y contabilización</span>
               <a class="submenu-item" [routerLink]="'/compliance/register-client'" [queryParams]="{'id-clasification':'3'}">Elabora CFDIs</a>
@@ -127,17 +127,19 @@
       
               <a class="submenu-item" [routerLink]="'/working'">Declara</a>
               <a class="submenu-item" [routerLink]="'/working'">Paga</a>
-              <a class="submenu-item" [routerLink]="'/working'">Contabilidad Electrónica</a>
-              <a class="submenu-item" [routerLink]="'/working'">Informativas</a>
-              <a class="submenu-item" [routerLink]="'/working'">Revisar buzón, opinión, claves, sellos</a>
-              <a class="submenu-item" [routerLink]="'/working'">Cuestionario adicional</a>
-              <a class="submenu-item" [routerLink]="'/working'">Declaración anual de ISR</a>
-              <a class="submenu-item" [routerLink]="'/working'">Avisos</a>
-              <a class="submenu-item" [routerLink]="'/working'">P.L.D.</a>
-              <a class="submenu-item" [routerLink]="'/working'">Legal</a>
-              <a class="submenu-item" [routerLink]="'/working'">Legal laboral</a>
-              <a class="submenu-item" [class.activeYellow]="isResumenCumplimientoActive" [routerLink]="'/compliance/index'">Resumen por día</a>
-              <a class="submenu-item" [routerLink]="'/working'">Semáforos</a>
+
+
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Contabilidad Electrónica</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Informativas</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Revisar buzón, opinión, claves, sellos</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Cuestionario adicional</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Declaración anual de ISR</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Avisos</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">P.L.D.</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Legal</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Legal laboral</a>
+              <a class="submenu-item-no-indent" [class.activeYellow]="isResumenCumplimientoActive" [routerLink]="'/compliance/index'">Resumen por día</a>
+              <a class="submenu-item-no-indent" [routerLink]="'/working'">Semáforos</a>
             </li>
           </ul>
         </li>
