@@ -154,7 +154,7 @@ export class RegisterClientComponent implements OnInit, AfterViewInit {
   getCompliance(): void {
 
     let date = new Date(this.sendableDate), y = date.getFullYear(), m = date.getMonth();
-    const extraParam = this.id !== '' ? `&clasificationObligationId=${this.id}` : ''
+    const extraParam = this.id !== null ? `&clasificationObligationId=${this.id}` : ''
     console.log(y,m)
     this.apiService.getAllObligations(m +1, y, extraParam).subscribe({
       next: res => {

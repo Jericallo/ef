@@ -21,7 +21,7 @@
     position: fixed;
     bottom: 100px;
     right: 30px;
-    z-index: 30;
+    z-index: 9999 !important;
 }
 
 .chat-section {
@@ -42,6 +42,8 @@ flex-direction: column;
 padding-top: 4px;
 padding-right: 16px;
 padding-left: 16px;
+
+z-index: 1; /* puedes ponerlo si no existe */
 }
 
 .profile-receiving-div {
@@ -237,6 +239,7 @@ cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 99999;
   }
 
   .closeButton:hover{

@@ -20,7 +20,8 @@ import { Questionnaire, QuestionnaireSave } from '../interfaces/questionnaire-in
 export class ApiService {
   
   apiUrlv2= 'https://apief.globalbusiness.com.mx/v2/'
-  apiUrlv3= 'https://apiefv3.globalbusiness.com.mx/v3/'
+  apiUrlv3= 'http://192.168.100.103:3000/v3/'//'https://apiefv3.globalbusiness.com.mx/v3/'
+
   id = 0
   get:string = `${environment.url_base}getAll?model=`
   insert: string = 'https://apief.globalbusiness.com.mx/v1/insert';
@@ -1061,11 +1062,13 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
+    console.log(url)
     return this.http.get(url,{headers:headers})
   }
 
   public addObligation(body):Observable<any>{
-    const url = 'https://apiefv3.globalbusiness.com.mx/v3/obligation'
+    const url = `${this.apiUrlv3}obligation`
+   
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1075,7 +1078,7 @@ export class ApiService {
   }
 
   public editObligation(body, id:number):Observable<any>{
-    const url = `https://apiefv3.globalbusiness.com.mx/v3/obligation/${id}`
+    const url = `${this.apiUrlv3}obligation/${id}`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1154,16 +1157,18 @@ export class ApiService {
   //ENDPOINTS PARA LAS OBLIGACIONES
 
   public postObligations( data: any): Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/obligation';
+    const url = `${this.apiUrlv3}obligation`;
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
+      
     });
+    console.log(data)
     return this.http.post(url, data, { headers: headers })
   }
 
   public putObligations( data: any ): Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/obligation';
+    const url = `${this.apiUrlv3}obligation`;
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -1360,7 +1365,7 @@ export class ApiService {
   //ENDPOINTS PARA LIGAR OBLIGACIONES CON COSAS
 
   public relateCumplimientoArticulo(body:any):Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/add_articles'
+    const url = `${this.apiUrlv3}obligation/add_articles`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1369,7 +1374,7 @@ export class ApiService {
   }
 
   public deleteCumplimientoArticulo(body:any):Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/delete_articles'
+    const url = `${this.apiUrlv3}obligation/delete_articles`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1378,7 +1383,7 @@ export class ApiService {
   }
 
   public relateCumplimientoParrafo(body:any):Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/add_paragraphs'
+    const url = `${this.apiUrlv3}obligation/add_paragraphs`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1387,7 +1392,7 @@ export class ApiService {
   }
 
   public deleteCumplimientoParrafo(body:any):Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/delete_paragraphs'
+    const url = `${this.apiUrlv3}obligation/delete_paragraphs`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1400,12 +1405,12 @@ export class ApiService {
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
     });
-    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/add_subjects'
+    const url = `${this.apiUrlv3}obligation/add_subjects`
     return this.http.put(url, body,{headers:headers});  
   }
 
   public deleteCumplimientoTopics(body:any):Observable<any> {
-    const url = 'https://apief.globalbusiness.com.mx/v2/obligation/delete_subjects'
+    const url = `${this.apiUrlv3}obligation/delete_subjects`
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization':`Bearer ${this.getToken()}`
@@ -1519,7 +1524,7 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
   }
 
   public addLaw(body):Observable<any>{
-    const url = `https://apiefv3.globalbusiness.com.mx/v3/law`;
+    const url = `${this.apiUrlv3}/v3/law`;
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -1529,7 +1534,7 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
   }
 
   public editLaw(body, id):Observable<any>{
-    const url = `https://apiefv3.globalbusiness.com.mx/v3/law/${id}`;
+    const url = `${this.apiUrlv3}/v3/law/${id}`;
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -1539,7 +1544,7 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
   }
 
   public deleteLaw(id):Observable<any>{
-    const url = `https://apiefv3.globalbusiness.com.mx/v3/law/${id}`;
+    const url = `${this.apiUrlv3}/v3/law/${id}`;
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization': `Bearer ${this.getToken()}`
@@ -1824,7 +1829,7 @@ public getVideoLocation(id_user:string, id_capacitacion: string):Observable<any>
   }
 
   public getMonthlyQuestionsToAnswer(month:number):Observable<any>{
-    const url = `https://apiefv3.globalbusiness.com.mx/v3/questionnaire-question/${month}`;
+    const url = `${this.apiUrlv3}/v3/questionnaire-question/${month}`;
     let headers = new HttpHeaders({
       'Content-type':'application/json',
       'Authorization': `Bearer ${this.getTokenV3()}`
