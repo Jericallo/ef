@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  baseUrl:"https://apief.globalbusiness.com.mx/v1/",
+  baseUrl:"/v1/",//"https://apief.globalbusiness.com.mx/v1/"
   token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXNlIjp7ImlkIjoxLCJ1c2FyaW8iOiJEYW5pZWwgV2lzZSBSdWl6IFZlbGFzY28iLCJjb3JyZW8iOiJkYW5pZWxAYWxwaGFkZXYuaW8ifSwiaWF0IjoxNjg2MzM2NjkyfQ.PvZpcfZdKbFsNHKC9WW_y8uM0b_eFAOpzfCOOW0boi0",
-  url_base:"https://apief.globalbusiness.com.mx/v1/",
+  url_base:"http://192.168.49.73:3000/v1/",//"https://apief.globalbusiness.com.mx/v1/"
   configFirebase:{
     apiKey: "AIzaSyDcVMlPAXULZsnuptCIjw1AkeFS7IjG5W4",
     authDomain: "escudo-test.firebaseapp.com",

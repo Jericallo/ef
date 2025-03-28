@@ -2,11 +2,11 @@
     width: 60px;
     height: 60px;
     border-radius: 30px;
-    position: absolute;
-    bottom: 60px;
+    position: fixed;//
+    bottom: 100px;
     right: 30px;
     background-color: green;
-    z-index: 30;
+    z-index: 9999;//
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -18,8 +18,8 @@
     width: 450px;
     height: 590px;
     border-radius: 30px;
-    position: absolute;
-    bottom: 60px;
+    position: fixed;
+    bottom: 100px;
     right: 30px;
     z-index: 30;
 }
